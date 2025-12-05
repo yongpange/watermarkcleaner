@@ -1,0 +1,485 @@
+{
+  "template": "turbolearn-template-one",
+  "theme": "light",
+  "header": {
+    "brand": {
+      "title": "TurboLearn",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "TurboLearn - Free Quizlet Alternative"
+      },
+      "url": "/"
+    },
+    "nav": {
+      "items": [
+        {
+          "title": "Features",
+          "url": "/#feature",
+          "icon": "RiSparkling2Line"
+        },
+        {
+          "title": "Comparison",
+          "url": "/#benefit",
+          "icon": "RiCheckDoubleLine"
+        },
+        {
+          "title": "Blog",
+          "url": "/blog",
+          "icon": "RiBook2Line"
+        },
+        {
+          "title": "FAQ",
+          "url": "/#faq",
+          "icon": "RiQuestionLine"
+        }
+      ]
+    },
+    "buttons": [
+      {
+        "title": "Start Free",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default",
+        "icon": "RiArrowRightLine"
+      }
+    ],
+    "show_sign": true,
+    "show_theme": true,
+    "show_locale": true
+  },
+  "hero": {
+    "title": "TurboLearn: AI-Powered Free Quizlet Alternative for Smarter Learning",
+    "highlight_text": "Free Quizlet Alternative",
+    "description": "",
+    "announcement": {
+      "label": "100% Free",
+      "title": "🎓 All Features Free Forever",
+      "url": "/#feature"
+    },
+    "tip": "",
+    "buttons": [
+      {
+        "title": "Get Started - It's Free",
+        "icon": "RiFlashlightFill",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default"
+      }
+    ],
+    "show_happy_users": true,
+    "show_badge": false
+  },
+
+  "introduce": {
+    "name": "introduce",
+    "title": "Why Choose TurboLearn as Your Free Quizlet Alternative",
+    "label": "Introduce",
+    "description": "TurboLearn offers everything you need for effective learning - AI-powered features, complete freedom, and proven results.",
+    "image": {
+      "src": "/imgs/features/1.webp"
+    },
+    "items": [
+      {
+        "title": "AI-Powered Learning",
+        "description": "Advanced AI algorithms analyze your learning patterns and optimize review schedules for maximum retention.",
+        "icon": "RiRobot2Line"
+      },
+      {
+        "title": "100% Free Forever",
+        "description": "All features including unlimited flashcards, AI generation, and offline access are completely free with no hidden costs.",
+        "icon": "RiMoneyDollarCircleLine"
+      },
+      {
+        "title": "Multiple Study Modes",
+        "description": "Flashcards, quizzes, matching games, spelling tests, and more - choose the best mode for your learning style.",
+        "icon": "RiGamepadLine"
+      }
+    ]
+  },
+  "benefit": {
+    "name": "benefit",
+    "title": "TurboLearn vs Quizlet - Why We're Better",
+    "label": "Comparison",
+    "description": "See how TurboLearn outperforms Quizlet in every way - more features, better privacy, and completely free.",
+    "items": [
+      {
+        "title": "100% Free vs Paid Subscription",
+        "description": "TurboLearn offers all premium features for free, while Quizlet charges $7.99/month for basic features like offline access and ad removal.",
+        "icon": "RiMoneyDollarCircleLine",
+        "image": {
+          "src": "/imgs/features/2.webp"
+        }
+      },
+      {
+        "title": "AI-Powered vs Traditional Memorization",
+        "description": "Our advanced AI analyzes your learning patterns and optimizes review schedules, while Quizlet uses basic spaced repetition.",
+        "icon": "RiRobot2Line",
+        "image": {
+          "src": "/imgs/features/3.webp"
+        }
+      },
+      {
+        "title": "Privacy Protection vs Data Collection",
+        "description": "We never sell your data or show targeted ads. Quizlet collects and monetizes user data for advertising purposes.",
+        "icon": "RiShieldCheckLine",
+        "image": {
+          "src": "/imgs/features/4.webp"
+        }
+      }
+    ]
+  },
+  "usage": {
+    "name": "usage",
+    "title": "How to Get Started with TurboLearn",
+    "description": "Start your efficient learning journey in just a few simple steps:",
+    "image": {
+      "src": "/imgs/features/1.webp"
+    },
+    "image_position": "left",
+    "text_align": "center",
+    "items": [
+      {
+        "title": "Create Free Account",
+        "description": "No credit card required - sign up in 30 seconds with email, Google, or GitHub. Start learning immediately.",
+        "image": {
+          "src": "/imgs/features/5.webp"
+        }
+      },
+      {
+        "title": "Create Flashcards",
+        "description": "Manually create or use AI to auto-generate flashcards. Import existing sets from Quizlet, Anki, or other platforms.",
+        "image": {
+          "src": "/imgs/features/6.webp"
+        }
+      },
+      {
+        "title": "Choose Study Mode",
+        "description": "Select from flashcards, quizzes, matching, or spelling modes based on your learning goals. AI adjusts difficulty automatically.",
+        "image": {
+          "src": "/imgs/features/7.webp"
+        }
+      },
+      {
+        "title": "Track Your Progress",
+        "description": "View detailed learning statistics and progress reports. AI intelligently reminds you to review content before you forget.",
+        "image": {
+          "src": "/imgs/features/8.webp"
+        }
+      }
+    ]
+  },
+  "feature": {
+    "name": "feature",
+    "title": "Powerful Features for Effective Learning",
+    "description": "Everything you need to master any subject - from AI-powered flashcards to advanced study modes.",
+    "items": [
+      {
+        "title": "AI Flashcard Generation",
+        "description": "Automatically generate high-quality flashcards from your notes, PDFs, or textbooks using advanced AI.",
+        "icon": "RiRobot2Line"
+      },
+      {
+        "title": "Multiple Study Modes",
+        "description": "Flashcards, quizzes, matching games, spelling tests, and comprehensive study mode - choose what works best.",
+        "icon": "RiGamepadLine"
+      },
+      {
+        "title": "Spaced Repetition Algorithm",
+        "description": "AI-powered spaced repetition based on cognitive science ensures optimal long-term retention.",
+        "icon": "RiTimeLine"
+      },
+      {
+        "title": "Collaborative Learning",
+        "description": "Share flashcard sets with classmates, create study groups, and learn together more effectively.",
+        "icon": "RiTeamLine"
+      },
+      {
+        "title": "Offline Learning",
+        "description": "Download flashcards and study anywhere without internet. All progress syncs automatically when online.",
+        "icon": "RiDownloadCloudLine"
+      },
+      {
+        "title": "Multi-Language Support",
+        "description": "Study in 100+ languages with text-to-speech support. Perfect for language learners.",
+        "icon": "RiTranslate2"
+      },
+      {
+        "title": "Detailed Statistics",
+        "description": "Track your progress with comprehensive analytics. See which topics need more review.",
+        "icon": "RiBarChart2Line"
+      },
+      {
+        "title": "Import & Export",
+        "description": "Easily import from Quizlet, Anki, or CSV files. Export your data anytime - you own it.",
+        "icon": "RiFileTransferLine"
+      },
+      {
+        "title": "Rich Media Support",
+        "description": "Add images, audio, and video to flashcards. AI can identify images and generate relevant questions.",
+        "icon": "RiImageLine"
+      }
+    ]
+  },
+  "stats": {
+    "name": "stats",
+    "label": "Stats",
+    "title": "Trusted by Millions of Learners",
+    "description": "Join the community and experience the difference",
+    "icon": "FaRegHeart",
+    "items": [
+      {
+        "title": "Active Users",
+        "label": "5M+",
+        "description": "Students & Teachers"
+      },
+      {
+        "title": "Flashcards Created",
+        "label": "100M+",
+        "description": "Study Cards"
+      },
+      {
+        "title": "Learning Efficiency",
+        "label": "3x",
+        "description": "Faster Mastery"
+      },
+      {
+        "title": "User Satisfaction",
+        "label": "98%",
+        "description": "Happy Learners"
+      }
+    ]
+  },
+  "testimonial": {
+    "name": "testimonial",
+    "label": "Testimonial",
+    "title": "What Students and Teachers Say About TurboLearn",
+    "description": "Hear from real users who switched from Quizlet to TurboLearn and never looked back.",
+    "icon": "GoThumbsup",
+    "items": [
+      {
+        "title": "Michael Chen",
+        "label": "Medical Student",
+        "description": "Switched from Quizlet Plus and saved $10/month while getting better features! The AI smart review helped me ace my finals.",
+        "image": {
+          "src": "/imgs/users/1.png"
+        }
+      },
+      {
+        "title": "Ms. Johnson",
+        "label": "High School Teacher",
+        "description": "I use TurboLearn to create vocabulary sets for my entire class. Students are more engaged and I don't worry about subscription costs.",
+        "image": {
+          "src": "/imgs/users/2.png"
+        }
+      },
+      {
+        "title": "Sarah Martinez",
+        "label": "College Student",
+        "description": "As an international student, the multi-language support and text-to-speech features are invaluable. Offline mode lets me study during my commute.",
+        "image": {
+          "src": "/imgs/users/3.png"
+        }
+      },
+      {
+        "title": "David Wang",
+        "label": "Graduate Student",
+        "description": "Preparing for exams requires memorizing tons of information. TurboLearn's spaced repetition algorithm boosted my retention significantly. Plus, importing my Quizlet sets was seamless!",
+        "image": {
+          "src": "/imgs/users/4.png"
+        }
+      },
+      {
+        "title": "Prof. Anderson",
+        "label": "University Professor",
+        "description": "I recommend TurboLearn to all my students. It's not only free but also respects privacy - no selling student data like some platforms do.",
+        "image": {
+          "src": "/imgs/users/5.png"
+        }
+      },
+      {
+        "title": "Emma Thompson",
+        "label": "Language Learner",
+        "description": "Learning Mandarin with TurboLearn has been amazing. The image flashcards and audio features make learning engaging. The AI-generated example sentences are high quality!",
+        "image": {
+          "src": "/imgs/users/6.png"
+        }
+      }
+    ]
+  },
+  "faq": {
+    "name": "faq",
+    "label": "FAQ",
+    "title": "Frequently Asked Questions About Free Quizlet Alternative",
+    "description": "Have more questions? Contact our support team via email or social media anytime.",
+    "items": [
+      {
+        "title": "Is TurboLearn really completely free? Are there any hidden costs?",
+        "description": "Yes, TurboLearn is 100% free! No credit card required, no hidden fees, no paywalls. All features including unlimited flashcard sets, AI smart learning, offline access, and more are permanently free. We believe quality education should be accessible to everyone."
+      },
+      {
+        "title": "What advantages does TurboLearn have over Quizlet?",
+        "description": "TurboLearn offers all Quizlet Plus features completely free. Our AI learning algorithms are more advanced, privacy protection is better, we support offline learning, and there are no ads. Additionally, our spaced repetition algorithm is based on the latest cognitive science research for higher learning efficiency."
+      },
+      {
+        "title": "Can I import my existing flashcards from Quizlet?",
+        "description": "Absolutely! TurboLearn supports one-click import from Quizlet, Anki, StudyBlue, and other platforms. Simply export as CSV or text file, then import into TurboLearn. We also support batch import to save you time."
+      },
+      {
+        "title": "What study modes does TurboLearn support?",
+        "description": "We offer multiple study modes: Flashcard mode (flip cards), Quiz mode (multiple choice), Matching game (pair matching), Spelling mode (dictation practice), and Study mode (comprehensive learning). AI automatically adjusts difficulty and review frequency based on your performance."
+      },
+      {
+        "title": "How do TurboLearn's AI features work?",
+        "description": "Our AI system analyzes your learning behavior and memory curve to intelligently recommend content for review. AI can also automatically generate flashcards from documents, identify image content, and generate relevant example sentences. These features are all based on advanced machine learning algorithms to make learning more efficient."
+      },
+      {
+        "title": "Can I use TurboLearn offline?",
+        "description": "Yes! Download our mobile app or use the browser's offline feature to study anytime, anywhere without internet connection. All learning progress automatically syncs to the cloud when you're back online."
+      },
+      {
+        "title": "How many languages does TurboLearn support?",
+        "description": "TurboLearn supports learning content in 100+ languages, including Chinese, English, Japanese, Korean, French, German, Spanish, and more. We also provide text-to-speech functionality with multiple accents, especially suitable for language learning."
+      },
+      {
+        "title": "Can teachers use TurboLearn to manage classes?",
+        "description": "Of course! We provide dedicated teacher account features to create classes, assign learning tasks, track student progress, and view learning statistics. Teachers can share flashcard sets with students, and students can collaborate on content creation. All these features are completely free."
+      }
+    ]
+  },
+  "cta": {
+    "name": "cta",
+    "title": "Start Using the Best Free Quizlet Alternative Today",
+    "description": "Join 5M+ learners and experience AI-powered smart learning. Completely free, no credit card required.",
+    "buttons": [
+      {
+        "title": "Create Free Flashcards",
+        "url": "/convert",
+        "target": "_self",
+        "icon": "RiFlashlightFill"
+      },
+      {
+        "title": "View Features",
+        "url": "/#feature",
+        "target": "_self",
+        "variant": "outline"
+      }
+    ]
+  },
+  "footer": {
+    "name": "footer",
+    "brand": {
+      "title": "TurboLearn",
+      "description": "TurboLearn is the best free Quizlet alternative, offering AI-powered smart flashcards, quizzes, and multiple study modes. Completely free with unlimited usage.",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "TurboLearn - Free Quizlet Alternative"
+      },
+      "url": "/"
+    },
+    "copyright": "© 2025 • TurboLearn All rights reserved.",
+    "nav": {
+      "items": [
+        {
+          "title": "Product",
+          "children": [
+            {
+              "title": "Features",
+              "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "Comparison",
+              "url": "/#benefit",
+              "target": "_self"
+            },
+            {
+              "title": "Testimonials",
+              "url": "/#testimonial",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "Resources",
+          "children": [
+            {
+              "title": "Help Center",
+              "url": "/#faq",
+              "target": "_self"
+            },
+            {
+              "title": "Study Guides",
+              "url": "/posts",
+              "target": "_self"
+            },
+            {
+              "title": "FAQ",
+              "url": "/#faq",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "Tools",
+          "children": [
+            {
+              "title": "AI Study Assistant",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Flashcard Generator",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Learning Stats",
+              "url": "/convert",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    "social": {
+      "items": [
+        {
+          "title": "X",
+          "icon": "RiTwitterXFill",
+          "url": "https://x.com/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Github",
+          "icon": "RiGithubFill",
+          "url": "https://github.com/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Discord",
+          "icon": "RiDiscordFill",
+          "url": "https://discord.gg/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Email",
+          "icon": "RiMailLine",
+          "url": "mailto:support@turbolearn.ai",
+          "target": "_self"
+        }
+      ]
+    },
+    "agreement": {
+      "items": [
+        {
+          "title": "Privacy Policy",
+          "url": "/privacy-policy"
+        },
+        {
+          "title": "Terms of Service",
+          "url": "/terms-of-service"
+        }
+      ]
+    }
+  }
+}

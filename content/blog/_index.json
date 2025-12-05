@@ -1,0 +1,101 @@
+{
+  "categories": [
+    {
+      "id": "all",
+      "name": {
+        "en": "All",
+        "zh": "全部",
+        "es": "Todos",
+        "ar": "الكل",
+        "ru": "Все",
+        "fr": "Tous",
+        "ko": "전체"
+      }
+    },
+    {
+      "id": "ai_learning",
+      "name": {
+        "en": "AI Learning",
+        "zh": "AI 学习",
+        "es": "Aprendizaje IA",
+        "ar": "تعلم الذكاء الاصطناعي",
+        "ru": "ИИ обучение",
+        "fr": "Apprentissage IA",
+        "ko": "AI 학습"
+      }
+    },
+    {
+      "id": "study_science",
+      "name": {
+        "en": "Study Science",
+        "zh": "学习科学",
+        "es": "Ciencia del estudio",
+        "ar": "علم الدراسة",
+        "ru": "Наука обучения",
+        "fr": "Science de l'étude",
+        "ko": "학습 과학"
+      }
+    },
+    {
+      "id": "comparison",
+      "name": {
+        "en": "Comparison",
+        "zh": "对比分析",
+        "es": "Comparación",
+        "ar": "مقارنة",
+        "ru": "Сравнение",
+        "fr": "Comparaison",
+        "ko": "비교"
+      }
+    },
+    {
+      "id": "tips",
+      "name": {
+        "en": "Tips",
+        "zh": "技巧分享",
+        "es": "Consejos",
+        "ar": "نصائح",
+        "ru": "Советы",
+        "fr": "Conseils",
+        "ko": "팁"
+      }
+    },
+    {
+      "id": "updates",
+      "name": {
+        "en": "Updates",
+        "zh": "产品更新",
+        "es": "Actualizaciones",
+        "ar": "تحديثات",
+        "ru": "Обновления",
+        "fr": "Mises à jour",
+        "ko": "업데이트"
+      }
+    }
+  ],
+  "authors": [
+    {
+      "id": "turbolearn_team",
+      "name": {
+        "en": "TurboLearn Team",
+        "zh": "TurboLearn 团队",
+        "es": "Equipo TurboLearn",
+        "ar": "فريق TurboLearn",
+        "ru": "Команда TurboLearn",
+        "fr": "Équipe TurboLearn",
+        "ko": "TurboLearn 팀"
+      },
+      "avatar": "/images/authors/turbolearn-team.png"
+    }
+  ],
+  "defaultLocale": "en",
+  "supportedLocales": [
+    "en",
+    "zh",
+    "es",
+    "ar",
+    "ru",
+    "fr",
+    "ko"
+  ]
+}

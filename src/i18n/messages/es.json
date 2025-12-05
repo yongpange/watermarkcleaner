@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "title": "Alternativa Gratuita a Quizlet - Tarjetas de Memoria con IA y Herramienta de Estudio Inteligente | TurboLearn",
+    "description": "¿Buscas una alternativa gratuita a Quizlet? TurboLearn ofrece potentes tarjetas de memoria impulsadas por IA, cuestionarios inteligentes y múltiples modos de estudio - completamente gratis. Conjuntos de tarjetas ilimitados, aprendizaje colaborativo, acceso sin conexión - la opción perfecta para estudiantes y profesores.",
+    "keywords": "alternativa gratuita a quizlet, tarjetas de memoria en línea, herramienta de cuestionario inteligente, asistente de estudio con IA, aplicación de aprendizaje gratuita, tarjetas de memoria, educación en línea, herramientas de estudio, quizlet gratis, creador de tarjetas"
+  },
+  "user": {
+    "sign_in": "Iniciar Sesión",
+    "sign_out": "Cerrar Sesión",
+    "credits": "Créditos",
+    "api_keys": "Claves API",
+    "my_orders": "Mis Pedidos",
+    "user_center": "Centro de Usuario",
+    "admin_system": "Sistema de Administración"
+  },
+  "sign_modal": {
+    "sign_in_title": "Iniciar Sesión",
+    "sign_in_description": "Inicia sesión en tu cuenta",
+    "sign_up_title": "Registrarse",
+    "sign_up_description": "Crear una cuenta",
+    "email_title": "Correo Electrónico",
+    "email_placeholder": "Ingresa tu correo electrónico aquí",
+    "password_title": "Contraseña",
+    "password_placeholder": "Ingresa tu contraseña aquí",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "or": "O",
+    "continue": "Continuar",
+    "no_account": "¿No tienes una cuenta?",
+    "email_sign_in": "Iniciar sesión con Correo",
+    "google_sign_in": "Iniciar sesión con Google",
+    "github_sign_in": "Iniciar sesión con GitHub",
+    "close_title": "Cerrar",
+    "cancel_title": "Cancelar"
+  },
+  "my_orders": {
+    "title": "Mis Pedidos",
+    "description": "pedidos pagados con TurboLearn.",
+    "no_orders": "No se encontraron pedidos",
+    "tip": "",
+    "activate_order": "Activar Pedido",
+    "actived": "Activado",
+    "join_discord": "Unirse a Discord",
+    "read_docs": "Leer Documentos",
+    "table": {
+      "order_no": "Número de Pedido",
+      "email": "Correo Electrónico",
+      "product_name": "Nombre del Producto",
+      "amount": "Cantidad",
+      "paid_at": "Pagado el",
+      "github_username": "Nombre de Usuario de GitHub",
+      "status": "Estado"
+    }
+  },
+  "my_credits": {
+    "title": "Mis Créditos",
+    "left_tip": "créditos restantes: {left_credits}",
+    "no_credits": "No hay registros de créditos",
+    "recharge": "Recargar",
+    "table": {
+      "trans_no": "Número de Transacción",
+      "trans_type": "Tipo de Transacción",
+      "credits": "Créditos",
+      "updated_at": "Actualizado el",
+      "status": "Estado"
+    }
+  },
+  "api_keys": {
+    "title": "Claves API",
+    "tip": "Por favor mantén tu clave api segura para evitar filtraciones",
+    "no_api_keys": "No hay Claves API",
+    "create_api_key": "Crear Clave API",
+    "table": {
+      "name": "Nombre",
+      "key": "Clave",
+      "created_at": "Creado el"
+    },
+    "form": {
+      "name": "Nombre",
+      "name_placeholder": "Nombre de la Clave API",
+      "submit": "Enviar"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Noticias, recursos y actualizaciones sobre TurboLearn",
+    "read_more_text": "Leer Más",
+    "hero_title": "Blog de TurboLearn",
+    "hero_description": "Descubre las últimas ideas sobre aprendizaje impulsado por IA, técnicas de estudio y tecnología educativa",
+    "search_placeholder": "Buscar artículos, temas o palabras clave...",
+    "no_results": "No se encontraron artículos",
+    "no_results_hint": "Intenta ajustar tu búsqueda o criterios de filtro",
+    "min_read": "{minutes} min de lectura",
+    "read_more": "Leer Más",
+    "back_to_blog": "← Volver al Blog",
+    "by_author": "Por {author}",
+    "newsletter": {
+      "title": "Mantente Actualizado",
+      "description": "Recibe los últimos consejos de aprendizaje, ideas de IA y actualizaciones de productos en tu bandeja de entrada",
+      "placeholder": "Ingresa tu correo electrónico",
+      "button": "Suscribirse"
+    },
+    "categories": {
+      "all": "Todo",
+      "ai_learning": "Aprendizaje con IA",
+      "study_science": "Ciencia del Estudio",
+      "comparison": "Comparación",
+      "tips": "Consejos y Trucos",
+      "updates": "Actualizaciones del Producto"
+    }
+  },
+  "feedback": {
+    "title": "Comentarios",
+    "description": "Nos encantaría escuchar qué salió bien o cómo podemos mejorar la experiencia del producto.",
+    "submit": "Enviar",
+    "loading": "Enviando...",
+    "contact_tip": "Otras formas de contactarnos",
+    "rating_tip": "¿Qué opinas de TurboLearn?",
+    "placeholder": "Deja tus comentarios aquí..."
+  },
+  "convert": {
+    "title": "Convertir Archivos Instantáneamente",
+    "subtitle": "Arrastra y suelta tus archivos para iniciar la conversión",
+    "description": "Transforma tus documentos al formato Markdown estructurado en segundos",
+    "dropzone": {
+      "idle": "Arrastra archivos aquí o haz clic para seleccionar",
+      "dragover": "Suelta los archivos para iniciar la conversión",
+      "supported": "Soportado: PDF, DOCX, TXT, MD (Máx 20MB)",
+      "click_to_select": "Haz clic para seleccionar archivos"
+    },
+    "status": {
+      "uploading": "Subiendo...",
+      "processing": "Convirtiendo...",
+      "completed": "Conversión completada",
+      "failed": "Conversión fallida",
+      "pending": "Esperando para procesar"
+    },
+    "actions": {
+      "download": "Descargar",
+      "edit": "Edición Avanzada",
+      "cancel": "Cancelar",
+      "retry": "Reintentar",
+      "remove": "Eliminar",
+      "clear_all": "Limpiar Todo",
+      "view_result": "Ver Resultado"
+    },
+    "progress": {
+      "uploading_file": "Subiendo archivo...",
+      "parsing_content": "Analizando contenido...",
+      "formatting": "Formateando...",
+      "finalizing": "Finalizando..."
+    },
+    "errors": {
+      "upload_failed": "Falló la subida",
+      "conversion_failed": "Falló la conversión",
+      "file_too_large": "El tamaño del archivo excede el límite",
+      "unsupported_type": "Tipo de archivo no soportado",
+      "network_error": "Error de red, por favor intenta de nuevo"
+    },
+    "result": {
+      "preview": "Vista Previa",
+      "metadata": "Metadatos",
+      "word_count": "Conteo de Palabras",
+      "page_count": "Conteo de Páginas",
+      "language": "Idioma",
+      "format": "Formato"
+    }
+  },
+  "workspace": {
+    "title": "Espacio de Trabajo",
+    "subtitle": "Edita y mejora tus documentos convertidos",
+    "sidebar": {
+      "files": "Archivos",
+      "notes": "Notas",
+      "styles": "Estilos",
+      "settings": "Configuración"
+    },
+    "toolbar": {
+      "save": "Guardar",
+      "export": "Exportar",
+      "share": "Compartir",
+      "back": "Volver a Convertir"
+    },
+    "editor": {
+      "placeholder": "Comienza a editar tu documento...",
+      "untitled": "Documento Sin Título"
+    },
+    "ai": {
+      "optimize": "Optimización con IA",
+      "translate": "Traducir",
+      "summarize": "Resumir",
+      "enhance": "Mejorar"
+    },
+    "export": {
+      "title": "Exportar Documento",
+      "format": "Formato",
+      "markdown": "Markdown",
+      "pdf": "PDF",
+      "docx": "Documento de Word",
+      "download": "Descargar"
+    }
+  }
+}

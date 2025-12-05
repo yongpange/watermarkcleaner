@@ -1,0 +1,109 @@
+{
+  "pricing": {
+    "name": "pricing",
+    "label": "الأسعار",
+    "title": "الأسعار",
+    "description": "احصل على جميع الميزات، وبادر ببناء مشاريع SaaS الذكاء الاصطناعي الخاصة بك بسرعة.",
+    "groups": [],
+    "items": [
+      {
+        "title": "المبتدئ",
+        "description": "ابدأ مع أول مشروع SaaS لك.",
+        "features_title": "يتضمن",
+        "features": [
+          "100 نقطة ائتمان، صالحة لمدة شهر",
+          "قالب NextJS",
+          "هيكل صديق لمحركات البحث",
+          "الدفع مع Stripe",
+          "تخزين البيانات مع Supabase",
+          "Google OAuth وتسجيل الدخول بلمسة واحدة",
+          "دعم i18n"
+        ],
+        "interval": "مرة واحدة",
+        "amount": 9900,
+        "cn_amount": 69900,
+        "currency": "USD",
+        "price": "$99",
+        "original_price": "$199",
+        "unit": "USD",
+        "is_featured": false,
+        "tip": "ادفع مرة واحدة. بناء مشاريع غير محدودة!",
+        "button": {
+          "title": "ابدأ",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "starter",
+        "product_name": "TurboLearn المبتدئ",
+        "credits": 100,
+        "valid_months": 1
+      },
+      {
+        "title": "القياسي",
+        "description": "أطلق بسرعة مع مشاريع SaaS الخاصة بك.",
+        "label": "شعبي",
+        "features_title": "كل شيء في المبتدئ، بالإضافة إلى",
+        "features": [
+          "200 نقطة ائتمان، صالحة لمدة 3 أشهر",
+          "النشر مع Vercel أو Cloudflare",
+          "توليد الخصوصية والشروط",
+          "تكامل Google Analytics",
+          "تكامل Google Search Console",
+          "مجتمع Discord",
+          "الدعم الفني للإطلاق الأول",
+          "تحديثات مدى الحياة"
+        ],
+        "interval": "مرة واحدة",
+        "amount": 19900,
+        "cn_amount": 139900,
+        "currency": "USD",
+        "price": "$199",
+        "original_price": "$299",
+        "unit": "USD",
+        "is_featured": true,
+        "tip": "ادفع مرة واحدة. بناء مشاريع غير محدودة!",
+        "button": {
+          "title": "ابدأ",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "standard",
+        "product_name": "TurboLearn القياسي",
+        "credits": 200,
+        "valid_months": 3
+      },
+      {
+        "title": "الاحترافي",
+        "description": "أطلق أي مشاريع SaaS للذكاء الاصطناعي.",
+        "features_title": "كل شيء في القياسي، بالإضافة إلى",
+        "features": [
+          "300 نقطة ائتمان، صالحة لمدة سنة",
+          "وظائف الأعمال مع الذكاء الاصطناعي",
+          "مركز المستخدم",
+          "نظام النقاط",
+          "مبيعات API لـ SaaS الخاص بك",
+          "نظام الإدارة",
+          "الدعم الفني الأولوية"
+        ],
+        "interval": "مرة واحدة",
+        "amount": 29900,
+        "cn_amount": 199900,
+        "currency": "USD",
+        "price": "$299",
+        "original_price": "$399",
+        "unit": "USD",
+        "is_featured": false,
+        "tip": "ادفع مرة واحدة. بناء مشاريع غير محدودة!",
+        "button": {
+          "title": "ابدأ",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "premium",
+        "product_name": "TurboLearn الاحترافي",
+        "credits": 300,
+        "valid_months": 12
+      }
+    ]
+  }
+}

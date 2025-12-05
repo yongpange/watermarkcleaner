@@ -1,0 +1,90 @@
+{
+  "showcase": {
+    "name": "showcase",
+    "title": "شركات ناشئة SaaS للذكاء الاصطناعي مبنية مع TurboLearn",
+    "description": "سهل الاستخدام وسريع الإطلاق.",
+    "items": [
+      {
+        "title": "ThinkAny",
+        "description": "محرك بحث AI",
+        "url": "https://thinkany.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/7.png"
+        }
+      },
+      {
+        "title": "HeyBeauty",
+        "description": "تجربة افتراضية بالذكاء الاصطناعي",
+        "url": "https://heybeauty.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/5.png"
+        }
+      },
+      {
+        "title": "AI Wallpaper",
+        "description": "مولد خلفيات AI",
+        "url": "https://aiwallpaper.shop",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/1.png"
+        }
+      },
+      {
+        "title": "AI Cover",
+        "description": "مولد أغلفة AI",
+        "url": "https://aicover.design",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/2.png"
+        }
+      },
+      {
+        "title": "GPTs Works",
+        "description": "دليل GPTs",
+        "url": "https://gpts.works",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/3.png"
+        }
+      },
+      {
+        "title": "Melodisco",
+        "description": "مشغل موسيقى AI",
+        "url": "https://melodis.co",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/4.png"
+        }
+      },
+      {
+        "title": "Pagen",
+        "description": "مولد صفحات هبوط AI",
+        "url": "https://pagen.so",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/6.png"
+        }
+      },
+      {
+        "title": "SoraFM",
+        "description": "مولد فيديوهات AI",
+        "url": "https://sorafm.trys.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/8.png"
+        }
+      },
+      {
+        "title": "PodLM",
+        "description": "مولد بودكاست AI",
+        "url": "https://podlm.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/9.png"
+        }
+      }
+    ]
+  }
+}

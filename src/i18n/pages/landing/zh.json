@@ -1,0 +1,513 @@
+{
+  "template": "turbolearn-template-one",
+  "theme": "light",
+  "header": {
+    "brand": {
+      "title": "TurboLearn",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "TurboLearn - 免费Quizlet替代品"
+      },
+      "url": "/"
+    },
+    "nav": {
+      "items": [
+        {
+          "title": "功能特点",
+          "url": "/#feature",
+          "icon": "RiSparkling2Line"
+        },
+        {
+          "title": "对比优势",
+          "url": "/#benefit",
+          "icon": "RiCheckDoubleLine"
+        },
+        {
+          "title": "博客",
+          "url": "/blog",
+          "icon": "RiBook2Line"
+        },
+        {
+          "title": "常见问题",
+          "url": "/#faq",
+          "icon": "RiQuestionLine"
+        }
+      ]
+    },
+    "buttons": [
+      {
+        "title": "免费开始",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default",
+        "icon": "RiArrowRightLine"
+      }
+    ],
+    "show_sign": true,
+    "show_theme": true,
+    "show_locale": true
+  },
+  "hero": {
+    "title": "最佳免费Quizlet替代品 - 让学习更智能、更高效",
+    "highlight_text": "免费Quizlet替代品",
+    "description": "TurboLearn是一款完全免费的智能学习工具，提供AI驱动的学习卡片、智能测验和多种学习模式。<br/>无限卡片组、无广告干扰、支持离线学习，是学生和教师的理想选择。",
+    "announcement": {
+      "label": "100%免费",
+      "title": "🎓 永久免费使用所有功能",
+      "url": "/#feature"
+    },
+    "tip": "✨ 无需信用卡，立即开始学习",
+    "buttons": [
+      {
+        "title": "马上上手 · 完全免费",
+        "icon": "RiFlashlightFill",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default"
+      }
+    ],
+    "show_happy_users": true,
+    "show_badge": false
+  },
+
+  "introduce": {
+    "name": "introduce",
+    "title": "为什么选择TurboLearn作为免费Quizlet替代品",
+    "label": "产品介绍",
+    "description": "TurboLearn是一款专为现代学习者设计的智能学习平台，提供比Quizlet更强大的功能，而且完全免费。",
+    "image": {
+      "src": "/imgs/features/1.webp"
+    },
+    "items": [
+      {
+        "title": "AI智能学习",
+        "description": "利用人工智能技术自动生成学习卡片、智能推荐复习内容，让学习效率提升3倍。",
+        "icon": "RiRobot2Line"
+      },
+      {
+        "title": "完全免费使用",
+        "description": "无需付费订阅，所有高级功能永久免费。无限卡片组、无广告、无使用限制。",
+        "icon": "RiCheckboxCircleLine"
+      },
+      {
+        "title": "多种学习模式",
+        "description": "提供闪卡模式、测验模式、匹配游戏、拼写练习等多种学习方式，适应不同学习风格。",
+        "icon": "RiGamepadLine"
+      }
+    ]
+  },
+  "benefit": {
+    "name": "benefit",
+    "title": "TurboLearn vs Quizlet：为什么我们更胜一筹",
+    "label": "对比优势",
+    "description": "全面对比TurboLearn与Quizlet，看看为什么越来越多的学生选择我们作为免费替代品。",
+    "items": [
+      {
+        "title": "100%免费 vs 付费订阅",
+        "description": "TurboLearn所有功能永久免费，无需像Quizlet Plus那样每月支付费用。无限卡片组、无广告、离线访问全部免费开放。",
+        "icon": "RiMoneyDollarCircleLine",
+        "image": {
+          "src": "/imgs/features/2.webp"
+        }
+      },
+      {
+        "title": "AI智能学习 vs 传统记忆",
+        "description": "我们的AI算法会分析你的学习进度，智能推荐需要复习的内容，学习效率比传统方法提升300%。Quizlet缺乏这种智能化功能。",
+        "icon": "RiBrainLine",
+        "image": {
+          "src": "/imgs/features/3.webp"
+        }
+      },
+      {
+        "title": "隐私保护 vs 数据收集",
+        "description": "我们重视用户隐私，不会出售你的学习数据。所有内容加密存储，你可以完全控制自己的学习资料。",
+        "icon": "RiShieldCheckLine",
+        "image": {
+          "src": "/imgs/features/4.webp"
+        }
+      }
+    ]
+  },
+  "usage": {
+    "name": "usage",
+    "title": "如何开始使用TurboLearn",
+    "description": "只需三个简单步骤，即可开始你的高效学习之旅：",
+    "image": {
+      "src": "/imgs/features/1.webp"
+    },
+    "image_position": "left",
+    "text_align": "center",
+    "items": [
+      {
+        "title": "免费注册账号",
+        "description": "无需信用卡，30秒即可完成注册。支持邮箱、Google或GitHub账号快速登录。",
+        "image": {
+          "src": "/imgs/features/5.webp"
+        }
+      },
+      {
+        "title": "创建学习卡片",
+        "description": "手动创建或使用AI自动生成学习卡片。支持导入Quizlet、Anki等平台的现有卡片组。",
+        "image": {
+          "src": "/imgs/features/6.webp"
+        }
+      },
+      {
+        "title": "选择学习模式",
+        "description": "根据学习目标选择闪卡、测验、匹配或拼写模式。AI会根据你的表现调整难度。",
+        "image": {
+          "src": "/imgs/features/7.webp"
+        }
+      },
+      {
+        "title": "追踪学习进度",
+        "description": "查看详细的学习统计和进度报告。AI会智能提醒你复习即将遗忘的内容。",
+        "image": {
+          "src": "/imgs/features/8.webp"
+        }
+      }
+    ]
+  },
+  "feature": {
+    "name": "feature",
+    "title": "TurboLearn强大功能一览",
+    "description": "作为最佳免费Quizlet替代品，我们提供更多强大功能帮助你高效学习。",
+    "items": [
+      {
+        "title": "AI智能卡片生成",
+        "description": "上传文档或输入文本，AI自动生成高质量学习卡片。支持PDF、Word、PPT等多种格式。",
+        "icon": "RiMagicLine"
+      },
+      {
+        "title": "多种学习模式",
+        "description": "闪卡模式、测验模式、匹配游戏、拼写练习、学习模式等，满足不同学习需求。",
+        "icon": "RiGamepadLine"
+      },
+      {
+        "title": "智能间隔重复",
+        "description": "基于艾宾浩斯遗忘曲线的AI算法，在最佳时机提醒你复习，记忆效果提升5倍。",
+        "icon": "RiBrainLine"
+      },
+      {
+        "title": "协作学习",
+        "description": "与同学分享卡片组，共同编辑和学习。支持班级管理，教师可以追踪学生进度。",
+        "icon": "RiTeamLine"
+      },
+      {
+        "title": "离线学习",
+        "description": "下载卡片组到本地，随时随地学习，无需网络连接。所有进度自动同步。",
+        "icon": "RiDownloadCloudLine"
+      },
+      {
+        "title": "多语言支持",
+        "description": "支持100+种语言的学习卡片，内置语音朗读功能，完美适合语言学习。",
+        "icon": "RiTranslate2"
+      },
+      {
+        "title": "详细学习统计",
+        "description": "可视化学习进度、掌握程度、学习时长等数据，帮助你了解学习效果。",
+        "icon": "RiBarChartBoxLine"
+      },
+      {
+        "title": "导入导出功能",
+        "description": "一键导入Quizlet、Anki、StudyBlue等平台的卡片。支持导出为PDF、Excel等格式。",
+        "icon": "RiFileTransferLine"
+      },
+      {
+        "title": "图片和音频支持",
+        "description": "在卡片中添加图片、音频，支持多媒体学习。AI可以自动识别图片内容生成卡片。",
+        "icon": "RiImageLine"
+      }
+    ]
+  },
+  "stats": {
+    "name": "stats",
+    "label": "数据统计",
+    "title": "全球学习者的首选",
+    "description": "数据证明TurboLearn是最受欢迎的免费Quizlet替代品。",
+    "icon": "FaRegHeart",
+    "items": [
+      {
+        "title": "活跃用户",
+        "label": "500万+",
+        "description": "全球学习者"
+      },
+      {
+        "title": "学习卡片",
+        "label": "1亿+",
+        "description": "已创建卡片"
+      },
+      {
+        "title": "学习效率",
+        "label": "3倍",
+        "description": "提升幅度"
+      },
+      {
+        "title": "用户满意度",
+        "label": "98%",
+        "description": "五星好评"
+      }
+    ]
+  },
+  "testimonial": {
+    "name": "testimonial",
+    "label": "用户评价",
+    "title": "学生和教师如何评价TurboLearn",
+    "description": "听听真实用户分享他们使用TurboLearn作为免费Quizlet替代品的体验。",
+    "icon": "GoThumbsup",
+    "items": [
+      {
+        "title": "李明",
+        "label": "医学院学生",
+        "description": "从Quizlet Plus转到TurboLearn后，我每月节省了10美元订阅费，而且功能更强大！AI智能复习功能帮我在期末考试中取得了优异成绩。",
+        "image": {
+          "src": "/imgs/users/1.png"
+        }
+      },
+      {
+        "title": "王老师",
+        "label": "高中英语教师",
+        "description": "我用TurboLearn为整个班级创建词汇卡片，学生们的学习积极性明显提高。最重要的是完全免费，不用担心学生付费问题。",
+        "image": {
+          "src": "/imgs/users/2.png"
+        }
+      },
+      {
+        "title": "Sarah Chen",
+        "label": "大学生",
+        "description": "作为国际学生，TurboLearn的多语言支持和语音朗读功能对我学习专业术语帮助很大。离线功能让我在通勤时也能学习。",
+        "image": {
+          "src": "/imgs/users/3.png"
+        }
+      },
+      {
+        "title": "张晓华",
+        "label": "考研学生",
+        "description": "准备考研时我需要记忆大量知识点，TurboLearn的间隔重复算法让我的记忆效率提升了好几倍。而且导入功能让我轻松迁移了Quizlet上的所有卡片。",
+        "image": {
+          "src": "/imgs/users/4.png"
+        }
+      },
+      {
+        "title": "刘教授",
+        "label": "大学教授",
+        "description": "我推荐所有学生使用TurboLearn。它不仅免费，而且隐私保护做得很好，不会像某些平台那样出售学生数据。",
+        "image": {
+          "src": "/imgs/users/5.png"
+        }
+      },
+      {
+        "title": "Emma Wilson",
+        "label": "语言学习者",
+        "description": "我正在学习中文，TurboLearn的图片卡片和音频功能让学习变得生动有趣。AI自动生成的例句质量很高，比我之前用的工具好太多了！",
+        "image": {
+          "src": "/imgs/users/6.png"
+        }
+      }
+    ]
+  },
+  "faq": {
+    "name": "faq",
+    "label": "常见问题",
+    "title": "关于免费Quizlet替代品的常见问题",
+    "description": "还有其他问题？随时通过邮件或社交媒体联系我们的支持团队。",
+    "items": [
+      {
+        "title": "TurboLearn真的完全免费吗？有什么隐藏费用吗？",
+        "description": "是的，TurboLearn 100%免费！无需信用卡，无隐藏费用，无付费墙。所有功能包括无限卡片组、AI智能学习、离线访问等都永久免费。我们相信优质教育应该人人可及。"
+      },
+      {
+        "title": "TurboLearn与Quizlet相比有什么优势？",
+        "description": "TurboLearn提供Quizlet Plus的所有功能，而且完全免费。我们的AI智能学习算法更先进，隐私保护更好，支持离线学习，没有广告干扰。此外，我们的间隔重复算法基于最新认知科学研究，学习效率更高。"
+      },
+      {
+        "title": "我可以从Quizlet导入现有的学习卡片吗？",
+        "description": "当然可以！TurboLearn支持一键导入Quizlet、Anki、StudyBlue等平台的卡片组。只需导出为CSV或文本文件，然后在TurboLearn中导入即可。我们还支持批量导入，节省您的时间。"
+      },
+      {
+        "title": "TurboLearn支持哪些学习模式？",
+        "description": "我们提供多种学习模式：闪卡模式（正反面翻转）、测验模式（选择题）、匹配游戏（配对练习）、拼写模式（听写练习）、学习模式（综合学习）。AI会根据你的表现自动调整难度和复习频率。"
+      },
+      {
+        "title": "TurboLearn的AI功能是如何工作的？",
+        "description": "我们的AI系统会分析你的学习行为和记忆曲线，智能推荐需要复习的内容。AI还可以自动从文档生成学习卡片，识别图片内容，生成相关例句。这些功能都基于先进的机器学习算法，让学习更高效。"
+      },
+      {
+        "title": "我可以离线使用TurboLearn吗？",
+        "description": "可以！下载我们的移动应用或使用浏览器的离线功能，你可以随时随地学习，无需网络连接。所有学习进度会在下次联网时自动同步到云端。"
+      },
+      {
+        "title": "TurboLearn支持多少种语言？",
+        "description": "TurboLearn支持100+种语言的学习内容，包括中文、英语、日语、韩语、法语、德语、西班牙语等。我们还提供语音朗读功能，支持多种口音，特别适合语言学习。"
+      },
+      {
+        "title": "教师可以使用TurboLearn管理班级吗？",
+        "description": "当然！我们提供专门的教师账户功能，可以创建班级、分配学习任务、追踪学生进度、查看学习统计。教师可以与学生分享卡片组，学生也可以协作创建内容。这些功能全部免费。"
+      },
+      {
+        "title": "我的学习数据安全吗？",
+        "description": "我们非常重视用户隐私和数据安全。所有数据都经过加密存储，我们不会出售或分享你的学习数据给第三方。你可以随时导出或删除自己的数据。我们遵守GDPR等国际隐私法规。"
+      },
+      {
+        "title": "TurboLearn有移动应用吗？",
+        "description": "有的！我们提供iOS和Android应用，功能与网页版完全同步。移动应用支持离线学习、推送提醒、小组件等功能，让你随时随地高效学习。"
+      },
+      {
+        "title": "如果我遇到问题，如何获得帮助？",
+        "description": "我们提供多种支持渠道：详细的帮助文档、视频教程、社区论坛、邮件支持。大多数问题可以在帮助中心找到答案。如需个性化帮助，可以通过邮件联系我们的支持团队。"
+      },
+      {
+        "title": "TurboLearn未来会收费吗？",
+        "description": "不会！我们承诺核心功能永久免费。我们的商业模式基于可选的高级功能（如团队协作工具、高级分析等），但基础学习功能将始终免费开放给所有用户。"
+      },
+      {
+        "title": "我可以与朋友分享我的学习卡片吗？",
+        "description": "当然可以！你可以通过链接分享卡片组，设置为公开或私密。其他用户可以复制你的卡片组进行学习，也可以协作编辑（如果你授权的话）。这是学习小组的理想功能。"
+      },
+      {
+        "title": "TurboLearn支持图片和音频吗？",
+        "description": "完全支持！你可以在卡片中添加图片、音频、甚至视频。AI可以自动识别图片内容并生成相关问题。这对于学习解剖学、地理、艺术史等视觉学科特别有用。"
+      },
+      {
+        "title": "相比Anki，TurboLearn有什么优势？",
+        "description": "虽然Anki是优秀的工具，但TurboLearn更现代、更易用。我们提供更美观的界面、云同步、AI功能、协作学习等Anki缺少的功能。而且TurboLearn完全基于网页，无需安装复杂的软件。"
+      }
+    ]
+  },
+  "cta": {
+    "name": "cta",
+    "title": "立即开始使用最佳免费Quizlet替代品",
+    "description": "加入500万+学习者，体验AI驱动的智能学习。完全免费，无需信用卡。",
+    "buttons": [
+      {
+        "title": "马上上手 · 完全免费",
+        "url": "/convert",
+        "target": "_self",
+        "icon": "RiFlashlightFill"
+      },
+      {
+        "title": "查看功能详情",
+        "url": "/#feature",
+        "target": "_self",
+        "variant": "outline"
+      }
+    ]
+  },
+  "footer": {
+    "name": "footer",
+    "brand": {
+      "title": "TurboLearn",
+      "description": "TurboLearn是最佳免费Quizlet替代品，提供AI驱动的智能学习卡片、测验和多种学习模式。完全免费，无限使用。",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "TurboLearn - 免费Quizlet替代品"
+      },
+      "url": "/"
+    },
+    "copyright": "© 2025 • TurboLearn 保留所有权利。",
+    "nav": {
+      "items": [
+        {
+          "title": "产品",
+          "children": [
+            {
+              "title": "功能特点",
+              "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "对比优势",
+              "url": "/#benefit",
+              "target": "_self"
+            },
+            {
+              "title": "用户评价",
+              "url": "/#testimonial",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "资源",
+          "children": [
+            {
+              "title": "帮助中心",
+              "url": "/#faq",
+              "target": "_self"
+            },
+            {
+              "title": "学习指南",
+              "url": "/posts",
+              "target": "_self"
+            },
+            {
+              "title": "常见问题",
+              "url": "/#faq",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "相关工具",
+          "children": [
+            {
+              "title": "AI学习助手",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "卡片生成器",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "学习统计",
+              "url": "/convert",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    "social": {
+      "items": [
+        {
+          "title": "X",
+          "icon": "RiTwitterXFill",
+          "url": "https://x.com/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Github",
+          "icon": "RiGithubFill",
+          "url": "https://github.com/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Discord",
+          "icon": "RiDiscordFill",
+          "url": "https://discord.gg/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "邮箱",
+          "icon": "RiMailLine",
+          "url": "mailto:support@turbolearn.ai",
+          "target": "_self"
+        }
+      ]
+    },
+    "agreement": {
+      "items": [
+        {
+          "title": "隐私政策",
+          "url": "/privacy-policy"
+        },
+        {
+          "title": "服务条款",
+          "url": "/terms-of-service"
+        }
+      ]
+    }
+  }
+}

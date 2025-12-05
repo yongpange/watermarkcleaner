@@ -1,0 +1,197 @@
+﻿
+> shipany-template-one@2.5.0 build
+> next build
+
+   鈻?Next.js 15.2.3
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ 鉁?Compiled successfully
+   Linting and checking validity of types ...
+
+./src/app/api/ai/summarize/route.ts
+111:26  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/convert/process/route.ts
+6:33  Warning: 'ConversionOptions' is defined but never used.  @typescript-eslint/no-unused-vars
+25:51  Warning: 'options' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/convert/status/[id]/route.ts
+2:15  Warning: 'ConversionResult' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/get-user-credits/route.ts
+5:28  Warning: 'req' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/get-user-info/route.ts
+9:28  Warning: 'req' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/update-invite/route.ts
+13:10  Warning: 'getIsoTimestr' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/workspace/chat-session/route.ts
+7:6  Warning: 'ChatSessionInsert' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/(admin)/admin/posts/add/page.tsx
+7:10  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+8:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+9:10  Warning: 'getIsoTimestr' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/(default)/(console)/api-keys/page.tsx
+5:26  Warning: 'ApikeyStatus' is defined but never used.  @typescript-eslint/no-unused-vars
+8:10  Warning: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/(default)/(console)/my-invites/page.tsx
+1:43  Warning: 'RiGithubFill' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/(default)/layout.tsx
+5:8  Warning: 'Feedback' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/convert/client.tsx
+3:10  Warning: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/layout.tsx
+24:11  Warning: 'locale' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/pay-success/[session_id]/page.tsx
+17:12  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/workspace/client.tsx
+9:8  Warning: 'MarkdownEditor' is defined but never used.  @typescript-eslint/no-unused-vars
+21:9  Warning: 't' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+36:10  Warning: 'aiSummaryLoading' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+36:28  Warning: 'setAiSummaryLoading' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/blocks/blog-detail/crumb.tsx
+9:10  Warning: 'BlogItem' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/blocks/data-cards/index.tsx
+1:10  Warning: 'IconTrendingDown' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/blocks/editor/index.tsx
+8:26  Warning: 'useCurrentEditor' is defined but never used.  @typescript-eslint/no-unused-vars
+12:10  Warning: 'Textarea' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/blocks/stats/index.tsx
+1:10  Warning: 'Heart' is defined but never used.  @typescript-eslint/no-unused-vars
+1:17  Warning: 'Zap' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/blocks/table/dropdown.tsx
+7:3  Warning: 'DropdownMenuRadioGroup' is defined but never used.  @typescript-eslint/no-unused-vars
+8:3  Warning: 'DropdownMenuRadioItem' is defined but never used.  @typescript-eslint/no-unused-vars
+9:3  Warning: 'DropdownMenuSeparator' is defined but never used.  @typescript-eslint/no-unused-vars
+10:3  Warning: 'DropdownMenuShortcut' is defined but never used.  @typescript-eslint/no-unused-vars
+11:3  Warning: 'DropdownMenuSub' is defined but never used.  @typescript-eslint/no-unused-vars
+12:3  Warning: 'DropdownMenuSubContent' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'DropdownMenuSubTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/dashboard/header/index.tsx
+9:10  Warning: 'BreadcrumbLink' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/dashboard/sidebar/footer.tsx
+3:10  Warning: 'SidebarTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+12:9  Warning: 'handleTabChange' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/dashboard/sidebar/index.tsx
+5:3  Warning: 'IconCamera' is defined but never used.  @typescript-eslint/no-unused-vars
+6:3  Warning: 'IconChartBar' is defined but never used.  @typescript-eslint/no-unused-vars
+7:3  Warning: 'IconDashboard' is defined but never used.  @typescript-eslint/no-unused-vars
+8:3  Warning: 'IconDatabase' is defined but never used.  @typescript-eslint/no-unused-vars
+9:3  Warning: 'IconFileAi' is defined but never used.  @typescript-eslint/no-unused-vars
+10:3  Warning: 'IconFileDescription' is defined but never used.  @typescript-eslint/no-unused-vars
+11:3  Warning: 'IconFileWord' is defined but never used.  @typescript-eslint/no-unused-vars
+12:3  Warning: 'IconFolder' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'IconHelp' is defined but never used.  @typescript-eslint/no-unused-vars
+14:3  Warning: 'IconInnerShadowTop' is defined but never used.  @typescript-eslint/no-unused-vars
+15:3  Warning: 'IconListDetails' is defined but never used.  @typescript-eslint/no-unused-vars
+16:3  Warning: 'IconReport' is defined but never used.  @typescript-eslint/no-unused-vars
+17:3  Warning: 'IconSearch' is defined but never used.  @typescript-eslint/no-unused-vars
+18:3  Warning: 'IconSettings' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'IconUsers' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/dashboard/sidebar/library.tsx
+5:3  Warning: 'IconFolder' is defined but never used.  @typescript-eslint/no-unused-vars
+6:3  Warning: 'IconShare3' is defined but never used.  @typescript-eslint/no-unused-vars
+7:3  Warning: 'IconTrash' is defined but never used.  @typescript-eslint/no-unused-vars
+12:3  Warning: 'DropdownMenuContent' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'DropdownMenuItem' is defined but never used.  @typescript-eslint/no-unused-vars
+14:3  Warning: 'DropdownMenuSeparator' is defined but never used.  @typescript-eslint/no-unused-vars
+15:3  Warning: 'DropdownMenuTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+21:3  Warning: 'SidebarMenuAction' is defined but never used.  @typescript-eslint/no-unused-vars
+31:11  Warning: 'isMobile' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/feedback/index.tsx
+7:3  Warning: 'DialogFooter' is defined but never used.  @typescript-eslint/no-unused-vars
+12:10  Warning: 'Github' is defined but never used.  @typescript-eslint/no-unused-vars
+12:18  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+12:39  Warning: 'Twitter' is defined but never used.  @typescript-eslint/no-unused-vars
+76:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/file-upload-demo.tsx
+12:10  Warning: 'isUploading' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/icon/index.tsx
+11:10  Warning: 'ReactNode' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/invite/index.tsx
+3:16  Warning: 'CardContent' is defined but never used.  @typescript-eslint/no-unused-vars
+10:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/invite/modal.tsx
+10:3  Warning: 'DialogTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+15:10  Warning: 'Label' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/sign/modal.tsx
+11:3  Warning: 'DialogTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+21:3  Warning: 'DrawerTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+23:20  Warning: 'SiGmail' is defined but never used.  @typescript-eslint/no-unused-vars
+36:10  Warning: 'open' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+36:16  Warning: 'setOpen' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/sign/toggle.tsx
+9:9  Warning: 't' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/workspace/ChatInterface.tsx
+191:22  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/workspace/FlashcardsView.tsx
+29:10  Warning: 'flashcardUuids' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+33:10  Warning: 'isSaved' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/workspace/Sidebar.tsx
+7:10  Warning: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+37:35  Warning: 'metadata' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/contexts/app.tsx
+54:14  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/i18n/request.ts
+25:12  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/models/order.ts
+271:3  Warning: 'status' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/affiliate.ts
+8:10  Warning: 'getIsoTimestr' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/file-upload.ts
+62:20  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/order.ts
+2:3  Warning: 'CreditsTransType' is defined but never used.  @typescript-eslint/no-unused-vars
+3:3  Warning: 'increaseCredits' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/services/page.ts
+27:12  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/stores/conversion-store.ts
+10:7  Warning: 'mapSerializer' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+30:11  Warning: 'get' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/types/blocks/base.d.ts
+1:10  Warning: 'ReactNode' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/types/context.d.ts
+1:10  Warning: 'ReactNode' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...

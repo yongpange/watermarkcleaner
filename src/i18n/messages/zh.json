@@ -1,0 +1,219 @@
+{
+  "metadata": {
+    "title": "免费Quizlet替代品 - 智能学习卡片与在线测验工具 | TurboLearn",
+    "description": "寻找免费的Quizlet替代品？TurboLearn提供强大的AI驱动学习卡片、智能测验、多种学习模式，完全免费。支持无限卡片组、协作学习、离线访问，是学生和教师的最佳选择。",
+    "keywords": "免费Quizlet替代品, 在线学习卡片, 智能测验工具, AI学习助手, 免费学习应用, 记忆卡片, 在线教育, 学习工具, Quizlet免费版, 学习卡片制作"
+  },
+  "user": {
+    "sign_in": "登录",
+    "sign_out": "退出登录",
+    "credits": "额度",
+    "api_keys": "API 密钥",
+    "my_orders": "我的订单",
+    "user_center": "用户中心",
+    "admin_system": "管理后台"
+  },
+  "sign_modal": {
+    "sign_in_title": "登录",
+    "sign_in_description": "登录您的账户",
+    "sign_up_title": "注册",
+    "sign_up_description": "创建新账户",
+    "email_title": "邮箱",
+    "email_placeholder": "请输入您的邮箱",
+    "password_title": "密码",
+    "password_placeholder": "请输入您的密码",
+    "forgot_password": "忘记密码？",
+    "or": "或",
+    "continue": "继续",
+    "no_account": "还没有账户？",
+    "email_sign_in": "使用邮箱登录",
+    "google_sign_in": "使用 Google 登录",
+    "github_sign_in": "使用 GitHub 登录",
+    "close_title": "关闭",
+    "cancel_title": "取消"
+  },
+  "my_orders": {
+    "title": "我的订单",
+    "description": "在 TurboLearn 上购买的订单。",
+    "no_orders": "未找到订单",
+    "tip": "",
+    "activate_order": "激活订单",
+    "actived": "已激活",
+    "join_discord": "加入 Discord",
+    "read_docs": "阅读文档",
+    "table": {
+      "order_no": "订单号",
+      "email": "邮箱",
+      "product_name": "产品名称",
+      "amount": "金额",
+      "paid_at": "支付时间",
+      "github_username": "GitHub 用户名",
+      "status": "状态"
+    }
+  },
+  "my_credits": {
+    "title": "我的积分",
+    "left_tip": "剩余积分: {left_credits}",
+    "no_credits": "没有积分记录",
+    "recharge": "充值",
+    "table": {
+      "trans_no": "交易号",
+      "trans_type": "交易类型",
+      "credits": "积分",
+      "updated_at": "更新时间",
+      "status": "状态"
+    }
+  },
+  "api_keys": {
+    "title": "API 密钥",
+    "tip": "请妥善保管您的 API 密钥，避免泄露",
+    "no_api_keys": "没有 API 密钥",
+    "create_api_key": "创建 API 密钥",
+    "table": {
+      "name": "名称",
+      "key": "密钥",
+      "created_at": "创建时间"
+    },
+    "form": {
+      "name": "名称",
+      "name_placeholder": "API 密钥名称",
+      "submit": "提交"
+    }
+  },
+  "blog": {
+    "title": "博客",
+    "description": "关于 TurboLearn 的新闻、资源和更新",
+    "read_more_text": "阅读更多",
+    "hero_title": "TurboLearn 博客",
+    "hero_description": "探索 AI 驱动学习、学习技巧和教育技术的最新见解",
+    "search_placeholder": "搜索文章、主题或关键词...",
+    "no_results": "未找到文章",
+    "no_results_hint": "尝试调整搜索或筛选条件",
+    "min_read": "{minutes} 分钟阅读",
+    "read_more": "阅读更多",
+    "back_to_blog": "← 返回博客",
+    "by_author": "作者：{author}",
+    "newsletter": {
+      "title": "保持更新",
+      "description": "获取最新的学习技巧、AI 见解和产品更新",
+      "placeholder": "输入您的邮箱",
+      "button": "订阅"
+    },
+    "categories": {
+      "all": "全部",
+      "ai_learning": "AI 学习",
+      "study_science": "学习科学",
+      "comparison": "对比分析",
+      "tips": "技巧分享",
+      "updates": "产品更新"
+    }
+  },
+  "feedback": {
+    "title": "反馈",
+    "description": "我们很乐意听取您对产品的看法或如何改进产品体验。",
+    "submit": "提交",
+    "loading": "提交中...",
+    "contact_tip": "其他联系方式",
+    "rating_tip": "您对 TurboLearn 的看法如何？",
+    "placeholder": "在这里留下您的反馈..."
+  },
+  "convert": {
+    "title": "即时文件转换",
+    "subtitle": "拖拽文件开始转换",
+    "description": "几秒钟内将您的文档转换为结构化的 Markdown 格式",
+    "dropzone": {
+      "idle": "拖拽文件到此处或点击选择",
+      "dragover": "松开鼠标开始转换",
+      "supported": "支持格式：PDF、DOCX、TXT、MD（最大 20MB）",
+      "click_to_select": "点击选择文件"
+    },
+    "status": {
+      "uploading": "上传中...",
+      "processing": "转换中...",
+      "completed": "转换完成",
+      "failed": "转换失败",
+      "pending": "等待处理"
+    },
+    "actions": {
+      "download": "下载",
+      "edit": "高级编辑",
+      "cancel": "取消",
+      "retry": "重试",
+      "remove": "移除",
+      "clear_all": "清空全部",
+      "view_result": "查看结果"
+    },
+    "progress": {
+      "uploading_file": "正在上传文件...",
+      "parsing_content": "正在解析内容...",
+      "formatting": "正在格式化...",
+      "finalizing": "正在完成..."
+    },
+    "errors": {
+      "upload_failed": "上传失败",
+      "conversion_failed": "转换失败",
+      "file_too_large": "文件大小超出限制",
+      "unsupported_type": "不支持的文件类型",
+      "network_error": "网络错误，请重试"
+    },
+    "result": {
+      "preview": "预览",
+      "metadata": "元数据",
+      "word_count": "字数",
+      "page_count": "页数",
+      "language": "语言",
+      "format": "格式"
+    }
+  },
+  "workspace": {
+    "title": "工作台",
+    "subtitle": "编辑和增强您的转换文档",
+    "sidebar": {
+      "files": "文件",
+      "notes": "笔记",
+      "styles": "样式",
+      "settings": "设置"
+    },
+    "toolbar": {
+      "save": "保存",
+      "export": "导出",
+      "share": "分享",
+      "back": "返回转换"
+    },
+    "editor": {
+      "placeholder": "开始编辑您的文档...",
+      "untitled": "未命名文档"
+    },
+    "ai": {
+      "optimize": "AI 优化",
+      "translate": "翻译",
+      "summarize": "总结",
+      "enhance": "增强"
+    },
+    "export": {
+      "title": "导出文档",
+      "format": "格式",
+      "markdown": "Markdown",
+      "pdf": "PDF",
+      "docx": "Word 文档",
+      "download": "下载"
+    }
+  },
+  "locale": {
+    "auto_detect_message": "我们检测到您的浏览器语言是{language}。是否切换？",
+    "switch_now": "立即切换",
+    "keep_current": "保持当前",
+    "detecting": "检测中...",
+    "current": "当前",
+    "auto_detected_language": "我们检测到您的首选语言是{language}",
+    "language_switched": "语言已切换到{language}",
+    "language_switch_error": "切换语言失败，请重试",
+    "language_settings": "语言设置",
+    "auto_detect": "自动检测语言",
+    "detected_language_info": "浏览器语言：{language}",
+    "reset_preferences": "重置语言偏好",
+    "preferences_reset": "语言偏好已重置",
+    "switching": "切换中...",
+    "detected": "已检测"
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "pricing": {
+    "name": "pricing",
+    "label": "Precios",
+    "title": "Precios",
+    "description": "Obtén todas las funciones, construye tus startups de IA SaaS rápidamente.",
+    "groups": [],
+    "items": [
+      {
+        "title": "Iniciador",
+        "description": "Comienza con tu primera startup SaaS.",
+        "features_title": "Incluye",
+        "features": [
+          "100 créditos, válidos por 1 mes",
+          "Plantilla NextJS",
+          "Estructura SEO-friendly",
+          "Pagos con Stripe",
+          "Almacenamiento de datos con Supabase",
+          "Google OAuth y Login con un clic",
+          "Soporte i18n"
+        ],
+        "interval": "una vez",
+        "amount": 9900,
+        "cn_amount": 69900,
+        "currency": "USD",
+        "price": "$99",
+        "original_price": "$199",
+        "unit": "USD",
+        "is_featured": false,
+        "tip": "¡Paga una vez. Construye proyectos ilimitados!",
+        "button": {
+          "title": "Comenzar",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "starter",
+        "product_name": "TurboLearn Iniciador",
+        "credits": 100,
+        "valid_months": 1
+      },
+      {
+        "title": "Estándar",
+        "description": "Lanza rápidamente tus startups SaaS.",
+        "label": "Popular",
+        "features_title": "Todo en Iniciador, más",
+        "features": [
+          "200 créditos, válidos por 3 meses",
+          "Despliegue con Vercel o Cloudflare",
+          "Generación de Privacidad y Términos",
+          "Integración con Google Analytics",
+          "Integración con Google Search Console",
+          "Comunidad Discord",
+          "Soporte técnico para tu primer lanzamiento",
+          "Actualizaciones de por vida"
+        ],
+        "interval": "una vez",
+        "amount": 19900,
+        "cn_amount": 139900,
+        "currency": "USD",
+        "price": "$199",
+        "original_price": "$299",
+        "unit": "USD",
+        "is_featured": true,
+        "tip": "¡Paga una vez. Construye proyectos ilimitados!",
+        "button": {
+          "title": "Comenzar",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "standard",
+        "product_name": "TurboLearn Estándar",
+        "credits": 200,
+        "valid_months": 3
+      },
+      {
+        "title": "Premium",
+        "description": "Lanza cualquier startup SaaS de IA.",
+        "features_title": "Todo en Estándar, más",
+        "features": [
+          "300 créditos, válidos por 1 año",
+          "Funciones de Negocio con IA",
+          "Centro de Usuario",
+          "Sistema de Créditos",
+          "Ventas de API para tu SaaS",
+          "Sistema de Administración",
+          "Soporte Técnico Prioritario"
+        ],
+        "interval": "una vez",
+        "amount": 29900,
+        "cn_amount": 199900,
+        "currency": "USD",
+        "price": "$299",
+        "original_price": "$399",
+        "unit": "USD",
+        "is_featured": false,
+        "tip": "¡Paga una vez. Construye proyectos ilimitados!",
+        "button": {
+          "title": "Comenzar",
+          "url": "/#pricing",
+          "icon": "RiFlashlightFill"
+        },
+        "product_id": "premium",
+        "product_name": "TurboLearn Premium",
+        "credits": 300,
+        "valid_months": 12
+      }
+    ]
+  }
+}

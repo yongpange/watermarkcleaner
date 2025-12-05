@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "title": "بديل مجاني لكويزلت - بطاقات تعليمية مدعومة بالذكاء الاصطناعي وأداة دراسة ذكية | TurboLearn",
+    "description": "هل تبحث عن بديل مجاني لكويزلت؟ يوفر TurboLearn بطاقات تعليمية قوية مدعومة بالذكاء الاصطناعي، اختبارات ذكية، وطرق دراسة متعددة - مجاناً تماماً. مجموعات بطاقات غير محدودة، تعلم تعاوني، وصول بدون اتصال - الخيار المثالي للطلاب والمعلمين.",
+    "keywords": "بديل مجاني لكويزلت، بطاقات تعليمية عبر الإنترنت، أداة اختبار ذكية، مساعد دراسة بالذكاء الاصطناعي، تطبيق تعليمي مجاني، بطاقات ذاكرة، تعليم عبر الإنترنت، أدوات دراسية، كويزلت المجاني، صانع بطاقات تعليمية"
+  },
+  "user": {
+    "sign_in": "تسجيل الدخول",
+    "sign_out": "تسجيل الخروج",
+    "credits": "الرصيد",
+    "api_keys": "مفاتيح API",
+    "my_orders": "طلباتي",
+    "user_center": "مركز المستخدم",
+    "admin_system": "نظام الإدارة"
+  },
+  "sign_modal": {
+    "sign_in_title": "تسجيل الدخول",
+    "sign_in_description": "سجل الدخول إلى حسابك",
+    "sign_up_title": "إنشاء حساب",
+    "sign_up_description": "إنشاء حساب جديد",
+    "email_title": "البريد الإلكتروني",
+    "email_placeholder": "أدخل بريدك الإلكتروني هنا",
+    "password_title": "كلمة المرور",
+    "password_placeholder": "أدخل كلمة مرورك هنا",
+    "forgot_password": "نسيت كلمة المرور؟",
+    "or": "أو",
+    "continue": "متابعة",
+    "no_account": "ليس لديك حساب؟",
+    "email_sign_in": "تسجيل الدخول بالبريد الإلكتروني",
+    "google_sign_in": "تسجيل الدخول بجوجل",
+    "github_sign_in": "تسجيل الدخول بجيتهاب",
+    "close_title": "إغلاق",
+    "cancel_title": "إلغاء"
+  },
+  "my_orders": {
+    "title": "طلباتي",
+    "description": "الطلبات المدفوعة مع TurboLearn.",
+    "no_orders": "لم يتم العثور على طلبات",
+    "tip": "",
+    "activate_order": "تفعيل الطلب",
+    "actived": "تم التفعيل",
+    "join_discord": "الانضمام إلى Discord",
+    "read_docs": "قراءة المستندات",
+    "table": {
+      "order_no": "رقم الطلب",
+      "email": "البريد الإلكتروني",
+      "product_name": "اسم المنتج",
+      "amount": "المبلغ",
+      "paid_at": "تاريخ الدفع",
+      "github_username": "اسم مستخدم GitHub",
+      "status": "الحالة"
+    }
+  },
+  "my_credits": {
+    "title": "رصيدي",
+    "left_tip": "الرصيد المتبقي: {left_credits}",
+    "no_credits": "لا توجد سجلات رصيد",
+    "recharge": "إعادة الشحن",
+    "table": {
+      "trans_no": "رقم المعاملة",
+      "trans_type": "نوع المعاملة",
+      "credits": "الرصيد",
+      "updated_at": "تم التحديث في",
+      "status": "الحالة"
+    }
+  },
+  "api_keys": {
+    "title": "مفاتيح API",
+    "tip": "يرجى الحفاظ على مفتاح api الخاص بك آمن لتجنب التسربات",
+    "no_api_keys": "لا توجد مفاتيح API",
+    "create_api_key": "إنشاء مفتاح API",
+    "table": {
+      "name": "الاسم",
+      "key": "المفتاح",
+      "created_at": "تم الإنشاء في"
+    },
+    "form": {
+      "name": "الاسم",
+      "name_placeholder": "اسم مفتاح API",
+      "submit": "إرسال"
+    }
+  },
+  "blog": {
+    "title": "المدونة",
+    "description": "الأخبار، الموارد والتحديثات حول TurboLearn",
+    "read_more_text": "قراءة المزيد",
+    "hero_title": "مدونة TurboLearn",
+    "hero_description": "اكتشف أحدث الأفكار حول التعلم المدعوم بالذكاء الاصطناعي، تقنيات الدراسة والتكنولوجيا التعليمية",
+    "search_placeholder": "البحث عن مقالات، مواضيع أو كلمات مفتاحية...",
+    "no_results": "لم يتم العثور على مقالات",
+    "no_results_hint": "حاول تعديل معايير البحث أو التصفية الخاصة بك",
+    "min_read": "{minutes} دقيقة قراءة",
+    "read_more": "قراءة المزيد",
+    "back_to_blog": "← العودة إلى المدونة",
+    "by_author": "بواسطة {author}",
+    "newsletter": {
+      "title": "ابقَ على اطلاع",
+      "description": "احصل على أحدث نصائح التعلم، رؤى الذكاء الاصطناعي وتحديثات المنتجات في صندوق بريدك",
+      "placeholder": "أدخل بريدك الإلكتروني",
+      "button": "الاشتراك"
+    },
+    "categories": {
+      "all": "الكل",
+      "ai_learning": "التعلم بالذكاء الاصطناعي",
+      "study_science": "علم الدراسة",
+      "comparison": "المقارنة",
+      "tips": "نصائح وحيل",
+      "updates": "تحديثات المنتج"
+    }
+  },
+  "feedback": {
+    "title": "التعليقات",
+    "description": "نود أن نسمع ما سار على ما يرام أو كيف يمكننا تحسين تجربة المنتج.",
+    "submit": "إرسال",
+    "loading": "جارٍ الإرسال...",
+    "contact_tip": "طرق أخرى للاتصال بنا",
+    "rating_tip": "ما رأيك في TurboLearn؟",
+    "placeholder": "اترك تعليقاتك هنا..."
+  },
+  "convert": {
+    "title": "تحويل الملفات على الفور",
+    "subtitle": "اسحب وأفلت ملفاتك لبدء التحويل",
+    "description": "حوّل مستنداتك إلى تنسيق Markdown المهيكل في ثوانٍ",
+    "dropzone": {
+      "idle": "اسحب الملفات هنا أو انقر للتحديد",
+      "dragover": "أفلت الملفات لبدء التحويل",
+      "supported": "المتاح: PDF، DOCX، TXT، MD (بحد أقصى 20 ميجابايت)",
+      "click_to_select": "انقر لتحديد الملفات"
+    },
+    "status": {
+      "uploading": "جارٍ الرفع...",
+      "processing": "جارٍ التحويل...",
+      "completed": "اكتمل التحويل",
+      "failed": "فشل التحويل",
+      "pending": "في انتظار المعالجة"
+    },
+    "actions": {
+      "download": "تحميل",
+      "edit": "تحرير متقدم",
+      "cancel": "إلغاء",
+      "retry": "إعادة المحاولة",
+      "remove": "إزالة",
+      "clear_all": "مسح الكل",
+      "view_result": "عرض النتيجة"
+    },
+    "progress": {
+      "uploading_file": "جارٍ رفع الملف...",
+      "parsing_content": "جارٍ تحليل المحتوى...",
+      "formatting": "جارٍ التنسيق...",
+      "finalizing": "جارٍ الإنهاء..."
+    },
+    "errors": {
+      "upload_failed": "فشل الرفع",
+      "conversion_failed": "فشل التحويل",
+      "file_too_large": "حجم الملف يتجاوز الحد المسموح",
+      "unsupported_type": "نوع الملف غير مدعوم",
+      "network_error": "خطأ في الشبكة، حاول مرة أخرى"
+    },
+    "result": {
+      "preview": "معاينة",
+      "metadata": "البيانات الوصفية",
+      "word_count": "عدد الكلمات",
+      "page_count": "عدد الصفحات",
+      "language": "اللغة",
+      "format": "التنسيق"
+    }
+  },
+  "workspace": {
+    "title": "مساحة العمل",
+    "subtitle": "حرر وحسّن مستنداتك المحوّلة",
+    "sidebar": {
+      "files": "الملفات",
+      "notes": "الملاحظات",
+      "styles": "الأنماط",
+      "settings": "الإعدادات"
+    },
+    "toolbar": {
+      "save": "حفظ",
+      "export": "تصدير",
+      "share": "مشاركة",
+      "back": "العودة إلى التحويل"
+    },
+    "editor": {
+      "placeholder": "ابدأ بتحرير مستندك...",
+      "untitled": "مستند بدون عنوان"
+    },
+    "ai": {
+      "optimize": "تحسين بالذكاء الاصطناعي",
+      "translate": "ترجمة",
+      "summarize": "تلخيص",
+      "enhance": "تحسين"
+    },
+    "export": {
+      "title": "تصدير المستند",
+      "format": "التنسيق",
+      "markdown": "Markdown",
+      "pdf": "PDF",
+      "docx": "مستند Word",
+      "download": "تحميل"
+    }
+  }
+}

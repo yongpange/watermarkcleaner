@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "title": "Free Quizlet Alternative - AI-Powered Flashcards & Smart Study Tool | TurboLearn",
+    "description": "Looking for a free Quizlet alternative? TurboLearn offers powerful AI-driven flashcards, smart quizzes, and multiple study modes - completely free. Unlimited card sets, collaborative learning, offline access - the perfect choice for students and teachers.",
+    "keywords": "free quizlet alternative, online flashcards, smart quiz tool, AI study assistant, free learning app, memory cards, online education, study tools, quizlet free, flashcard maker"
+  },
+  "user": {
+    "sign_in": "Sign In",
+    "sign_out": "Sign Out",
+    "credits": "Credits",
+    "api_keys": "API Keys",
+    "my_orders": "My Orders",
+    "user_center": "User Center",
+    "admin_system": "Admin System"
+  },
+  "sign_modal": {
+    "sign_in_title": "Sign In",
+    "sign_in_description": "Sign in to your account",
+    "sign_up_title": "Sign Up",
+    "sign_up_description": "Create an account",
+    "email_title": "Email",
+    "email_placeholder": "Input your email here",
+    "password_title": "Password",
+    "password_placeholder": "Input your password here",
+    "forgot_password": "Forgot password?",
+    "or": "Or",
+    "continue": "Continue",
+    "no_account": "Don't have an account?",
+    "email_sign_in": "Sign in with Email",
+    "google_sign_in": "Sign in with Google",
+    "github_sign_in": "Sign in with GitHub",
+    "close_title": "Close",
+    "cancel_title": "Cancel"
+  },
+  "my_orders": {
+    "title": "My Orders",
+    "description": "orders paid with TurboLearn.",
+    "no_orders": "No orders found",
+    "tip": "",
+    "activate_order": "Activate Order",
+    "actived": "Activated",
+    "join_discord": "Join Discord",
+    "read_docs": "Read Docs",
+    "table": {
+      "order_no": "Order No",
+      "email": "Email",
+      "product_name": "Product Name",
+      "amount": "Amount",
+      "paid_at": "Paid At",
+      "github_username": "GitHub Username",
+      "status": "Status"
+    }
+  },
+  "my_credits": {
+    "title": "My Credits",
+    "left_tip": "left credits: {left_credits}",
+    "no_credits": "No credits records",
+    "recharge": "Recharge",
+    "table": {
+      "trans_no": "Trans No",
+      "trans_type": "Trans Type",
+      "credits": "Credits",
+      "updated_at": "Updated At",
+      "status": "Status"
+    }
+  },
+  "api_keys": {
+    "title": "API Keys",
+    "tip": "Please keep your apikey safe to avoid leaks",
+    "no_api_keys": "No API Keys",
+    "create_api_key": "Create API Key",
+    "table": {
+      "name": "Name",
+      "key": "Key",
+      "created_at": "Created At"
+    },
+    "form": {
+      "name": "Name",
+      "name_placeholder": "API Key Name",
+      "submit": "Submit"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "News, resources, and updates about TurboLearn",
+    "read_more_text": "Read More",
+    "hero_title": "TurboLearn Blog",
+    "hero_description": "Discover the latest insights on AI-powered learning, study techniques, and educational technology",
+    "search_placeholder": "Search articles, topics, or keywords...",
+    "no_results": "No articles found",
+    "no_results_hint": "Try adjusting your search or filter criteria",
+    "min_read": "{minutes} min read",
+    "read_more": "Read More",
+    "back_to_blog": "← Back to Blog",
+    "by_author": "By {author}",
+    "newsletter": {
+      "title": "Stay Updated",
+      "description": "Get the latest learning tips, AI insights, and product updates delivered to your inbox",
+      "placeholder": "Enter your email",
+      "button": "Subscribe"
+    },
+    "categories": {
+      "all": "All",
+      "ai_learning": "AI Learning",
+      "study_science": "Study Science",
+      "comparison": "Comparison",
+      "tips": "Tips & Tricks",
+      "updates": "Product Updates"
+    }
+  },
+  "feedback": {
+    "title": "Feedback",
+    "description": "We'd love to hear what went well or how we can improve the product experience.",
+    "submit": "Submit",
+    "loading": "Submitting...",
+    "contact_tip": "Other ways to contact us",
+    "rating_tip": "How do you feel about TurboLearn?",
+    "placeholder": "Leave your words here..."
+  },
+  "convert": {
+    "title": "Convert Files Instantly",
+    "subtitle": "Drag and drop your files to start conversion",
+    "description": "Transform your documents into structured Markdown format in seconds",
+    "dropzone": {
+      "idle": "Drag files here or click to select",
+      "dragover": "Drop files to start conversion",
+      "supported": "Supported: PDF, DOCX, TXT, MD (Max 20MB)",
+      "click_to_select": "Click to select files"
+    },
+    "status": {
+      "uploading": "Uploading...",
+      "processing": "Converting...",
+      "completed": "Conversion completed",
+      "failed": "Conversion failed",
+      "pending": "Waiting to process"
+    },
+    "actions": {
+      "download": "Download",
+      "edit": "Advanced Edit",
+      "cancel": "Cancel",
+      "retry": "Retry",
+      "remove": "Remove",
+      "clear_all": "Clear All",
+      "view_result": "View Result"
+    },
+    "progress": {
+      "uploading_file": "Uploading file...",
+      "parsing_content": "Parsing content...",
+      "formatting": "Formatting...",
+      "finalizing": "Finalizing..."
+    },
+    "errors": {
+      "upload_failed": "Upload failed",
+      "conversion_failed": "Conversion failed",
+      "file_too_large": "File size exceeds limit",
+      "unsupported_type": "File type not supported",
+      "network_error": "Network error, please try again"
+    },
+    "result": {
+      "preview": "Preview",
+      "metadata": "Metadata",
+      "word_count": "Word Count",
+      "page_count": "Page Count",
+      "language": "Language",
+      "format": "Format"
+    }
+  },
+  "workspace": {
+    "title": "Workspace",
+    "subtitle": "Edit and enhance your converted documents",
+    "sidebar": {
+      "files": "Files",
+      "notes": "Notes",
+      "styles": "Styles",
+      "settings": "Settings"
+    },
+    "toolbar": {
+      "save": "Save",
+      "export": "Export",
+      "share": "Share",
+      "back": "Back to Convert"
+    },
+    "editor": {
+      "placeholder": "Start editing your document...",
+      "untitled": "Untitled Document"
+    },
+    "ai": {
+      "optimize": "AI Optimize",
+      "translate": "Translate",
+      "summarize": "Summarize",
+      "enhance": "Enhance"
+    },
+    "export": {
+      "title": "Export Document",
+      "format": "Format",
+      "markdown": "Markdown",
+      "pdf": "PDF",
+      "docx": "Word Document",
+      "download": "Download"
+    }
+  }
+}

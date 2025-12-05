@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "title": "퀴즐릿 무료 대안 - AI 구동 플래시카드 및 스마트 학습 도구 | TurboLearn",
+    "description": "퀴즐릿 무료 대안을 찾고 계신가요? TurboLearn은 강력한 AI 구동 플래시카드, 스마트 퀴즈, 다양한 학습 모드를 제공합니다 - 완전 무료. 무제한 카드 세트, 협업 학습, 오프라인 액세스 - 학생과 교사를 위한 완벽한 선택.",
+    "keywords": "퀴즐릿 무료 대안, 온라인 플래시카드, 스마트 퀴즈 도구, AI 학습 도우미, 무료 학습 앱, 기억 카드, 온라인 교육, 학습 도구, 무료 퀴즐릿, 플래시카드 제작"
+  },
+  "user": {
+    "sign_in": "로그인",
+    "sign_out": "로그아웃",
+    "credits": "크레딧",
+    "api_keys": "API 키",
+    "my_orders": "내 주문",
+    "user_center": "사용자 센터",
+    "admin_system": "관리 시스템"
+  },
+  "sign_modal": {
+    "sign_in_title": "로그인",
+    "sign_in_description": "계정에 로그인하세요",
+    "sign_up_title": "회원가입",
+    "sign_up_description": "계정 만들기",
+    "email_title": "이메일",
+    "email_placeholder": "이메일을 입력하세요",
+    "password_title": "비밀번호",
+    "password_placeholder": "비밀번호를 입력하세요",
+    "forgot_password": "비밀번호를 잊으셨나요?",
+    "or": "또는",
+    "continue": "계속",
+    "no_account": "계정이 없으신가요?",
+    "email_sign_in": "이메일로 로그인",
+    "google_sign_in": "구글로 로그인",
+    "github_sign_in": "깃허브로 로그인",
+    "close_title": "닫기",
+    "cancel_title": "취소"
+  },
+  "my_orders": {
+    "title": "내 주문",
+    "description": "TurboLearn로 결제한 주문입니다.",
+    "no_orders": "주문을 찾을 수 없습니다",
+    "tip": "",
+    "activate_order": "주문 활성화",
+    "actived": "활성화됨",
+    "join_discord": "디스코드 참가",
+    "read_docs": "문서 읽기",
+    "table": {
+      "order_no": "주문 번호",
+      "email": "이메일",
+      "product_name": "제품명",
+      "amount": "금액",
+      "paid_at": "결제일",
+      "github_username": "깃허브 사용자명",
+      "status": "상태"
+    }
+  },
+  "my_credits": {
+    "title": "내 크레딧",
+    "left_tip": "남은 크레딧: {left_credits}",
+    "no_credits": "크레딧 기록이 없습니다",
+    "recharge": "충전",
+    "table": {
+      "trans_no": "거래 번호",
+      "trans_type": "거래 유형",
+      "credits": "크레딧",
+      "updated_at": "업데이트일",
+      "status": "상태"
+    }
+  },
+  "api_keys": {
+    "title": "API 키",
+    "tip": "누출을 방지하려면 API 키를 안전하게 보관하세요",
+    "no_api_keys": "API 키가 없습니다",
+    "create_api_key": "API 키 생성",
+    "table": {
+      "name": "이름",
+      "key": "키",
+      "created_at": "생성일"
+    },
+    "form": {
+      "name": "이름",
+      "name_placeholder": "API 키 이름",
+      "submit": "제출"
+    }
+  },
+  "blog": {
+    "title": "블로그",
+    "description": "TurboLearn에 대한 뉴스, 리소스 및 업데이트",
+    "read_more_text": "더 읽기",
+    "hero_title": "TurboLearn 블로그",
+    "hero_description": "AI 기반 학습, 학습 기술 및 교육 기술에 대한 최신 통찰력을 발견하세요",
+    "search_placeholder": "기사, 주제 또는 키워드 검색...",
+    "no_results": "기사를 찾을 수 없습니다",
+    "no_results_hint": "검색 또는 필터 기준을 조정해 보세요",
+    "min_read": "{minutes}분 읽기",
+    "read_more": "더 읽기",
+    "back_to_blog": "← 블로그로 돌아가기",
+    "by_author": "{author} 작성",
+    "newsletter": {
+      "title": "최신 정보 유지",
+      "description": "최신 학습 팁, AI 통찰력 및 제품 업데이트를 받으세요",
+      "placeholder": "이메일을 입력하세요",
+      "button": "구독"
+    },
+    "categories": {
+      "all": "전체",
+      "ai_learning": "AI 학습",
+      "study_science": "학습 과학",
+      "comparison": "비교",
+      "tips": "팁과 요령",
+      "updates": "제품 업데이트"
+    }
+  },
+  "feedback": {
+    "title": "피드백",
+    "description": "어떤 점이 좋았는지 또는 제품 경험을 개선할 수 있는 방법을 듣고 싶습니다.",
+    "submit": "제출",
+    "loading": "제출 중...",
+    "contact_tip": "문의할 수 있는 다른 방법",
+    "rating_tip": "TurboLearn에 대해 어떻게 생각하세요?",
+    "placeholder": "여기에 의견을 남겨주세요..."
+  },
+  "convert": {
+    "title": "파일을 즉시 변환",
+    "subtitle": "파일을 드래그 앤 드롭하여 변환 시작",
+    "description": "문서를 초 단위로 구조화된 Markdown 형식으로 변환하세요",
+    "dropzone": {
+      "idle": "여기에 파일을 드래그하거나 클릭하여 선택",
+      "dragover": "변환을 시작하려면 파일을 놓으세요",
+      "supported": "지원: PDF, DOCX, TXT, MD (최대 20MB)",
+      "click_to_select": "파일 선택 클릭"
+    },
+    "status": {
+      "uploading": "업로드 중...",
+      "processing": "변환 중...",
+      "completed": "변환 완료",
+      "failed": "변환 실패",
+      "pending": "처리 대기 중"
+    },
+    "actions": {
+      "download": "다운로드",
+      "edit": "고급 편집",
+      "cancel": "취소",
+      "retry": "재시도",
+      "remove": "제거",
+      "clear_all": "모두 지우기",
+      "view_result": "결과 보기"
+    },
+    "progress": {
+      "uploading_file": "파일 업로드 중...",
+      "parsing_content": "콘텐츠 분석 중...",
+      "formatting": "서식 지정 중...",
+      "finalizing": "완료 중..."
+    },
+    "errors": {
+      "upload_failed": "업로드 실패",
+      "conversion_failed": "변환 실패",
+      "file_too_large": "파일 크기가 제한을 초과합니다",
+      "unsupported_type": "지원되지 않는 파일 형식",
+      "network_error": "네트워크 오류, 다시 시도해 주세요"
+    },
+    "result": {
+      "preview": "미리보기",
+      "metadata": "메타데이터",
+      "word_count": "단어 수",
+      "page_count": "페이지 수",
+      "language": "언어",
+      "format": "형식"
+    }
+  },
+  "workspace": {
+    "title": "작업 공간",
+    "subtitle": "변환된 문서를 편집하고 향상시키세요",
+    "sidebar": {
+      "files": "파일",
+      "notes": "노트",
+      "styles": "스타일",
+      "settings": "설정"
+    },
+    "toolbar": {
+      "save": "저장",
+      "export": "내보내기",
+      "share": "공유",
+      "back": "변환으로 돌아가기"
+    },
+    "editor": {
+      "placeholder": "문서 편집을 시작하세요...",
+      "untitled": "제목 없는 문서"
+    },
+    "ai": {
+      "optimize": "AI 최적화",
+      "translate": "번역",
+      "summarize": "요약",
+      "enhance": "향상"
+    },
+    "export": {
+      "title": "문서 내보내기",
+      "format": "형식",
+      "markdown": "Markdown",
+      "pdf": "PDF",
+      "docx": "워드 문서",
+      "download": "다운로드"
+    }
+  }
+}

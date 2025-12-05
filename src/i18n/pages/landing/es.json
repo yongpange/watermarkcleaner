@@ -1,0 +1,425 @@
+{
+  "template": "turbolearn-template-one",
+  "theme": "light",
+  "header": {
+    "brand": {
+      "title": "TurboLearn",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "TurboLearn - Alternativa gratuita a Quizlet"
+      },
+      "url": "/"
+    },
+    "nav": {
+      "items": [
+        {
+          "title": "Características",
+          "url": "/#feature",
+          "icon": "RiSparkling2Line"
+        },
+        {
+          "title": "Comparación",
+          "url": "/#benefit",
+          "icon": "RiCheckDoubleLine"
+        },
+        {
+          "title": "Blog",
+          "url": "/blog",
+          "icon": "RiBook2Line"
+        },
+        {
+          "title": "FAQ",
+          "url": "/#faq",
+          "icon": "RiQuestionLine"
+        }
+      ]
+    },
+    "buttons": [
+      {
+        "title": "Comenzar gratis",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default",
+        "icon": "RiArrowRightLine"
+      }
+    ],
+    "show_sign": true,
+    "show_theme": true,
+    "show_locale": true
+  },
+  "hero": {
+    "title": "TurboLearn: Alternativa gratuita a Quizlet con IA para un aprendizaje más inteligente",
+    "highlight_text": "Alternativa gratuita a Quizlet",
+    "description": "",
+    "announcement": {
+      "label": "100% Gratis",
+      "title": "🎓 Todas las funciones gratis para siempre",
+      "url": "/#feature"
+    },
+    "tip": "",
+    "buttons": [
+      {
+        "title": "Comenzar - Es gratis",
+        "icon": "RiFlashlightFill",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default"
+      }
+    ],
+    "show_happy_users": true,
+    "show_badge": false
+  },
+
+  "introduce": {
+    "name": "introduce",
+    "title": "Por qué elegir TurboLearn como tu alternativa gratuita a Quizlet",
+    "label": "Introducción",
+    "description": "TurboLearn ofrece todo lo que necesitas para un aprendizaje efectivo: funciones impulsadas por IA, libertad completa y resultados comprobados.",
+    "image": {
+      "src": "/imgs/features/1.webp"
+    },
+    "items": [
+      {
+        "title": "Aprendizaje con IA",
+        "description": "Algoritmos avanzados de IA analizan tus patrones de aprendizaje y optimizan los horarios de revisión para una retención máxima.",
+        "icon": "RiRobot2Line"
+      },
+      {
+        "title": "100% Gratis para siempre",
+        "description": "Todas las funciones incluyendo tarjetas ilimitadas, generación con IA y acceso sin conexión son completamente gratuitas sin costos ocultos.",
+        "icon": "RiMoneyDollarCircleLine"
+      },
+      {
+        "title": "Múltiples modos de estudio",
+        "description": "Tarjetas, cuestionarios, juegos de emparejamiento, pruebas de ortografía y más: elige el mejor modo para tu estilo de aprendizaje.",
+        "icon": "RiGamepadLine"
+      }
+    ]
+  },
+  "benefit": {
+    "name": "benefit",
+    "title": "TurboLearn vs Quizlet - Por qué somos mejores",
+    "label": "Comparación",
+    "description": "Vea cómo TurboLearn supera a Quizlet en todos los aspectos: más funciones, mejor privacidad y completamente gratis.",
+    "items": [
+      {
+        "title": "100% Gratis vs Suscripción de pago",
+        "description": "TurboLearn ofrece todas las funciones premium gratis, mientras que Quizlet cobra $7.99/mes por funciones básicas como acceso sin conexión y eliminación de anuncios.",
+        "icon": "RiMoneyDollarCircleLine",
+        "image": {
+          "src": "/imgs/features/2.webp"
+        }
+      },
+      {
+        "title": "IA potenciada vs Memorización tradicional",
+        "description": "Nuestra avanzada IA analiza tus patrones de aprendizaje y optimiza los horarios de revisión, mientras que Quizlet usa repetición espaciada básica.",
+        "icon": "RiRobot2Line",
+        "image": {
+          "src": "/imgs/features/3.webp"
+        }
+      },
+      {
+        "title": "Protección de privacidad vs Recopilación de datos",
+        "description": "Nunca vendemos tus datos ni mostramos anuncios dirigidos. Quizlet recopila y monetiza datos de usuarios para fines publicitarios.",
+        "icon": "RiShieldCheckLine",
+        "image": {
+          "src": "/imgs/features/4.webp"
+        }
+      }
+    ]
+  },
+  "usage": {
+    "name": "usage",
+    "title": "Cómo comenzar con TurboLearn",
+    "description": "Comienza tu viaje de aprendizaje eficiente en solo unos pasos simples:",
+    "image": {
+      "src": "/imgs/features/1.webp"
+    },
+    "image_position": "left",
+    "text_align": "center",
+    "items": [
+      {
+        "title": "Crear cuenta gratuita",
+        "description": "No se requiere tarjeta de crédito: regístrate en 30 segundos con correo electrónico, Google o GitHub. Comienza a aprender inmediatamente.",
+        "image": {
+          "src": "/imgs/features/5.webp"
+        }
+      },
+      {
+        "title": "Crear tarjetas didácticas",
+        "description": "Crea manualmente o usa IA para generar automáticamente tarjetas. Importa conjuntos existentes de Quizlet, Anki u otras plataformas.",
+        "image": {
+          "src": "/imgs/features/6.webp"
+        }
+      },
+      {
+        "title": "Elegir modo de estudio",
+        "description": "Selecciona entre tarjetas, cuestionarios, emparejamiento u ortografía según tus objetivos. La IA ajusta la dificultad automáticamente.",
+        "image": {
+          "src": "/imgs/features/7.webp"
+        }
+      },
+      {
+        "title": "Seguir tu progreso",
+        "description": "Ve estadísticas detalladas de aprendizaje e informes de progreso. La IA te recuerda inteligentemente revisar contenido antes de que lo olvides.",
+        "image": {
+          "src": "/imgs/features/8.webp"
+        }
+      }
+    ]
+  },
+  "feature": {
+    "name": "feature",
+    "title": "Funciones potentes para un aprendizaje efectivo",
+    "description": "Todo lo que necesitas para dominar cualquier tema: desde tarjetas con IA hasta modos de estudio avanzados.",
+    "items": [
+      {
+        "title": "Generación de tarjetas con IA",
+        "description": "Genera automáticamente tarjetas de alta calidad desde tus notas, PDFs o libros de texto usando IA avanzada.",
+        "icon": "RiRobot2Line"
+      },
+      {
+        "title": "Múltiples modos de estudio",
+        "description": "Tarjetas, cuestionarios, juegos de emparejamiento, pruebas de ortografía y modo de estudio completo: elige lo que mejor funcione.",
+        "icon": "RiGamepadLine"
+      },
+      {
+        "title": "Algoritmo de repetición espaciada",
+        "description": "Repetición espaciada impulsada por IA basada en ciencia cognitiva que garantiza retención óptima a largo plazo.",
+        "icon": "RiTimeLine"
+      },
+      {
+        "title": "Aprendizaje colaborativo",
+        "description": "Comparte conjuntos de tarjetas con compañeros de clase, crea grupos de estudio y aprende juntos más efectivamente.",
+        "icon": "RiTeamLine"
+      },
+      {
+        "title": "Aprendizaje sin conexión",
+        "description": "Descarga tarjetas y estudia en cualquier lugar sin internet. Todo el progreso se sincroniza automáticamente cuando estás en línea.",
+        "icon": "RiDownloadCloudLine"
+      },
+      {
+        "title": "Estadísticas avanzadas",
+        "description": "Análisis detallados de tu progreso, patrones de aprendizaje y áreas que necesitan más atención.",
+        "icon": "RiBarChartLine"
+      },
+      {
+        "title": "Importación fácil",
+        "description": "Importa conjuntos existentes de Quizlet, Anki, CSV o Excel con un solo clic. Compatible con todos los formatos populares.",
+        "icon": "RiUploadLine"
+      },
+      {
+        "title": "Modo sin distracciones",
+        "description": "Interfaz limpia y minimalista que te ayuda a concentrarte en lo que más importa: aprender.",
+        "icon": "RiFocusLine"
+      }
+    ]
+  },
+  "testimonial": {
+    "name": "testimonial",
+    "title": "Lo que dicen nuestros usuarios",
+    "description": "Únete a miles de estudiantes que ya han cambiado a TurboLearn",
+    "items": [
+      {
+        "name": "Sarah M.",
+        "role": "Estudiante de Medicina",
+        "content": "TurboLearn ha revolucionado mi estudio. La generación de tarjetas con IA me ahorra horas cada semana, y es completamente gratis. No puedo creer que haya pagado por Quizlet antes.",
+        "rating": 5,
+        "image": {
+          "src": "/imgs/testimonials/1.webp"
+        }
+      },
+      {
+        "name": "Mike R.",
+        "role": "Estudiante de Secundaria",
+        "content": "Me cambié de Quizlet y nunca miré atrás. TurboLearn tiene todas las funciones premium que necesito sin costo alguno. La IA es increíblemente inteligente.",
+        "rating": 5,
+        "image": {
+          "src": "/imgs/testimonials/2.webp"
+        }
+      },
+      {
+        "name": "Emma L.",
+        "role": "Estudiante Universitaria",
+        "content": "La importación desde Quizlet fue perfecta. Comencé a usar TurboLearn y mis calificaciones mejoraron significativamente. ¡Es gratis!",
+        "rating": 5,
+        "image": {
+          "src": "/imgs/testimonials/3.webp"
+        }
+      }
+    ]
+  },
+  "faq": {
+    "name": "faq",
+    "title": "Preguntas frecuentes",
+    "description": "Todo lo que necesitas saber sobre TurboLearn",
+    "items": [
+      {
+        "title": "¿Es TurboLearn realmente completamente gratis? ¿Hay algún costo oculto?",
+        "content": "Sí, TurboLearn es 100% gratis! No se requiere tarjeta de crédito, no hay tarifas ocultas, no hay muros de pago. Todas las funciones incluyendo conjuntos ilimitados de tarjetas, aprendizaje inteligente con IA, acceso sin conexión y más son permanentemente gratuitas. Creemos que la educación de calidad debe ser accesible para todos."
+      },
+      {
+        "title": "¿Qué ventajas tiene TurboLearn sobre Quizlet?",
+        "content": "TurboLearn ofrece todas las funciones de Quizlet Plus completamente gratis. Nuestros algoritmos de aprendizaje de IA son más avanzados, la protección de privacidad es mejor, admitimos aprendizaje sin conexión y no hay anuncios. Además, nuestro algoritmo de repetición espaciada se basa en la investigación más reciente de ciencia cognitiva para una mayor eficiencia de aprendizaje."
+      },
+      {
+        "title": "¿Puedo importar mis tarjetas existentes de Quizlet?",
+        "content": "¡Absolutamente! TurboLearn admite importación con un clic desde Quizlet, Anki, StudyBlue y otras plataformas. Simplemente exporta como archivo CSV o de texto, luego importa en TurboLearn. También admitimos importación por lotes para ahorrarte tiempo."
+      },
+      {
+        "title": "¿Qué modos de estudio admite TurboLearn?",
+        "content": "Ofrecemos múltiples modos de estudio: Modo de tarjetas (voltear tarjetas), Modo de cuestionario (opción múltiple), Juego de emparejamiento (emparejamiento por pares), Modo de ortografía (práctica de dictado) y Modo de estudio (aprendizaje integral). La IA ajusta automáticamente la dificultad y la frecuencia de revisión según tu rendimiento."
+      },
+      {
+        "title": "¿Cómo funcionan las características de IA de TurboLearn?",
+        "content": "Nuestro sistema de IA analiza tu comportamiento de aprendizaje y curva de memoria para recomendarte inteligentemente contenido para revisar. La IA también puede generar automáticamente tarjetas desde documentos, identificar contenido de imágenes y generar oraciones de ejemplo relevantes. Estas funciones se basan en algoritmos avanzados de aprendizaje automático para hacer el aprendizaje más eficiente."
+      },
+      {
+        "title": "¿Puedo usar TurboLearn sin conexión?",
+        "content": "¡Sí! Descarga nuestra aplicación móvil o usa la función sin conexión del navegador para estudiar en cualquier momento y lugar sin conexión a internet. Todo el progreso de aprendizaje se sincroniza automáticamente con la nube cuando vuelves a estar en línea."
+      },
+      {
+        "title": "¿Cuántos idiomas admite TurboLearn?",
+        "content": "TurboLearn admite contenido de aprendizaje en más de 100 idiomas, incluyendo chino, inglés, japonés, coreano, francés, alemán, español y más. También proporcionamos funciones de texto a voz con múltiples acentos, especialmente adecuadas para el aprendizaje de idiomas."
+      },
+      {
+        "title": "¿Pueden los profesores usar TurboLearn para gestionar clases?",
+        "content": "¡Por supuesto! Proporcionamos funciones de cuenta de profesor dedicadas para crear clases, asignar tareas de aprendizaje, hacer seguimiento del progreso de los estudiantes y ver estadísticas de aprendizaje. Los profesores pueden compartir conjuntos de tarjetas con los estudiantes, y los estudiantes pueden colaborar en la creación de contenido. Todas estas funciones son completamente gratuitas."
+      },
+      {
+        "title": "¿Es mi información segura?",
+        "content": "Absolutamente. Nunca vendemos tus datos ni mostramos anuncios dirigidos. Tu información personal y datos de aprendizaje están completamente protegidos y cifrados."
+      }
+    ]
+  },
+  "cta": {
+    "name": "cta",
+    "title": "Listo para cambiar a TurboLearn?",
+    "description": "Únete a miles de estudiantes que ya han cambiado a la mejor alternativa gratuita a Quizlet",
+    "buttons": [
+      {
+        "title": "Comenzar gratis ahora",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default"
+      }
+    ]
+  },
+  "footer": {
+    "name": "footer",
+    "brand": {
+      "title": "TurboLearn",
+      "description": "TurboLearn es la mejor alternativa gratuita a Quizlet, que ofrece tarjetas de memoria inteligentes con IA, cuestionarios y múltiples modos de estudio. Completamente gratuito con uso ilimitado.",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "TurboLearn - Alternativa gratuita a Quizlet"
+      },
+      "url": "/"
+    },
+    "copyright": "© 2025 • TurboLearn Todos los derechos reservados.",
+    "nav": {
+      "items": [
+        {
+          "title": "Producto",
+          "children": [
+            {
+              "title": "Características",
+              "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "Comparación",
+              "url": "/#benefit",
+              "target": "_self"
+            },
+            {
+              "title": "Testimonios",
+              "url": "/#testimonial",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "Recursos",
+          "children": [
+            {
+              "title": "Centro de ayuda",
+              "url": "/#faq",
+              "target": "_self"
+            },
+            {
+              "title": "Guías de estudio",
+              "url": "/posts",
+              "target": "_self"
+            },
+            {
+              "title": "Preguntas frecuentes",
+              "url": "/#faq",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "Herramientas",
+          "children": [
+            {
+              "title": "Asistente de estudio con IA",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Generador de tarjetas",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Estadísticas de aprendizaje",
+              "url": "/convert",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    "social": {
+      "items": [
+        {
+          "title": "X",
+          "icon": "RiTwitterXFill",
+          "url": "https://x.com/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Github",
+          "icon": "RiGithubFill",
+          "url": "https://github.com/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Discord",
+          "icon": "RiDiscordFill",
+          "url": "https://discord.gg/turbolearn",
+          "target": "_blank"
+        },
+        {
+          "title": "Email",
+          "icon": "RiMailLine",
+          "url": "mailto:support@turbolearn.ai",
+          "target": "_self"
+        }
+      ]
+    },
+    "agreement": {
+      "items": [
+        {
+          "title": "Política de privacidad",
+          "url": "/privacy-policy"
+        },
+        {
+          "title": "Términos de servicio",
+          "url": "/terms-of-service"
+        }
+      ]
+    }
+  }
+}

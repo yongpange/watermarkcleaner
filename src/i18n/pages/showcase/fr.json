@@ -1,0 +1,90 @@
+{
+  "showcase": {
+    "name": "showcase",
+    "title": "Startups SaaS IA construites avec TurboLearn",
+    "description": "Facile à utiliser et rapide à lancer.",
+    "items": [
+      {
+        "title": "ThinkAny",
+        "description": "Moteur de Recherche IA",
+        "url": "https://thinkany.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/7.png"
+        }
+      },
+      {
+        "title": "HeyBeauty",
+        "description": "Essai Virtuel IA",
+        "url": "https://heybeauty.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/5.png"
+        }
+      },
+      {
+        "title": "AI Wallpaper",
+        "description": "Générateur de Fonds d'Écran IA",
+        "url": "https://aiwallpaper.shop",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/1.png"
+        }
+      },
+      {
+        "title": "AI Cover",
+        "description": "Générateur de Couvertures IA",
+        "url": "https://aicover.design",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/2.png"
+        }
+      },
+      {
+        "title": "GPTs Works",
+        "description": "Répertoire GPTs",
+        "url": "https://gpts.works",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/3.png"
+        }
+      },
+      {
+        "title": "Melodisco",
+        "description": "Lecteur de Musique IA",
+        "url": "https://melodis.co",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/4.png"
+        }
+      },
+      {
+        "title": "Pagen",
+        "description": "Générateur de Pages de Destination IA",
+        "url": "https://pagen.so",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/6.png"
+        }
+      },
+      {
+        "title": "SoraFM",
+        "description": "Générateur de Vidéos IA",
+        "url": "https://sorafm.trys.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/8.png"
+        }
+      },
+      {
+        "title": "PodLM",
+        "description": "Générateur de Podcasts IA",
+        "url": "https://podlm.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/9.png"
+        }
+      }
+    ]
+  }
+}

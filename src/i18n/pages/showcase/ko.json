@@ -1,0 +1,90 @@
+{
+  "showcase": {
+    "name": "showcase",
+    "title": "AI SaaS 스타트업이 TurboLearn로 구축됨",
+    "description": "사용하기 쉽고 빠르게 출시 가능.",
+    "items": [
+      {
+        "title": "ThinkAny",
+        "description": "AI 검색 엔진",
+        "url": "https://thinkany.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/7.png"
+        }
+      },
+      {
+        "title": "HeyBeauty",
+        "description": "AI 가상 피팅",
+        "url": "https://heybeauty.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/5.png"
+        }
+      },
+      {
+        "title": "AI Wallpaper",
+        "description": "AI 배경화면 생성기",
+        "url": "https://aiwallpaper.shop",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/1.png"
+        }
+      },
+      {
+        "title": "AI Cover",
+        "description": "AI 커버 생성기",
+        "url": "https://aicover.design",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/2.png"
+        }
+      },
+      {
+        "title": "GPTs Works",
+        "description": "GPTs 디렉토리",
+        "url": "https://gpts.works",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/3.png"
+        }
+      },
+      {
+        "title": "Melodisco",
+        "description": "AI 뮤직 플레이어",
+        "url": "https://melodis.co",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/4.png"
+        }
+      },
+      {
+        "title": "Pagen",
+        "description": "AI 랜딩 페이지 생성기",
+        "url": "https://pagen.so",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/6.png"
+        }
+      },
+      {
+        "title": "SoraFM",
+        "description": "AI 비디오 생성기",
+        "url": "https://sorafm.trys.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/8.png"
+        }
+      },
+      {
+        "title": "PodLM",
+        "description": "AI 팟캐스트 생성기",
+        "url": "https://podlm.ai",
+        "target": "_blank",
+        "image": {
+          "src": "/imgs/showcases/9.png"
+        }
+      }
+    ]
+  }
+}
