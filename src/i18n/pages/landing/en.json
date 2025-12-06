@@ -1,12 +1,12 @@
 {
-  "template": "turbolearn-template-one",
+  "template": "watermarkcleaner-template",
   "theme": "light",
   "header": {
     "brand": {
-      "title": "TurboLearn",
+      "title": "WatermarkCleaner",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - Free Quizlet Alternative"
+        "alt": "WatermarkCleaner - Free AI Watermark Remover"
       },
       "url": "/"
     },
@@ -18,14 +18,14 @@
           "icon": "RiSparkling2Line"
         },
         {
-          "title": "Comparison",
-          "url": "/#benefit",
+          "title": "How It Works",
+          "url": "/#usage",
           "icon": "RiCheckDoubleLine"
         },
         {
-          "title": "Blog",
-          "url": "/blog",
-          "icon": "RiBook2Line"
+          "title": "Pricing",
+          "url": "/pricing",
+          "icon": "RiPriceTag3Line"
         },
         {
           "title": "FAQ",
@@ -36,7 +36,7 @@
     },
     "buttons": [
       {
-        "title": "Start Free",
+        "title": "Try Free",
         "url": "/convert",
         "target": "_self",
         "variant": "default",
@@ -48,19 +48,19 @@
     "show_locale": true
   },
   "hero": {
-    "title": "TurboLearn: AI-Powered Free Quizlet Alternative for Smarter Learning",
-    "highlight_text": "Free Quizlet Alternative",
-    "description": "",
+    "title": "Remove Watermarks from Photos Instantly with AI",
+    "highlight_text": "Remove Watermarks",
+    "description": "WatermarkCleaner uses advanced AI to remove watermarks, logos, text, and unwanted objects from your photos in seconds. Free, fast, and no sign-up required.",
     "announcement": {
-      "label": "100% Free",
-      "title": "🎓 All Features Free Forever",
+      "label": "Free",
+      "title": "✨ AI-Powered Watermark Removal",
       "url": "/#feature"
     },
-    "tip": "",
+    "tip": "No sign-up required • Unlimited free usage",
     "buttons": [
       {
-        "title": "Get Started - It's Free",
-        "icon": "RiFlashlightFill",
+        "title": "Remove Watermark Now",
+        "icon": "RiMagicLine",
         "url": "/convert",
         "target": "_self",
         "variant": "default"
@@ -72,234 +72,227 @@
 
   "introduce": {
     "name": "introduce",
-    "title": "Why Choose TurboLearn as Your Free Quizlet Alternative",
-    "label": "Introduce",
-    "description": "TurboLearn offers everything you need for effective learning - AI-powered features, complete freedom, and proven results.",
+    "title": "What Can WatermarkCleaner Remove?",
+    "label": "Use Cases",
+    "description": "Our AI-powered tool handles all types of watermarks and unwanted elements from your photos with professional results.",
     "image": {
-      "src": "/imgs/features/1.webp"
+      "src": "/imgs/features/watermark-demo.webp"
     },
     "items": [
       {
-        "title": "AI-Powered Learning",
-        "description": "Advanced AI algorithms analyze your learning patterns and optimize review schedules for maximum retention.",
-        "icon": "RiRobot2Line"
+        "title": "Text Watermarks",
+        "description": "Remove copyright text, brand names, dates, and any text overlays from your photos seamlessly.",
+        "icon": "RiText"
       },
       {
-        "title": "100% Free Forever",
-        "description": "All features including unlimited flashcards, AI generation, and offline access are completely free with no hidden costs.",
-        "icon": "RiMoneyDollarCircleLine"
+        "title": "Logo Watermarks",
+        "description": "Erase stock photo logos, brand marks, and company watermarks while preserving image quality.",
+        "icon": "RiImageLine"
       },
       {
-        "title": "Multiple Study Modes",
-        "description": "Flashcards, quizzes, matching games, spelling tests, and more - choose the best mode for your learning style.",
-        "icon": "RiGamepadLine"
+        "title": "Unwanted Objects",
+        "description": "Remove people, photobombers, objects, or any distractions from your photos with AI precision.",
+        "icon": "RiDeleteBin7Line"
       }
     ]
   },
   "benefit": {
     "name": "benefit",
-    "title": "TurboLearn vs Quizlet - Why We're Better",
-    "label": "Comparison",
-    "description": "See how TurboLearn outperforms Quizlet in every way - more features, better privacy, and completely free.",
+    "title": "Why Choose WatermarkCleaner",
+    "label": "Benefits",
+    "description": "Experience the most advanced AI watermark removal technology - fast, accurate, and completely free.",
     "items": [
       {
-        "title": "100% Free vs Paid Subscription",
-        "description": "TurboLearn offers all premium features for free, while Quizlet charges $7.99/month for basic features like offline access and ad removal.",
-        "icon": "RiMoneyDollarCircleLine",
-        "image": {
-          "src": "/imgs/features/2.webp"
-        }
-      },
-      {
-        "title": "AI-Powered vs Traditional Memorization",
-        "description": "Our advanced AI analyzes your learning patterns and optimizes review schedules, while Quizlet uses basic spaced repetition.",
+        "title": "AI-Powered Accuracy",
+        "description": "Our advanced AI understands image context and intelligently fills removed areas with natural-looking content, leaving no traces.",
         "icon": "RiRobot2Line",
         "image": {
-          "src": "/imgs/features/3.webp"
+          "src": "/imgs/features/ai-accuracy.webp"
         }
       },
       {
-        "title": "Privacy Protection vs Data Collection",
-        "description": "We never sell your data or show targeted ads. Quizlet collects and monetizes user data for advertising purposes.",
-        "icon": "RiShieldCheckLine",
+        "title": "Preserve Image Quality",
+        "description": "Unlike other tools that blur or distort images, WatermarkCleaner maintains the original resolution and quality of your photos.",
+        "icon": "RiHdLine",
         "image": {
-          "src": "/imgs/features/4.webp"
+          "src": "/imgs/features/quality.webp"
+        }
+      },
+      {
+        "title": "No Sign-up Required",
+        "description": "Start removing watermarks immediately - no account creation, no email verification, no hassle. Just upload and clean.",
+        "icon": "RiUserLine",
+        "image": {
+          "src": "/imgs/features/no-signup.webp"
         }
       }
     ]
   },
   "usage": {
     "name": "usage",
-    "title": "How to Get Started with TurboLearn",
-    "description": "Start your efficient learning journey in just a few simple steps:",
+    "title": "How to Remove Watermarks in 3 Easy Steps",
+    "description": "Remove watermarks from your photos in seconds with our simple process:",
     "image": {
-      "src": "/imgs/features/1.webp"
+      "src": "/imgs/features/steps.webp"
     },
     "image_position": "left",
     "text_align": "center",
     "items": [
       {
-        "title": "Create Free Account",
-        "description": "No credit card required - sign up in 30 seconds with email, Google, or GitHub. Start learning immediately.",
+        "title": "Upload Your Image",
+        "description": "Drag and drop your image or click to upload. We support JPG, PNG, WebP, and BMP formats up to 20MB.",
         "image": {
-          "src": "/imgs/features/5.webp"
+          "src": "/imgs/features/step1.webp"
         }
       },
       {
-        "title": "Create Flashcards",
-        "description": "Manually create or use AI to auto-generate flashcards. Import existing sets from Quizlet, Anki, or other platforms.",
+        "title": "Mark the Watermark",
+        "description": "Use our brush tool to highlight the watermark area you want to remove. Our AI will detect and process it automatically.",
         "image": {
-          "src": "/imgs/features/6.webp"
+          "src": "/imgs/features/step2.webp"
         }
       },
       {
-        "title": "Choose Study Mode",
-        "description": "Select from flashcards, quizzes, matching, or spelling modes based on your learning goals. AI adjusts difficulty automatically.",
+        "title": "Download Clean Image",
+        "description": "Preview the result and download your watermark-free image in high quality. No watermarks added by us!",
         "image": {
-          "src": "/imgs/features/7.webp"
-        }
-      },
-      {
-        "title": "Track Your Progress",
-        "description": "View detailed learning statistics and progress reports. AI intelligently reminds you to review content before you forget.",
-        "image": {
-          "src": "/imgs/features/8.webp"
+          "src": "/imgs/features/step3.webp"
         }
       }
     ]
   },
   "feature": {
     "name": "feature",
-    "title": "Powerful Features for Effective Learning",
-    "description": "Everything you need to master any subject - from AI-powered flashcards to advanced study modes.",
+    "title": "Powerful AI Features for Perfect Results",
+    "description": "Advanced technology that makes watermark removal effortless and professional.",
     "items": [
       {
-        "title": "AI Flashcard Generation",
-        "description": "Automatically generate high-quality flashcards from your notes, PDFs, or textbooks using advanced AI.",
+        "title": "Smart AI Detection",
+        "description": "Our AI automatically detects watermarks, logos, and text overlays for quick one-click removal.",
         "icon": "RiRobot2Line"
       },
       {
-        "title": "Multiple Study Modes",
-        "description": "Flashcards, quizzes, matching games, spelling tests, and comprehensive study mode - choose what works best.",
-        "icon": "RiGamepadLine"
+        "title": "Batch Processing",
+        "description": "Remove watermarks from multiple images at once. Save time with bulk processing capability.",
+        "icon": "RiStackLine"
       },
       {
-        "title": "Spaced Repetition Algorithm",
-        "description": "AI-powered spaced repetition based on cognitive science ensures optimal long-term retention.",
-        "icon": "RiTimeLine"
+        "title": "High Resolution Output",
+        "description": "Download your cleaned images in original resolution. No quality loss or compression.",
+        "icon": "RiHdLine"
       },
       {
-        "title": "Collaborative Learning",
-        "description": "Share flashcard sets with classmates, create study groups, and learn together more effectively.",
-        "icon": "RiTeamLine"
+        "title": "Multiple Format Support",
+        "description": "Works with JPG, PNG, WebP, BMP and more. Convert between formats as needed.",
+        "icon": "RiFileImageLine"
       },
       {
-        "title": "Offline Learning",
-        "description": "Download flashcards and study anywhere without internet. All progress syncs automatically when online.",
-        "icon": "RiDownloadCloudLine"
+        "title": "Precise Brush Tool",
+        "description": "Fine-tune removal with adjustable brush sizes. Perfect for complex watermarks.",
+        "icon": "RiBrushLine"
       },
       {
-        "title": "Multi-Language Support",
-        "description": "Study in 100+ languages with text-to-speech support. Perfect for language learners.",
-        "icon": "RiTranslate2"
+        "title": "Instant Preview",
+        "description": "See results in real-time before downloading. Make adjustments until perfect.",
+        "icon": "RiEyeLine"
       },
       {
-        "title": "Detailed Statistics",
-        "description": "Track your progress with comprehensive analytics. See which topics need more review.",
-        "icon": "RiBarChart2Line"
+        "title": "Cloud Processing",
+        "description": "Heavy AI processing happens in the cloud. Works on any device without slowdowns.",
+        "icon": "RiCloudLine"
       },
       {
-        "title": "Import & Export",
-        "description": "Easily import from Quizlet, Anki, or CSV files. Export your data anytime - you own it.",
-        "icon": "RiFileTransferLine"
+        "title": "Privacy Protected",
+        "description": "Your images are processed securely and deleted automatically. We never store your data.",
+        "icon": "RiShieldCheckLine"
       },
       {
-        "title": "Rich Media Support",
-        "description": "Add images, audio, and video to flashcards. AI can identify images and generate relevant questions.",
-        "icon": "RiImageLine"
+        "title": "No Watermarks Added",
+        "description": "Download clean images without any watermarks added by us. Your result is truly clean.",
+        "icon": "RiCheckDoubleLine"
       }
     ]
   },
   "stats": {
     "name": "stats",
     "label": "Stats",
-    "title": "Trusted by Millions of Learners",
-    "description": "Join the community and experience the difference",
+    "title": "Trusted by Millions Worldwide",
+    "description": "Join millions of users who trust WatermarkCleaner for their image editing needs",
     "icon": "FaRegHeart",
     "items": [
       {
-        "title": "Active Users",
-        "label": "5M+",
-        "description": "Students & Teachers"
+        "title": "Images Processed",
+        "label": "10M+",
+        "description": "Photos Cleaned"
       },
       {
-        "title": "Flashcards Created",
-        "label": "100M+",
-        "description": "Study Cards"
+        "title": "Happy Users",
+        "label": "2M+",
+        "description": "Active Users"
       },
       {
-        "title": "Learning Efficiency",
-        "label": "3x",
-        "description": "Faster Mastery"
+        "title": "Success Rate",
+        "label": "99%",
+        "description": "Removal Accuracy"
       },
       {
-        "title": "User Satisfaction",
-        "label": "98%",
-        "description": "Happy Learners"
+        "title": "Processing Time",
+        "label": "<5s",
+        "description": "Average Speed"
       }
     ]
   },
   "testimonial": {
     "name": "testimonial",
     "label": "Testimonial",
-    "title": "What Students and Teachers Say About TurboLearn",
-    "description": "Hear from real users who switched from Quizlet to TurboLearn and never looked back.",
+    "title": "What Our Users Say",
+    "description": "Real feedback from photographers, designers, marketers, and everyday users.",
     "icon": "GoThumbsup",
     "items": [
       {
-        "title": "Michael Chen",
-        "label": "Medical Student",
-        "description": "Switched from Quizlet Plus and saved $10/month while getting better features! The AI smart review helped me ace my finals.",
+        "title": "Sarah Chen",
+        "label": "Photographer",
+        "description": "Finally a watermark remover that actually works! I use it daily for my photography business. The AI is incredibly smart at preserving image quality.",
         "image": {
           "src": "/imgs/users/1.png"
         }
       },
       {
-        "title": "Ms. Johnson",
-        "label": "High School Teacher",
-        "description": "I use TurboLearn to create vocabulary sets for my entire class. Students are more engaged and I don't worry about subscription costs.",
+        "title": "Michael Rodriguez",
+        "label": "Graphic Designer",
+        "description": "I've tried many tools but WatermarkCleaner is the best. It handles complex backgrounds perfectly and the batch processing saves me hours.",
         "image": {
           "src": "/imgs/users/2.png"
         }
       },
       {
-        "title": "Sarah Martinez",
-        "label": "College Student",
-        "description": "As an international student, the multi-language support and text-to-speech features are invaluable. Offline mode lets me study during my commute.",
+        "title": "Emma Wilson",
+        "label": "Social Media Manager",
+        "description": "Perfect for cleaning up images for social media. No more ugly watermarks ruining my posts. And it's completely free!",
         "image": {
           "src": "/imgs/users/3.png"
         }
       },
       {
-        "title": "David Wang",
-        "label": "Graduate Student",
-        "description": "Preparing for exams requires memorizing tons of information. TurboLearn's spaced repetition algorithm boosted my retention significantly. Plus, importing my Quizlet sets was seamless!",
+        "title": "David Park",
+        "label": "E-commerce Owner",
+        "description": "My product photos look so much more professional now. Removed all the stock photo watermarks instantly. Highly recommend!",
         "image": {
           "src": "/imgs/users/4.png"
         }
       },
       {
-        "title": "Prof. Anderson",
-        "label": "University Professor",
-        "description": "I recommend TurboLearn to all my students. It's not only free but also respects privacy - no selling student data like some platforms do.",
+        "title": "Lisa Thompson",
+        "label": "Content Creator",
+        "description": "The no sign-up feature is amazing. I can just upload and get my clean images immediately. This tool is a game-changer.",
         "image": {
           "src": "/imgs/users/5.png"
         }
       },
       {
-        "title": "Emma Thompson",
-        "label": "Language Learner",
-        "description": "Learning Mandarin with TurboLearn has been amazing. The image flashcards and audio features make learning engaging. The AI-generated example sentences are high quality!",
+        "title": "James Miller",
+        "label": "Marketing Director",
+        "description": "We use WatermarkCleaner for all our marketing materials. The quality is professional-grade and the speed is unmatched.",
         "image": {
           "src": "/imgs/users/6.png"
         }
@@ -309,56 +302,56 @@
   "faq": {
     "name": "faq",
     "label": "FAQ",
-    "title": "Frequently Asked Questions About Free Quizlet Alternative",
-    "description": "Have more questions? Contact our support team via email or social media anytime.",
+    "title": "Frequently Asked Questions",
+    "description": "Everything you need to know about WatermarkCleaner",
     "items": [
       {
-        "title": "Is TurboLearn really completely free? Are there any hidden costs?",
-        "description": "Yes, TurboLearn is 100% free! No credit card required, no hidden fees, no paywalls. All features including unlimited flashcard sets, AI smart learning, offline access, and more are permanently free. We believe quality education should be accessible to everyone."
+        "title": "Is WatermarkCleaner really free?",
+        "description": "Yes! WatermarkCleaner offers free watermark removal with no sign-up required. You can process images instantly without any cost. We also offer premium plans for users who need advanced features like batch processing and higher resolution outputs."
       },
       {
-        "title": "What advantages does TurboLearn have over Quizlet?",
-        "description": "TurboLearn offers all Quizlet Plus features completely free. Our AI learning algorithms are more advanced, privacy protection is better, we support offline learning, and there are no ads. Additionally, our spaced repetition algorithm is based on the latest cognitive science research for higher learning efficiency."
+        "title": "What image formats are supported?",
+        "description": "WatermarkCleaner supports all major image formats including JPG, JPEG, PNG, WebP, and BMP. You can upload images up to 20MB in size. The output format matches your input, or you can choose to convert between formats."
       },
       {
-        "title": "Can I import my existing flashcards from Quizlet?",
-        "description": "Absolutely! TurboLearn supports one-click import from Quizlet, Anki, StudyBlue, and other platforms. Simply export as CSV or text file, then import into TurboLearn. We also support batch import to save you time."
+        "title": "Will removing watermarks lower image quality?",
+        "description": "No! Our AI technology is designed to preserve the original image quality. Unlike basic tools that blur or distort the image, WatermarkCleaner intelligently fills the removed area with matching content, maintaining sharpness and resolution."
       },
       {
-        "title": "What study modes does TurboLearn support?",
-        "description": "We offer multiple study modes: Flashcard mode (flip cards), Quiz mode (multiple choice), Matching game (pair matching), Spelling mode (dictation practice), and Study mode (comprehensive learning). AI automatically adjusts difficulty and review frequency based on your performance."
+        "title": "Can I use WatermarkCleaner on mobile devices?",
+        "description": "Absolutely! WatermarkCleaner is fully responsive and works on any device - smartphones, tablets, and desktops. No app installation required - just visit our website and start removing watermarks."
       },
       {
-        "title": "How do TurboLearn's AI features work?",
-        "description": "Our AI system analyzes your learning behavior and memory curve to intelligently recommend content for review. AI can also automatically generate flashcards from documents, identify image content, and generate relevant example sentences. These features are all based on advanced machine learning algorithms to make learning more efficient."
+        "title": "What if the watermark is on a complex background?",
+        "description": "Our AI excels at handling complex backgrounds! It analyzes the surrounding area and intelligently reconstructs the image beneath the watermark. For best results with very complex areas, use our brush tool to precisely mark the watermark."
       },
       {
-        "title": "Can I use TurboLearn offline?",
-        "description": "Yes! Download our mobile app or use the browser's offline feature to study anytime, anywhere without internet connection. All learning progress automatically syncs to the cloud when you're back online."
+        "title": "Is my data secure and private?",
+        "description": "Absolutely. Your images are processed securely and automatically deleted from our servers after processing. We never store, share, or use your images for any other purpose. Your privacy is our priority."
       },
       {
-        "title": "How many languages does TurboLearn support?",
-        "description": "TurboLearn supports learning content in 100+ languages, including Chinese, English, Japanese, Korean, French, German, Spanish, and more. We also provide text-to-speech functionality with multiple accents, especially suitable for language learning."
+        "title": "Can I remove watermarks from multiple images at once?",
+        "description": "Yes! With our batch processing feature, you can upload and process multiple images simultaneously. This is perfect for cleaning up large collections of photos efficiently."
       },
       {
-        "title": "Can teachers use TurboLearn to manage classes?",
-        "description": "Of course! We provide dedicated teacher account features to create classes, assign learning tasks, track student progress, and view learning statistics. Teachers can share flashcard sets with students, and students can collaborate on content creation. All these features are completely free."
+        "title": "Is it legal to remove watermarks?",
+        "description": "WatermarkCleaner is a tool for legitimate use cases like removing your own watermarks, cleaning personal photos, or removing distracting elements. Please respect copyright laws and only remove watermarks from images you own or have permission to edit."
       }
     ]
   },
   "cta": {
     "name": "cta",
-    "title": "Start Using the Best Free Quizlet Alternative Today",
-    "description": "Join 5M+ learners and experience AI-powered smart learning. Completely free, no credit card required.",
+    "title": "Ready to Remove Watermarks?",
+    "description": "Start cleaning your photos now - free, fast, and no sign-up required.",
     "buttons": [
       {
-        "title": "Create Free Flashcards",
+        "title": "Remove Watermark Now",
         "url": "/convert",
         "target": "_self",
-        "icon": "RiFlashlightFill"
+        "icon": "RiMagicLine"
       },
       {
-        "title": "View Features",
+        "title": "Learn More",
         "url": "/#feature",
         "target": "_self",
         "variant": "outline"
@@ -368,33 +361,33 @@
   "footer": {
     "name": "footer",
     "brand": {
-      "title": "TurboLearn",
-      "description": "TurboLearn is the best free Quizlet alternative, offering AI-powered smart flashcards, quizzes, and multiple study modes. Completely free with unlimited usage.",
+      "title": "WatermarkCleaner",
+      "description": "WatermarkCleaner is a free AI-powered tool for removing watermarks, logos, and unwanted objects from photos. Fast, easy, and no sign-up required.",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - Free Quizlet Alternative"
+        "alt": "WatermarkCleaner - Free AI Watermark Remover"
       },
       "url": "/"
     },
-    "copyright": "© 2025 • TurboLearn All rights reserved.",
+    "copyright": "© 2025 WatermarkCleaner. All rights reserved.",
     "nav": {
       "items": [
         {
           "title": "Product",
           "children": [
             {
+              "title": "Remove Watermark",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
               "title": "Features",
               "url": "/#feature",
               "target": "_self"
             },
             {
-              "title": "Comparison",
-              "url": "/#benefit",
-              "target": "_self"
-            },
-            {
-              "title": "Testimonials",
-              "url": "/#testimonial",
+              "title": "Pricing",
+              "url": "/pricing",
               "target": "_self"
             }
           ]
@@ -403,18 +396,18 @@
           "title": "Resources",
           "children": [
             {
-              "title": "Help Center",
-              "url": "/#faq",
-              "target": "_self"
-            },
-            {
-              "title": "Study Guides",
-              "url": "/posts",
+              "title": "How It Works",
+              "url": "/#usage",
               "target": "_self"
             },
             {
               "title": "FAQ",
               "url": "/#faq",
+              "target": "_self"
+            },
+            {
+              "title": "Blog",
+              "url": "/blog",
               "target": "_self"
             }
           ]
@@ -423,17 +416,17 @@
           "title": "Tools",
           "children": [
             {
-              "title": "AI Study Assistant",
+              "title": "Watermark Remover",
               "url": "/convert",
               "target": "_self"
             },
             {
-              "title": "Flashcard Generator",
+              "title": "Logo Remover",
               "url": "/convert",
               "target": "_self"
             },
             {
-              "title": "Learning Stats",
+              "title": "Object Remover",
               "url": "/convert",
               "target": "_self"
             }
@@ -446,25 +439,19 @@
         {
           "title": "X",
           "icon": "RiTwitterXFill",
-          "url": "https://x.com/turbolearn",
+          "url": "https://x.com/watermarkcleaner",
           "target": "_blank"
         },
         {
           "title": "Github",
           "icon": "RiGithubFill",
-          "url": "https://github.com/turbolearn",
-          "target": "_blank"
-        },
-        {
-          "title": "Discord",
-          "icon": "RiDiscordFill",
-          "url": "https://discord.gg/turbolearn",
+          "url": "https://github.com/watermarkcleaner",
           "target": "_blank"
         },
         {
           "title": "Email",
           "icon": "RiMailLine",
-          "url": "mailto:support@turbolearn.ai",
+          "url": "mailto:support@watermarkcleaner.com",
           "target": "_self"
         }
       ]

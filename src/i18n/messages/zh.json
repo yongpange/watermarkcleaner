@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "免费Quizlet替代品 - 智能学习卡片与在线测验工具 | TurboLearn",
-    "description": "寻找免费的Quizlet替代品？TurboLearn提供强大的AI驱动学习卡片、智能测验、多种学习模式，完全免费。支持无限卡片组、协作学习、离线访问，是学生和教师的最佳选择。",
-    "keywords": "免费Quizlet替代品, 在线学习卡片, 智能测验工具, AI学习助手, 免费学习应用, 记忆卡片, 在线教育, 学习工具, Quizlet免费版, 学习卡片制作"
+    "title": "免费在线去水印工具 - AI智能去除图片水印 | WatermarkCleaner",
+    "description": "使用AI驱动的WatermarkCleaner免费去除图片水印。无需注册，即时擦除Logo、文字和水印，同时保持图片质量。",
+    "keywords": "去水印, 去除水印, 图片去水印, AI去水印, 免费去水印, 去除图片文字, 照片水印去除, 图片清理, 在线去水印, 水印移除"
   },
   "user": {
     "sign_in": "登录",
@@ -34,7 +34,7 @@
   },
   "my_orders": {
     "title": "我的订单",
-    "description": "在 TurboLearn 上购买的订单。",
+    "description": "在 WatermarkCleaner 上购买的订单。",
     "no_orders": "未找到订单",
     "tip": "",
     "activate_order": "激活订单",
@@ -82,10 +82,10 @@
   },
   "blog": {
     "title": "博客",
-    "description": "关于 TurboLearn 的新闻、资源和更新",
+    "description": "关于 WatermarkCleaner 的新闻、资源和更新",
     "read_more_text": "阅读更多",
-    "hero_title": "TurboLearn 博客",
-    "hero_description": "探索 AI 驱动学习、学习技巧和教育技术的最新见解",
+    "hero_title": "WatermarkCleaner 博客",
+    "hero_description": "探索 AI 驱动图片编辑、水印去除技巧和照片增强的最新见解",
     "search_placeholder": "搜索文章、主题或关键词...",
     "no_results": "未找到文章",
     "no_results_hint": "尝试调整搜索或筛选条件",
@@ -114,7 +114,7 @@
     "submit": "提交",
     "loading": "提交中...",
     "contact_tip": "其他联系方式",
-    "rating_tip": "您对 TurboLearn 的看法如何？",
+    "rating_tip": "您对 WatermarkCleaner 的看法如何？",
     "placeholder": "在这里留下您的反馈..."
   },
   "convert": {

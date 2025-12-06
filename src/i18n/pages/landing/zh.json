@@ -1,12 +1,12 @@
 {
-  "template": "turbolearn-template-one",
+  "template": "watermarkcleaner-template",
   "theme": "light",
   "header": {
     "brand": {
-      "title": "TurboLearn",
+      "title": "WatermarkCleaner",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - 免费Quizlet替代品"
+        "alt": "WatermarkCleaner - 免费AI去水印工具"
       },
       "url": "/"
     },
@@ -18,14 +18,14 @@
           "icon": "RiSparkling2Line"
         },
         {
-          "title": "对比优势",
-          "url": "/#benefit",
+          "title": "使用方法",
+          "url": "/#usage",
           "icon": "RiCheckDoubleLine"
         },
         {
-          "title": "博客",
-          "url": "/blog",
-          "icon": "RiBook2Line"
+          "title": "价格",
+          "url": "/pricing",
+          "icon": "RiPriceTag3Line"
         },
         {
           "title": "常见问题",
@@ -36,7 +36,7 @@
     },
     "buttons": [
       {
-        "title": "免费开始",
+        "title": "免费试用",
         "url": "/convert",
         "target": "_self",
         "variant": "default",
@@ -48,19 +48,19 @@
     "show_locale": true
   },
   "hero": {
-    "title": "最佳免费Quizlet替代品 - 让学习更智能、更高效",
-    "highlight_text": "免费Quizlet替代品",
-    "description": "TurboLearn是一款完全免费的智能学习工具，提供AI驱动的学习卡片、智能测验和多种学习模式。<br/>无限卡片组、无广告干扰、支持离线学习，是学生和教师的理想选择。",
+    "title": "AI智能去水印 - 一键去除图片水印",
+    "highlight_text": "去水印",
+    "description": "WatermarkCleaner 使用先进的 AI 技术，几秒钟内即可去除图片中的水印、Logo、文字等。免费使用，无需注册，保持原图质量。",
     "announcement": {
-      "label": "100%免费",
-      "title": "🎓 永久免费使用所有功能",
+      "label": "免费",
+      "title": "✨ AI 智能水印去除",
       "url": "/#feature"
     },
-    "tip": "✨ 无需信用卡，立即开始学习",
+    "tip": "无需注册 • 完全免费使用",
     "buttons": [
       {
-        "title": "马上上手 · 完全免费",
-        "icon": "RiFlashlightFill",
+        "title": "立即去水印",
+        "icon": "RiMagicLine",
         "url": "/convert",
         "target": "_self",
         "variant": "default"
@@ -72,234 +72,227 @@
 
   "introduce": {
     "name": "introduce",
-    "title": "为什么选择TurboLearn作为免费Quizlet替代品",
-    "label": "产品介绍",
-    "description": "TurboLearn是一款专为现代学习者设计的智能学习平台，提供比Quizlet更强大的功能，而且完全免费。",
+    "title": "WatermarkCleaner 能去除什么？",
+    "label": "使用场景",
+    "description": "我们的AI技术可以处理各种类型的水印和不需要的元素，让您的图片恢复清晰。",
     "image": {
-      "src": "/imgs/features/1.webp"
+      "src": "/imgs/features/watermark-demo.webp"
     },
     "items": [
       {
-        "title": "AI智能学习",
-        "description": "利用人工智能技术自动生成学习卡片、智能推荐复习内容，让学习效率提升3倍。",
-        "icon": "RiRobot2Line"
+        "title": "文字水印",
+        "description": "去除版权文字、品牌名称、日期和任何文字覆盖层，不留痕迹。",
+        "icon": "RiText"
       },
       {
-        "title": "完全免费使用",
-        "description": "无需付费订阅，所有高级功能永久免费。无限卡片组、无广告、无使用限制。",
-        "icon": "RiCheckboxCircleLine"
+        "title": "Logo水印",
+        "description": "擦除图库Logo、品牌标识和公司水印，同时保持图片质量。",
+        "icon": "RiImageLine"
       },
       {
-        "title": "多种学习模式",
-        "description": "提供闪卡模式、测验模式、匹配游戏、拼写练习等多种学习方式，适应不同学习风格。",
-        "icon": "RiGamepadLine"
+        "title": "不需要的对象",
+        "description": "移除路人、照片炸弹者、物品或任何干扰元素，AI精准处理。",
+        "icon": "RiDeleteBin7Line"
       }
     ]
   },
   "benefit": {
     "name": "benefit",
-    "title": "TurboLearn vs Quizlet：为什么我们更胜一筹",
-    "label": "对比优势",
-    "description": "全面对比TurboLearn与Quizlet，看看为什么越来越多的学生选择我们作为免费替代品。",
+    "title": "为什么选择 WatermarkCleaner",
+    "label": "产品优势",
+    "description": "体验最先进的AI水印去除技术 - 快速、准确、完全免费。",
     "items": [
       {
-        "title": "100%免费 vs 付费订阅",
-        "description": "TurboLearn所有功能永久免费，无需像Quizlet Plus那样每月支付费用。无限卡片组、无广告、离线访问全部免费开放。",
-        "icon": "RiMoneyDollarCircleLine",
+        "title": "AI智能识别",
+        "description": "我们的AI能理解图片内容，智能填充被移除的区域，让处理结果自然无痕。",
+        "icon": "RiRobot2Line",
         "image": {
-          "src": "/imgs/features/2.webp"
+          "src": "/imgs/features/ai-accuracy.webp"
         }
       },
       {
-        "title": "AI智能学习 vs 传统记忆",
-        "description": "我们的AI算法会分析你的学习进度，智能推荐需要复习的内容，学习效率比传统方法提升300%。Quizlet缺乏这种智能化功能。",
-        "icon": "RiBrainLine",
+        "title": "保持原图质量",
+        "description": "不同于其他工具会模糊或扭曲图片，WatermarkCleaner保持原始分辨率和质量。",
+        "icon": "RiHdLine",
         "image": {
-          "src": "/imgs/features/3.webp"
+          "src": "/imgs/features/quality.webp"
         }
       },
       {
-        "title": "隐私保护 vs 数据收集",
-        "description": "我们重视用户隐私，不会出售你的学习数据。所有内容加密存储，你可以完全控制自己的学习资料。",
-        "icon": "RiShieldCheckLine",
+        "title": "无需注册",
+        "description": "立即开始去除水印 - 无需创建账户、无需验证邮箱、无需任何麻烦。上传即可使用。",
+        "icon": "RiUserLine",
         "image": {
-          "src": "/imgs/features/4.webp"
+          "src": "/imgs/features/no-signup.webp"
         }
       }
     ]
   },
   "usage": {
     "name": "usage",
-    "title": "如何开始使用TurboLearn",
-    "description": "只需三个简单步骤，即可开始你的高效学习之旅：",
+    "title": "3步轻松去水印",
+    "description": "只需简单三步，几秒钟内即可去除图片水印：",
     "image": {
-      "src": "/imgs/features/1.webp"
+      "src": "/imgs/features/steps.webp"
     },
     "image_position": "left",
     "text_align": "center",
     "items": [
       {
-        "title": "免费注册账号",
-        "description": "无需信用卡，30秒即可完成注册。支持邮箱、Google或GitHub账号快速登录。",
+        "title": "上传图片",
+        "description": "拖拽图片或点击上传。支持 JPG、PNG、WebP、BMP 格式，最大 20MB。",
         "image": {
-          "src": "/imgs/features/5.webp"
+          "src": "/imgs/features/step1.webp"
         }
       },
       {
-        "title": "创建学习卡片",
-        "description": "手动创建或使用AI自动生成学习卡片。支持导入Quizlet、Anki等平台的现有卡片组。",
+        "title": "标记水印区域",
+        "description": "使用画笔工具标记要去除的水印区域。AI 会自动检测并处理。",
         "image": {
-          "src": "/imgs/features/6.webp"
+          "src": "/imgs/features/step2.webp"
         }
       },
       {
-        "title": "选择学习模式",
-        "description": "根据学习目标选择闪卡、测验、匹配或拼写模式。AI会根据你的表现调整难度。",
+        "title": "下载干净图片",
+        "description": "预览处理结果，下载无水印的高质量图片。我们不会添加任何水印！",
         "image": {
-          "src": "/imgs/features/7.webp"
-        }
-      },
-      {
-        "title": "追踪学习进度",
-        "description": "查看详细的学习统计和进度报告。AI会智能提醒你复习即将遗忘的内容。",
-        "image": {
-          "src": "/imgs/features/8.webp"
+          "src": "/imgs/features/step3.webp"
         }
       }
     ]
   },
   "feature": {
     "name": "feature",
-    "title": "TurboLearn强大功能一览",
-    "description": "作为最佳免费Quizlet替代品，我们提供更多强大功能帮助你高效学习。",
+    "title": "强大的AI功能，完美的处理效果",
+    "description": "先进技术让水印去除变得简单而专业。",
     "items": [
       {
-        "title": "AI智能卡片生成",
-        "description": "上传文档或输入文本，AI自动生成高质量学习卡片。支持PDF、Word、PPT等多种格式。",
-        "icon": "RiMagicLine"
+        "title": "智能AI检测",
+        "description": "AI自动检测水印、Logo和文字覆盖层，一键快速去除。",
+        "icon": "RiRobot2Line"
       },
       {
-        "title": "多种学习模式",
-        "description": "闪卡模式、测验模式、匹配游戏、拼写练习、学习模式等，满足不同学习需求。",
-        "icon": "RiGamepadLine"
+        "title": "批量处理",
+        "description": "一次上传多张图片，批量去除水印，节省大量时间。",
+        "icon": "RiStackLine"
       },
       {
-        "title": "智能间隔重复",
-        "description": "基于艾宾浩斯遗忘曲线的AI算法，在最佳时机提醒你复习，记忆效果提升5倍。",
-        "icon": "RiBrainLine"
+        "title": "高清输出",
+        "description": "以原始分辨率下载处理后的图片，无质量损失或压缩。",
+        "icon": "RiHdLine"
       },
       {
-        "title": "协作学习",
-        "description": "与同学分享卡片组，共同编辑和学习。支持班级管理，教师可以追踪学生进度。",
-        "icon": "RiTeamLine"
+        "title": "多格式支持",
+        "description": "支持JPG、PNG、WebP、BMP等格式，可根据需要进行格式转换。",
+        "icon": "RiFileImageLine"
       },
       {
-        "title": "离线学习",
-        "description": "下载卡片组到本地，随时随地学习，无需网络连接。所有进度自动同步。",
-        "icon": "RiDownloadCloudLine"
+        "title": "精准画笔工具",
+        "description": "可调节画笔大小，精细控制去除区域，完美处理复杂水印。",
+        "icon": "RiBrushLine"
       },
       {
-        "title": "多语言支持",
-        "description": "支持100+种语言的学习卡片，内置语音朗读功能，完美适合语言学习。",
-        "icon": "RiTranslate2"
+        "title": "即时预览",
+        "description": "下载前实时查看处理效果，调整到满意为止。",
+        "icon": "RiEyeLine"
       },
       {
-        "title": "详细学习统计",
-        "description": "可视化学习进度、掌握程度、学习时长等数据，帮助你了解学习效果。",
-        "icon": "RiBarChartBoxLine"
+        "title": "云端处理",
+        "description": "重度AI计算在云端完成，任何设备都能流畅使用。",
+        "icon": "RiCloudLine"
       },
       {
-        "title": "导入导出功能",
-        "description": "一键导入Quizlet、Anki、StudyBlue等平台的卡片。支持导出为PDF、Excel等格式。",
-        "icon": "RiFileTransferLine"
+        "title": "隐私保护",
+        "description": "图片安全处理后自动删除，我们不会存储您的任何数据。",
+        "icon": "RiShieldCheckLine"
       },
       {
-        "title": "图片和音频支持",
-        "description": "在卡片中添加图片、音频，支持多媒体学习。AI可以自动识别图片内容生成卡片。",
-        "icon": "RiImageLine"
+        "title": "无添加水印",
+        "description": "下载的图片完全干净，我们不会添加任何水印。",
+        "icon": "RiCheckDoubleLine"
       }
     ]
   },
   "stats": {
     "name": "stats",
     "label": "数据统计",
-    "title": "全球学习者的首选",
-    "description": "数据证明TurboLearn是最受欢迎的免费Quizlet替代品。",
+    "title": "全球用户的信赖之选",
+    "description": "加入百万用户，体验专业的图片处理服务",
     "icon": "FaRegHeart",
     "items": [
       {
+        "title": "处理图片",
+        "label": "1000万+",
+        "description": "已处理图片"
+      },
+      {
         "title": "活跃用户",
-        "label": "500万+",
-        "description": "全球学习者"
+        "label": "200万+",
+        "description": "用户数量"
       },
       {
-        "title": "学习卡片",
-        "label": "1亿+",
-        "description": "已创建卡片"
+        "title": "成功率",
+        "label": "99%",
+        "description": "去除准确率"
       },
       {
-        "title": "学习效率",
-        "label": "3倍",
-        "description": "提升幅度"
-      },
-      {
-        "title": "用户满意度",
-        "label": "98%",
-        "description": "五星好评"
+        "title": "处理速度",
+        "label": "<5秒",
+        "description": "平均速度"
       }
     ]
   },
   "testimonial": {
     "name": "testimonial",
     "label": "用户评价",
-    "title": "学生和教师如何评价TurboLearn",
-    "description": "听听真实用户分享他们使用TurboLearn作为免费Quizlet替代品的体验。",
+    "title": "用户真实反馈",
+    "description": "来自摄影师、设计师、营销人员和普通用户的真实评价。",
     "icon": "GoThumbsup",
     "items": [
       {
-        "title": "李明",
-        "label": "医学院学生",
-        "description": "从Quizlet Plus转到TurboLearn后，我每月节省了10美元订阅费，而且功能更强大！AI智能复习功能帮我在期末考试中取得了优异成绩。",
+        "title": "张伟",
+        "label": "摄影师",
+        "description": "终于找到一个真正好用的去水印工具！每天都在用，AI对图片质量的保持令人印象深刻。",
         "image": {
           "src": "/imgs/users/1.png"
         }
       },
       {
-        "title": "王老师",
-        "label": "高中英语教师",
-        "description": "我用TurboLearn为整个班级创建词汇卡片，学生们的学习积极性明显提高。最重要的是完全免费，不用担心学生付费问题。",
+        "title": "李设计",
+        "label": "平面设计师",
+        "description": "试过很多工具，WatermarkCleaner是最好的。处理复杂背景非常完美，批量处理功能节省了我好几个小时。",
         "image": {
           "src": "/imgs/users/2.png"
         }
       },
       {
-        "title": "Sarah Chen",
-        "label": "大学生",
-        "description": "作为国际学生，TurboLearn的多语言支持和语音朗读功能对我学习专业术语帮助很大。离线功能让我在通勤时也能学习。",
+        "title": "王小明",
+        "label": "社交媒体运营",
+        "description": "用来清理社交媒体图片太方便了。不再有丑陋的水印破坏我的帖子。而且完全免费！",
         "image": {
           "src": "/imgs/users/3.png"
         }
       },
       {
-        "title": "张晓华",
-        "label": "考研学生",
-        "description": "准备考研时我需要记忆大量知识点，TurboLearn的间隔重复算法让我的记忆效率提升了好几倍。而且导入功能让我轻松迁移了Quizlet上的所有卡片。",
+        "title": "陈店长",
+        "label": "电商卖家",
+        "description": "我的产品图片现在看起来专业多了。去掉了所有图库水印，生意也变好了。强烈推荐！",
         "image": {
           "src": "/imgs/users/4.png"
         }
       },
       {
-        "title": "刘教授",
-        "label": "大学教授",
-        "description": "我推荐所有学生使用TurboLearn。它不仅免费，而且隐私保护做得很好，不会像某些平台那样出售学生数据。",
+        "title": "林小姐",
+        "label": "内容创作者",
+        "description": "无需注册的功能太棒了。我可以直接上传图片立即得到干净的结果。这个工具太改变游戏规则了。",
         "image": {
           "src": "/imgs/users/5.png"
         }
       },
       {
-        "title": "Emma Wilson",
-        "label": "语言学习者",
-        "description": "我正在学习中文，TurboLearn的图片卡片和音频功能让学习变得生动有趣。AI自动生成的例句质量很高，比我之前用的工具好太多了！",
+        "title": "赵经理",
+        "label": "市场总监",
+        "description": "我们团队所有营销材料都用WatermarkCleaner处理。质量是专业级的，速度无与伦比。",
         "image": {
           "src": "/imgs/users/6.png"
         }
@@ -309,84 +302,56 @@
   "faq": {
     "name": "faq",
     "label": "常见问题",
-    "title": "关于免费Quizlet替代品的常见问题",
-    "description": "还有其他问题？随时通过邮件或社交媒体联系我们的支持团队。",
+    "title": "常见问题解答",
+    "description": "关于 WatermarkCleaner 您需要了解的一切",
     "items": [
       {
-        "title": "TurboLearn真的完全免费吗？有什么隐藏费用吗？",
-        "description": "是的，TurboLearn 100%免费！无需信用卡，无隐藏费用，无付费墙。所有功能包括无限卡片组、AI智能学习、离线访问等都永久免费。我们相信优质教育应该人人可及。"
+        "title": "WatermarkCleaner 真的免费吗？",
+        "description": "是的！WatermarkCleaner 提供免费的水印去除功能，无需注册。您可以立即处理图片，完全免费。我们也提供高级套餐，适合需要批量处理和更高分辨率输出的用户。"
       },
       {
-        "title": "TurboLearn与Quizlet相比有什么优势？",
-        "description": "TurboLearn提供Quizlet Plus的所有功能，而且完全免费。我们的AI智能学习算法更先进，隐私保护更好，支持离线学习，没有广告干扰。此外，我们的间隔重复算法基于最新认知科学研究，学习效率更高。"
+        "title": "支持哪些图片格式？",
+        "description": "WatermarkCleaner 支持所有主流图片格式，包括 JPG、JPEG、PNG、WebP 和 BMP。您可以上传最大 20MB 的图片。输出格式与输入相同，或者您可以选择转换为其他格式。"
       },
       {
-        "title": "我可以从Quizlet导入现有的学习卡片吗？",
-        "description": "当然可以！TurboLearn支持一键导入Quizlet、Anki、StudyBlue等平台的卡片组。只需导出为CSV或文本文件，然后在TurboLearn中导入即可。我们还支持批量导入，节省您的时间。"
+        "title": "去水印会降低图片质量吗？",
+        "description": "不会！我们的 AI 技术专门设计用于保持原始图片质量。不同于简单的模糊或扭曲处理，WatermarkCleaner 智能填充被移除区域，保持图片的清晰度和分辨率。"
       },
       {
-        "title": "TurboLearn支持哪些学习模式？",
-        "description": "我们提供多种学习模式：闪卡模式（正反面翻转）、测验模式（选择题）、匹配游戏（配对练习）、拼写模式（听写练习）、学习模式（综合学习）。AI会根据你的表现自动调整难度和复习频率。"
+        "title": "可以在手机上使用吗？",
+        "description": "当然可以！WatermarkCleaner 完全响应式设计，可在任何设备上使用 - 智能手机、平板电脑和桌面电脑。无需安装应用，访问我们的网站即可开始去除水印。"
       },
       {
-        "title": "TurboLearn的AI功能是如何工作的？",
-        "description": "我们的AI系统会分析你的学习行为和记忆曲线，智能推荐需要复习的内容。AI还可以自动从文档生成学习卡片，识别图片内容，生成相关例句。这些功能都基于先进的机器学习算法，让学习更高效。"
+        "title": "如果水印在复杂背景上怎么办？",
+        "description": "我们的 AI 擅长处理复杂背景！它会分析周围区域，智能重建水印下方的图像。对于非常复杂的区域，请使用我们的画笔工具精确标记水印位置，获得最佳效果。"
       },
       {
-        "title": "我可以离线使用TurboLearn吗？",
-        "description": "可以！下载我们的移动应用或使用浏览器的离线功能，你可以随时随地学习，无需网络连接。所有学习进度会在下次联网时自动同步到云端。"
+        "title": "我的数据安全和隐私有保障吗？",
+        "description": "绝对安全。您的图片在安全处理后会自动从我们的服务器删除。我们不会存储、分享或将您的图片用于任何其他目的。您的隐私是我们的首要考虑。"
       },
       {
-        "title": "TurboLearn支持多少种语言？",
-        "description": "TurboLearn支持100+种语言的学习内容，包括中文、英语、日语、韩语、法语、德语、西班牙语等。我们还提供语音朗读功能，支持多种口音，特别适合语言学习。"
+        "title": "可以一次处理多张图片吗？",
+        "description": "可以！使用我们的批量处理功能，您可以同时上传和处理多张图片。这非常适合需要高效清理大量照片的用户。"
       },
       {
-        "title": "教师可以使用TurboLearn管理班级吗？",
-        "description": "当然！我们提供专门的教师账户功能，可以创建班级、分配学习任务、追踪学生进度、查看学习统计。教师可以与学生分享卡片组，学生也可以协作创建内容。这些功能全部免费。"
-      },
-      {
-        "title": "我的学习数据安全吗？",
-        "description": "我们非常重视用户隐私和数据安全。所有数据都经过加密存储，我们不会出售或分享你的学习数据给第三方。你可以随时导出或删除自己的数据。我们遵守GDPR等国际隐私法规。"
-      },
-      {
-        "title": "TurboLearn有移动应用吗？",
-        "description": "有的！我们提供iOS和Android应用，功能与网页版完全同步。移动应用支持离线学习、推送提醒、小组件等功能，让你随时随地高效学习。"
-      },
-      {
-        "title": "如果我遇到问题，如何获得帮助？",
-        "description": "我们提供多种支持渠道：详细的帮助文档、视频教程、社区论坛、邮件支持。大多数问题可以在帮助中心找到答案。如需个性化帮助，可以通过邮件联系我们的支持团队。"
-      },
-      {
-        "title": "TurboLearn未来会收费吗？",
-        "description": "不会！我们承诺核心功能永久免费。我们的商业模式基于可选的高级功能（如团队协作工具、高级分析等），但基础学习功能将始终免费开放给所有用户。"
-      },
-      {
-        "title": "我可以与朋友分享我的学习卡片吗？",
-        "description": "当然可以！你可以通过链接分享卡片组，设置为公开或私密。其他用户可以复制你的卡片组进行学习，也可以协作编辑（如果你授权的话）。这是学习小组的理想功能。"
-      },
-      {
-        "title": "TurboLearn支持图片和音频吗？",
-        "description": "完全支持！你可以在卡片中添加图片、音频、甚至视频。AI可以自动识别图片内容并生成相关问题。这对于学习解剖学、地理、艺术史等视觉学科特别有用。"
-      },
-      {
-        "title": "相比Anki，TurboLearn有什么优势？",
-        "description": "虽然Anki是优秀的工具，但TurboLearn更现代、更易用。我们提供更美观的界面、云同步、AI功能、协作学习等Anki缺少的功能。而且TurboLearn完全基于网页，无需安装复杂的软件。"
+        "title": "去除水印合法吗？",
+        "description": "WatermarkCleaner 是一个用于合法用途的工具，如去除您自己的水印、清理个人照片或移除干扰元素。请尊重版权法，只对您拥有或有权编辑的图片进行去水印处理。"
       }
     ]
   },
   "cta": {
     "name": "cta",
-    "title": "立即开始使用最佳免费Quizlet替代品",
-    "description": "加入500万+学习者，体验AI驱动的智能学习。完全免费，无需信用卡。",
+    "title": "准备好去除水印了吗？",
+    "description": "立即开始清理您的照片 - 免费、快速、无需注册。",
     "buttons": [
       {
-        "title": "马上上手 · 完全免费",
+        "title": "立即去水印",
         "url": "/convert",
         "target": "_self",
-        "icon": "RiFlashlightFill"
+        "icon": "RiMagicLine"
       },
       {
-        "title": "查看功能详情",
+        "title": "了解更多",
         "url": "/#feature",
         "target": "_self",
         "variant": "outline"
@@ -396,33 +361,33 @@
   "footer": {
     "name": "footer",
     "brand": {
-      "title": "TurboLearn",
-      "description": "TurboLearn是最佳免费Quizlet替代品，提供AI驱动的智能学习卡片、测验和多种学习模式。完全免费，无限使用。",
+      "title": "WatermarkCleaner",
+      "description": "WatermarkCleaner 是一款免费的 AI 驱动工具，用于去除照片中的水印、Logo 和不需要的对象。快速、简单、无需注册。",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - 免费Quizlet替代品"
+        "alt": "WatermarkCleaner - 免费AI去水印工具"
       },
       "url": "/"
     },
-    "copyright": "© 2025 • TurboLearn 保留所有权利。",
+    "copyright": "© 2025 WatermarkCleaner. 保留所有权利。",
     "nav": {
       "items": [
         {
           "title": "产品",
           "children": [
             {
+              "title": "去除水印",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
               "title": "功能特点",
               "url": "/#feature",
               "target": "_self"
             },
             {
-              "title": "对比优势",
-              "url": "/#benefit",
-              "target": "_self"
-            },
-            {
-              "title": "用户评价",
-              "url": "/#testimonial",
+              "title": "价格",
+              "url": "/pricing",
               "target": "_self"
             }
           ]
@@ -431,37 +396,37 @@
           "title": "资源",
           "children": [
             {
-              "title": "帮助中心",
-              "url": "/#faq",
-              "target": "_self"
-            },
-            {
-              "title": "学习指南",
-              "url": "/posts",
+              "title": "使用方法",
+              "url": "/#usage",
               "target": "_self"
             },
             {
               "title": "常见问题",
               "url": "/#faq",
               "target": "_self"
+            },
+            {
+              "title": "博客",
+              "url": "/blog",
+              "target": "_self"
             }
           ]
         },
         {
-          "title": "相关工具",
+          "title": "工具",
           "children": [
             {
-              "title": "AI学习助手",
+              "title": "水印去除",
               "url": "/convert",
               "target": "_self"
             },
             {
-              "title": "卡片生成器",
+              "title": "Logo去除",
               "url": "/convert",
               "target": "_self"
             },
             {
-              "title": "学习统计",
+              "title": "对象去除",
               "url": "/convert",
               "target": "_self"
             }
@@ -474,25 +439,19 @@
         {
           "title": "X",
           "icon": "RiTwitterXFill",
-          "url": "https://x.com/turbolearn",
+          "url": "https://x.com/watermarkcleaner",
           "target": "_blank"
         },
         {
           "title": "Github",
           "icon": "RiGithubFill",
-          "url": "https://github.com/turbolearn",
-          "target": "_blank"
-        },
-        {
-          "title": "Discord",
-          "icon": "RiDiscordFill",
-          "url": "https://discord.gg/turbolearn",
+          "url": "https://github.com/watermarkcleaner",
           "target": "_blank"
         },
         {
           "title": "邮箱",
           "icon": "RiMailLine",
-          "url": "mailto:support@turbolearn.ai",
+          "url": "mailto:support@watermarkcleaner.com",
           "target": "_self"
         }
       ]

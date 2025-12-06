@@ -34,7 +34,7 @@ export async function generateMetadata({
       title: t("metadata.title"),
       description: t("metadata.description"),
       url: canonicalUrl,
-      siteName: "TurboLearn",
+      siteName: "WatermarkCleaner",
       locale: locale === "zh" ? "zh_CN" : "en_US",
       type: "website",
     },

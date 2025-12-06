@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "Free Quizlet Alternative - AI-Powered Flashcards & Smart Study Tool | TurboLearn",
-    "description": "Looking for a free Quizlet alternative? TurboLearn offers powerful AI-driven flashcards, smart quizzes, and multiple study modes - completely free. Unlimited card sets, collaborative learning, offline access - the perfect choice for students and teachers.",
-    "keywords": "free quizlet alternative, online flashcards, smart quiz tool, AI study assistant, free learning app, memory cards, online education, study tools, quizlet free, flashcard maker"
+    "title": "Remove Watermarks from Images Free Online - AI Watermark Remover | WatermarkCleaner",
+    "description": "Remove watermarks from photos and images for free with AI-powered WatermarkCleaner. No sign-up required. Instantly erase logos, text, and watermarks while preserving image quality.",
+    "keywords": "remove watermark, watermark remover, remove logo from image, AI watermark removal, free watermark remover, remove text from image, photo watermark remover, image cleaner, online watermark removal"
   },
   "user": {
     "sign_in": "Sign In",
@@ -34,7 +34,7 @@
   },
   "my_orders": {
     "title": "My Orders",
-    "description": "orders paid with TurboLearn.",
+    "description": "orders paid with WatermarkCleaner.",
     "no_orders": "No orders found",
     "tip": "",
     "activate_order": "Activate Order",
@@ -82,10 +82,10 @@
   },
   "blog": {
     "title": "Blog",
-    "description": "News, resources, and updates about TurboLearn",
+    "description": "News, resources, and updates about WatermarkCleaner",
     "read_more_text": "Read More",
-    "hero_title": "TurboLearn Blog",
-    "hero_description": "Discover the latest insights on AI-powered learning, study techniques, and educational technology",
+    "hero_title": "WatermarkCleaner Blog",
+    "hero_description": "Discover the latest insights on AI-powered image editing, watermark removal techniques, and photo enhancement",
     "search_placeholder": "Search articles, topics, or keywords...",
     "no_results": "No articles found",
     "no_results_hint": "Try adjusting your search or filter criteria",
@@ -114,7 +114,7 @@
     "submit": "Submit",
     "loading": "Submitting...",
     "contact_tip": "Other ways to contact us",
-    "rating_tip": "How do you feel about TurboLearn?",
+    "rating_tip": "How do you feel about WatermarkCleaner?",
     "placeholder": "Leave your words here..."
   },
   "convert": {

@@ -14,14 +14,6 @@
   }
 }
 
-/* 隐藏第5个section元素 */
-body > main > section:nth-child(5) {
-  display: none !important;
-  visibility: hidden !important;
-  height: 0 !important;
-  overflow: hidden !important;
-}
-
 .container {
   margin-left: auto;
   margin-right: auto;
@@ -35,4 +27,27 @@ body > main > section:nth-child(5) {
     padding-left: 2rem;
     padding-right: 2rem;
   }
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Upload area hover animation */
+.upload-area-hover {
+  transition: all 0.3s ease;
+}
+
+.upload-area-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -10px rgba(124, 58, 237, 0.2);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
 }
