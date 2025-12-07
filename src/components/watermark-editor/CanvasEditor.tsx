@@ -161,7 +161,7 @@ export default function CanvasEditor({
       ctx.lineJoin = "round";
       ctx.lineWidth = brushSize;
       ctx.globalCompositeOperation = erase ? "destination-out" : "source-over";
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+      ctx.strokeStyle = "rgba(255, 255, 255, 1)"; // 修改为实心 (alpha: 1)
 
       ctx.beginPath();
       ctx.moveTo(from.x, from.y);
@@ -183,7 +183,7 @@ export default function CanvasEditor({
       const width = Math.abs(end.x - start.x);
       const height = Math.abs(end.y - start.y);
 
-      ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+      ctx.fillStyle = "rgba(255, 255, 255, 1)"; // 修改为实心 (alpha: 1)
       ctx.fillRect(x, y, width, height);
     },
     [maskCanvasRef]
@@ -197,7 +197,7 @@ export default function CanvasEditor({
       const ctx = maskCanvas.getContext("2d");
       if (!ctx) return;
 
-      ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+      ctx.fillStyle = "rgba(255, 255, 255, 1)"; // 修改为实心 (alpha: 1)
       ctx.beginPath();
       ctx.moveTo(points[0].x, points[0].y);
       for (let i = 1; i < points.length; i++) {

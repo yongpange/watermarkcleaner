@@ -1,6 +1,9 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useUploadStore } from "@/store/uploadStore";
+import { toast } from "react-hot-toast";
 import { RiDeleteBinLine, RiArrowGoBackLine, RiMagicLine, RiLoader4Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { ToolType, InpaintResponse } from "./types";
@@ -26,6 +29,12 @@ export default function WatermarkEditor() {
   const imageCanvasRef = useRef<HTMLCanvasElement>(null);
   const maskCanvasRef = useRef<HTMLCanvasElement>(null);
 
+  // Zustand store for uploaded images
+  const searchParams = useSearchParams();
+  const isFromUpload = searchParams.get('fromUpload') === 'true';
+  const pendingImage = useUploadStore(state => state.pendingImage);
+  const clearPendingImage = useUploadStore(state => state.clearPendingImage);
+
   // Handle image load
   const handleImageLoad = useCallback((img: HTMLImageElement, file: File) => {
     setImage(img);
@@ -34,6 +43,20 @@ export default function WatermarkEditor() {
     setError(null);
     setHasMask(false);
   }, []);
+
+  // Auto-load image from store if coming from upload
+  useEffect(() => {
+    if (isFromUpload && pendingImage) {
+      console.log('Loading pending image from store');
+      handleImageLoad(pendingImage.image, pendingImage.file);
+      clearPendingImage();
+
+      // Clean URL parameter
+      window.history.replaceState({}, '', '/convert');
+
+      toast.success('Image loaded successfully!');
+    }
+  }, [isFromUpload, pendingImage, handleImageLoad, clearPendingImage]);
 
   // Clear mask
   const handleClearMask = useCallback(() => {

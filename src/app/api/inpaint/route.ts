@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Fal.ai API configuration
-const FAL_API_URL = "https://queue.fal.run/fal-ai/flux-pro/v1.1-ultra/inpaint";
+// Fal.ai API configuration - 使用 inpaint 模型
+const FAL_API_URL = "https://queue.fal.run/fal-ai/inpaint";
 const FAL_API_KEY = process.env.FAL_AI_API_KEY;
 
 // Maximum file size: 20MB
@@ -24,6 +24,11 @@ interface FalResultResponse {
   error?: string;
 }
 
+// Debug: Fal.ai API raw response structure
+interface FalDebugResponse {
+  [key: string]: any;
+}
+
 // Helper function to convert File/Blob to base64 data URL
 async function fileToBase64(file: File | Blob): Promise<string> {
   const buffer = await file.arrayBuffer();
@@ -32,17 +37,17 @@ async function fileToBase64(file: File | Blob): Promise<string> {
   return `data:${mimeType};base64,${base64}`;
 }
 
-// Helper function to poll for result
+// 轮询函数 - 用于 queue 模式
 async function pollForResult(
   requestId: string,
   maxAttempts: number = 60,
   intervalMs: number = 2000
-): Promise<FalResultResponse> {
-  const statusUrl = `https://queue.fal.run/fal-ai/flux-pro/v1.1-ultra/inpaint/requests/${requestId}/status`;
-  const resultUrl = `https://queue.fal.run/fal-ai/flux-pro/v1.1-ultra/inpaint/requests/${requestId}`;
+): Promise<any> {
+  const statusUrl = `https://queue.fal.run/fal-ai/inpaint/requests/${requestId}/status`;
+  const resultUrl = `https://queue.fal.run/fal-ai/inpaint/requests/${requestId}`;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    // Check status
+    // 检查状态
     const statusResponse = await fetch(statusUrl, {
       method: "GET",
       headers: { Authorization: `Key ${FAL_API_KEY}` },
@@ -55,7 +60,7 @@ async function pollForResult(
     const statusData = await statusResponse.json();
 
     if (statusData.status === "COMPLETED") {
-      // Fetch result
+      // 获取结果
       const resultResponse = await fetch(resultUrl, {
         method: "GET",
         headers: { Authorization: `Key ${FAL_API_KEY}` },
@@ -72,7 +77,7 @@ async function pollForResult(
       throw new Error(statusData.error || "Processing failed");
     }
 
-    // Wait before next poll
+    // 等待下次轮询
     await new Promise((resolve) => setTimeout(resolve, intervalMs));
   }
 
@@ -115,7 +120,7 @@ export async function POST(request: NextRequest) {
     const imageBase64 = await fileToBase64(image);
     const maskBase64 = await fileToBase64(mask);
 
-    // Call Fal.ai API (queue mode for longer processing)
+    // Call Fal.ai API - inpaint 模型
     const response = await fetch(FAL_API_URL, {
       method: "POST",
       headers: {
@@ -123,12 +128,10 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        model_name: "diffusers/stable-diffusion-xl-1.0-inpainting-0.1",
+        prompt: prompt,
         image_url: imageBase64,
         mask_url: maskBase64,
-        prompt: prompt,
-        num_images: 1,
-        safety_tolerance: "2",
-        output_format: "png",
       }),
     });
 
@@ -141,29 +144,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data: FalQueueResponse | FalResponse = await response.json();
+    const data = await response.json();
+    console.log("Fal.ai API response:", JSON.stringify(data, null, 2));
 
-    // Check if we got a request_id (queue mode) or direct result
+    // 检查是否为队列响应
     if ("request_id" in data) {
-      // Poll for result
+      // 轮询获取结果
       const result = await pollForResult(data.request_id);
-      const imageUrl = result.images?.[0]?.url || result.image?.url;
+      console.log("Fal.ai final result:", JSON.stringify(result, null, 2));
+
+      const imageUrl = result.image?.url || result.images?.[0]?.url;
 
       if (!imageUrl) {
         return NextResponse.json(
-          { error: "No image returned from API" },
+          { error: result.error || "No image returned from API", debug: result },
           { status: 500 }
         );
       }
 
       return NextResponse.json({ success: true, imageUrl });
     } else {
-      // Direct result
-      const imageUrl = data.images?.[0]?.url || data.image?.url;
+      // 直接响应
+      const imageUrl = data.image?.url || data.images?.[0]?.url;
 
       if (!imageUrl) {
         return NextResponse.json(
-          { error: data.error || "No image returned from API" },
+          { error: data.error || "No image returned from API", debug: data },
           { status: 500 }
         );
       }
