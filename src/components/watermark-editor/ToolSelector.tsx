@@ -1,6 +1,7 @@
 "use client";
 
-import { RiBrushLine, RiShape2Line, RiScissorsCutLine, RiEraserLine } from "react-icons/ri";
+import { RiBrushLine, RiShape2Line, RiEraserLine } from "react-icons/ri";
+import { Lasso } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ToolType } from "./types";
 import { Slider } from "@/components/ui/slider";
@@ -15,7 +16,7 @@ interface ToolSelectorProps {
 const tools: { id: ToolType; label: string; icon: React.ReactNode }[] = [
   { id: "brush", label: "Brush", icon: <RiBrushLine className="w-5 h-5" /> },
   { id: "rectangle", label: "Rectangle", icon: <RiShape2Line className="w-5 h-5" /> },
-  { id: "lasso", label: "Lasso", icon: <RiScissorsCutLine className="w-5 h-5" /> },
+  { id: "lasso", label: "Lasso", icon: <Lasso className="w-5 h-5" /> },
   { id: "eraser", label: "Eraser", icon: <RiEraserLine className="w-5 h-5" /> },
 ];
 
@@ -83,7 +84,7 @@ export default function ToolSelector({
           <p>▢ Click and drag to draw a rectangle around the watermark</p>
         )}
         {activeTool === "lasso" && (
-          <p>✂️ Draw a freehand selection around the watermark area</p>
+          <p>📏 Draw a freehand selection around the watermark area</p>
         )}
         {activeTool === "eraser" && (
           <p>🧹 Erase parts of the mask you&apos;ve drawn</p>

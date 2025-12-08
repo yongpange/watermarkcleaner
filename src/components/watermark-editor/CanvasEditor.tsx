@@ -36,6 +36,10 @@ export default function CanvasEditor({
   // 使用 refs 绕过 React state 的异步更新，避免快速拖动时的滞后问题
   const startPointRef = useRef<Point | null>(null);
   const lastPointRef = useRef<Point | null>(null);
+
+  // 使用 ref 存储 handleMouseUp 回调，避免 useEffect 中的循环依赖问题
+  const handleMouseUpRef = useRef<() => void>(() => {});
+
   // 限制预览绘制的频率，避免快速拖动时过度重绘导致性能问题
   const lastPreviewTimeRef = useRef<number>(0);
   const PREVIEW_THROTTLE_MS = 16; // 约60fps
@@ -101,6 +105,23 @@ export default function CanvasEditor({
     setHistoryIndex(-1);
     onMaskChange(false);
   }, [image, calculateDimensions, imageCanvasRef, maskCanvasRef, onMaskChange]);
+
+  // 添加全局 mouseup 事件监听，当用户在画布外释放鼠标时完成绘制
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      // 如果正在绘制且鼠标左键被释放，则完成当前绘制
+      if (isDrawing) {
+        handleMouseUpRef.current();
+      }
+    };
+
+    // 使用捕获阶段监听，确保在其他事件之前捕获 mouseup
+    document.addEventListener("mouseup", handleGlobalMouseUp);
+
+    return () => {
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
+    };
+  }, [isDrawing]);
 
   // Save current state to history
   const saveToHistory = useCallback(() => {
@@ -342,6 +363,12 @@ export default function CanvasEditor({
     onMaskChange(checkMaskContent());
   }, [isDrawing, tool, lassoPoints, fillRectangle, fillLasso, saveToHistory, onMaskChange, checkMaskContent]);
 
+  // 更新 handleMouseUpRef，使其始终指向最新的 handleMouseUp 函数
+  // 这样可以避免在 useEffect 中出现循环依赖问题
+  useEffect(() => {
+    handleMouseUpRef.current = handleMouseUp;
+  }, [handleMouseUp]);
+
   // Cursor style based on tool
   const getCursorStyle = useCallback(() => {
     if (tool === "brush" || tool === "eraser") return "none";
@@ -387,7 +414,8 @@ export default function CanvasEditor({
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={() => {
-              handleMouseUp();
+              // 当鼠标离开画布时，不自动完成绘制，只隐藏光标预览
+              // 对于套索和矩形工具，用户需要明确释放鼠标左键才能完成绘制
               setCursorPos(null);
             }}
           />
