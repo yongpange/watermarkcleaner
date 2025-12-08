@@ -33,6 +33,13 @@ export default function CanvasEditor({
   const [canvasDimensions, setCanvasDimensions] = useState({ width: 0, height: 0, scale: 1 });
   const [cursorPos, setCursorPos] = useState<Point | null>(null);
 
+  // 使用 refs 绕过 React state 的异步更新，避免快速拖动时的滞后问题
+  const startPointRef = useRef<Point | null>(null);
+  const lastPointRef = useRef<Point | null>(null);
+  // 限制预览绘制的频率，避免快速拖动时过度重绘导致性能问题
+  const lastPreviewTimeRef = useRef<number>(0);
+  const PREVIEW_THROTTLE_MS = 16; // 约60fps
+
   // Calculate canvas dimensions to fit container while maintaining aspect ratio
   const calculateDimensions = useCallback(() => {
     if (!image || !containerRef.current) return;
@@ -148,6 +155,17 @@ export default function CanvasEditor({
     [canvasDimensions.scale, maskCanvasRef]
   );
 
+  // Utils: Calculate rectangle coordinates with pixel-perfect alignment
+  const calculatePixelPerfectRect = useCallback((start: Point, end: Point) => {
+    // 确保使用整数坐标，避免抗锯齿导致的模糊和位置偏差
+    const x = Math.round(Math.min(start.x, end.x));
+    const y = Math.round(Math.min(start.y, end.y));
+    const width = Math.round(Math.abs(end.x - start.x));
+    const height = Math.round(Math.abs(end.y - start.y));
+
+    return { x, y, width, height };
+  }, []);
+
   // Draw functions
   const drawBrushStroke = useCallback(
     (from: Point, to: Point, erase: boolean = false) => {
@@ -178,15 +196,12 @@ export default function CanvasEditor({
       const ctx = maskCanvas.getContext("2d");
       if (!ctx) return;
 
-      const x = Math.min(start.x, end.x);
-      const y = Math.min(start.y, end.y);
-      const width = Math.abs(end.x - start.x);
-      const height = Math.abs(end.y - start.y);
+      const { x, y, width, height } = calculatePixelPerfectRect(start, end);
 
       ctx.fillStyle = "rgba(255, 255, 255, 1)"; // 修改为实心 (alpha: 1)
       ctx.fillRect(x, y, width, height);
     },
-    [maskCanvasRef]
+    [maskCanvasRef, calculatePixelPerfectRect]
   );
 
   const fillLasso = useCallback(
@@ -213,6 +228,10 @@ export default function CanvasEditor({
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
       const point = getCanvasPoint(e);
+      // 同步更新 ref 和 state，确保快速拖动时不会出现滞后
+      startPointRef.current = point;
+      lastPointRef.current = point;
+
       setIsDrawing(true);
       setLastPoint(point);
       setStartPoint(point);
@@ -223,7 +242,7 @@ export default function CanvasEditor({
         drawBrushStroke(point, point, tool === "eraser");
       }
     },
-    [getCanvasPoint, tool, drawBrushStroke]
+    [getCanvasPoint, tool, drawBrushStroke, fillRectangle]
   );
 
   const handleMouseMove = useCallback(
@@ -233,9 +252,52 @@ export default function CanvasEditor({
 
       if (!isDrawing) return;
 
+      // 实时更新 lastPointRef，不依赖 React state 的异步更新
+      lastPointRef.current = point;
+
       if (tool === "brush" || tool === "eraser") {
         if (lastPoint) {
           drawBrushStroke(lastPoint, point, tool === "eraser");
+        }
+        setLastPoint(point);
+      } else if (tool === "rectangle") {
+        // 对于矩形工具，限制预览绘制的频率，避免过度重绘
+        // 这样可以减少浏览器负担，防止丢帧和绘制延迟
+        const now = Date.now();
+        if (now - lastPreviewTimeRef.current < PREVIEW_THROTTLE_MS) {
+          // 更新 lastPoint state 但不重绘，让鼠标光标能正常跟随
+          setLastPoint(point);
+          return;
+        }
+        lastPreviewTimeRef.current = now;
+
+        if (startPoint) {
+          // 清除画布并绘制矩形预览
+          const maskCanvas = maskCanvasRef.current;
+          if (maskCanvas) {
+            const ctx = maskCanvas.getContext("2d");
+            if (ctx) {
+              // 从当前历史记录重新绘制
+              if (historyIndex >= 0 && history[historyIndex]) {
+                ctx.putImageData(history[historyIndex].imageData, 0, 0);
+              } else {
+                ctx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+              }
+              // 绘制预览矩形 - 使用与最终绘制完全相同的坐标
+              const { x, y, width, height } = calculatePixelPerfectRect(startPoint, point);
+
+              // 在相同区域上绘制虚线预览边框
+              // 虚线边框完全绘制在矩形内部，确保尺寸与最终 fillRect 完全一致
+              ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+              ctx.lineWidth = 1;
+              ctx.setLineDash([3, 3]);
+              ctx.beginPath();
+              // 绘制在像素边界上，避免抗锯齿
+              ctx.rect(x + 0.5, y + 0.5, width - 1, height - 1);
+              ctx.stroke();
+              ctx.setLineDash([]);
+            }
+          }
         }
         setLastPoint(point);
       } else if (tool === "lasso") {
@@ -256,25 +318,29 @@ export default function CanvasEditor({
         setLastPoint(point);
       }
     },
-    [isDrawing, tool, lastPoint, getCanvasPoint, drawBrushStroke, maskCanvasRef]
+    [isDrawing, tool, lastPoint, startPoint, getCanvasPoint, drawBrushStroke, maskCanvasRef, historyIndex, history, calculatePixelPerfectRect]
   );
 
   const handleMouseUp = useCallback(() => {
     if (!isDrawing) return;
     setIsDrawing(false);
 
-    if (tool === "rectangle" && startPoint && lastPoint) {
-      fillRectangle(startPoint, lastPoint);
+    // 使用 refs 中的实时坐标，避免 React state 异步更新导致的滞后问题
+    if (tool === "rectangle" && startPointRef.current && lastPointRef.current) {
+      fillRectangle(startPointRef.current, lastPointRef.current);
     } else if (tool === "lasso" && lassoPoints.length > 2) {
       fillLasso(lassoPoints);
     }
 
+    // 清空 refs 和 state
+    startPointRef.current = null;
+    lastPointRef.current = null;
     setLassoPoints([]);
     setStartPoint(null);
     setLastPoint(null);
     saveToHistory();
     onMaskChange(checkMaskContent());
-  }, [isDrawing, tool, startPoint, lastPoint, lassoPoints, fillRectangle, fillLasso, saveToHistory, onMaskChange, checkMaskContent]);
+  }, [isDrawing, tool, lassoPoints, fillRectangle, fillLasso, saveToHistory, onMaskChange, checkMaskContent]);
 
   // Cursor style based on tool
   const getCursorStyle = useCallback(() => {
