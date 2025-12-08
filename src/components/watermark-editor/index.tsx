@@ -16,6 +16,8 @@ export default function WatermarkEditor() {
   // State
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [originalWidth, setOriginalWidth] = useState<number>(0);
+  const [originalHeight, setOriginalHeight] = useState<number>(0);
   const [tool, setTool] = useState<ToolType>("brush");
   const [brushSize, setBrushSize] = useState(30);
   const [hasMask, setHasMask] = useState(false);
@@ -39,6 +41,8 @@ export default function WatermarkEditor() {
   const handleImageLoad = useCallback((img: HTMLImageElement, file: File) => {
     setImage(img);
     setImageFile(file);
+    setOriginalWidth(img.width);
+    setOriginalHeight(img.height);
     setResultImageUrl(null);
     setError(null);
     setHasMask(false);
@@ -72,6 +76,8 @@ export default function WatermarkEditor() {
   const handleReset = useCallback(() => {
     setImage(null);
     setImageFile(null);
+    setOriginalWidth(0);
+    setOriginalHeight(0);
     setResultImageUrl(null);
     setError(null);
     setHasMask(false);
@@ -165,6 +171,8 @@ export default function WatermarkEditor() {
       const formData = new FormData();
       formData.append("image", imageBlob, "image.png");
       formData.append("mask", maskBlob, "mask.png");
+      formData.append("originalWidth", originalWidth.toString());
+      formData.append("originalHeight", originalHeight.toString());
 
       const response = await fetch("/api/inpaint", {
         method: "POST",
@@ -183,7 +191,7 @@ export default function WatermarkEditor() {
     } finally {
       setIsProcessing(false);
     }
-  }, [hasMask, isProcessing, exportImage, exportMask]);
+  }, [hasMask, isProcessing, exportImage, exportMask, originalWidth, originalHeight]);
 
   // If we have a result, show it
   if (resultImageUrl) {

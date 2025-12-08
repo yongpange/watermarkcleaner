@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import sharp from "sharp";
 
 // Fal.ai API configuration - 使用 inpaint 模型
 const FAL_API_URL = "https://queue.fal.run/fal-ai/inpaint";
@@ -99,6 +100,8 @@ export async function POST(request: NextRequest) {
     const image = formData.get("image") as File | null;
     const mask = formData.get("mask") as File | null;
     const prompt = (formData.get("prompt") as string) || "Remove the watermark and restore the original image seamlessly";
+    const originalWidth = parseInt(formData.get("originalWidth")?.toString() || "1024");
+    const originalHeight = parseInt(formData.get("originalHeight")?.toString() || "1024");
 
     // Validate inputs
     if (!image || !mask) {
@@ -162,7 +165,30 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      return NextResponse.json({ success: true, imageUrl });
+      // Download generated image and resize to original dimensions
+      try {
+        const generatedImage = await fetch(imageUrl);
+        const generatedBuffer = await generatedImage.arrayBuffer();
+
+        // Resize to original dimensions using sharp
+        const resizedBuffer = await sharp(generatedBuffer)
+          .resize(originalWidth, originalHeight, {
+            fit: 'fill',
+            withoutEnlargement: false
+          })
+          .png()
+          .toBuffer();
+
+        // Convert to base64 for direct serving
+        const base64Image = resizedBuffer.toString('base64');
+        const sizedImageUrl = `data:image/png;base64,${base64Image}`;
+
+        return NextResponse.json({ success: true, imageUrl: sizedImageUrl });
+      } catch (resizeError) {
+        console.error("Resize error:", resizeError);
+        // If resizing fails, return original image
+        return NextResponse.json({ success: true, imageUrl });
+      }
     } else {
       // 直接响应
       const imageUrl = data.image?.url || data.images?.[0]?.url;
@@ -174,7 +200,29 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      return NextResponse.json({ success: true, imageUrl });
+      // Download and resize generated image
+      try {
+        const generatedImage = await fetch(imageUrl);
+        const generatedBuffer = await generatedImage.arrayBuffer();
+
+        // Resize to original dimensions
+        const resizedBuffer = await sharp(generatedBuffer)
+          .resize(originalWidth, originalHeight, {
+            fit: 'fill',
+            withoutEnlargement: false
+          })
+          .png()
+          .toBuffer();
+
+        // Convert to base64
+        const base64Image = resizedBuffer.toString('base64');
+        const sizedImageUrl = `data:image/png;base64,${base64Image}`;
+
+        return NextResponse.json({ success: true, imageUrl: sizedImageUrl });
+      } catch (resizeError) {
+        console.error("Resize error:", resizeError);
+        return NextResponse.json({ success: true, imageUrl });
+      }
     }
   } catch (error) {
     console.error("Inpaint API error:", error);

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { RiDownloadLine, RiRefreshLine, RiZoomInLine, RiZoomOutLine } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 interface ResultDisplayProps {
   imageUrl: string;
@@ -78,13 +77,10 @@ export default function ResultDisplay({ imageUrl, onReset }: ResultDisplayProps)
               transition: "transform 0.2s ease",
             }}
           >
-            <Image
+            <img
               src={imageUrl}
               alt="Result"
-              width={800}
-              height={600}
               className="max-w-full h-auto rounded-lg shadow-lg"
-              unoptimized
             />
           </div>
         </div>
