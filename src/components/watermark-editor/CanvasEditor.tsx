@@ -187,6 +187,27 @@ export default function CanvasEditor({
     return { x, y, width, height };
   }, []);
 
+  // Normalize alpha values to exactly 50% for all drawn areas
+  const normalizeAlpha = useCallback(() => {
+    const maskCanvas = maskCanvasRef.current;
+    if (!maskCanvas) return;
+
+    const ctx = maskCanvas.getContext("2d");
+    if (!ctx) return;
+
+    const imageData = ctx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
+    const data = imageData.data;
+
+    // 遍历所有像素，将已绘制区域的alpha统一设置为128（50%不透明度）
+    for (let i = 3; i < data.length; i += 4) {
+      if (data[i] > 0) {
+        data[i] = 128; // 强制设置为50%不透明度
+      }
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+  }, [maskCanvasRef]);
+
   // Draw functions
   const drawBrushStroke = useCallback(
     (from: Point, to: Point, erase: boolean = false) => {
@@ -200,7 +221,7 @@ export default function CanvasEditor({
       ctx.lineJoin = "round";
       ctx.lineWidth = brushSize;
       ctx.globalCompositeOperation = erase ? "destination-out" : "source-over";
-      ctx.strokeStyle = "rgba(255, 255, 255, 1)"; // 修改为实心 (alpha: 1)
+      ctx.strokeStyle = "rgb(0, 100, 255)"; // 使用纯色绘制，不透明
 
       ctx.beginPath();
       ctx.moveTo(from.x, from.y);
@@ -219,7 +240,7 @@ export default function CanvasEditor({
 
       const { x, y, width, height } = calculatePixelPerfectRect(start, end);
 
-      ctx.fillStyle = "rgba(255, 255, 255, 1)"; // 修改为实心 (alpha: 1)
+      ctx.fillStyle = "rgb(0, 100, 255)"; // 使用纯色绘制，不透明
       ctx.fillRect(x, y, width, height);
     },
     [maskCanvasRef, calculatePixelPerfectRect]
@@ -233,7 +254,7 @@ export default function CanvasEditor({
       const ctx = maskCanvas.getContext("2d");
       if (!ctx) return;
 
-      ctx.fillStyle = "rgba(255, 255, 255, 1)"; // 修改为实心 (alpha: 1)
+      ctx.fillStyle = "rgb(0, 100, 255)"; // 使用纯色绘制，不透明
       ctx.beginPath();
       ctx.moveTo(points[0].x, points[0].y);
       for (let i = 1; i < points.length; i++) {
@@ -309,7 +330,7 @@ export default function CanvasEditor({
 
               // 在相同区域上绘制虚线预览边框
               // 虚线边框完全绘制在矩形内部，确保尺寸与最终 fillRect 完全一致
-              ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+              ctx.strokeStyle = "rgba(0, 100, 255, 0.9)";
               ctx.lineWidth = 1;
               ctx.setLineDash([3, 3]);
               ctx.beginPath();
@@ -328,7 +349,7 @@ export default function CanvasEditor({
         if (maskCanvas) {
           const ctx = maskCanvas.getContext("2d");
           if (ctx && lastPoint) {
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.strokeStyle = "rgba(0, 100, 255, 0.5)";
             ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.moveTo(lastPoint.x, lastPoint.y);
@@ -347,10 +368,15 @@ export default function CanvasEditor({
     setIsDrawing(false);
 
     // 使用 refs 中的实时坐标，避免 React state 异步更新导致的滞后问题
-    if (tool === "rectangle" && startPointRef.current && lastPointRef.current) {
+    if (tool === "brush" || tool === "eraser") {
+      // Brush和eraser在鼠标抬起时规范化透明度
+      normalizeAlpha();
+    } else if (tool === "rectangle" && startPointRef.current && lastPointRef.current) {
       fillRectangle(startPointRef.current, lastPointRef.current);
+      normalizeAlpha(); // 规范化透明度
     } else if (tool === "lasso" && lassoPoints.length > 2) {
       fillLasso(lassoPoints);
+      normalizeAlpha(); // 规范化透明度
     }
 
     // 清空 refs 和 state
@@ -361,7 +387,7 @@ export default function CanvasEditor({
     setLastPoint(null);
     saveToHistory();
     onMaskChange(checkMaskContent());
-  }, [isDrawing, tool, lassoPoints, fillRectangle, fillLasso, saveToHistory, onMaskChange, checkMaskContent]);
+  }, [isDrawing, tool, lassoPoints, fillRectangle, fillLasso, saveToHistory, onMaskChange, checkMaskContent, normalizeAlpha]);
 
   // 更新 handleMouseUpRef，使其始终指向最新的 handleMouseUp 函数
   // 这样可以避免在 useEffect 中出现循环依赖问题
