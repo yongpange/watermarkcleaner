@@ -9,8 +9,8 @@ interface CanvasEditorProps {
   tool: ToolType;
   brushSize: number;
   onMaskChange: (hasMask: boolean) => void;
-  maskCanvasRef: React.RefObject<HTMLCanvasElement | null>;
-  imageCanvasRef: React.RefObject<HTMLCanvasElement | null>;
+  maskCanvasRef: React.RefObject<HTMLCanvasElement>;
+  imageCanvasRef: React.RefObject<HTMLCanvasElement>;
 }
 
 const MAX_HISTORY = 50;
