@@ -149,48 +149,6 @@ export default function Hero({ hero }: { hero: HeroType }) {
               <p className="text-sm text-muted-foreground mb-6">{hero.tip}</p>
             )}
 
-            {/* Before/After Comparison Preview */}
-            <div className="mx-auto max-w-4xl mt-12 mb-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-                <div className="relative group rounded-xl overflow-hidden shadow-lg border border-border/50">
-                  <div className="absolute top-3 left-3 z-10">
-                    <Badge variant="secondary" className="bg-red-500/90 text-white border-0 backdrop-blur-sm">
-                      Before
-                    </Badge>
-                  </div>
-                  <div className="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <div className="w-24 h-24 mx-auto mb-3 rounded-lg bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center relative">
-                        <RiImageLine className="w-10 h-10 text-gray-500 dark:text-gray-400" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-xs font-bold text-red-500 bg-white/80 px-2 py-0.5 rounded transform rotate-[-15deg]">
-                            WATERMARK
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground">Image with watermark</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative group rounded-xl overflow-hidden shadow-lg border border-border/50">
-                  <div className="absolute top-3 left-3 z-10">
-                    <Badge className="bg-green-500/90 text-white border-0 backdrop-blur-sm">
-                      After
-                    </Badge>
-                  </div>
-                  <div className="aspect-[4/3] bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-violet-950/20 dark:to-indigo-950/20 flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <div className="w-24 h-24 mx-auto mb-3 rounded-lg bg-gradient-to-br from-violet-200 to-indigo-200 dark:from-violet-800 dark:to-indigo-800 flex items-center justify-center">
-                        <RiImageLine className="w-10 h-10 text-violet-600 dark:text-violet-400" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">Clean, watermark-free image</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {hero.show_happy_users && <HappyUsers />}
           </div>
         </div>

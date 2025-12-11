@@ -53,6 +53,8 @@ export async function generateMetadata({
   };
 }
 
+import ComparisonShowcase from '@/components/blocks/comparison-showcase';
+
 export default async function LandingPage({
   params,
 }: {
@@ -64,6 +66,15 @@ export default async function LandingPage({
   return (
     <>
       {page.hero && <Hero hero={page.hero} />}
+
+      {/* Image Comparison Showcase */}
+      <ComparisonShowcase
+        title="Clean Up Photos with Magic Eraser — Free AI Object Remover"
+        subtitle="Use Magic Eraser to remove any unwanted object, text, logo, or person from your photos. No experience needed — upload and let the AI tool handle the rest."
+        beforeImage="/imgs/comparison-1-before.jpg"
+        afterImage="/imgs/comparison-1-after.jpg"
+      />
+
       {page.introduce && <Feature1 section={page.introduce} />}
       {page.benefit && <Feature2 section={page.benefit} />}
       {page.usage && <Feature3 section={page.usage} />}
