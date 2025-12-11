@@ -1,0 +1,472 @@
+{
+  "template": "watermarkcleaner-template",
+  "theme": "light",
+  "header": {
+    "brand": {
+      "title": "WatermarkCleaner",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "WatermarkCleaner - Free AI Watermark Remover"
+      },
+      "url": "/"
+    },
+    "nav": {
+      "items": [
+        {
+          "title": "Features",
+          "url": "/#feature",
+          "icon": "RiSparkling2Line"
+        },
+        {
+          "title": "How It Works",
+          "url": "/#usage",
+          "icon": "RiCheckDoubleLine"
+        },
+        {
+          "title": "Pricing",
+          "url": "/pricing",
+          "icon": "RiPriceTag3Line"
+        },
+        {
+          "title": "FAQ",
+          "url": "/#faq",
+          "icon": "RiQuestionLine"
+        }
+      ]
+    },
+    "buttons": [
+      {
+        "title": "Try Free",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default",
+        "icon": "RiArrowRightLine"
+      }
+    ],
+    "show_sign": true,
+    "show_theme": true,
+    "show_locale": true
+  },
+  "hero": {
+    "title": "Remove Watermarks from Photos Instantly with AI",
+    "highlight_text": "Remove Watermarks",
+    "description": "WatermarkCleaner uses advanced AI to remove watermarks, logos, text, and unwanted objects from your photos in seconds. Free, fast, and no sign-up required.",
+    "announcement": {
+      "label": "Free",
+      "title": "✨ AI-Powered Watermark Removal",
+      "url": "/#feature"
+    },
+    "tip": "",
+    "buttons": [
+      {
+        "title": "Remove Watermark Now",
+        "icon": "RiMagicLine",
+        "url": "/convert",
+        "target": "_self",
+        "variant": "default"
+      }
+    ],
+    "show_happy_users": true,
+    "show_badge": false
+  },
+
+  "introduce": {
+    "name": "introduce",
+    "title": "What Can WatermarkCleaner Remove?",
+    "label": "Use Cases",
+    "description": "Our AI-powered tool handles all types of watermarks and unwanted elements from your photos with professional results.",
+    "image": {
+      "src": "/imgs/features/watermark-demo.webp"
+    },
+    "items": [
+      {
+        "title": "Text Watermarks",
+        "description": "Remove copyright text, brand names, dates, and any text overlays from your photos seamlessly.",
+        "icon": "RiText"
+      },
+      {
+        "title": "Logo Watermarks",
+        "description": "Erase stock photo logos, brand marks, and company watermarks while preserving image quality.",
+        "icon": "RiImageLine"
+      },
+      {
+        "title": "Unwanted Objects",
+        "description": "Remove people, photobombers, objects, or any distractions from your photos with AI precision.",
+        "icon": "RiDeleteBin7Line"
+      }
+    ]
+  },
+  "benefit": {
+    "name": "benefit",
+    "title": "Why Choose WatermarkCleaner",
+    "label": "Benefits",
+    "description": "Experience the most advanced AI watermark removal technology - fast, accurate, and completely free.",
+    "items": [
+      {
+        "title": "AI-Powered Accuracy",
+        "description": "Our advanced AI understands image context and intelligently fills removed areas with natural-looking content, leaving no traces.",
+        "icon": "RiRobot2Line",
+        "image": {
+          "src": "/imgs/features/ai-accuracy.webp"
+        }
+      },
+      {
+        "title": "Preserve Image Quality",
+        "description": "Unlike other tools that blur or distort images, WatermarkCleaner maintains the original resolution and quality of your photos.",
+        "icon": "RiHdLine",
+        "image": {
+          "src": "/imgs/features/quality.webp"
+        }
+      },
+      {
+        "title": "No Sign-up Required",
+        "description": "Start removing watermarks immediately - no account creation, no email verification, no hassle. Just upload and clean.",
+        "icon": "RiUserLine",
+        "image": {
+          "src": "/imgs/features/no-signup.webp"
+        }
+      }
+    ]
+  },
+  "usage": {
+    "name": "usage",
+    "title": "How to Remove Watermarks in 3 Easy Steps",
+    "description": "Remove watermarks from your photos in seconds with our simple process:",
+    "image": {
+      "src": "/imgs/features/steps.webp"
+    },
+    "image_position": "left",
+    "text_align": "center",
+    "items": [
+      {
+        "title": "Upload Your Image",
+        "description": "Drag and drop your image or click to upload. We support JPG, PNG, WebP, and BMP formats up to 20MB.",
+        "image": {
+          "src": "/imgs/features/step1.webp"
+        }
+      },
+      {
+        "title": "Mark the Watermark",
+        "description": "Use our brush tool to highlight the watermark area you want to remove. Our AI will detect and process it automatically.",
+        "image": {
+          "src": "/imgs/features/step2.webp"
+        }
+      },
+      {
+        "title": "Download Clean Image",
+        "description": "Preview the result and download your watermark-free image in high quality. No watermarks added by us!",
+        "image": {
+          "src": "/imgs/features/step3.webp"
+        }
+      }
+    ]
+  },
+  "feature": {
+    "name": "feature",
+    "title": "Powerful AI Features for Perfect Results",
+    "description": "Advanced technology that makes watermark removal effortless and professional.",
+    "items": [
+      {
+        "title": "Smart AI Detection",
+        "description": "Our AI automatically detects watermarks, logos, and text overlays for quick one-click removal.",
+        "icon": "RiRobot2Line"
+      },
+      {
+        "title": "Batch Processing",
+        "description": "Remove watermarks from multiple images at once. Save time with bulk processing capability.",
+        "icon": "RiStackLine"
+      },
+      {
+        "title": "High Resolution Output",
+        "description": "Download your cleaned images in original resolution. No quality loss or compression.",
+        "icon": "RiHdLine"
+      },
+      {
+        "title": "Multiple Format Support",
+        "description": "Works with JPG, PNG, WebP, BMP and more. Convert between formats as needed.",
+        "icon": "RiFileImageLine"
+      },
+      {
+        "title": "Precise Brush Tool",
+        "description": "Fine-tune removal with adjustable brush sizes. Perfect for complex watermarks.",
+        "icon": "RiBrushLine"
+      },
+      {
+        "title": "Instant Preview",
+        "description": "See results in real-time before downloading. Make adjustments until perfect.",
+        "icon": "RiEyeLine"
+      },
+      {
+        "title": "Cloud Processing",
+        "description": "Heavy AI processing happens in the cloud. Works on any device without slowdowns.",
+        "icon": "RiCloudLine"
+      },
+      {
+        "title": "Privacy Protected",
+        "description": "Your images are processed securely and deleted automatically. We never store your data.",
+        "icon": "RiShieldCheckLine"
+      },
+      {
+        "title": "No Watermarks Added",
+        "description": "Download clean images without any watermarks added by us. Your result is truly clean.",
+        "icon": "RiCheckDoubleLine"
+      }
+    ]
+  },
+  "stats": {
+    "name": "stats",
+    "label": "Stats",
+    "title": "Trusted by Millions Worldwide",
+    "description": "Join millions of users who trust WatermarkCleaner for their image editing needs",
+    "icon": "FaRegHeart",
+    "items": [
+      {
+        "title": "Images Processed",
+        "label": "10M+",
+        "description": "Photos Cleaned"
+      },
+      {
+        "title": "Happy Users",
+        "label": "2M+",
+        "description": "Active Users"
+      },
+      {
+        "title": "Success Rate",
+        "label": "99%",
+        "description": "Removal Accuracy"
+      },
+      {
+        "title": "Processing Time",
+        "label": "<5s",
+        "description": "Average Speed"
+      }
+    ]
+  },
+  "testimonial": {
+    "name": "testimonial",
+    "label": "Testimonial",
+    "title": "What Our Users Say",
+    "description": "Real feedback from photographers, designers, marketers, and everyday users.",
+    "icon": "GoThumbsup",
+    "items": [
+      {
+        "title": "Sarah Chen",
+        "label": "Photographer",
+        "description": "Finally a watermark remover that actually works! I use it daily for my photography business. The AI is incredibly smart at preserving image quality.",
+        "image": {
+          "src": "/imgs/users/1.png"
+        }
+      },
+      {
+        "title": "Michael Rodriguez",
+        "label": "Graphic Designer",
+        "description": "I've tried many tools but WatermarkCleaner is the best. It handles complex backgrounds perfectly and the batch processing saves me hours.",
+        "image": {
+          "src": "/imgs/users/2.png"
+        }
+      },
+      {
+        "title": "Emma Wilson",
+        "label": "Social Media Manager",
+        "description": "Perfect for cleaning up images for social media. No more ugly watermarks ruining my posts. And it's completely free!",
+        "image": {
+          "src": "/imgs/users/3.png"
+        }
+      },
+      {
+        "title": "David Park",
+        "label": "E-commerce Owner",
+        "description": "My product photos look so much more professional now. Removed all the stock photo watermarks instantly. Highly recommend!",
+        "image": {
+          "src": "/imgs/users/4.png"
+        }
+      },
+      {
+        "title": "Lisa Thompson",
+        "label": "Content Creator",
+        "description": "The no sign-up feature is amazing. I can just upload and get my clean images immediately. This tool is a game-changer.",
+        "image": {
+          "src": "/imgs/users/5.png"
+        }
+      },
+      {
+        "title": "James Miller",
+        "label": "Marketing Director",
+        "description": "We use WatermarkCleaner for all our marketing materials. The quality is professional-grade and the speed is unmatched.",
+        "image": {
+          "src": "/imgs/users/6.png"
+        }
+      }
+    ]
+  },
+  "faq": {
+    "name": "faq",
+    "label": "FAQ",
+    "title": "Frequently Asked Questions",
+    "description": "Everything you need to know about WatermarkCleaner",
+    "items": [
+      {
+        "title": "Is WatermarkCleaner really free?",
+        "description": "Yes! WatermarkCleaner offers free watermark removal with no sign-up required. You can process images instantly without any cost. We also offer premium plans for users who need advanced features like batch processing and higher resolution outputs."
+      },
+      {
+        "title": "What image formats are supported?",
+        "description": "WatermarkCleaner supports all major image formats including JPG, JPEG, PNG, WebP, and BMP. You can upload images up to 20MB in size. The output format matches your input, or you can choose to convert between formats."
+      },
+      {
+        "title": "Will removing watermarks lower image quality?",
+        "description": "No! Our AI technology is designed to preserve the original image quality. Unlike basic tools that blur or distort the image, WatermarkCleaner intelligently fills the removed area with matching content, maintaining sharpness and resolution."
+      },
+      {
+        "title": "Can I use WatermarkCleaner on mobile devices?",
+        "description": "Absolutely! WatermarkCleaner is fully responsive and works on any device - smartphones, tablets, and desktops. No app installation required - just visit our website and start removing watermarks."
+      },
+      {
+        "title": "What if the watermark is on a complex background?",
+        "description": "Our AI excels at handling complex backgrounds! It analyzes the surrounding area and intelligently reconstructs the image beneath the watermark. For best results with very complex areas, use our brush tool to precisely mark the watermark."
+      },
+      {
+        "title": "Is my data secure and private?",
+        "description": "Absolutely. Your images are processed securely and automatically deleted from our servers after processing. We never store, share, or use your images for any other purpose. Your privacy is our priority."
+      },
+      {
+        "title": "Can I remove watermarks from multiple images at once?",
+        "description": "Yes! With our batch processing feature, you can upload and process multiple images simultaneously. This is perfect for cleaning up large collections of photos efficiently."
+      },
+      {
+        "title": "Is it legal to remove watermarks?",
+        "description": "WatermarkCleaner is a tool for legitimate use cases like removing your own watermarks, cleaning personal photos, or removing distracting elements. Please respect copyright laws and only remove watermarks from images you own or have permission to edit."
+      }
+    ]
+  },
+  "cta": {
+    "name": "cta",
+    "title": "Ready to Remove Watermarks?",
+    "description": "Start cleaning your photos now - free, fast, and no sign-up required.",
+    "buttons": [
+      {
+        "title": "Remove Watermark Now",
+        "url": "/convert",
+        "target": "_self",
+        "icon": "RiMagicLine"
+      },
+      {
+        "title": "Learn More",
+        "url": "/#feature",
+        "target": "_self",
+        "variant": "outline"
+      }
+    ]
+  },
+  "footer": {
+    "name": "footer",
+    "brand": {
+      "title": "WatermarkCleaner",
+      "description": "WatermarkCleaner is a free AI-powered tool for removing watermarks, logos, and unwanted objects from photos. Fast, easy, and no sign-up required.",
+      "logo": {
+        "src": "/logo.png",
+        "alt": "WatermarkCleaner - Free AI Watermark Remover"
+      },
+      "url": "/"
+    },
+    "copyright": "© 2025 WatermarkCleaner. All rights reserved.",
+    "nav": {
+      "items": [
+        {
+          "title": "Product",
+          "children": [
+            {
+              "title": "Remove Watermark",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Features",
+              "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "Pricing",
+              "url": "/pricing",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "Resources",
+          "children": [
+            {
+              "title": "How It Works",
+              "url": "/#usage",
+              "target": "_self"
+            },
+            {
+              "title": "FAQ",
+              "url": "/#faq",
+              "target": "_self"
+            },
+            {
+              "title": "Blog",
+              "url": "/blog",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "Tools",
+          "children": [
+            {
+              "title": "Watermark Remover",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Logo Remover",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Object Remover",
+              "url": "/convert",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    "social": {
+      "items": [
+        {
+          "title": "X",
+          "icon": "RiTwitterXFill",
+          "url": "https://x.com/watermarkcleaner",
+          "target": "_blank"
+        },
+        {
+          "title": "Github",
+          "icon": "RiGithubFill",
+          "url": "https://github.com/watermarkcleaner",
+          "target": "_blank"
+        },
+        {
+          "title": "Email",
+          "icon": "RiMailLine",
+          "url": "mailto:support@watermarkcleaner.com",
+          "target": "_self"
+        }
+      ]
+    },
+    "agreement": {
+      "items": [
+        {
+          "title": "Privacy Policy",
+          "url": "/privacy-policy"
+        },
+        {
+          "title": "Terms of Service",
+          "url": "/terms-of-service"
+        }
+      ]
+    }
+  }
+}

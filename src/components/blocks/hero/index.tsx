@@ -149,7 +149,6 @@ export default function Hero({ hero }: { hero: HeroType }) {
               <p className="text-sm text-muted-foreground mb-6">{hero.tip}</p>
             )}
 
-            {hero.show_happy_users && <HappyUsers />}
           </div>
         </div>
       </section>

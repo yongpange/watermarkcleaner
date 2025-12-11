@@ -247,13 +247,13 @@ export default function ImageComparison({
         {/* Labels */}
         <div className="absolute top-4 left-4 z-10">
           <span className="bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
-            Before - With Watermark
+            Before
           </span>
         </div>
 
         <div className="absolute top-4 right-4 z-10">
           <span className="bg-violet-600/90 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
-            After - Clean Image
+            After
           </span>
         </div>
 

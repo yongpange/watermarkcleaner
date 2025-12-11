@@ -13,19 +13,9 @@
     "nav": {
       "items": [
         {
-          "title": "Features",
-          "url": "/#feature",
-          "icon": "RiSparkling2Line"
-        },
-        {
-          "title": "How It Works",
-          "url": "/#usage",
-          "icon": "RiCheckDoubleLine"
-        },
-        {
-          "title": "Pricing",
-          "url": "/pricing",
-          "icon": "RiPriceTag3Line"
+          "title": "Blog",
+          "url": "/blog",
+          "icon": "RiArticleLine"
         },
         {
           "title": "FAQ",
@@ -56,7 +46,7 @@
       "title": "✨ AI-Powered Watermark Removal",
       "url": "/#feature"
     },
-    "tip": "No sign-up required • Unlimited free usage",
+    "tip": "",
     "buttons": [
       {
         "title": "Remove Watermark Now",
@@ -69,7 +59,6 @@
     "show_happy_users": true,
     "show_badge": false
   },
-
   "introduce": {
     "name": "introduce",
     "title": "What Can WatermarkCleaner Remove?",

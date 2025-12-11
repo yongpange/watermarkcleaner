@@ -32,7 +32,6 @@ import { Menu } from "lucide-react";
 import SignToggle from "@/components/sign/toggle";
 import ThemeToggle from "@/components/theme/toggle";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
 
 export default function Header({ header }: { header: HeaderType }) {
   if (header.disabled) {
@@ -48,15 +47,6 @@ export default function Header({ header }: { header: HeaderType }) {
               href={(header.brand?.url || "/") as any}
               className="flex items-center gap-2"
             >
-              {header.brand?.logo?.src && (
-                <Image
-                  src={header.brand.logo.src}
-                  alt={header.brand.logo.alt || header.brand.title || "Logo"}
-                  width={32}
-                  height={32}
-                  className="w-8 h-auto"
-                />
-              )}
               {header.brand?.title && (
                 <span className="text-xl text-primary font-bold">
                   {header.brand?.title || ""}
@@ -176,15 +166,6 @@ export default function Header({ header }: { header: HeaderType }) {
               href={(header.brand?.url || "/") as any}
               className="flex items-center gap-2"
             >
-              {header.brand?.logo?.src && (
-                <Image
-                  src={header.brand.logo.src}
-                  alt={header.brand.logo.alt || header.brand.title || "Logo"}
-                  width={32}
-                  height={32}
-                  className="w-8 h-auto"
-                />
-              )}
               {header.brand?.title && (
                 <span className="text-xl font-bold">
                   {header.brand?.title || ""}
@@ -204,15 +185,6 @@ export default function Header({ header }: { header: HeaderType }) {
                       href={(header.brand?.url || "/") as any}
                       className="flex items-center gap-2"
                     >
-                      {header.brand?.logo?.src && (
-                        <Image
-                          src={header.brand.logo.src}
-                          alt={header.brand.logo.alt || header.brand.title || "Logo"}
-                          width={32}
-                          height={32}
-                          className="w-8 h-auto"
-                        />
-                      )}
                       {header.brand?.title && (
                         <span className="text-xl font-bold">
                           {header.brand?.title || ""}
