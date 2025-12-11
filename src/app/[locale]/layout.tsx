@@ -39,6 +39,8 @@ export default async function RootLayout({
   const messages = await getMessages();
   const webUrl = process.env.NEXT_PUBLIC_WEB_URL || "";
   const googleAdsenseCode = process.env.NEXT_PUBLIC_GOOGLE_ADCODE || "";
+  const clarityProjectId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID || "";
+  const isProduction = process.env.NODE_ENV === "production";
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -46,6 +48,20 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         {googleAdsenseCode && (
           <meta name="google-adsense-account" content={googleAdsenseCode} />
+        )}
+
+        {isProduction && clarityProjectId && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+                })(window, document, "clarity", "script", "${clarityProjectId}");
+              `,
+            }}
+          />
         )}
 
         <link rel="icon" href="/favicon.ico" />
