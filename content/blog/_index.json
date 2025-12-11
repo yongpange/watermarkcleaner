@@ -1,0 +1,36 @@
+{
+  "categories": [
+    {
+      "id": "updates",
+      "name": {
+        "en": "Product Updates",
+        "zh": "产品更新"
+      }
+    },
+    {
+      "id": "tutorials",
+      "name": {
+        "en": "Tutorials",
+        "zh": "教程"
+      }
+    },
+    {
+      "id": "tips",
+      "name": {
+        "en": "Tips & Tricks",
+        "zh": "技巧与窍门"
+      }
+    }
+  ],
+  "authors": [
+    {
+      "id": "team",
+      "name": {
+        "en": "WatermarkCleaner Team",
+        "zh": "WatermarkCleaner 团队"
+      }
+    }
+  ],
+  "defaultLocale": "en",
+  "supportedLocales": ["en", "zh"]
+}

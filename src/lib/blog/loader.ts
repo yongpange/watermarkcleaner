@@ -24,20 +24,43 @@ export async function getBlogConfig(): Promise<BlogConfig> {
     return blogConfigCache;
   }
 
-  const configPath = path.join(CONTENT_DIR, "_index.json");
-  const content = await fs.readFile(configPath, "utf-8");
-  blogConfigCache = JSON.parse(content) as BlogConfig;
-  return blogConfigCache;
+  try {
+    const configPath = path.join(CONTENT_DIR, "_index.json");
+    const content = await fs.readFile(configPath, "utf-8");
+    blogConfigCache = JSON.parse(content) as BlogConfig;
+    return blogConfigCache;
+  } catch (error) {
+    console.error("Error loading blog config:", error);
+
+    // 返回默认配置
+    const defaultConfig: BlogConfig = {
+      categories: [],
+      authors: [],
+      defaultLocale: "en",
+      supportedLocales: ["en", "zh"],
+    };
+    blogConfigCache = defaultConfig;
+    return defaultConfig;
+  }
 }
 
 /**
  * 获取所有文章目录
  */
 async function getPostSlugs(): Promise<string[]> {
-  const entries = await fs.readdir(CONTENT_DIR, { withFileTypes: true });
-  return entries
-    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("_"))
-    .map((entry) => entry.name);
+  try {
+    const stats = await fs.stat(CONTENT_DIR);
+    if (!stats.isDirectory()) {
+      return [];
+    }
+    const entries = await fs.readdir(CONTENT_DIR, { withFileTypes: true });
+    return entries
+      .filter((entry) => entry.isDirectory() && !entry.name.startsWith("_"))
+      .map((entry) => entry.name);
+  } catch (error) {
+    // 目录不存在或无法读取，返回空数组
+    return [];
+  }
 }
 
 /**
