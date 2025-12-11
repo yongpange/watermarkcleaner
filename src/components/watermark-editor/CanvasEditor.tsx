@@ -284,7 +284,7 @@ export default function CanvasEditor({
         drawBrushStroke(point, point, tool === "eraser");
       }
     },
-    [getCanvasPoint, tool, drawBrushStroke, fillRectangle]
+    [getCanvasPoint, tool, drawBrushStroke]
   );
 
   const handleMouseMove = useCallback(

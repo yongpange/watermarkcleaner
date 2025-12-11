@@ -17,13 +17,13 @@ import { loadImage, validateImageFile } from "@/lib/imageUtils";
 import { toast } from "react-hot-toast";
 
 export default function Hero({ hero }: { hero: HeroType }) {
-  if (hero.disabled) {
-    return null;
-  }
-
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const setPendingImage = useUploadStore(state => state.setPendingImage);
+
+  if (hero.disabled) {
+    return null;
+  }
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();

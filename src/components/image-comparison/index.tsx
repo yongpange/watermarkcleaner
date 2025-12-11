@@ -50,28 +50,6 @@ export default function ImageComparison({
     setSliderPosition(percentage);
   }, [isDragging]);
 
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-    document.body.style.cursor = '';
-
-    // Resume auto-play if it was playing before
-    if (wasPlayingRef.current && autoPlay) {
-      wasPlayingRef.current = false;
-      startAutoPlay();
-    }
-  }, [autoPlay]);
-
-  const handleMouseDown = useCallback(() => {
-    setIsDragging(true);
-    document.body.style.cursor = 'grabbing';
-
-    // Stop auto-play when user starts interacting
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      wasPlayingRef.current = true;
-    }
-  }, []);
-
   const startAutoPlay = useCallback(() => {
     if (!autoPlay || isDragging) return;
 
@@ -92,6 +70,28 @@ export default function ImageComparison({
 
     animationRef.current = requestAnimationFrame(animate);
   }, [autoPlay, autoPlaySpeed, isDragging]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+    document.body.style.cursor = '';
+
+    // Resume auto-play if it was playing before
+    if (wasPlayingRef.current && autoPlay) {
+      wasPlayingRef.current = false;
+      startAutoPlay();
+    }
+  }, [autoPlay, startAutoPlay]);
+
+  const handleMouseDown = useCallback(() => {
+    setIsDragging(true);
+    document.body.style.cursor = 'grabbing';
+
+    // Stop auto-play when user starts interacting
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      wasPlayingRef.current = true;
+    }
+  }, []);
 
   const handleImageLoad = () => {
     setImagesLoaded(prev => prev + 1);

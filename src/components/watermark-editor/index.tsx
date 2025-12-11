@@ -203,8 +203,7 @@ export default function WatermarkEditor() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col gap-6">
-      {/* Upload or Edit View */}
+    <div className="w-full max-w-4xl mx-auto">
       {!image ? (
         <ImageUploader
           onImageLoad={handleImageLoad}
@@ -214,7 +213,7 @@ export default function WatermarkEditor() {
           setError={setUploadError}
         />
       ) : (
-        <>
+        <div className="flex flex-col gap-6">
           {/* Tool Selector */}
           <ToolSelector
             activeTool={tool}
@@ -271,7 +270,7 @@ export default function WatermarkEditor() {
               )}
             </Button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
