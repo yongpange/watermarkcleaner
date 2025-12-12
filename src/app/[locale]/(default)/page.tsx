@@ -58,12 +58,43 @@ export default async function LandingPage({
   return (
     <>
       {page.hero && <Hero hero={page.hero} />}
+
+      {/* Original - Text left, Image right */}
       <ComparisonShowcase
-        title="Clean Up Photos with Magic Eraser — Free AI Object Remover"
-        subtitle="Use Magic Eraser to remove any unwanted object, text, logo, or person from your photos. No experience needed — upload and let the AI tool handle the rest."
-        beforeImage="/imgs/comparison-1-before.jpg"
-        afterImage="/imgs/comparison-1-after.jpg"
+        title="Effortlessly Remove Watermarks with WatermarkCleaner — Your Free AI Solution"
+        subtitle="Remove any unwanted watermarks, text, logos, or objects from your photos with WatermarkCleaner. No experience needed — just upload and let AI do the rest."
+        beforeImage="/imgs/comparison-1-before.webp"
+        afterImage="/imgs/comparison-1-after.webp"
+        reversed={false}
       />
+
+      {/* Copy #1 - Image left, Text right (reversed) */}
+      <ComparisonShowcase
+        title="Effortlessly Remove Watermarks with WatermarkCleaner — Your Free AI Solution"
+        subtitle="Remove any unwanted watermarks, text, logos, or objects from your photos with WatermarkCleaner. No experience needed — just upload and let AI do the rest."
+        beforeImage="/imgs/comparison-2-before.webp"
+        afterImage="/imgs/comparison-2-after.webp"
+        reversed={true}
+      />
+
+      {/* Copy #2 - Text left, Image right (normal) */}
+      <ComparisonShowcase
+        title="Effortlessly Remove Watermarks with WatermarkCleaner — Your Free AI Solution"
+        subtitle="Remove any unwanted watermarks, text, logos, or objects from your photos with WatermarkCleaner. No experience needed — just upload and let AI do the rest."
+        beforeImage="/imgs/comparison-3-before.webp"
+        afterImage="/imgs/comparison-3-after.webp"
+        reversed={false}
+      />
+
+      {/* Copy #3 - Image left, Text right (reversed) */}
+      <ComparisonShowcase
+        title="Effortlessly Remove Watermarks with WatermarkCleaner — Your Free AI Solution"
+        subtitle="Remove any unwanted watermarks, text, logos, or objects from your photos with WatermarkCleaner. No experience needed — just upload and let AI do the rest."
+        beforeImage="/imgs/comparison-4-before.webp"
+        afterImage="/imgs/comparison-4-after.webp"
+        reversed={true}
+      />
+
       {page.testimonial && <Testimonial section={page.testimonial} />}
       {page.faq && <FAQ section={page.faq} />}
       {page.cta && <CTA section={page.cta} />}
