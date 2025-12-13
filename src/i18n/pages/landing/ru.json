@@ -1,12 +1,12 @@
 {
-  "template": "turbolearn-template-one",
+  "template": "watermarkcleaner",
   "theme": "light",
   "header": {
     "brand": {
-      "title": "TurboLearn",
+      "title": "WatermarkCleaner",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - Бесплатная альтернатива Quizlet"
+        "alt": "WatermarkCleaner - Бесплатная альтернатива Quizlet"
       },
       "url": "/"
     },
@@ -48,19 +48,19 @@
     "show_locale": true
   },
   "hero": {
-    "title": "TurboLearn: Бесплатная альтернатива Quizlet с ИИ для более умного обучения",
-    "highlight_text": "Бесплатная альтернатива Quizlet",
-    "description": "",
+    "title": "Мгновенное удаление водяных знаков с фотографий с помощью ИИ",
+    "highlight_text": "Удаление водяных знаков",
+    "description": "WatermarkCleaner использует продвинутый ИИ для удаления водяных знаков, логотипов, текста и нежелательных объектов с ваших фотографий за секунды. Бесплатно, быстро и без регистрации.",
     "announcement": {
-      "label": "100% Бесплатно",
-      "title": "🎓 Все функции бесплатны навсегда",
+      "label": "Бесплатно",
+      "title": "✨ Удаление водяных знаков на базе ИИ",
       "url": "/#feature"
     },
     "tip": "",
     "buttons": [
       {
-        "title": "Начать - Это бесплатно",
-        "icon": "RiFlashlightFill",
+        "title": "Удалить водяной знак сейчас",
+        "icon": "RiMagicLine",
         "url": "/convert",
         "target": "_self",
         "variant": "default"
@@ -72,9 +72,9 @@
 
   "introduce": {
     "name": "introduce",
-    "title": "Почему выбрать TurboLearn как бесплатную альтернативу Quizlet",
+    "title": "Почему выбрать WatermarkCleaner как бесплатную альтернативу Quizlet",
     "label": "Введение",
-    "description": "TurboLearn предлагает все необходимое для эффективного обучения: функции на базе ИИ, полную свободу и доказанные результаты.",
+    "description": "WatermarkCleaner предлагает все необходимое для эффективного обучения: функции на базе ИИ, полную свободу и доказанные результаты.",
     "image": {
       "src": "/imgs/features/1.webp"
     },
@@ -98,13 +98,13 @@
   },
   "benefit": {
     "name": "benefit",
-    "title": "TurboLearn против Quizlet - Почему мы лучше",
+    "title": "WatermarkCleaner против Quizlet - Почему мы лучше",
     "label": "Сравнение",
-    "description": "Узнайте, как TurboLearn превосходит Quizlet во всем: больше функций, лучшая конфиденциальность и полностью бесплатно.",
+    "description": "Узнайте, как WatermarkCleaner превосходит Quizlet во всем: больше функций, лучшая конфиденциальность и полностью бесплатно.",
     "items": [
       {
         "title": "100% Бесплатно против Платной подписки",
-        "description": "TurboLearn предлагает все премиум-функции бесплатно, тогда как Quizlet берет $7.99/месяц за базовые функции вроде офлайн-доступа и удаления рекламы.",
+        "description": "WatermarkCleaner предлагает все премиум-функции бесплатно, тогда как Quizlet берет $7.99/месяц за базовые функции вроде офлайн-доступа и удаления рекламы.",
         "icon": "RiMoneyDollarCircleLine",
         "image": {
           "src": "/imgs/features/2.webp"
@@ -130,7 +130,7 @@
   },
   "usage": {
     "name": "usage",
-    "title": "Как начать работу с TurboLearn",
+    "title": "Как начать работу с WatermarkCleaner",
     "description": "Начните свой путь к эффективному обучению всего в несколько простых шагов:",
     "image": {
       "src": "/imgs/features/1.webp"
@@ -217,84 +217,104 @@
   },
   "testimonial": {
     "name": "testimonial",
-    "title": "Что говорят наши пользователи",
-    "description": "Присоединяйтесь к тысячам студентов, которые уже перешли на TurboLearn",
+    "label": "Testimonial",
+    "title": "What Our Users Say",
+    "description": "Real feedback from photographers, designers, marketers, and everyday users.",
+    "icon": "GoThumbsup",
     "items": [
       {
-        "name": "Сара М.",
-        "role": "Медицинский студент",
-        "content": "TurboLearn полностью изменил мой процесс обучения. Генерация карточек с ИИ экономит мне часы каждую неделю, и это абсолютно бесплатно. Не могу поверить, что раньше платила за Quizlet.",
-        "rating": 5,
+        "title": "Sarah Chen",
+        "label": "Photographer",
+        "description": "Finally a watermark remover that actually works! I use it daily for my photography business. The AI is incredibly smart at preserving image quality.",
         "image": {
-          "src": "/imgs/testimonials/1.webp"
+          "src": "/imgs/users/1.png"
         }
       },
       {
-        "name": "Майк Р.",
-        "role": "Школьник",
-        "content": "Я перешел с Quizlet и никогда не оглядывался назад. TurboLearn предлагает все премиум-функции, которые мне нужны, без каких-либо затрат. ИИ невероятно умный.",
-        "rating": 5,
+        "title": "Michael Rodriguez",
+        "label": "Graphic Designer",
+        "description": "I've tried many tools but WatermarkCleaner is the best. It handles complex backgrounds perfectly and the batch processing saves me hours.",
         "image": {
-          "src": "/imgs/testimonials/2.webp"
+          "src": "/imgs/users/2.png"
         }
       },
       {
-        "name": "Эмма Л.",
-        "role": "Студент колледжа",
-        "content": "Импорт с Quizlet был бесшовным. Я начал использовать TurboLearn и мои оценки значительно улучшились. Это бесплатно!",
-        "rating": 5,
+        "title": "Emma Wilson",
+        "label": "Social Media Manager",
+        "description": "Perfect for cleaning up images for social media. No more ugly watermarks ruining my posts. And it's completely free!",
         "image": {
-          "src": "/imgs/testimonials/3.webp"
+          "src": "/imgs/users/3.png"
+        }
+      },
+      {
+        "title": "David Park",
+        "label": "E-commerce Owner",
+        "description": "My product photos look so much more professional now. Removed all the stock photo watermarks instantly. Highly recommend!",
+        "image": {
+          "src": "/imgs/users/4.png"
+        }
+      },
+      {
+        "title": "Lisa Thompson",
+        "label": "Content Creator",
+        "description": "The no sign-up feature is amazing. I can just upload and get my clean images immediately. This tool is a game-changer.",
+        "image": {
+          "src": "/imgs/users/5.png"
+        }
+      },
+      {
+        "title": "James Miller",
+        "label": "Marketing Director",
+        "description": "We use WatermarkCleaner for all our marketing materials. The quality is professional-grade and the speed is unmatched.",
+        "image": {
+          "src": "/imgs/users/6.png"
         }
       }
     ]
   },
   "faq": {
     "name": "faq",
-    "title": "Часто задаваемые вопросы",
-    "description": "Все, что вам нужно знать о TurboLearn",
+    "label": "FAQ",
+    "title": "Frequently Asked Questions",
+    "description": "Everything you need to know about WatermarkCleaner",
     "items": [
       {
-        "title": "TurboLearn действительно полностью бесплатный? Есть ли скрытые расходы?",
-        "content": "Да, TurboLearn 100% бесплатен навсегда! Не требуется кредитная карта, нет скрытых расходов, нет платных стен. Все функции включая неограниченные наборы карточек, интеллектуальное обучение с ИИ, офлайн-доступ и многое другое абсолютно бесплатны навсегда. Мы верим, что качественное образование должно быть доступно для всех."
+        "title": "Is WatermarkCleaner really free?",
+        "description": "Yes! WatermarkCleaner offers free watermark removal with no sign-up required. You can process images instantly without any cost. We also offer premium plans for users who need advanced features like batch processing and higher resolution outputs."
       },
       {
-        "title": "Какие преимущества есть у TurboLearn перед Quizlet?",
-        "content": "TurboLearn предоставляет все функции Quizlet Plus абсолютно бесплатно. Наши алгоритмы обучения с ИИ более продвинутые, защита конфиденциальности лучше, мы поддерживаем офлайн-обучение и нет рекламы. Кроме того, наш алгоритм интервального повторения основан на новейших исследованиях когнитивной науки для более эффективного обучения."
+        "title": "What image formats are supported?",
+        "description": "WatermarkCleaner supports all major image formats including JPG, JPEG, PNG, WebP, and BMP. You can upload images up to 20MB in size. The output format matches your input, or you can choose to convert between formats."
       },
       {
-        "title": "Могу ли я импортировать свои существующие карточки из Quizlet?",
-        "content": "Конечно! TurboLearn поддерживает импорт одним кликом из Quizlet, Anki, StudyBlue и других платформ. Просто экспортируйте как CSV или текстовый файл, затем импортируйте в TurboLearn. Мы также поддерживаем массовый импорт для экономии вашего времени."
+        "title": "Will removing watermarks lower image quality?",
+        "description": "No! Our AI technology is designed to preserve the original image quality. Unlike basic tools that blur or distort the image, WatermarkCleaner intelligently fills the removed area with matching content, maintaining sharpness and resolution."
       },
       {
-        "title": "Какие режимы обучения поддерживает TurboLearn?",
-        "content": "Мы предлагаем несколько режимов обучения: режим карточек (переворот карточек), режим теста (множественный выбор), игра на совпадение (парное сопоставление), режим правописания (практика правописания) и режим изучения (всестороннее обучение). ИИ автоматически регулирует сложность и частоту повторения на основе вашей производительности."
+        "title": "Can I use WatermarkCleaner on mobile devices?",
+        "description": "Absolutely! WatermarkCleaner is fully responsive and works on any device - smartphones, tablets, and desktops. No app installation required - just visit our website and start removing watermarks."
       },
       {
-        "title": "Как работают функции ИИ в TurboLearn?",
-        "content": "Наша система ИИ анализирует ваше поведение в обучении и кривую памяти, чтобы интеллектуально предлагать контент для повторения. ИИ также может автоматически генерировать карточки из документов, распознавать содержимое изображений и генерировать соответствующие примеры предложений. Все эти функции построены на продвинутых алгоритмах машинного обучения, чтобы сделать обучение более эффективным."
+        "title": "What if the watermark is on a complex background?",
+        "description": "Our AI excels at handling complex backgrounds! It analyzes the surrounding area and intelligently reconstructs the image beneath the watermark. For best results with very complex areas, use our brush tool to precisely mark the watermark."
       },
       {
-        "title": "Могу ли я использовать TurboLearn офлайн?",
-        "content": "Да! Скачайте наше мобильное приложение или используйте функцию офлайн-доступа браузера для изучения в любое время и в любом месте без подключения к интернету. Весь прогресс обучения автоматически синхронизируется с облаком, когда вы снова подключитесь к интернету."
+        "title": "Is my data secure and private?",
+        "description": "Absolutely. Your images are processed securely and automatically deleted from our servers after processing. We never store, share, or use your images for any other purpose. Your privacy is our priority."
       },
       {
-        "title": "Сколько языков поддерживает TurboLearn?",
-        "content": "TurboLearn поддерживает обучающий контент на более чем 100 языках, включая китайский, английский, японский, корейский, французский, немецкий, испанский и другие. Мы также предоставляем функции преобразования текста в речь с множеством акцентов, особенно подходящие для изучения языков."
+        "title": "Can I remove watermarks from multiple images at once?",
+        "description": "Yes! With our batch processing feature, you can upload and process multiple images simultaneously. This is perfect for cleaning up large collections of photos efficiently."
       },
       {
-        "title": "Могут ли учителя использовать TurboLearn для управления классами?",
-        "content": "Конечно! Мы предоставляем специальные функции учетной записи учителя для создания классов, назначения заданий, отслеживания прогресса студентов и просмотра статистики обучения. Учителя могут делиться наборами карточек со студентами, а студенты могут сотрудничать в создании контента. Все эти функции абсолютно бесплатны."
-      },
-      {
-        "title": "Моя информация в безопасности?",
-        "content": "Абсолютно. Мы никогда не продаем ваши данные и не показываем таргетированную рекламу. Ваша личная информация и данные обучения полностью защищены и зашифрованы."
+        "title": "Is it legal to remove watermarks?",
+        "description": "WatermarkCleaner is a tool for legitimate use cases like removing your own watermarks, cleaning personal photos, or removing distracting elements. Please respect copyright laws and only remove watermarks from images you own or have permission to edit."
       }
     ]
   },
   "cta": {
     "name": "cta",
-    "title": "Готовы перейти на TurboLearn?",
+    "title": "Готовы перейти на WatermarkCleaner?",
     "description": "Присоединяйтесь к тысячам студентов, которые уже перешли на лучшую бесплатную альтернативу Quizlet",
     "buttons": [
       {
@@ -308,15 +328,15 @@
   "footer": {
     "name": "footer",
     "brand": {
-      "title": "TurboLearn",
-      "description": "TurboLearn — лучшая бесплатная альтернатива Quizlet, предлагающая интеллектуальные флешкарты с ИИ, викторины и множество режимов обучения. Полностью бесплатно с неограниченным использованием.",
+      "title": "WatermarkCleaner",
+      "description": "WatermarkCleaner — лучшая бесплатная альтернатива Quizlet, предлагающая интеллектуальные флешкарты с ИИ, викторины и множество режимов обучения. Полностью бесплатно с неограниченным использованием.",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - Бесплатная альтернатива Quizlet"
+        "alt": "WatermarkCleaner - Бесплатная альтернатива Quizlet"
       },
       "url": "/"
     },
-    "copyright": "© 2025 • TurboLearn Все права защищены.",
+    "copyright": "© 2025 • WatermarkCleaner Все права защищены.",
     "nav": {
       "items": [
         {

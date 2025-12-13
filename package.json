@@ -10,7 +10,6 @@
     "start": "NODE_NO_WARNINGS=1 next start",
     "lint": "next lint",
     "analyze": "ANALYZE=true npm run build",
-    "docker:build": "docker build -f Dockerfile -t turbolearn-template-one:latest .",
     "cf:build": "npx @cloudflare/next-on-pages",
     "cf:preview": "npm run cf:build && wrangler pages dev",
     "cf:deploy": "npm run cf:build && wrangler pages deploy",

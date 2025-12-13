@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Alternative Gratuite à Quizlet - Cartes de Révision avec IA et Outil d'Étude Intelligent | TurboLearn",
-    "description": "Vous cherchez une alternative gratuite à Quizlet ? TurboLearn offre des cartes de révision puissantes avec IA, quiz intelligents et plusieurs modes d'étude - complètement gratuit. Ensembles de cartes illimités, apprentissage collaboratif, accès hors ligne - le choix parfait pour les étudiants et les enseignants.",
+    "title": "Outil gratuit de suppression de filigrane IA - Cartes de Révision avec IA et Outil d'Étude Intelligent | WatermarkCleaner",
+    "description": "Vous cherchez une alternative gratuite à Quizlet ? WatermarkCleaner offre des cartes de révision puissantes avec IA, quiz intelligents et plusieurs modes d'étude - complètement gratuit. Ensembles de cartes illimités, apprentissage collaboratif, accès hors ligne - le choix parfait pour les étudiants et les enseignants.",
     "keywords": "alternative gratuite à quizlet, cartes de révision en ligne, outil de quiz intelligent, assistant d'étude IA, application d'apprentissage gratuite, cartes de mémoire, éducation en ligne, outils d'étude, quizlet gratuit, créateur de cartes"
   },
   "user": {
@@ -34,7 +34,7 @@
   },
   "my_orders": {
     "title": "Mes Commandes",
-    "description": "commandes payées avec TurboLearn.",
+    "description": "commandes payées avec WatermarkCleaner.",
     "no_orders": "Aucune commande trouvée",
     "tip": "",
     "activate_order": "Activer la Commande",
@@ -82,9 +82,9 @@
   },
   "blog": {
     "title": "Blog",
-    "description": "Actualités, ressources et mises à jour sur TurboLearn",
+    "description": "Actualités, ressources et mises à jour sur WatermarkCleaner",
     "read_more_text": "Lire Plus",
-    "hero_title": "Blog TurboLearn",
+    "hero_title": "Blog WatermarkCleaner",
     "hero_description": "Découvrez les dernières idées sur l'apprentissage avec IA, les techniques d'étude et la technologie éducative",
     "search_placeholder": "Rechercher des articles, sujets ou mots-clés...",
     "no_results": "Aucun article trouvé",
@@ -114,7 +114,7 @@
     "submit": "Soumettre",
     "loading": "Envoi en cours...",
     "contact_tip": "Autres façons de nous contacter",
-    "rating_tip": "Que pensez-vous de TurboLearn ?",
+    "rating_tip": "Que pensez-vous de WatermarkCleaner ?",
     "placeholder": "Laissez vos commentaires ici..."
   },
   "convert": {

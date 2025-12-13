@@ -1,0 +1,17 @@
+User-Agent: *
+Allow: /
+
+# 禁止爬取登录和管理页面
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
+Disallow: /console/
+Disallow: /pay-success/
+
+# 禁止爬取重复内容
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+
+# 站点地图
+Sitemap: https://watermarkcleaner.com/sitemap.xml
+Sitemap: https://watermarkcleaner.com/sitemap-blog.xml

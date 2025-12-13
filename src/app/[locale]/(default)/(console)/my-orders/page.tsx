@@ -51,21 +51,7 @@ const MyOrdersPage = async () => {
   const table: TableSlotType = {
     title: t("my_orders.title"),
     toolbar: {
-      items: [
-        {
-          title: t("my_orders.read_docs"),
-          icon: "RiBookLine",
-          url: "https://docs.turbolearn.ai",
-          target: "_blank",
-          variant: "outline",
-        },
-        {
-          title: t("my_orders.join_discord"),
-          icon: "RiDiscordFill",
-          url: "https://discord.gg/HQNnrzjZQS",
-          target: "_blank",
-        },
-      ],
+      items: [],
     },
     columns: columns,
     data: orders,

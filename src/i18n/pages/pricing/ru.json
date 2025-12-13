@@ -34,7 +34,6 @@
           "icon": "RiFlashlightFill"
         },
         "product_id": "starter",
-        "product_name": "TurboLearn Стартер",
         "credits": 100,
         "valid_months": 1
       },
@@ -68,7 +67,6 @@
           "icon": "RiFlashlightFill"
         },
         "product_id": "standard",
-        "product_name": "TurboLearn Стандарт",
         "credits": 200,
         "valid_months": 3
       },
@@ -100,7 +98,6 @@
           "icon": "RiFlashlightFill"
         },
         "product_id": "premium",
-        "product_name": "TurboLearn Премиум",
         "credits": 300,
         "valid_months": 12
       }

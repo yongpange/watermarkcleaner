@@ -1,12 +1,12 @@
 {
-  "template": "turbolearn-template-one",
+  "template": "watermarkcleaner",
   "theme": "light",
   "header": {
     "brand": {
-      "title": "TurboLearn",
+      "title": "WatermarkCleaner",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - بديل مجاني لكويزلت"
+        "alt": "WatermarkCleaner - بديل مجاني لكويزلت"
       },
       "url": "/"
     },
@@ -48,19 +48,19 @@
     "show_locale": true
   },
   "hero": {
-    "title": "TurboLearn: بديل مجاني لكويزلت مدعوم بالذكاء الاصطناعي للتعلم الأذكى",
-    "highlight_text": "بديل مجاني لكويزلت",
-    "description": "",
+    "title": "إزالة العلامات المائية من الصور على الفور باستخدام الذكاء الاصطناعي",
+    "highlight_text": "إزالة العلامات المائية",
+    "description": "يستخدم WatermarkCleaner الذكاء الاصطناعي المتقدم لإزالة العلامات المائية والشعارات والنصوص والعناصر غير المرغوب فيها من صورك في ثوانٍ. مجاني وسريع ولا يتطلب التسجيل.",
     "announcement": {
-      "label": "100% مجاني",
-      "title": "🎓 جميع المميزات مجانية للأبد",
+      "label": "مجاني",
+      "title": "✨ إزالة العلامات المائية بالذكاء الاصطناعي",
       "url": "/#feature"
     },
     "tip": "",
     "buttons": [
       {
-        "title": "ابدأ - إنه مجاني",
-        "icon": "RiFlashlightFill",
+        "title": "إزالة العلامة المائية الآن",
+        "icon": "RiMagicLine",
         "url": "/convert",
         "target": "_self",
         "variant": "default"
@@ -72,9 +72,9 @@
 
   "introduce": {
     "name": "introduce",
-    "title": "لماذا تختار TurboLearn كبديل مجاني لكويزلت",
+    "title": "لماذا تختار WatermarkCleaner كبديل مجاني لكويزلت",
     "label": "مقدمة",
-    "description": "يوفر TurboLearn كل ما تحتاجه للتعلم الفعال: مميزات مدعومة بالذكاء الاصطناعي، حرية كاملة، ونتائج مثبتة.",
+    "description": "يوفر WatermarkCleaner كل ما تحتاجه للتعلم الفعال: مميزات مدعومة بالذكاء الاصطناعي، حرية كاملة، ونتائج مثبتة.",
     "image": {
       "src": "/imgs/features/1.webp"
     },
@@ -98,13 +98,13 @@
   },
   "benefit": {
     "name": "benefit",
-    "title": "TurboLearn مقابل كويزلت - لماذا نحن الأفضل",
+    "title": "WatermarkCleaner مقابل كويزلت - لماذا نحن الأفضل",
     "label": "المقارنة",
-    "description": "شاهد كيف يتفوق TurboLearn على كويزلت في كل شيء: مميزات أكثر، خصوصية أفضل، ومجاني تماماً.",
+    "description": "شاهد كيف يتفوق WatermarkCleaner على كويزلت في كل شيء: مميزات أكثر، خصوصية أفضل، ومجاني تماماً.",
     "items": [
       {
         "title": "100% مجاني مقابل اشتراك مدفوع",
-        "description": "يوفر TurboLearn جميع المميزات المتميزة مجاناً، بينما يفرض كويزلت رسوم 7.99 دولار شهرياً للمميزات الأساسية مثل الوصول بدون اتصال وإزالة الإعلانات.",
+        "description": "يوفر WatermarkCleaner جميع المميزات المتميزة مجاناً، بينما يفرض كويزلت رسوم 7.99 دولار شهرياً للمميزات الأساسية مثل الوصول بدون اتصال وإزالة الإعلانات.",
         "icon": "RiMoneyDollarCircleLine",
         "image": {
           "src": "/imgs/features/2.webp"
@@ -130,7 +130,7 @@
   },
   "usage": {
     "name": "usage",
-    "title": "كيفية البدء مع TurboLearn",
+    "title": "كيفية البدء مع WatermarkCleaner",
     "description": "ابدأ رحلة تعلمك الفعالة في خطوات بسيطة فقط:",
     "image": {
       "src": "/imgs/features/1.webp"
@@ -217,34 +217,57 @@
   },
   "testimonial": {
     "name": "testimonial",
-    "title": "ماذا يقول مستخدمونا",
-    "description": "انضم إلى آلاف الطلاب الذين انتقلوا بالفعل إلى TurboLearn",
+    "label": "Testimonial",
+    "title": "What Our Users Say",
+    "description": "Real feedback from photographers, designers, marketers, and everyday users.",
+    "icon": "GoThumbsup",
     "items": [
       {
-        "name": "سارة م.",
-        "role": "طالبة طب",
-        "content": "TurboLearn غيّر دراستي تماماً. توليد البطاقات بالذكاء الاصطناعي يوفر لي ساعات كل أسبوع، وهو مجاني تماماً. لا أصدق أنني كنت أدفع مقابل كويزلت من قبل.",
-        "rating": 5,
+        "title": "Sarah Chen",
+        "label": "Photographer",
+        "description": "Finally a watermark remover that actually works! I use it daily for my photography business. The AI is incredibly smart at preserving image quality.",
         "image": {
-          "src": "/imgs/testimonials/1.webp"
+          "src": "/imgs/users/1.png"
         }
       },
       {
-        "name": "مايك ر.",
-        "role": "طالب ثانوي",
-        "content": "انتقلت من كويزلت ولم أنظر للخلف أبداً. يوفر TurboLearn جميع المميزات المتميزة التي أحتاجها بدون أي تكلفة. الذكاء الاصطناعي ذكي بشكل لا يصدق.",
-        "rating": 5,
+        "title": "Michael Rodriguez",
+        "label": "Graphic Designer",
+        "description": "I've tried many tools but WatermarkCleaner is the best. It handles complex backgrounds perfectly and the batch processing saves me hours.",
         "image": {
-          "src": "/imgs/testimonials/2.webp"
+          "src": "/imgs/users/2.png"
         }
       },
       {
-        "name": "إيما ل.",
-        "role": "طالبة جامعية",
-        "content": "الاستيراد من كويزلت كان سلساً. بدأت استخدام TurboLearn وتحسنت درجاتي بشكل كبير. إنه مجاني!",
-        "rating": 5,
+        "title": "Emma Wilson",
+        "label": "Social Media Manager",
+        "description": "Perfect for cleaning up images for social media. No more ugly watermarks ruining my posts. And it's completely free!",
         "image": {
-          "src": "/imgs/testimonials/3.webp"
+          "src": "/imgs/users/3.png"
+        }
+      },
+      {
+        "title": "David Park",
+        "label": "E-commerce Owner",
+        "description": "My product photos look so much more professional now. Removed all the stock photo watermarks instantly. Highly recommend!",
+        "image": {
+          "src": "/imgs/users/4.png"
+        }
+      },
+      {
+        "title": "Lisa Thompson",
+        "label": "Content Creator",
+        "description": "The no sign-up feature is amazing. I can just upload and get my clean images immediately. This tool is a game-changer.",
+        "image": {
+          "src": "/imgs/users/5.png"
+        }
+      },
+      {
+        "title": "James Miller",
+        "label": "Marketing Director",
+        "description": "We use WatermarkCleaner for all our marketing materials. The quality is professional-grade and the speed is unmatched.",
+        "image": {
+          "src": "/imgs/users/6.png"
         }
       }
     ]
@@ -252,49 +275,45 @@
   "faq": {
     "name": "faq",
     "title": "الأسئلة الشائعة",
-    "description": "كل ما تحتاج لمعرفته عن TurboLearn",
+    "description": "كل ما تحتاج لمعرفته عن WatermarkCleaner",
     "items": [
       {
-        "title": "هل TurboLearn مجاني حقاً تماماً؟ هل هناك أي تكاليف خفية؟",
-        "content": "نعم، TurboLearn مجاني 100%! لا يُطلب بطاقة ائتمان، لا توجد رسوم خفية، لا توجد جدران دفع. جميع المميزات بما في ذلك مجموعات البطاقات غير المحدودة، التعلم الذكي بالذكاء الاصطناعي، الوصول بدون اتصال والمزيد مجانية بشكل دائم. نحن نؤمن بأن التعليم الجيد يجب أن يكون في متناول الجميع."
+        "title": "هل WatermarkCleaner مجاني حقاً تماماً؟ هل هناك أي تكاليف خفية؟",
+        "content": "نعم، WatermarkCleaner مجاني 100%! لا يُطلب بطاقة ائتمان، لا توجد رسوم خفية، لا توجد جدران دفع. جميع المميزات بما في ذلك مجموعات البطاقات غير المحدودة، التعلم الذكي بالذكاء الاصطناعي، الوصول بدون اتصال والمزيد مجانية بشكل دائم. نحن نؤمن بأن التعليم الجيد يجب أن يكون في متناول الجميع."
       },
       {
-        "title": "ما المزايا التي يتمتع بها TurboLearn على Quizlet؟",
-        "content": "يوفر TurboLearn جميع مميزات Quizlet Plus مجاناً تماماً. خوارزميات التعلم بالذكاء الاصطناعي لدينا أكثر تقدماً، حماية الخصوصية أفضل، نحن ندعم التعلم بدون اتصال، ولا توجد إعلانات. بالإضافة إلى ذلك، خوارزمية التكرار المتباعدة لدينا مبنية على أحدث أبحاث علم المعرفة لكفاءة تعلم أعلى."
+        "title": "What image formats are supported?",
+        "description": "WatermarkCleaner supports all major image formats including JPG, JPEG, PNG, WebP, and BMP. You can upload images up to 20MB in size. The output format matches your input, or you can choose to convert between formats."
       },
       {
-        "title": "هل يمكنني استيراد بطاقاتي الموجودة من Quizlet؟",
-        "content": "بالتأكيد! يدعم TurboLearn الاستيراد بنقرة واحدة من Quizlet، وAnki، وStudyBlue والمنصات الأخرى. ببساطة تصدير كملف CSV أو نصي، ثم استيراده إلى TurboLearn. نحن ندعم أيضاً الاستيراد المجمع لتوفير وقتك."
+        "title": "Will removing watermarks lower image quality?",
+        "description": "No! Our AI technology is designed to preserve the original image quality. Unlike basic tools that blur or distort the image, WatermarkCleaner intelligently fills the removed area with matching content, maintaining sharpness and resolution."
       },
       {
-        "title": "ما أوضاع الدراسة التي يدعمها TurboLearn؟",
-        "content": "نحن نقدم أوضاع دراسة متعددة: وضع البطاقات (قلب البطاقات)، وضع الاختبار (اختيار من متعدد)، لعبة المطابقة (مطابقة الأزواج)، وضع الإملاء (ممارسة الإملاء)، ووضع الدراسة (التعلم الشامل). الذكاء الاصطناعي يضبط الصعوبة وتردد المراجعة تلقائياً بناءً على أدائك."
+        "title": "Can I use WatermarkCleaner on mobile devices?",
+        "description": "Absolutely! WatermarkCleaner is fully responsive and works on any device - smartphones, tablets, and desktops. No app installation required - just visit our website and start removing watermarks."
       },
       {
-        "title": "كيف تعمل ميزات الذكاء الاصطناعي في TurboLearn؟",
-        "content": "نظام الذكاء الاصطناعي لدينا يحلل سلوك تعلمك ومنحنى الذاكرة ليقترح عليك ذكياً المحتوى للمراجعة. يمكن للذكاء الاصطناعي أيضاً توليد البطاقات تلقائياً من المستندات، وتحديد محتوى الصور، وتوليد جمل أمثلة ذات صلة. هذه المميزات كلها مبنية على خوارزميات تعلم آلي متقدمة لجعل التعلم أكثر كفاءة."
+        "title": "What if the watermark is on a complex background?",
+        "description": "Our AI excels at handling complex backgrounds! It analyzes the surrounding area and intelligently reconstructs the image beneath the watermark. For best results with very complex areas, use our brush tool to precisely mark the watermark."
       },
       {
-        "title": "هل يمكنني استخدام TurboLearn بدون اتصال؟",
-        "content": "نعم! قم بتنزيل تطبيقنا المحمول أو استخدم ميزة المتصفح بدون اتصال للدراسة في أي وقت وفي أي مكان بدون اتصال بالإنترنت. يتم مزامنة جميع تقدم التعلم تلقائياً مع السحابة عند عودتك إلى الاتصال."
+        "title": "Is my data secure and private?",
+        "description": "Absolutely. Your images are processed securely and automatically deleted from our servers after processing. We never store, share, or use your images for any other purpose. Your privacy is our priority."
       },
       {
-        "title": "كم عدد اللغات التي يدعمها TurboLearn؟",
-        "content": "يدعم TurboLearn محتوى التعلم بأكثر من 100 لغة، بما في ذلك الصينية، الإنجليزية، اليابانية، الكورية، الفرنسية، الألمانية، الإسبانية والمزيد. نحن نقدم أيضاً وظائف تحويل النص إلى كلام مع لهجات متعددة، مناسبة خصوصاً لتعلم اللغات."
+        "title": "Can I remove watermarks from multiple images at once?",
+        "description": "Yes! With our batch processing feature, you can upload and process multiple images simultaneously. This is perfect for cleaning up large collections of photos efficiently."
       },
       {
-        "title": "هل يمكن للمدرسين استخدام TurboLearn لإدارة الفصول؟",
-        "content": "بالطبع! نحن نقدم ميزات حساب مدرس مخصصة لإنشاء الفصول، تعيين مهام التعلم، تتبع تقدم الطلاب، وعرض إحصائيات التعلم. يمكن للمدرسين مشاركة مجموعات البطاقات مع الطلاب، ويمكن للطلاب التعاون في إنشاء المحتوى. كل هذه الميزات مجانية تماماً."
-      },
-      {
-        "title": "هل معلوماتي آمنة؟",
-        "content": "بالتأكيد. نحن لا نبيع بياناتك أبداً ولا نعرض إعلانات موجهة. معلوماتك الشخصية وبيانات التعلم محمية ومشفرة تماماً."
+        "title": "Is it legal to remove watermarks?",
+        "description": "WatermarkCleaner is a tool for legitimate use cases like removing your own watermarks, cleaning personal photos, or removing distracting elements. Please respect copyright laws and only remove watermarks from images you own or have permission to edit."
       }
     ]
   },
   "cta": {
     "name": "cta",
-    "title": "مستعد للانتقال إلى TurboLearn؟",
+    "title": "مستعد للانتقال إلى WatermarkCleaner؟",
     "description": "انضم إلى آلاف الطلاب الذين انتقلوا بالفعل إلى أفضل بديل مجاني لكويزلت",
     "buttons": [
       {
@@ -308,15 +327,15 @@
   "footer": {
     "name": "footer",
     "brand": {
-      "title": "TurboLearn",
-      "description": "TurboLearn هو أفضل بديل مجاني لكويزلت، حيث يوفر بطاقات تعليمية ذكية مدعومة بالذكاء الاصطناعي، اختبارات وعدة أوضاع دراسية. مجاني تماماً مع استخدام غير محدود.",
+      "title": "WatermarkCleaner",
+      "description": "WatermarkCleaner هو أفضل بديل مجاني لكويزلت، حيث يوفر بطاقات تعليمية ذكية مدعومة بالذكاء الاصطناعي، اختبارات وعدة أوضاع دراسية. مجاني تماماً مع استخدام غير محدود.",
       "logo": {
         "src": "/logo.png",
-        "alt": "TurboLearn - بديل مجاني لكويزلت"
+        "alt": "WatermarkCleaner - بديل مجاني لكويزلت"
       },
       "url": "/"
     },
-    "copyright": "© 2025 • TurboLearn جميع الحقوق محفوظة.",
+    "copyright": "© 2025 • WatermarkCleaner جميع الحقوق محفوظة.",
     "nav": {
       "items": [
         {

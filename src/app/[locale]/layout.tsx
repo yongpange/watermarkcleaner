@@ -9,6 +9,7 @@ import { SupabaseAuthProvider } from "@/providers/supabase-auth-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "@/providers/theme";
 import { cn } from "@/lib/utils";
+import { OrganizationStructuredData } from "@/components/seo/structured-data";
 
 export async function generateMetadata({
   params,
@@ -61,6 +62,9 @@ export default async function RootLayout({
         )}
 
         <link rel="icon" href="/favicon.ico" />
+
+        {/* 组织结构化数据 */}
+        {isProduction && <OrganizationStructuredData />}
 
         {locales &&
           locales.map((loc) => (

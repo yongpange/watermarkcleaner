@@ -22,10 +22,10 @@ export default async function AdminLayout({
 
   const sidebar: Sidebar = {
     brand: {
-      title: "TurboLearn",
+      title: "WatermarkCleaner",
       logo: {
         src: "/logo.png",
-        alt: "TurboLearn",
+        alt: "WatermarkCleaner",
       },
       url: "/admin",
     },
@@ -64,54 +64,10 @@ export default async function AdminLayout({
       ],
     },
     bottomNav: {
-      items: [
-        {
-          title: "Documents",
-          url: "https://docs.turbolearn.ai",
-          target: "_blank",
-          icon: "RiFileTextLine",
-        },
-        {
-          title: "Blocks",
-          url: "https://turbolearn.ai/blocks",
-          target: "_blank",
-          icon: "RiDashboardLine",
-        },
-        {
-          title: "Showcases",
-          url: "https://turbolearn.ai/showcase",
-          target: "_blank",
-          icon: "RiAppsLine",
-        },
-      ],
+      items: [],
     },
     social: {
-      items: [
-        {
-          title: "Home",
-          url: "/",
-          target: "_blank",
-          icon: "RiHomeLine",
-        },
-        {
-          title: "Github",
-          url: "https://github.com/turbolearnai/turbolearn-template-one",
-          target: "_blank",
-          icon: "RiGithubLine",
-        },
-        {
-          title: "Discord",
-          url: "https://discord.gg/HQNnrzjZQS",
-          target: "_blank",
-          icon: "RiDiscordLine",
-        },
-        {
-          title: "X",
-          url: "https://x.com/turbolearnai",
-          target: "_blank",
-          icon: "RiTwitterLine",
-        },
-      ],
+      items: [],
     },
     account: {
       items: [

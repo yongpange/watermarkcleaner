@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Alternativa Gratuita a Quizlet - Tarjetas de Memoria con IA y Herramienta de Estudio Inteligente | TurboLearn",
-    "description": "¿Buscas una alternativa gratuita a Quizlet? TurboLearn ofrece potentes tarjetas de memoria impulsadas por IA, cuestionarios inteligentes y múltiples modos de estudio - completamente gratis. Conjuntos de tarjetas ilimitados, aprendizaje colaborativo, acceso sin conexión - la opción perfecta para estudiantes y profesores.",
+    "title": "Herramienta gratuita para eliminar marcas de agua con IA - Tarjetas de Memoria con IA y Herramienta de Estudio Inteligente | WatermarkCleaner",
+    "description": "¿Buscas una alternativa gratuita a Quizlet? WatermarkCleaner ofrece potentes tarjetas de memoria impulsadas por IA, cuestionarios inteligentes y múltiples modos de estudio - completamente gratis. Conjuntos de tarjetas ilimitados, aprendizaje colaborativo, acceso sin conexión - la opción perfecta para estudiantes y profesores.",
     "keywords": "alternativa gratuita a quizlet, tarjetas de memoria en línea, herramienta de cuestionario inteligente, asistente de estudio con IA, aplicación de aprendizaje gratuita, tarjetas de memoria, educación en línea, herramientas de estudio, quizlet gratis, creador de tarjetas"
   },
   "user": {
@@ -34,7 +34,7 @@
   },
   "my_orders": {
     "title": "Mis Pedidos",
-    "description": "pedidos pagados con TurboLearn.",
+    "description": "pedidos pagados con WatermarkCleaner.",
     "no_orders": "No se encontraron pedidos",
     "tip": "",
     "activate_order": "Activar Pedido",
@@ -82,9 +82,9 @@
   },
   "blog": {
     "title": "Blog",
-    "description": "Noticias, recursos y actualizaciones sobre TurboLearn",
+    "description": "Noticias, recursos y actualizaciones sobre WatermarkCleaner",
     "read_more_text": "Leer Más",
-    "hero_title": "Blog de TurboLearn",
+    "hero_title": "Blog de WatermarkCleaner",
     "hero_description": "Descubre las últimas ideas sobre aprendizaje impulsado por IA, técnicas de estudio y tecnología educativa",
     "search_placeholder": "Buscar artículos, temas o palabras clave...",
     "no_results": "No se encontraron artículos",
@@ -114,7 +114,7 @@
     "submit": "Enviar",
     "loading": "Enviando...",
     "contact_tip": "Otras formas de contactarnos",
-    "rating_tip": "¿Qué opinas de TurboLearn?",
+    "rating_tip": "¿Qué opinas de WatermarkCleaner?",
     "placeholder": "Deja tus comentarios aquí..."
   },
   "convert": {
