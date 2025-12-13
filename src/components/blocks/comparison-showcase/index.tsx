@@ -35,7 +35,7 @@ export default function ComparisonShowcase({
           </div>
 
           {/* Image Comparison Widget */}
-          <div className={reversed ? "order-1 lg:order-1" : "order-1 lg:order-2"}>
+          <div className={reversed ? "order-1 lg:order-1 flex justify-center" : "order-1 lg:order-2 flex justify-center"}>
             <ImageComparison
               beforeImage={{
                 src: beforeImage,
@@ -46,11 +46,6 @@ export default function ComparisonShowcase({
                 alt: 'Clean image without watermark',
               }}
             />
-            <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
-                Drag the handle or let it auto-play to see the transformation
-              </p>
-            </div>
           </div>
         </div>
       </div>

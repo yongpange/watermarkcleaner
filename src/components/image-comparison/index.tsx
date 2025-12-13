@@ -167,7 +167,7 @@ export default function ImageComparison({
 
       <div
         ref={containerRef}
-        className="relative w-full overflow-hidden rounded-xl shadow-2xl select-none h-[250px] md:h-[400px] lg:h-[500px]"
+        className="relative w-auto inline-block overflow-hidden rounded-xl shadow-2xl select-none mx-auto"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleSliderClick}
@@ -177,17 +177,18 @@ export default function ImageComparison({
         aria-valuemax={100}
         aria-valuenow={Math.round(sliderPosition)}
         tabIndex={0}
+        style={{ maxWidth: '1200px' }}
       >
         {/* After image (displayed as background) */}
         <Image
           src={afterImage.src}
           alt={afterImage.alt || 'After'}
-          fill
-          className="object-contain pointer-events-none bg-background"
+          width={1200}
+          height={0}
+          className="w-full h-auto pointer-events-none bg-background"
           onLoad={handleImageLoad}
           onError={handleImageError}
           priority
-          sizes="(max-width: 768px) 100vw, 50vw"
           style={{ opacity: imagesLoaded < 2 ? 0 : 1 }}
         />
 
@@ -201,11 +202,11 @@ export default function ImageComparison({
           <Image
             src={beforeImage.src}
             alt={beforeImage.alt || 'Before'}
-            fill
-            className="object-contain pointer-events-none bg-background"
+            width={1200}
+            height={0}
+            className="w-full h-auto pointer-events-none bg-background"
             onLoad={handleImageLoad}
             onError={handleImageError}
-            sizes="(max-width: 768px) 100vw, 50vw"
             style={{ opacity: imagesLoaded < 2 ? 0 : 1 }}
           />
         </div>
