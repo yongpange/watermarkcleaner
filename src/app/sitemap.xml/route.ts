@@ -1,7 +1,7 @@
 import { locales } from "@/i18n/locale";
 import { getAllPostSlugs } from "@/lib/blog/loader";
 
-const BASE_URL = "https://www.turbolearn.buzz";
+const BASE_URL = "https://www.watermarkcleaner.com";
 
 // 静态页面配置
 const staticPages = [

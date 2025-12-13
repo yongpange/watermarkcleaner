@@ -1,4 +1,4 @@
-const BASE_URL = "https://www.turbolearn.buzz";
+const BASE_URL = "https://www.watermarkcleaner.com";
 
 export async function GET() {
   const robotsTxt = `# https://www.robotstxt.org/robotstxt.html
