@@ -16,18 +16,29 @@ export default function ResultDisplay({ imageUrl, onReset }: ResultDisplayProps)
   const handleDownload = async () => {
     setIsDownloading(true);
     try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+      // 创建a标签直接下载（绕过CORS限制）
+      // 如果失败，提示用户右键保存
       const a = document.createElement("a");
-      a.href = url;
+      a.href = imageUrl;
       a.download = `watermark-removed-${Date.now()}.png`;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+
+      // 清理
+      setTimeout(() => {
+        URL.revokeObjectURL(imageUrl);
+      }, 100);
     } catch (error) {
       console.error("Download failed:", error);
+
+      // 提供备用方案
+      alert("直接下载失败。请尝试右键点击图片，选择\"图片另存为\"来保存图片。");
+
+      // 打开新窗口让用户可以右键保存
+      window.open(imageUrl, "_blank");
     } finally {
       setIsDownloading(false);
     }

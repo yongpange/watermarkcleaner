@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
 import { toast } from "react-hot-toast";
