@@ -1,197 +1,164 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
 import { toast } from "react-hot-toast";
-import { RiDeleteBinLine, RiArrowGoBackLine, RiMagicLine, RiLoader4Line } from "react-icons/ri";
+import { RiCloseCircleLine, RiImageAddLine, RiMagicLine, RiLoader4Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
-import { ToolType, InpaintResponse } from "./types";
 import ImageUploader from "./ImageUploader";
-import ToolSelector from "./ToolSelector";
-import CanvasEditor from "./CanvasEditor";
+import ImagePreview from "./ImagePreview";
+import ProcessingOptions, { ProcessingMode } from "./ProcessingOptions";
 import ResultDisplay from "./ResultDisplay";
+
+interface ProcessOptions {
+  mode: ProcessingMode;
+  prompt?: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  imageUrl?: string;
+  error?: string;
+  details?: string;
+  processingTime?: number;
+}
 
 export default function WatermarkEditor() {
   // State
-  const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [originalWidth, setOriginalWidth] = useState<number>(0);
-  const [originalHeight, setOriginalHeight] = useState<number>(0);
-  const [tool, setTool] = useState<ToolType>("brush");
-  const [brushSize, setBrushSize] = useState(30);
-  const [hasMask, setHasMask] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [imageMetadata, setImageMetadata] = useState<{ width: number; height: number } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [resultImageUrl, setResultImageUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const [processingOptions, setProcessingOptions] = useState<ProcessOptions>({
+    mode: "auto",
+  });
 
-  // Canvas refs
-  const imageCanvasRef = useRef<HTMLCanvasElement>(null);
-  const maskCanvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Zustand store for uploaded images
-  const searchParams = useSearchParams();
-  const isFromUpload = searchParams.get('fromUpload') === 'true';
-  const pendingImage = useUploadStore(state => state.pendingImage);
-  const clearPendingImage = useUploadStore(state => state.clearPendingImage);
-
-  // Handle image load
+  // Image upload
   const handleImageLoad = useCallback((img: HTMLImageElement, file: File) => {
-    setImage(img);
+    console.log("Loading image:", file.name, file.size);
+
+    // Create preview URL
+    const previewUrl = URL.createObjectURL(file);
+    setImagePreviewUrl(previewUrl);
     setImageFile(file);
-    setOriginalWidth(img.width);
-    setOriginalHeight(img.height);
+    setImageMetadata({ width: img.width, height: img.height });
     setResultImageUrl(null);
     setError(null);
-    setHasMask(false);
   }, []);
 
-  // Auto-load image from store if coming from upload
-  useEffect(() => {
-    if (isFromUpload && pendingImage) {
-      console.log('Loading pending image from store');
-      handleImageLoad(pendingImage.image, pendingImage.file);
-      clearPendingImage();
-
-      // Clean URL parameter
-      window.history.replaceState({}, '', '/convert');
-
-      toast.success('Image loaded successfully!');
+  // Remove image
+  const handleRemoveImage = useCallback(() => {
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
     }
-  }, [isFromUpload, pendingImage, handleImageLoad, clearPendingImage]);
-
-  // Clear mask
-  const handleClearMask = useCallback(() => {
-    const maskCanvas = maskCanvasRef.current;
-    if (!maskCanvas) return;
-    const ctx = maskCanvas.getContext("2d");
-    if (!ctx) return;
-    ctx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
-    setHasMask(false);
-  }, []);
+    setImagePreviewUrl(null);
+    setImageFile(null);
+    setImageMetadata(null);
+    setResultImageUrl(null);
+  }, [imagePreviewUrl]);
 
   // Reset editor
   const handleReset = useCallback(() => {
-    setImage(null);
-    setImageFile(null);
-    setOriginalWidth(0);
-    setOriginalHeight(0);
-    setResultImageUrl(null);
-    setError(null);
-    setHasMask(false);
-  }, []);
+    handleRemoveImage();
+    setProcessingOptions({ mode: "auto" });
+  }, [handleRemoveImage]);
 
-  // Export mask as black and white PNG
-  const exportMask = useCallback((): Promise<Blob> => {
-    return new Promise((resolve, reject) => {
-      const maskCanvas = maskCanvasRef.current;
-      if (!maskCanvas) {
-        reject(new Error("Mask canvas not found"));
-        return;
-      }
+  // Process image
+  const handleProcess = useCallback(async () => {
+    if (!imageFile || isProcessing) {
+      console.log("Cannot process:", { hasFile: !!imageFile, isProcessing });
+      return;
+    }
 
-      // Create a temporary canvas for black/white conversion
-      const tempCanvas = document.createElement("canvas");
-      tempCanvas.width = maskCanvas.width;
-      tempCanvas.height = maskCanvas.height;
-      const tempCtx = tempCanvas.getContext("2d");
-      if (!tempCtx) {
-        reject(new Error("Failed to create temp canvas context"));
-        return;
-      }
-
-      // Fill with black (areas to keep)
-      tempCtx.fillStyle = "#000000";
-      tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
-      // Get mask data
-      const maskCtx = maskCanvas.getContext("2d");
-      if (!maskCtx) {
-        reject(new Error("Failed to get mask canvas context"));
-        return;
-      }
-
-      const maskData = maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height);
-      const tempData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
-
-      // Convert: if mask pixel has alpha > 0, make it white (remove area)
-      for (let i = 0; i < maskData.data.length; i += 4) {
-        if (maskData.data[i + 3] > 0) {
-          // Has alpha = marked for removal
-          tempData.data[i] = 255;     // R
-          tempData.data[i + 1] = 255; // G
-          tempData.data[i + 2] = 255; // B
-          tempData.data[i + 3] = 255; // A
-        }
-      }
-
-      tempCtx.putImageData(tempData, 0, 0);
-
-      tempCanvas.toBlob((blob) => {
-        if (blob) {
-          resolve(blob);
-        } else {
-          reject(new Error("Failed to create mask blob"));
-        }
-      }, "image/png");
+    console.log("Starting image processing...", {
+      file: imageFile.name,
+      size: imageFile.size,
+      mode: processingOptions.mode,
     });
-  }, []);
-
-  // Export original image
-  const exportImage = useCallback((): Promise<Blob> => {
-    return new Promise((resolve, reject) => {
-      const imageCanvas = imageCanvasRef.current;
-      if (!imageCanvas) {
-        reject(new Error("Image canvas not found"));
-        return;
-      }
-
-      imageCanvas.toBlob((blob) => {
-        if (blob) {
-          resolve(blob);
-        } else {
-          reject(new Error("Failed to create image blob"));
-        }
-      }, "image/png");
-    });
-  }, []);
-
-  // Apply changes (call API)
-  const handleApplyChanges = useCallback(async () => {
-    if (!hasMask || isProcessing) return;
 
     setIsProcessing(true);
     setError(null);
 
     try {
-      const [imageBlob, maskBlob] = await Promise.all([exportImage(), exportMask()]);
-
+      // Create form data
       const formData = new FormData();
-      formData.append("image", imageBlob, "image.png");
-      formData.append("mask", maskBlob, "mask.png");
-      formData.append("originalWidth", originalWidth.toString());
-      formData.append("originalHeight", originalHeight.toString());
+      formData.append("image", imageFile, imageFile.name);
+      formData.append("mode", processingOptions.mode);
 
-      const response = await fetch("/api/inpaint", {
+      if (processingOptions.prompt) {
+        formData.append("prompt", processingOptions.prompt);
+      }
+
+      console.log("Sending request to /api/seededit...");
+      const response = await fetch("/api/seededit", {
         method: "POST",
         body: formData,
+        // Set timeout at fetch level (2 minutes)
+        signal: AbortSignal.timeout(120000),
       });
 
-      const data: InpaintResponse = await response.json();
+      // Handle response
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+        throw new Error(errorData.error || `HTTP error: ${response.status}`);
+      }
+
+      const data: ApiResponse = await response.json();
+      console.log("API response:", data);
 
       if (data.success && data.imageUrl) {
+        console.log("Processing successful:", {
+          processingTime: data.processingTime,
+          url: data.imageUrl,
+        });
         setResultImageUrl(data.imageUrl);
+        toast.success("水印移除成功！");
       } else {
-        setError(data.error || "Failed to process image");
+        throw new Error(data.error || "处理失败");
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+    } catch (error) {
+      console.error("Processing failed:", error);
+
+      let errorMessage = "处理失败";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      // 根据错误消息提供更多上下文
+      if (errorMessage.includes("timeout")) {
+        errorMessage = "处理超时，图片可能过大或网络连接较慢。";
+      } else if (errorMessage.includes("Rate limit")) {
+        errorMessage = "请求频率过高，请稍后再试。";
+      } else if (errorMessage.includes("Unsupported format")) {
+        errorMessage = "不支持的图片格式，请使用 JPG、PNG 或 WebP。";
+      }
+
+      setError(errorMessage);
+      toast.error("水印移除失败");
     } finally {
       setIsProcessing(false);
     }
-  }, [hasMask, isProcessing, exportImage, exportMask, originalWidth, originalHeight]);
+  }, [imageFile, isProcessing, processingOptions]);
+
+  // 处理错误警告
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+    };
+  }, [imagePreviewUrl]);
 
   // If we have a result, show it
   if (resultImageUrl) {
@@ -203,76 +170,101 @@ export default function WatermarkEditor() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      {!image ? (
+    <div className="w-full max-w-4xl mx-auto space-y-6">
+      {!imageFile ? (
         <ImageUploader
           onImageLoad={handleImageLoad}
-          isDragging={isDragging}
-          setIsDragging={setIsDragging}
-          error={uploadError}
-          setError={setUploadError}
+          isDragging={false}
+          setIsDragging={() => {}}
+          error={error}
+          setError={setError}
         />
       ) : (
-        <div className="flex flex-col gap-6">
-          {/* Tool Selector */}
-          <ToolSelector
-            activeTool={tool}
-            onToolChange={setTool}
-            brushSize={brushSize}
-            onBrushSizeChange={setBrushSize}
+        <>
+          {/* 图片预览 */}
+          <ImagePreview
+            imageUrl={imagePreviewUrl!}
+            file={imageFile}
+            metadata={{
+              width: imageMetadata?.width || 0,
+              height: imageMetadata?.height || 0,
+              size: `${(imageFile.size / 1024 / 1024).toFixed(2)} MB`,
+              type: imageFile.type,
+            }}
+            onRemove={handleRemoveImage}
           />
 
-          {/* Canvas Editor */}
-          <CanvasEditor
-            image={image}
-            tool={tool}
-            brushSize={brushSize}
-            onMaskChange={setHasMask}
-            maskCanvasRef={maskCanvasRef}
-            imageCanvasRef={imageCanvasRef}
-          />
+          {/* 处理选项 */}
+          <div className="transition-all duration-300">
+            <ProcessingOptions
+              value={processingOptions}
+              onChange={setProcessingOptions}
+              compact={false}
+            />
+          </div>
 
-          {/* Error Message */}
+          {/* 错误信息 */}
           {error && (
-            <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
-              {error}
+            <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <div className="flex items-start gap-3">
+                <RiCloseCircleLine className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                <div className="text-red-600 dark:text-red-400 text-sm">
+                  <p className="font-medium mb-1">处理失败</p>
+                  <p>{error}</p>
+                </div>
+              </div>
             </div>
           )}
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={handleClearMask} disabled={!hasMask || isProcessing}>
-                <RiDeleteBinLine className="w-4 h-4 mr-2" />
-                Clear All
-              </Button>
-              <Button variant="outline" onClick={handleReset} disabled={isProcessing}>
-                <RiArrowGoBackLine className="w-4 h-4 mr-2" />
-                Upload New
+          {/* 控制按钮 */}
+          <div className="pt-4 border-t border-border">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  onClick={handleReset}
+                  disabled={isProcessing}
+                >
+                  <RiImageAddLine className="w-4 h-4 mr-2" />
+                  上传新图片
+                </Button>
+              </div>
+
+              <Button
+                size="lg"
+                onClick={handleProcess}
+                disabled={isProcessing || !imageFile}
+                className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-violet-500/25 px-8 min-w-[200px]"
+              >
+                {isProcessing ? (
+                  <>
+                    <RiLoader4Line className="w-5 h-5 mr-2 animate-spin" />
+                    处理中...
+                  </>
+                ) : (
+                  <>
+                    <RiMagicLine className="w-5 h-5 mr-2" />
+                    开始去水印
+                  </>
+                )}
               </Button>
             </div>
-            <Button
-              size="lg"
-              onClick={handleApplyChanges}
-              disabled={!hasMask || isProcessing}
-              className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-violet-500/25 px-8"
-            >
-              {isProcessing ? (
-                <>
-                  <RiLoader4Line className="w-5 h-5 mr-2 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                <>
-                  <RiMagicLine className="w-5 h-5 mr-2" />
-                  Apply Changes
-                </>
-              )}
-            </Button>
+
+            {/* 处理提示 */}
+            {isProcessing && (
+              <div className="mt-4 p-3 bg-violet-50 dark:bg-violet-950/20 rounded-lg border border-violet-200 dark:border-violet-800">
+                <p className="text-sm text-violet-800 dark:text-violet-200 flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 bg-violet-600 rounded-full animate-pulse" />
+                  正在使用AI智能识别并移除水印，请稍候...
+                </p>
+                <p className="text-xs text-violet-700 dark:text-violet-300 mt-1">
+                  处理时间取决于图片大小，一般在30秒到2分钟之间
+                </p>
+              </div>
+            )}
           </div>
-        </div>
+        </>
       )}
     </div>
   );
 }
-
