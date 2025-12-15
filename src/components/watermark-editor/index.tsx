@@ -36,6 +36,12 @@ export default function WatermarkEditor() {
     mode: "auto",
   });
 
+  // Zustand store for uploaded images (from homepage)
+  const searchParams = useSearchParams();
+  const isFromUpload = searchParams.get('fromUpload') === 'true';
+  const pendingImage = useUploadStore(state => state.pendingImage);
+  const clearPendingImage = useUploadStore(state => state.clearPendingImage);
+
   // Image upload
   const handleImageLoad = useCallback((img: HTMLImageElement, file: File) => {
     console.log("Loading image:", file.name, file.size);
@@ -48,6 +54,20 @@ export default function WatermarkEditor() {
     setResultImageUrl(null);
     setError(null);
   }, []);
+
+  // Auto-load image from store if coming from homepage upload
+  useEffect(() => {
+    if (isFromUpload && pendingImage) {
+      console.log('Loading pending image from store');
+      handleImageLoad(pendingImage.image, pendingImage.file);
+      clearPendingImage();
+
+      // Clean URL parameter
+      window.history.replaceState({}, '', '/convert');
+
+      toast.success('图片加载成功！');
+    }
+  }, [isFromUpload, pendingImage, handleImageLoad, clearPendingImage]);
 
   // Remove image
   const handleRemoveImage = useCallback(() => {
