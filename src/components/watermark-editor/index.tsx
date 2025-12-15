@@ -182,9 +182,16 @@ export default function WatermarkEditor() {
 
   // If we have a result, show it
   if (resultImageUrl) {
+    // 创建原图的临时URL
+    const originalImageUrl = imagePreviewUrl || URL.createObjectURL(imageFile!);
+
     return (
-      <div className="w-full max-w-4xl mx-auto">
-        <ResultDisplay imageUrl={resultImageUrl} onReset={handleReset} />
+      <div className="w-full max-w-5xl mx-auto">
+        <ResultDisplay
+          originalImageUrl={originalImageUrl}
+          resultImageUrl={resultImageUrl}
+          onReset={handleReset}
+        />
       </div>
     );
   }
