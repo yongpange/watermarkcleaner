@@ -235,46 +235,47 @@ export function getTotalProcessedSize(
 }
 
 /**
- * 验证用户类型
+ * 验证用户类型（简化版：3-10分层）
  */
-export type UserTier = "unverified" | "verified" | "phone-verified" | "pro";
+export type UserTier = "unverified" | "verified" | "pro";
 
 export interface UserTierConfig {
   maxRequests: number;        // 每小时最大请求数
   maxPerMonth: number;        // 每月最大处理次数
   processingPriority: "low" | "medium" | "high";
   features: string[];
+  displayName: string;        // 显示名称
 }
 
 export const USER_TIER_CONFIG: Record<UserTier, UserTierConfig> = {
   "unverified": {
     maxRequests: 3,           // 每小时3次请求限制
-    maxPerMonth: 10,          // 每月最多10张
+    maxPerMonth: 3,          // 每月最多3张（保守策略）
     processingPriority: "low",
     features: ["basic-processing"],
+    displayName: "免费试用",
   },
   "verified": {
     maxRequests: 10,          // 每小时10次请求限制
-    maxPerMonth: 100,         // 每月最多100张
+    maxPerMonth: 10,         // 每月最多10张（邮箱验证后）
     processingPriority: "medium",
     features: ["basic-processing", "high-res"],
-  },
-  "phone-verified": {
-    maxRequests: 20,          // 每小时20次请求限制
-    maxPerMonth: 300,         // 每月最多300张
-    processingPriority: "medium",
-    features: ["basic-processing", "high-res", "batch-mode"],
+    displayName: "已验证用户",
   },
   "pro": {
     maxRequests: 50,          // 每小时50次请求限制
-    maxPerMonth: Infinity,    // 无限处理
+    maxPerMonth: Infinity,    // 无限处理（付费用户）
     processingPriority: "high",
     features: ["basic-processing", "high-res", "batch-mode", "api-access", "priority-support"],
+    displayName: "专业版",
   },
 };
 
 /**
- * 检查用户是否达到月度限额
+ * 检查用户是否达到月度限额（简化版：3-10分层）
+ * @param identifier - 用户标识（IP地址或用户ID）
+ * @param tier - 用户层级（unverified/verified/pro）
+ * @returns 检查结果
  */
 export function checkMonthlyLimit(
   identifier: string,
