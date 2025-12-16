@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimitMiddleware, checkMonthlyLimit, recordProcessing } from "@/lib/rate-limit";
 
 // 字节跳动方舟API配置
 const ARK_API_URL = process.env.ARK_API_URL || "https://ark.cn-beijing.volces.com/api/v3/images/generations";
@@ -29,6 +30,12 @@ const CONFIG = {
     conservative: 4.5, // 保守模式：避免过度处理
     aggressive: 6.5,   // 激进模式：确保水印完全移除
   } as const,
+
+  // 速率限制（IP级别）
+  RATE_LIMIT: {
+    MAX_REQUESTS_PER_HOUR: 10,  // 每小时最多10次请求
+    MAX_UNVERIFIED_PER_MONTH: 3,  // 未验证用户每月最多3张
+  },
 };
 
 // 类型定义
@@ -94,6 +101,23 @@ function buildPrompt(mode: string = "auto", customPrompt?: string): string {
 }
 
 export async function POST(request: NextRequest) {
+  // 0. 速率限制检查（IP限流）
+  const rateLimitResult = await rateLimitMiddleware(request, {
+    limit: CONFIG.RATE_LIMIT.MAX_REQUESTS_PER_HOUR,
+    windowMs: CONFIG.WINDOW_MS || 3600000,
+  });
+
+  if (!rateLimitResult.allowed && rateLimitResult.response) {
+    return rateLimitResult.response;
+  }
+
+  // 添加速率限制信息到响应头（如果请求成功）
+  const rateLimitInfo = {
+    limit: rateLimitResult.limit,
+    remaining: rateLimitResult.remaining,
+    resetTime: rateLimitResult.resetTime,
+  };
+
   // 1. 验证API密钥配置
   if (!ARK_API_KEY) {
     console.error("ARK_API_KEY is not configured");
@@ -239,23 +263,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 11. 返回结果
-    return NextResponse.json({
-      success: true,
-      imageUrl: data.data[0].url,
-      processingTime,
-      tokensUsed: data.usage,
-      metadata: {
-        originalSize: image.size,
-        originalType: image.type,
-        originalName: image.name,
-        mode,
+    // 11. 记录处理历史（用于月度限额统计）
+    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    recordProcessing(clientIp, image.size, true);
+
+    // 12. 返回结果（包含速率限制信息）
+    return NextResponse.json(
+      {
+        success: true,
+        imageUrl: data.data[0].url,
+        processingTime,
+        tokensUsed: data.usage,
+        metadata: {
+          originalSize: image.size,
+          originalType: image.type,
+          originalName: image.name,
+          mode,
+        },
+        // 添加速率限制信息
+        rateLimit: {
+          limit: rateLimitInfo.limit,
+          remaining: Math.max(0, rateLimitInfo.remaining - 1), // 减去本次消耗
+          resetTime: rateLimitInfo.resetTime,
+        },
       },
-    });
+      {
+        status: 200,
+        headers: {
+          "X-RateLimit-Limit": String(rateLimitInfo.limit),
+          "X-RateLimit-Remaining": String(Math.max(0, rateLimitInfo.remaining - 1)),
+          "X-RateLimit-Reset": String(rateLimitInfo.resetTime),
+        },
+      }
+    );
 
   } catch (error) {
-    // 12. 错误处理
+    // 13. 错误处理
     console.error("Processing error:", error);
+
+    // 记录失败的请求（如果有图片信息）
+    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    const image = formData.get("image") as File | null;
+    if (image) {
+      recordProcessing(clientIp, image.size, false);
+    }
 
     // 处理超时错误
     if (error instanceof Error) {
