@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { rateLimitMiddleware, checkMonthlyLimit, recordProcessing } from "@/lib/rate-limit";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { rateLimitMiddleware } from "@/lib/rate-limit";
+import { checkUserCredits, deductCredits, recordProcessingHistory, USER_TIER_CONFIG } from "@/lib/credits/check";
 
 // 字节跳动方舟API配置
 const ARK_API_URL = process.env.ARK_API_URL || "https://ark.cn-beijing.volces.com/api/v3/images/generations";
@@ -36,6 +39,9 @@ const CONFIG = {
     MAX_REQUESTS_PER_HOUR: 10,  // 每小时最多10次请求
     MAX_UNVERIFIED_PER_MONTH: 3,  // 未验证用户每月最多3张
   },
+
+  // 1小时窗口（毫秒）
+  WINDOW_MS: 60 * 60 * 1000,
 };
 
 // 类型定义
@@ -117,6 +123,50 @@ export async function POST(request: NextRequest) {
     remaining: rateLimitResult.remaining,
     resetTime: rateLimitResult.resetTime,
   };
+
+  // 获取用户会话（如果已登录）
+  let session: any = null;
+  let userIdentifier: string;
+  let isAuthenticated = false;
+  let userId: string | undefined;
+
+  try {
+    session = await getServerSession(authOptions);
+    if (session?.user) {
+      isAuthenticated = true;
+      userId = session.user.id;
+      userIdentifier = userId;
+    } else {
+      // Use IP address for non-authenticated users
+      userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
+    }
+  } catch (error) {
+    // Fallback to IP if session check fails
+    userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
+  }
+
+  // 检查用户额度（月度限额）
+  try {
+    const credits = await checkUserCredits(userIdentifier, isAuthenticated, userId);
+
+    if (credits.remaining <= 0) {
+      const tierConfig = USER_TIER_CONFIG[credits.tier];
+      return NextResponse.json(
+        {
+          error: "额度已用完",
+          details: `您本月已使用 ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} 张额度`,
+          action: credits.tier === "unverified"
+            ? "验证邮箱可获得10张/月额度 →"
+            : "升级到专业版获得无限额度 →",
+          upgradeUrl: credits.tier === "unverified" ? "/auth/signin" : "/pricing",
+        },
+        { status: 403 }
+      );
+    }
+  } catch (error) {
+    console.error("Failed to check credits:", error);
+    // Continue with request but log the error
+  }
 
   // 1. 验证API密钥配置
   if (!ARK_API_KEY) {
@@ -263,9 +313,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 11. 记录处理历史（用于月度限额统计）
-    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    recordProcessing(clientIp, image.size, true);
+    // 11. 扣除额度（对已认证用户）并记录处理历史
+    try {
+      // Deduct credit for authenticated users
+      if (isAuthenticated && userId) {
+        await deductCredits(userId);
+      }
+
+      // Record processing history
+      await recordProcessingHistory({
+        identifier: userIdentifier,
+        imageSize: image.size,
+        userId: isAuthenticated ? userId : undefined,
+        success: true,
+      });
+    } catch (error) {
+      console.error("Failed to record processing/deduct credits:", error);
+      // Continue even if recording fails - we don't want to block the user
+    }
 
     // 12. 返回结果（包含速率限制信息）
     return NextResponse.json(
@@ -302,10 +367,18 @@ export async function POST(request: NextRequest) {
     console.error("Processing error:", error);
 
     // 记录失败的请求（如果有图片信息）
-    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    const image = formData.get("image") as File | null;
-    if (image) {
-      recordProcessing(clientIp, image.size, false);
+    try {
+      const image = formData.get("image") as File | null;
+      if (image) {
+        await recordProcessingHistory({
+          identifier: userIdentifier,
+          imageSize: image.size,
+          userId: isAuthenticated ? userId : undefined,
+          success: false,
+        });
+      }
+    } catch (recordError) {
+      console.error("Failed to record failed processing:", recordError);
     }
 
     // 处理超时错误

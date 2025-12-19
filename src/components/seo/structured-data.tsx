@@ -24,7 +24,7 @@ export function OrganizationStructuredData() {
         '@type': 'Organization',
         name: 'WatermarkCleaner',
         url: 'https://watermarkcleaner.com',
-        logo: 'https://watermarkcleaner.com/favicon.ico',
+        logo: 'https://watermarkcleaner.com/favicon.png',
         description: 'AI-powered online watermark remover tool',
         areaServed: 'Worldwide',
         sameAs: [
@@ -161,7 +161,7 @@ export function ArticleStructuredData({
           name: 'WatermarkCleaner',
           logo: {
             '@type': 'ImageObject',
-            url: 'https://watermarkcleaner.com/favicon.ico',
+            url: 'https://watermarkcleaner.com/favicon.png',
           },
         },
         datePublished: publishDate,
