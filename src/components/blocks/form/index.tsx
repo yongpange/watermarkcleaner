@@ -161,7 +161,7 @@ const BlockForm = ({
                   <FormLabel>
                     {item.title}
                     {item.validation?.required && (
-                      <span className="text-red-500 ml-1">*</span>
+                      <span className="text-error ml-1">*</span>
                     )}
                   </FormLabel>
                   <FormControl>

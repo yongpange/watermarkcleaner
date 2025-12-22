@@ -24,13 +24,10 @@ export function VerificationPrompt() {
   const handleVerify = async () => {
     setLoading(true);
     try {
-      // Re-signin the user with email provider to trigger verification email
-      await signIn("email", {
-        email: session.user.email,
-        redirect: false,
-      } as any);
+      // Redirect to email verification page
+      window.location.href = "/auth/verify";
     } catch (error) {
-      console.error("Failed to send verification email:", error);
+      console.error("Failed to redirect to verification:", error);
     } finally {
       setLoading(false);
     }

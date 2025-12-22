@@ -232,10 +232,10 @@ export default function WatermarkEditor() {
 
           {/* 错误信息 */}
           {error && (
-            <div className="p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <div className="p-4 bg-destructive/10 border-destructive rounded-lg">
               <div className="flex items-start gap-3">
-                <RiCloseCircleLine className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
-                <div className="text-red-600 dark:text-red-400 text-sm">
+                <RiCloseCircleLine className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
+                <div className="text-destructive-foreground text-sm">
                   <p className="font-medium mb-1">处理失败</p>
                   <p>{error}</p>
                 </div>
@@ -261,7 +261,7 @@ export default function WatermarkEditor() {
                 size="lg"
                 onClick={handleProcess}
                 disabled={isProcessing || !imageFile}
-                className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-violet-500/25 px-8 min-w-[200px]"
+                className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 px-8 min-w-[200px]"
               >
                 {isProcessing ? (
                   <>
@@ -279,12 +279,12 @@ export default function WatermarkEditor() {
 
             {/* 处理提示 */}
             {isProcessing && (
-              <div className="mt-4 p-3 bg-violet-50 dark:bg-violet-950/20 rounded-lg border border-violet-200 dark:border-violet-800">
-                <p className="text-sm text-violet-800 dark:text-violet-200 flex items-center gap-2">
-                  <span className="inline-block w-2 h-2 bg-violet-600 rounded-full animate-pulse" />
+              <div className="mt-4 p-3 bg-primary/5 rounded-lg border border-primary/20">
+                <p className="text-sm text-primary flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 bg-primary rounded-full animate-pulse" />
                   正在使用AI智能识别并移除水印，请稍候...
                 </p>
-                <p className="text-xs text-violet-700 dark:text-violet-300 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   处理时间取决于图片大小，一般在30秒到2分钟之间
                 </p>
               </div>

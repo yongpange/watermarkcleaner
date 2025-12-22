@@ -14,6 +14,11 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   const { theme, setTheme } = useAppContext();
 
   useEffect(() => {
+    // Only run initialization if theme is not already set
+    if (theme && ["dark", "light"].includes(theme)) {
+      return;
+    }
+
     const themeInCache = cacheGet(CacheKey.Theme);
     if (themeInCache) {
       // theme setted
@@ -41,10 +46,10 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
     return () => {
       mediaQuery.removeListener(handleChange);
     };
-  }, [setTheme]);
+  }, [setTheme, theme]);
 
   return (
-    <NextThemesProvider forcedTheme={theme} {...props}>
+    <NextThemesProvider forcedTheme={theme || undefined} {...props}>
       {children}
 
       <Toaster position="top-center" richColors />

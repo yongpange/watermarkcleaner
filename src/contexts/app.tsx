@@ -22,7 +22,11 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const { user: authUser, loading } = useSupabaseAuth();
 
   const [theme, setTheme] = useState<string>(() => {
-    return process.env.NEXT_PUBLIC_DEFAULT_THEME || "";
+    const defaultTheme = process.env.NEXT_PUBLIC_DEFAULT_THEME;
+    if (defaultTheme && ["dark", "light"].includes(defaultTheme)) {
+      return defaultTheme;
+    }
+    return "light"; // Default to light
   });
 
   const [showSignModal, setShowSignModal] = useState<boolean>(false);

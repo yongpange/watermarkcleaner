@@ -219,11 +219,11 @@ export default function ImageComparison({
             transform: 'translateX(-50%)',
           }}
         >
-          <div className="w-0.5 h-full bg-white shadow-lg shadow-black/20 relative">
+          <div className="w-0.5 h-full bg-foreground shadow-lg shadow-foreground/20 relative">
             {/* Drag handle */}
             <div
               className={cn(
-                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-xl flex items-center justify-center cursor-grab",
+                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-background shadow-xl shadow-foreground/10 border border-border flex items-center justify-center cursor-grab",
                 "pointer-events-auto transition-transform",
                 isDragging && "cursor-grabbing scale-110",
                 isHovered && "scale-105"
@@ -233,7 +233,7 @@ export default function ImageComparison({
               role="button"
               aria-label="Drag to compare"
             >
-              <div className={cn("flex gap-1 transition-colors", isDragging && "text-violet-600")}>
+              <div className={cn("flex gap-1 transition-colors", isDragging && "text-primary")}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0">
                   <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
@@ -247,13 +247,13 @@ export default function ImageComparison({
 
         {/* Labels */}
         <div className="absolute top-4 left-4 z-10">
-          <span className="bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
+          <span className="bg-muted/90 text-muted-foreground px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-border">
             Before
           </span>
         </div>
 
         <div className="absolute top-4 right-4 z-10">
-          <span className="bg-violet-600/90 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-white/10">
+          <span className="bg-primary/90 text-primary-foreground px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm border border-border">
             After
           </span>
         </div>
@@ -261,7 +261,7 @@ export default function ImageComparison({
         {/* Loading overlay */}
         {imagesLoaded < 2 && !imageErrors && (
           <div className="absolute inset-0 bg-background/80 flex items-center justify-center backdrop-blur-sm z-20">
-            <div className="w-12 h-12 rounded-full border-4 border-violet-600 border-t-transparent animate-spin"></div>
+            <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
           </div>
         )}
 
@@ -269,8 +269,8 @@ export default function ImageComparison({
         {imageErrors && (
           <div className="absolute inset-0 bg-background/90 flex flex-col items-center justify-center backdrop-blur-sm z-20">
             <div className="text-center px-8">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-error/20 flex items-center justify-center">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-error" strokeWidth="2">
                   <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                   <line x1="12" y1="9" x2="12" y2="13"></line>
                   <line x1="12" y1="17" x2="12.01" y2="17"></line>

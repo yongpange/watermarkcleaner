@@ -93,10 +93,10 @@ export default function ResultDisplay({
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
       {/* 主图片显示区域 */}
-      <div className="bg-gray-100 dark:bg-gray-900 rounded-xl border border-border/50 p-4">
+      <div className="bg-card rounded-xl border border-border/50 p-4">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
-            <span className="text-green-500">✓</span>
+            <span className="text-success">✓</span>
             {activeImage === 'result' ? 'Watermark Removed Successfully!' : 'Original Image'}
           </h3>
           <div className="flex items-center gap-2">
@@ -155,8 +155,8 @@ export default function ResultDisplay({
               "relative cursor-pointer rounded-lg overflow-hidden border-2 transition-all",
               "hover:shadow-lg",
               activeImage === 'original'
-                ? "border-violet-500 shadow-violet-500/30 shadow-md"
-                : "border-transparent hover:border-gray-300 dark:hover:border-gray-600",
+                ? "border-primary shadow-primary/20 shadow-md"
+                : "border-transparent hover:border-border",
               "w-24 h-24"  // 固定尺寸，确保一致
             )}
           >
@@ -166,7 +166,7 @@ export default function ResultDisplay({
               className="w-full h-full object-cover"
             />
             <div className={cn(
-              "absolute inset-0 bg-violet-500/20 transition-opacity",
+              "absolute inset-0 bg-primary/20 transition-opacity",
               activeImage === 'original' ? "opacity-100" : "opacity-0"
             )} />
           </div>
@@ -181,8 +181,8 @@ export default function ResultDisplay({
               "relative cursor-pointer rounded-lg overflow-hidden border-2 transition-all",
               "hover:shadow-lg",
               activeImage === 'result'
-                ? "border-violet-500 shadow-violet-500/30 shadow-md"
-                : "border-transparent hover:border-gray-300 dark:hover:border-gray-600",
+                ? "border-primary shadow-primary/20 shadow-md"
+                : "border-transparent hover:border-border",
               "w-24 h-24"  // 固定尺寸，确保一致
             )}
           >
@@ -192,7 +192,7 @@ export default function ResultDisplay({
               className="w-full h-full object-cover"
             />
             <div className={cn(
-              "absolute inset-0 bg-violet-500/20 transition-opacity",
+              "absolute inset-0 bg-primary/20 transition-opacity",
               activeImage === 'result' ? "opacity-100" : "opacity-0"
             )} />
           </div>
@@ -205,15 +205,15 @@ export default function ResultDisplay({
             onClick={handleUploadNew}
             className={cn(
               "cursor-pointer rounded-lg overflow-hidden border-2 transition-all",
-              "hover:shadow-lg hover:border-violet-400",
+              "hover:shadow-lg hover:border-primary/50",
               "w-24 h-24",  // 与缩略图相同尺寸
               "flex items-center justify-center",
-              "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:bg-violet-50 dark:hover:bg-violet-950/30"
+              "bg-muted border-border hover:bg-primary/10"
             )}
           >
             <div className="flex flex-col items-center justify-center">
-              <RiImageAddLine className="w-6 h-6 text-violet-600 mb-1" />
-              <span className="text-xs text-violet-600 font-medium">新图片</span>
+              <RiImageAddLine className="w-6 h-6 text-primary mb-1" />
+              <span className="text-xs text-primary font-medium">新图片</span>
             </div>
           </div>
           <span className="text-xs text-muted-foreground">上传新图</span>
@@ -247,7 +247,7 @@ export default function ResultDisplay({
           size="lg"
           onClick={handleDownload}
           disabled={isDownloading}
-          className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-violet-500/25 min-w-[180px] justify-center"
+          className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 min-w-[180px] justify-center"
         >
           <RiDownloadLine className="w-5 h-5" />
           {isDownloading ? "Downloading..." : "Download Image"}

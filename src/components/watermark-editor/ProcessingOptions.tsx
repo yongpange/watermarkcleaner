@@ -40,20 +40,20 @@ export default function ProcessingOptions({
   };
 
   return (
-    <div className={cn("bg-gray-50 dark:bg-gray-800/50 rounded-lg", className)}>
+    <div className={cn("bg-card rounded-lg", className)}>
       {/* 简洁模式：只显示当前模式 */}
       {compact ? (
         <div className="p-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="text-sm text-muted-foreground">处理模式:</div>
-              <div className="px-2 py-1 bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-400 rounded text-xs font-medium">
+              <div className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium">
                 {value.mode === "auto" ? "自动" : value.mode === "conservative" ? "保守" : "激进"}
               </div>
             </div>
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-sm text-violet-600 hover:text-violet-700 dark:text-violet-400 flex items-center gap-1"
+              className="text-sm text-primary hover:text-primary/80 flex items-center gap-1"
             >
               <RiSettings3Line className="w-4 h-4" />
               {expanded ? "收起" : "展开"}
@@ -64,7 +64,7 @@ export default function ProcessingOptions({
         // 完整模式：显示所有选项
         <div className="p-4 space-y-4">
           <div className="flex items-center gap-2 mb-3">
-            <RiSettings3Line className="w-5 h-5 text-violet-600" />
+            <RiSettings3Line className="w-5 h-5 text-primary" />
             <h3 className="font-medium text-foreground">处理选项</h3>
           </div>
 
@@ -77,8 +77,8 @@ export default function ProcessingOptions({
                 className={cn(
                   "p-3 rounded-lg border text-left transition-colors",
                   value.mode === "auto"
-                    ? "border-violet-500 bg-violet-50 dark:bg-violet-950/30"
-                    : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-violet-400"
+                    ? "border-primary bg-primary/10"
+                    : "border-border bg-background hover:border-primary/50"
                 )}
               >
                 <div className="font-medium mb-1">自动</div>
@@ -90,8 +90,8 @@ export default function ProcessingOptions({
                 className={cn(
                   "p-3 rounded-lg border text-left transition-colors",
                   value.mode === "conservative"
-                    ? "border-violet-500 bg-violet-50 dark:bg-violet-950/30"
-                    : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-violet-400"
+                    ? "border-primary bg-primary/10"
+                    : "border-border bg-background hover:border-primary/50"
                 )}
               >
                 <div className="font-medium mb-1">保守</div>
@@ -103,8 +103,8 @@ export default function ProcessingOptions({
                 className={cn(
                   "p-3 rounded-lg border text-left transition-colors",
                   value.mode === "aggressive"
-                    ? "border-violet-500 bg-violet-50 dark:bg-violet-950/30"
-                    : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-violet-400"
+                    ? "border-primary bg-primary/10"
+                    : "border-border bg-background hover:border-primary/50"
                 )}
               >
                 <div className="font-medium mb-1">激进</div>
@@ -113,8 +113,8 @@ export default function ProcessingOptions({
             </div>
 
             {/* 当前模式说明 */}
-            <div className="mt-2 p-3 bg-violet-50 dark:bg-violet-950/20 rounded-lg border border-violet-200 dark:border-violet-800">
-              <div className="text-sm text-violet-800 dark:text-violet-200">
+            <div className="mt-2 p-3 bg-primary/5 rounded-lg border border-primary/20">
+              <div className="text-sm text-primary">
                 {getModeDescription(value.mode)}
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function ProcessingOptions({
 
           {/* 自定义Prompt（高级选项） */}
           <details className="group">
-            <summary className="cursor-pointer list-none text-sm font-medium text-violet-600 hover:text-violet-700 dark:text-violet-400 flex items-center gap-2">
+            <summary className="cursor-pointer list-none text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-2">
               <span className="inline-block w-3">→</span>
               高级选项（自定义指令）
             </summary>
@@ -131,7 +131,7 @@ export default function ProcessingOptions({
                 value={value.prompt || ""}
                 onChange={(e) => onChange?.({ ...value, prompt: e.target.value })}
                 placeholder="输入自定义指令（可选）\n例如：仅移除右下角的半透明水印，保留其他文字"
-                className="w-full p-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="w-full p-3 bg-background border border-input rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
                 rows={3}
               />
               <p className="text-xs text-muted-foreground">
@@ -144,7 +144,7 @@ export default function ProcessingOptions({
 
       {/* 展开/收起区域 */}
       {compact && expanded && (
-        <div className="mt-3 border-t border-gray-200 dark:border-gray-700 pt-3">
+        <div className="mt-3 border-t border-border pt-3">
           <ProcessingOptions
             value={value}
             onChange={onChange}
