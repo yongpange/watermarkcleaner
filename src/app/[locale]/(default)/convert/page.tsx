@@ -9,7 +9,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations();
+  await getTranslations();
 
   const baseUrl = process.env.NEXT_PUBLIC_WEB_URL || "https://watermarkcleaner.com";
   const canonicalUrl = locale === "en" ? `${baseUrl}/convert` : `${baseUrl}/${locale}/convert`;

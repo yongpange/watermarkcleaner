@@ -43,18 +43,18 @@ export async function checkCredits(userId: string) {
 
   // Check if we need to reset monthly credits (on the 1st of each month)
   const now = new Date();
-  const lastReset = new Date(user.creditsReset || now);
+  const lastReset = new Date((user as any).creditsReset || now);
 
   // Reset if we're in a different month/year than last reset
   if (now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
     // Reset credits for new month
-    const { error: updateError } = await supabase
+    const { error: updateError } = await (supabase
       .from('watermarkcleaner.users')
       .update({
         creditsUsed: 0,
         creditsReset: now.toISOString(),
       })
-      .eq('id', userId);
+      .eq('id', userId) as any);
 
     if (updateError) {
       throw new Error(`Failed to reset credits: ${updateError.message}`);
