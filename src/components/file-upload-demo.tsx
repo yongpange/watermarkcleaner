@@ -79,7 +79,7 @@ export default function FileUploadDemo() {
                 {uploadedFiles.map((file, index) => (
                   <Card key={index} className="p-4">
                     <div className="flex items-center space-x-3">
-                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <CheckCircle className="h-5 w-5 text-success" />
                       <div className="flex-1">
                         <p className="text-sm font-medium">{file.filename}</p>
                         <p className="text-xs text-gray-500">

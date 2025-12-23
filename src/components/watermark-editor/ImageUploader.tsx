@@ -110,8 +110,8 @@ export default function ImageUploader({
       className={cn(
         "relative flex flex-col items-center justify-center w-full min-h-[400px] rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300",
         isDragging
-          ? "border-violet-500 bg-violet-50 dark:bg-violet-950/20"
-          : "border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 hover:border-violet-400 hover:bg-violet-50/50 dark:hover:bg-violet-950/10"
+          ? "border-primary bg-primary/10 dark:bg-primary/20"
+          : "border-muted bg-card/50 hover:border-primary hover:bg-accent/50"
       )}
     >
       <div className="flex flex-col items-center gap-4 p-8 text-center">
@@ -144,7 +144,7 @@ export default function ImageUploader({
         </button>
 
         {error && (
-          <p className="text-sm text-red-500 mt-2">{error}</p>
+          <p className="text-sm text-error mt-2">{error}</p>
         )}
       </div>
     </div>

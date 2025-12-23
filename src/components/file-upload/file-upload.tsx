@@ -251,8 +251,8 @@ export function FileUpload({
       <div
         className={cn(
           'border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer',
-          isDragOver ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-gray-400',
-          'dark:border-gray-600 dark:hover:border-gray-500'
+          isDragOver ? 'border-primary bg-primary/5' : 'border-border hover:border-foreground/50',
+          'hover:bg-accent/50'
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -260,12 +260,12 @@ export function FileUpload({
         onClick={() => fileInputRef.current?.click()}
       >
         <div className="flex flex-col items-center space-y-4">
-          <Upload className="w-12 h-12 text-gray-400" />
+          <Upload className="w-12 h-12 text-muted-foreground" />
           <div>
-            <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
+            <p className="text-lg font-medium text-foreground">
               拖拽文件到此处或点击选择
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               支持 {accept} 格式，最大 {maxSize}MB
             </p>
           </div>
@@ -298,7 +298,7 @@ export function FileUpload({
                       className="w-12 h-12 object-cover rounded"
                     />
                   ) : (
-                    <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center text-xl">
+                    <div className="w-12 h-12 bg-muted rounded flex items-center justify-center text-xl">
                       {getFileIcon(fileInfo.file)}
                     </div>
                   )}
@@ -307,12 +307,12 @@ export function FileUpload({
                 {/* 文件信息 */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center space-x-2">
-                    <File className="w-4 h-4 text-gray-400" />
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                    <File className="w-4 h-4 text-muted-foreground" />
+                    <p className="text-sm font-medium text-foreground truncate">
                       {fileInfo.file.name}
                     </p>
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted-foreground">
                     {formatFileSize(fileInfo.file.size)}
                   </p>
                 </div>
@@ -320,16 +320,16 @@ export function FileUpload({
                 {/* 状态指示器 */}
                 <div className="flex-shrink-0">
                   {fileInfo.status === 'success' && (
-                    <CheckCircle className="w-5 h-5 text-green-500" />
+                    <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
                   )}
                   {fileInfo.status === 'error' && (
-                    <AlertCircle className="w-5 h-5 text-red-500" />
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
                   )}
                   {fileInfo.status === 'uploading' && (
-                    <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
+                    <Loader2 className="w-5 h-5 text-blue-600 dark:text-blue-400 animate-spin" />
                   )}
                   {fileInfo.status === 'pending' && (
-                    <div className="w-5 h-5 bg-gray-300 rounded-full animate-pulse" />
+                    <div className="w-5 h-5 bg-muted-foreground/30 rounded-full animate-pulse" />
                   )}
                 </div>
 
@@ -348,7 +348,7 @@ export function FileUpload({
               {fileInfo.status === 'uploading' && (
                 <div className="mt-3">
                   <Progress value={fileInfo.progress} className="h-2" />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     上传中... {Math.round(fileInfo.progress)}%
                   </p>
                 </div>
@@ -357,14 +357,14 @@ export function FileUpload({
               {/* 错误信息 */}
               {fileInfo.status === 'error' && fileInfo.error && (
                 <div className="mt-2">
-                  <p className="text-xs text-red-500">{fileInfo.error}</p>
+                  <p className="text-xs text-red-600 dark:text-red-400">{fileInfo.error}</p>
                 </div>
               )}
 
               {/* 成功信息 */}
               {fileInfo.status === 'success' && (
                 <div className="mt-2">
-                  <p className="text-xs text-green-500">上传成功！</p>
+                  <p className="text-xs text-green-600 dark:text-green-400">上传成功！</p>
                 </div>
               )}
             </Card>

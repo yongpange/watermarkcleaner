@@ -61,7 +61,7 @@ export default async function RootLayout({
           </script>
         )}
 
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
 
         {/* 组织结构化数据 */}
         {isProduction && <OrganizationStructuredData />}
