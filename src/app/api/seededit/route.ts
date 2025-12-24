@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth.config";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
 import { checkUserCredits, deductCredits, recordProcessingHistory, USER_TIER_CONFIG } from "@/lib/credits/check";
 
@@ -129,13 +129,14 @@ export async function POST(request: NextRequest) {
   let userIdentifier: string;
   let isAuthenticated = false;
   let userId: string | undefined;
+  let formData: FormData | null = null;
 
   try {
     session = await getServerSession(authOptions);
     if (session?.user) {
       isAuthenticated = true;
       userId = session.user.id;
-      userIdentifier = userId;
+      userIdentifier = userId || "authenticated-user";
     } else {
       // Use IP address for non-authenticated users
       userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
@@ -182,7 +183,7 @@ export async function POST(request: NextRequest) {
 
   try {
     // 2. 解析form data
-    const formData = await request.formData();
+    formData = await request.formData();
     const image = formData.get("image") as File | null;
     const mode = (formData.get("mode") as string) || "auto";
     const customPrompt = formData.get("prompt") as string | null;
@@ -368,14 +369,16 @@ export async function POST(request: NextRequest) {
 
     // 记录失败的请求（如果有图片信息）
     try {
-      const image = formData.get("image") as File | null;
-      if (image) {
-        await recordProcessingHistory({
-          identifier: userIdentifier,
-          imageSize: image.size,
-          userId: isAuthenticated ? userId : undefined,
-          success: false,
-        });
+      if (formData) {
+        const image = formData.get("image") as File | null;
+        if (image) {
+          await recordProcessingHistory({
+            identifier: userIdentifier,
+            imageSize: image.size,
+            userId: isAuthenticated ? userId : undefined,
+            success: false,
+          });
+        }
       }
     } catch (recordError) {
       console.error("Failed to record failed processing:", recordError);

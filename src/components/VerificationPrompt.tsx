@@ -19,7 +19,7 @@ export function VerificationPrompt() {
   if (!session?.user?.email) return null;
 
   // Check if user is verified
-  if (session.user.emailVerified) return null;
+  if ((session.user as any).emailVerified) return null;
 
   const handleVerify = async () => {
     setLoading(true);

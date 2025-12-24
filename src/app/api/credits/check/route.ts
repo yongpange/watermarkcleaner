@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth.config";
 import { checkCredits } from "@/lib/credits/check";
 
 /**
@@ -9,7 +9,7 @@ import { checkCredits } from "@/lib/credits/check";
  */
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
+    const session = (await getServerSession(authOptions)) as any;
 
     if (!session?.user?.id) {
       return NextResponse.json(

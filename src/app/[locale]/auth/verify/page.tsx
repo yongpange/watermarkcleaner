@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { EmailSignInForm } from "@/components/auth/email-signin-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail } from "lucide-react";
+import { Link } from "@/i18n/routing";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -62,12 +63,12 @@ export default function VerifyPage() {
 
         {/* Back to Home */}
         <div className="text-center text-sm">
-          <a
+          <Link
             href="/"
             className="text-violet-600 hover:text-violet-700 underline-offset-4 hover:underline"
           >
             返回首页
-          </a>
+          </Link>
         </div>
       </div>
     </div>
