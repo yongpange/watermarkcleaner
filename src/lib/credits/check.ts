@@ -48,13 +48,13 @@ export async function checkCredits(userId: string) {
   // Reset if we're in a different month/year than last reset
   if (now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
     // Reset credits for new month
-    const { error: updateError } = await (supabase
+    const { error: updateError } = await supabase
       .from('watermarkcleaner.users')
       .update({
         creditsUsed: 0,
         creditsReset: now.toISOString(),
-      })
-      .eq('id', userId) as any);
+      } as any)
+      .eq('id', userId);
 
     if (updateError) {
       throw new Error(`Failed to reset credits: ${updateError.message}`);
@@ -85,12 +85,23 @@ export async function checkCredits(userId: string) {
 export async function deductCredits(userId: string) {
   const supabase = await createClient();
 
-  // Use atomic increment to prevent race conditions
+  // First get the current user to get current creditsUsed
+  const { data: user, error: fetchError } = await supabase
+    .from('watermarkcleaner.users')
+    .select('creditsUsed')
+    .eq('id', userId)
+    .single();
+
+  if (fetchError || !user) {
+    throw new Error('User not found');
+  }
+
+  // Update with incremented value
   const { error } = await supabase
     .from('watermarkcleaner.users')
     .update({
-      creditsUsed: { increment: 1 },
-    })
+      creditsUsed: (user.creditsUsed || 0) + 1,
+    } as any)
     .eq('id', userId);
 
   if (error) {
