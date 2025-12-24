@@ -141,6 +141,7 @@ export async function rateLimitMiddleware(
   if (!result.allowed) {
     return {
       ...result,
+      limit: options.limit || CONFIG.MAX_REQUESTS_PER_HOUR,
       response: NextResponse.json(
         {
           error: "Rate limit exceeded",
@@ -163,6 +164,7 @@ export async function rateLimitMiddleware(
   // 创建成功的响应（但实际上只是返回结果，不创建响应）
   return {
     ...result,
+    limit: options.limit || CONFIG.MAX_REQUESTS_PER_HOUR,
     response: undefined,
   };
 }

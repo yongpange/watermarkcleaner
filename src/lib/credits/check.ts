@@ -31,7 +31,7 @@ export const USER_TIER_CONFIG: Record<UserTier, UserTierConfig> = {
 export async function checkCredits(userId: string) {
   const supabase = await createClient();
 
-  const { data: user, error } = await supabase
+  const { data: user, error } = await (supabase as any)
     .from('watermarkcleaner.users')
     .select('*')
     .eq('id', userId)
@@ -48,12 +48,12 @@ export async function checkCredits(userId: string) {
   // Reset if we're in a different month/year than last reset
   if (now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
     // Reset credits for new month
-    const { error: updateError } = await supabase
+    const { error: updateError } = await (supabase as any)
       .from('watermarkcleaner.users')
       .update({
         creditsUsed: 0,
         creditsReset: now.toISOString(),
-      } as any)
+      })
       .eq('id', userId);
 
     if (updateError) {
@@ -86,7 +86,7 @@ export async function deductCredits(userId: string) {
   const supabase = await createClient();
 
   // First get the current user to get current creditsUsed
-  const { data: user, error: fetchError } = await supabase
+  const { data: user, error: fetchError } = await (supabase as any)
     .from('watermarkcleaner.users')
     .select('creditsUsed')
     .eq('id', userId)
@@ -97,11 +97,11 @@ export async function deductCredits(userId: string) {
   }
 
   // Update with incremented value
-  const { error } = await supabase
+  const { error } = await (supabase as any)
     .from('watermarkcleaner.users')
     .update({
       creditsUsed: (user.creditsUsed || 0) + 1,
-    } as any)
+    })
     .eq('id', userId);
 
   if (error) {
@@ -128,7 +128,7 @@ export async function recordProcessingHistory({
 }) {
   const supabase = await createClient();
 
-  const { error } = await supabase.from('watermarkcleaner.processing_history').insert({
+  const { error } = await (supabase as any).from('watermarkcleaner.processing_history').insert({
     user_id: userId,
     ip_address: userId ? null : identifier,
     image_size: imageSize,
@@ -165,7 +165,7 @@ export async function checkUserCredits(
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
     const supabase = await createClient();
-    const { count } = await supabase
+    const { count } = await (supabase as any)
       .from('watermarkcleaner.processing_history')
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', identifier)
