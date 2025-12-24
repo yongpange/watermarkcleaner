@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { RiUploadCloud2Line, RiImageLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface ImageUploaderProps {
   onImageLoad: (image: HTMLImageElement, file: File) => void;
@@ -22,15 +23,16 @@ export default function ImageUploader({
   error,
   setError,
 }: ImageUploaderProps) {
+  const t = useTranslations("convert.image");
   const validateFile = useCallback((file: File): string | null => {
     if (!ACCEPTED_TYPES.includes(file.type)) {
-      return "Please upload a JPEG, PNG, or WebP image";
+      return t("invalid_file_type");
     }
     if (file.size > MAX_FILE_SIZE) {
-      return "File size must be less than 20MB";
+      return t("file_too_large", { size: "20MB" });
     }
     return null;
-  }, []);
+  }, [t]);
 
   const handleFile = useCallback(
     (file: File) => {
@@ -48,12 +50,12 @@ export default function ImageUploader({
           onImageLoad(img, file);
         };
         img.onerror = () => {
-          setError("Failed to load image");
+          setError(t("image_load_failed"));
         };
         img.src = e.target?.result as string;
       };
       reader.onerror = () => {
-        setError("Failed to read file");
+        setError(t("file_read_failed"));
       };
       reader.readAsDataURL(file);
     },
@@ -128,10 +130,10 @@ export default function ImageUploader({
 
         <div>
           <p className="text-lg font-semibold text-foreground mb-1">
-            {isDragging ? "Drop your image here" : "Click or drag image here"}
+            {isDragging ? t("drag_image_here") : t("click_or_drag")}
           </p>
           <p className="text-sm text-muted-foreground">
-            Supports JPEG, PNG, WebP (Max 20MB)
+            {t("supports_jpeg_png_webp")}
           </p>
         </div>
 
@@ -140,7 +142,7 @@ export default function ImageUploader({
           className="mt-2 px-6 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg font-medium shadow-lg shadow-violet-500/25 transition-all duration-200 flex items-center gap-2"
         >
           <RiImageLine className="w-5 h-5" />
-          Upload Image
+          {t("upload_image")}
         </button>
 
         {error && (

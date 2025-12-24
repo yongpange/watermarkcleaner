@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { RiSettings3Line } from "react-icons/ri";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export type ProcessingMode = "auto" | "conservative" | "aggressive";
 
@@ -27,15 +28,16 @@ export default function ProcessingOptions({
   className,
 }: ProcessingOptionsProps) {
   const [expanded, setExpanded] = useState(false);
+  const t = useTranslations("convert.processing");
 
   const getModeDescription = (mode: ProcessingMode): string => {
     switch (mode) {
       case "conservative":
-        return "保守模式：避免过度处理，保持原图最大完整性";
+        return t("conservative_mode_description");
       case "aggressive":
-        return "激进模式：彻底移除所有痕迹，包括半透明水印";
+        return t("aggressive_mode_description");
       default:
-        return "自动模式：自动平衡处理强度和质量";
+        return t("auto_mode_description");
     }
   };
 
@@ -46,9 +48,9 @@ export default function ProcessingOptions({
         <div className="p-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="text-sm text-muted-foreground">处理模式:</div>
+              <div className="text-sm text-muted-foreground">{t("processing_mode")}:</div>
               <div className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium">
-                {value.mode === "auto" ? "自动" : value.mode === "conservative" ? "保守" : "激进"}
+                {t(value.mode)}
               </div>
             </div>
             <button
@@ -56,7 +58,7 @@ export default function ProcessingOptions({
               className="text-sm text-primary hover:text-primary/80 flex items-center gap-1"
             >
               <RiSettings3Line className="w-4 h-4" />
-              {expanded ? "收起" : "展开"}
+              {expanded ? t("collapse") || "收起" : t("expand") || "展开"}
             </button>
           </div>
         </div>
@@ -65,12 +67,12 @@ export default function ProcessingOptions({
         <div className="p-4 space-y-4">
           <div className="flex items-center gap-2 mb-3">
             <RiSettings3Line className="w-5 h-5 text-primary" />
-            <h3 className="font-medium text-foreground">处理选项</h3>
+            <h3 className="font-medium text-foreground">{t("processing_options")}</h3>
           </div>
 
           {/* 处理模式选择 */}
           <div>
-            <label className="block text-sm font-medium mb-2">处理模式</label>
+            <label className="block text-sm font-medium mb-2">{t("processing_mode")}</label>
             <div className="grid grid-cols-3 gap-2">
               <button
                 onClick={() => onChange?.({ ...value, mode: "auto" })}
@@ -81,8 +83,8 @@ export default function ProcessingOptions({
                     : "border-border bg-background hover:border-primary/50"
                 )}
               >
-                <div className="font-medium mb-1">自动</div>
-                <div className="text-xs text-muted-foreground">平衡质量和速度</div>
+                <div className="font-medium mb-1">{t("auto")}</div>
+                <div className="text-xs text-muted-foreground">{t("balance_quality_speed")}</div>
               </button>
 
               <button
@@ -94,8 +96,8 @@ export default function ProcessingOptions({
                     : "border-border bg-background hover:border-primary/50"
                 )}
               >
-                <div className="font-medium mb-1">保守</div>
-                <div className="text-xs text-muted-foreground">避免过度处理</div>
+                <div className="font-medium mb-1">{t("conservative")}</div>
+                <div className="text-xs text-muted-foreground">{t("avoid_overprocessing")}</div>
               </button>
 
               <button
@@ -107,8 +109,8 @@ export default function ProcessingOptions({
                     : "border-border bg-background hover:border-primary/50"
                 )}
               >
-                <div className="font-medium mb-1">激进</div>
-                <div className="text-xs text-muted-foreground">彻底移除水印</div>
+                <div className="font-medium mb-1">{t("aggressive")}</div>
+                <div className="text-xs text-muted-foreground">{t("thoroughly_remove_watermark")}</div>
               </button>
             </div>
 
@@ -124,18 +126,18 @@ export default function ProcessingOptions({
           <details className="group">
             <summary className="cursor-pointer list-none text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-2">
               <span className="inline-block w-3">→</span>
-              高级选项（自定义指令）
+              {t("advanced_options")}
             </summary>
             <div className="mt-3 space-y-2 pl-5">
               <textarea
                 value={value.prompt || ""}
                 onChange={(e) => onChange?.({ ...value, prompt: e.target.value })}
-                placeholder="输入自定义指令（可选）\n例如：仅移除右下角的半透明水印，保留其他文字"
+                placeholder={t("input_instructions")}
                 className="w-full p-3 bg-background border border-input rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
                 rows={3}
               />
               <p className="text-xs text-muted-foreground">
-                留空将使用默认的AI优化指令
+                {t("ai_optimization")}
               </p>
             </div>
           </details>

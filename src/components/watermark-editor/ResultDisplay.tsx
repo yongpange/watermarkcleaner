@@ -5,6 +5,7 @@ import { RiDownloadLine, RiRefreshLine, RiZoomInLine, RiZoomOutLine, RiImageAddL
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import ImageUploader from "./ImageUploader";
+import { useTranslations } from "next-intl";
 
 interface ResultDisplayProps {
   originalImageUrl: string;  // 新增：原图URL
@@ -23,6 +24,8 @@ export default function ResultDisplay({
   const [activeImage, setActiveImage] = useState<'original' | 'result'>('result');  // 新增：当前显示的图片
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations("convert.watermark_removal");
+  const imageT = useTranslations("convert.image");
 
   const activeImageUrl = activeImage === 'result' ? resultImageUrl : originalImageUrl;
 
@@ -97,7 +100,7 @@ export default function ResultDisplay({
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
             <span className="text-success">✓</span>
-            {activeImage === 'result' ? 'Watermark Removed Successfully!' : 'Original Image'}
+            {activeImage === 'result' ? t('watermark_removed_successfully') : imageT('original_image')}
           </h3>
           <div className="flex items-center gap-2">
             <Button
@@ -170,7 +173,7 @@ export default function ResultDisplay({
               activeImage === 'original' ? "opacity-100" : "opacity-0"
             )} />
           </div>
-          <span className="text-xs text-muted-foreground">原图</span>
+          <span className="text-xs text-muted-foreground">{imageT('original_image')}</span>
         </div>
 
         {/* 处理后的图片缩略图 */}
@@ -196,7 +199,7 @@ export default function ResultDisplay({
               activeImage === 'result' ? "opacity-100" : "opacity-0"
             )} />
           </div>
-          <span className="text-xs text-muted-foreground">处理后</span>
+          <span className="text-xs text-muted-foreground">{t('processed')}</span>
         </div>
 
         {/* 上传新图片按钮（与缩略图同大小） */}
@@ -216,7 +219,7 @@ export default function ResultDisplay({
               <span className="text-xs text-primary font-medium">新图片</span>
             </div>
           </div>
-          <span className="text-xs text-muted-foreground">上传新图</span>
+          <span className="text-xs text-muted-foreground">{t('upload_new_image')}</span>
         </div>
 
         {/* 隐藏的file input */}
@@ -239,7 +242,7 @@ export default function ResultDisplay({
           className="flex items-center gap-2 min-w-[180px] justify-center"
         >
           <RiRefreshLine className="w-5 h-5" />
-          Process Another Image
+          {t('process_another_image')}
         </Button>
 
         {/* 下载按钮 */}
@@ -250,7 +253,7 @@ export default function ResultDisplay({
           className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 min-w-[180px] justify-center"
         >
           <RiDownloadLine className="w-5 h-5" />
-          {isDownloading ? "Downloading..." : "Download Image"}
+          {isDownloading ? t('downloading') : t('download_image')}
         </Button>
       </div>
     </div>

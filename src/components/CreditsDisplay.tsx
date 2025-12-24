@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface CreditsInfo {
   tier: "unverified" | "verified" | "pro";
@@ -21,6 +22,7 @@ export function CreditsDisplay() {
   const { data: session, status } = useSession();
   const [credits, setCredits] = useState<CreditsInfo | null>(null);
   const [loading, setLoading] = useState(false);
+  const t = useTranslations("convert.credits");
 
   // Fetch credits info for both authenticated and unauthenticated users
   useEffect(() => {
@@ -74,7 +76,7 @@ export function CreditsDisplay() {
     return (
       <div className="flex items-center gap-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse">
         <Loader2 className="h-4 w-4 animate-spin" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">Loading credits...</span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">{t("loading")}</span>
       </div>
     );
   }
@@ -92,7 +94,7 @@ export function CreditsDisplay() {
           <div className="flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-violet-600 animate-pulse" />
             <span className="text-sm font-medium text-violet-900 dark:text-violet-100">
-              免费试用（访客模式）
+              {t("free_trial")}
             </span>
           </div>
         </div>
@@ -106,10 +108,10 @@ export function CreditsDisplay() {
 
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-600 dark:text-gray-400">
-            本月使用: {credits.used} / {credits.limit} 张
+            {t("monthly_usage", { used: credits.used, limit: credits.limit })}
           </span>
           <span className="font-medium text-violet-900 dark:text-violet-100">
-            剩余: {credits.remaining} 张
+            {t("remaining", { remaining: credits.remaining })}
           </span>
         </div>
 
@@ -118,7 +120,7 @@ export function CreditsDisplay() {
             href="/auth/verify"
             className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block"
           >
-            🔐 验证邮箱获得更多额度 →
+            {t("verify_email")}
           </Link>
         </div>
       </div>
@@ -126,7 +128,7 @@ export function CreditsDisplay() {
   }
 
   const tierNames = {
-    unverified: "免费试用",
+    unverified: t("free_trial"),
     verified: "已验证用户",
     pro: "专业版",
   };
@@ -158,10 +160,10 @@ export function CreditsDisplay() {
           {/* Usage Stats */}
           <div className="flex justify-between items-center text-sm">
             <span className="text-gray-600 dark:text-gray-400">
-              本月使用: {credits.used} / {credits.limit} 张
+              {t("monthly_usage", { used: credits.used, limit: credits.limit })}
             </span>
             <span className="font-medium text-violet-900 dark:text-violet-100">
-              剩余: {credits.remaining} 张
+              {t("remaining", { remaining: credits.remaining })}
             </span>
           </div>
         </>
@@ -169,7 +171,7 @@ export function CreditsDisplay() {
 
       {isUnlimited && (
         <div className="text-sm text-violet-900 dark:text-violet-100">
-          ✨ 无限额度
+          {t("unlimited")}
         </div>
       )}
 
@@ -180,9 +182,7 @@ export function CreditsDisplay() {
             href={credits.tier === "unverified" ? "/auth/signin" : "/pricing"}
             className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block"
           >
-            {credits.tier === "unverified"
-              ? "🔐 验证邮箱获得更多额度 →"
-              : "💎 升级专业版获得无限额度 →"}
+            {credits.tier === "unverified" ? t("verify_email") : t("upgrade_pro")}
           </Link>
         </div>
       )}

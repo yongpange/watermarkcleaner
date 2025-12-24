@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface ImagePreviewProps {
   imageUrl: string;
@@ -25,6 +26,7 @@ export default function ImagePreview({
   className,
 }: ImagePreviewProps) {
   const [imageError, setImageError] = useState(false);
+  const t = useTranslations("convert.image");
 
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return "0 Bytes";
@@ -52,12 +54,12 @@ export default function ImagePreview({
       <div className="relative w-full">
         {imageError ? (
           <div className="flex flex-col items-center justify-center w-full h-64 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <div className="text-gray-500 dark:text-gray-400 mb-2">Failed to load image</div>
+            <div className="text-gray-500 dark:text-gray-400 mb-2">{t("image_load_failed")}</div>
             <button
               onClick={() => setImageError(false)}
               className="text-violet-600 hover:text-violet-700 text-sm font-medium"
             >
-              Retry
+              {t("retry")}
             </button>
           </div>
         ) : (
@@ -74,7 +76,7 @@ export default function ImagePreview({
           <button
             onClick={onRemove}
             className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 rounded-full shadow-lg transition-colors"
-            title="Remove image"
+            title={t("remove_image")}
           >
             <RiCloseLine className="w-4 h-4 text-gray-700 dark:text-gray-300" />
           </button>
@@ -86,14 +88,14 @@ export default function ImagePreview({
         <div className="grid grid-cols-2 gap-3 text-sm">
           {file && (
             <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">文件名:</span>
+              <span className="text-muted-foreground">{t("filename")}</span>
               <span className="font-medium text-foreground truncate">{file.name}</span>
             </div>
           )}
 
           {file && (
             <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">大小:</span>
+              <span className="text-muted-foreground">{t("size")}</span>
               <span className="font-medium text-foreground">{formatFileSize(file.size)}</span>
             </div>
           )}
@@ -101,14 +103,14 @@ export default function ImagePreview({
           {metadata && (
             <>
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">尺寸:</span>
+                <span className="text-muted-foreground">{t("dimensions")}</span>
                 <span className="font-medium text-foreground">
                   {metadata.width} × {metadata.height}
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">类型:</span>
+                <span className="text-muted-foreground">{t("type")}</span>
                 <span className="font-medium text-foreground">
                   {metadata.type.split("/")[1]?.toUpperCase()}
                 </span>

@@ -10,6 +10,7 @@ import ImageUploader from "./ImageUploader";
 import ImagePreview from "./ImagePreview";
 import ProcessingOptions, { ProcessingMode } from "./ProcessingOptions";
 import ResultDisplay from "./ResultDisplay";
+import { useTranslations } from "next-intl";
 
 interface ProcessOptions {
   mode: ProcessingMode;
@@ -35,6 +36,9 @@ export default function WatermarkEditor() {
   const [processingOptions, setProcessingOptions] = useState<ProcessOptions>({
     mode: "auto",
   });
+  const t = useTranslations("convert.watermark_removal");
+  const processingT = useTranslations("convert.processing");
+  const imageT = useTranslations("convert.image");
 
   // Zustand store for uploaded images (from homepage)
   const searchParams = useSearchParams();
@@ -65,7 +69,7 @@ export default function WatermarkEditor() {
       // Clean URL parameter
       window.history.replaceState({}, '', '/convert');
 
-      toast.success('图片加载成功！');
+      toast.success(imageT('image_load_success'));
     }
   }, [isFromUpload, pendingImage, handleImageLoad, clearPendingImage]);
 
@@ -135,33 +139,33 @@ export default function WatermarkEditor() {
           url: data.imageUrl,
         });
         setResultImageUrl(data.imageUrl);
-        toast.success("水印移除成功！");
+        toast.success(t("watermark_removed_success"));
       } else {
-        throw new Error(data.error || "处理失败");
+        throw new Error(data.error || processingT("processing_failed"));
       }
     } catch (error) {
       console.error("Processing failed:", error);
 
-      let errorMessage = "处理失败";
+      let errorMessage = processingT("processing_failed");
       if (error instanceof Error) {
         errorMessage = error.message;
       }
 
-      // 根据错误消息提供更多上下文
+      // Provide more context based on error message
       if (errorMessage.includes("timeout")) {
-        errorMessage = "处理超时，图片可能过大或网络连接较慢。";
+        errorMessage = t("timeout_error");
       } else if (errorMessage.includes("Rate limit")) {
-        errorMessage = "请求频率过高，请稍后再试。";
+        errorMessage = t("rate_limit_error");
       } else if (errorMessage.includes("Unsupported format")) {
-        errorMessage = "不支持的图片格式，请使用 JPG、PNG 或 WebP。";
+        errorMessage = t("unsupported_format_error");
       }
 
       setError(errorMessage);
-      toast.error("水印移除失败");
+      toast.error(t("watermark_removal_failed"));
     } finally {
       setIsProcessing(false);
     }
-  }, [imageFile, isProcessing, processingOptions]);
+  }, [imageFile, isProcessing, processingOptions, t, processingT]);
 
   // 处理错误警告
   useEffect(() => {
@@ -236,7 +240,7 @@ export default function WatermarkEditor() {
               <div className="flex items-start gap-3">
                 <RiCloseCircleLine className="w-5 h-5 text-destructive mt-0.5 flex-shrink-0" />
                 <div className="text-destructive-foreground text-sm">
-                  <p className="font-medium mb-1">处理失败</p>
+                  <p className="font-medium mb-1">{processingT("processing_failed")}</p>
                   <p>{error}</p>
                 </div>
               </div>
@@ -253,7 +257,7 @@ export default function WatermarkEditor() {
                   disabled={isProcessing}
                 >
                   <RiImageAddLine className="w-4 h-4 mr-2" />
-                  上传新图片
+                  {imageT("upload_new_image")}
                 </Button>
               </div>
 
@@ -266,12 +270,12 @@ export default function WatermarkEditor() {
                 {isProcessing ? (
                   <>
                     <RiLoader4Line className="w-5 h-5 mr-2 animate-spin" />
-                    处理中...
+                    {t("processing")}
                   </>
                 ) : (
                   <>
                     <RiMagicLine className="w-5 h-5 mr-2" />
-                    开始去水印
+                    {t("start_watermark_removal")}
                   </>
                 )}
               </Button>
@@ -282,10 +286,10 @@ export default function WatermarkEditor() {
               <div className="mt-4 p-3 bg-primary/5 rounded-lg border border-primary/20">
                 <p className="text-sm text-primary flex items-center gap-2">
                   <span className="inline-block w-2 h-2 bg-primary rounded-full animate-pulse" />
-                  正在使用AI智能识别并移除水印，请稍候...
+                  {processingT("ai_recognition")}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  处理时间取决于图片大小，一般在30秒到2分钟之间
+                  {processingT("processing_time_info")}
                 </p>
               </div>
             )}
