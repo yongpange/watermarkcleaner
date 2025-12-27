@@ -15,7 +15,24 @@
         {
           "title": "Blog",
           "url": "/blog",
-          "icon": "RiArticleLine"
+          "icon": "RiArticleLine",
+          "children": [
+            {
+              "title": "2025 Ultimate Guide: How to Use AI Technology to Perfectly Remove Image Watermarks",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
+              "description": "Step-by-step guide for AI watermark removal"
+            },
+            {
+              "title": "Top 7 AI Tools for Watermark Removal",
+              "url": "/blog/best-ai-tools-for-watermark-removal",
+              "description": "Compare the best AI watermark removal tools"
+            },
+            {
+              "title": "Legal Aspects of Watermark Removal",
+              "url": "/blog/watermark-removal-legal-aspects-guide",
+              "description": "Understand the legal considerations"
+            }
+          ]
         },
         {
           "title": "FAQ",
@@ -397,6 +414,11 @@
             {
               "title": "Blog",
               "url": "/blog",
+              "target": "_self"
+            },
+            {
+              "title": "2025 Ultimate Guide: How to Use AI Technology to Perfectly Remove Image Watermarks",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
               "target": "_self"
             }
           ]

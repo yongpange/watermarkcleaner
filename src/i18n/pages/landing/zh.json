@@ -13,19 +13,26 @@
     "nav": {
       "items": [
         {
-          "title": "功能特点",
-          "url": "/#feature",
-          "icon": "RiSparkling2Line"
-        },
-        {
-          "title": "使用方法",
-          "url": "/#usage",
-          "icon": "RiCheckDoubleLine"
-        },
-        {
-          "title": "价格",
-          "url": "/pricing",
-          "icon": "RiPriceTag3Line"
+          "title": "博客",
+          "url": "/blog",
+          "icon": "RiArticleLine",
+          "children": [
+            {
+              "title": "2025年终极指南：如何使用AI技术完美去除图片水印",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
+              "description": "AI去水印分步指南"
+            },
+            {
+              "title": "7大最佳AI水印去除工具",
+              "url": "/blog/best-ai-tools-for-watermark-removal",
+              "description": "比较最佳AI去水印工具"
+            },
+            {
+              "title": "水印去除的法律问题",
+              "url": "/blog/watermark-removal-legal-aspects-guide",
+              "description": "了解法律注意事项"
+            }
+          ]
         },
         {
           "title": "常见问题",
@@ -408,6 +415,11 @@
             {
               "title": "博客",
               "url": "/blog",
+              "target": "_self"
+            },
+            {
+              "title": "2025年终极指南：如何使用AI技术完美去除图片水印",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
               "target": "_self"
             }
           ]

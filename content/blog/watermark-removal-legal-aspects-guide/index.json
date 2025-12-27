@@ -1,0 +1,21 @@
+{
+  "slug": "watermark-removal-legal-aspects-guide",
+  "title": {
+    "en": "Legal Aspects of Watermark Removal: What You Need to Know in 2025",
+    "zh": "水印去除的法律问题：2025年您需要了解的事项"
+  },
+  "description": {
+    "en": "Comprehensive guide to the legal implications of watermark removal. Understand copyright laws, fair use, and when watermark removal is legal.",
+    "zh": "水印去除法律影响的综合指南。了解版权法、合理使用和何时可以合法去除水印。"
+  },
+  "category": "tips",
+  "author": "team",
+  "publishDate": "2024-12-15T09:00:00Z",
+  "readTime": 10,
+  "featured": false,
+  "coverImage": "/images/blog/legal-watermark-removal.jpg",
+  "tags": {
+    "en": ["Legal", "Copyright", "Watermark Removal", "Compliance", "Guide"],
+    "zh": ["法律", "版权", "水印去除", "合规", "指南"]
+  }
+}

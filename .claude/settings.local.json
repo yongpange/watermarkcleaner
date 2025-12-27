@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(npm:*)"
+      "Bash(npm:*)",
+      "Bash(ls:*)",
+      "Bash(curl -s -I http://localhost:3001/blog)",
+      "Bash(curl:*)",
+      "Bash(grep:*)",
+      "Bash(xargs:*)",
+      "Bash(TaskOutput:*)",
+      "Bash(NODE_ENV=development npx tsx src/scripts/sync-blog-to-db.ts)",
+      "Bash(node test-env.js:*)",
+      "Bash(node:*)"
     ]
   }
 }

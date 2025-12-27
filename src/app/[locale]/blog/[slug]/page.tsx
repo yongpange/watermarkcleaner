@@ -4,7 +4,12 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import "@/components/markdown/markdown.css";
 import BlogBreadcrumb from "@/components/blocks/blog/breadcrumb";
-import { getPostBySlug, getAllPostSlugs, type Locale } from "@/lib/blog";
+import TableOfContents from "@/components/blocks/blog/table-of-contents";
+import RelatedPosts from "@/components/blocks/blog/related-posts";
+import ShareButtons from "@/components/blocks/blog/share-buttons";
+import BlogJsonLd, { BreadcrumbJsonLd } from "@/components/blocks/blog/blog-jsonld";
+import MDXRenderer from "@/components/markdown/mdx-renderer";
+import { getPostBySlug, getAllPostSlugs, getAllPosts, type Locale } from "@/lib/blog";
 import { locales } from "@/i18n/locale";
 
 export async function generateStaticParams() {
@@ -15,7 +20,7 @@ export async function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string } > }): Promise<Metadata> {
   const { slug } = await params;
   const locale = (await getLocale()) as Locale;
 
@@ -28,10 +33,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_WEB_URL || "https://watermarkcleaner.com";
+  const postUrl = `${siteUrl}/${locale}/blog/${slug}`;
+
   return {
     title: post.title,
     description: post.description,
     keywords: post.tags.join(", "),
+    authors: [{ name: post.authorName }],
     openGraph: {
       title: post.title,
       description: post.description,
@@ -39,11 +48,39 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       locale: locale,
       publishedTime: post.publishDate,
       authors: [post.authorName],
+      url: postUrl,
+      siteName: "WatermarkCleaner",
+      ...(post.coverImage && {
+        images: [
+          {
+            url: `${siteUrl}${post.coverImage}`,
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      creator: "@watermarkcleaner",
+      ...(post.coverImage && {
+        images: [`${siteUrl}${post.coverImage}`],
+      }),
+    },
+    alternates: {
+      canonical: postUrl,
+      languages: {
+        en: `${siteUrl}/en/blog/${slug}`,
+        zh: `${siteUrl}/zh/blog/${slug}`,
+      },
     },
   };
 }
 
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string } > }) {
   const { slug } = await params;
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations("blog");
@@ -61,9 +98,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     { month: "long", day: "numeric", year: "numeric" }
   );
 
+  // 获取相关文章（同分类的其他文章）
+  const allPosts = await getAllPosts(locale);
+  const relatedPosts = allPosts.filter(p => p.category === post.category && p.slug !== slug).slice(0, 3);
+
   return (
-    <article className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
-      {/* Hero Section */}
+    <>
+      {/* SEO - JSON-LD Structured Data */}
+      <BlogJsonLd
+        type="article"
+        title={post.title}
+        description={post.description}
+        url={`${process.env.NEXT_PUBLIC_WEB_URL || "https://watermarkcleaner.com"}/${locale}/blog/${slug}`}
+        publishDate={post.publishDate}
+        authorName={post.authorName}
+        imageUrl={post.coverImage}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: `${process.env.NEXT_PUBLIC_WEB_URL || "https://watermarkcleaner.com"}/${locale}` },
+          { name: "Blog", url: `${process.env.NEXT_PUBLIC_WEB_URL || "https://watermarkcleaner.com"}/${locale}/blog` },
+          { name: post.title, url: `${process.env.NEXT_PUBLIC_WEB_URL || "https://watermarkcleaner.com"}/${locale}/blog/${slug}` },
+        ]}
+      />
+
+      <article className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
+        {/* Hero Section */}
       <section className="py-16 bg-primary/5">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -99,35 +159,57 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {/* Content */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="prose prose-lg max-w-none">
-              {/* MDX content rendering with image support */}
-              <div
-                className="markdown-content"
-                data-locale={locale}
-                dangerouslySetInnerHTML={{
-                  __html: post.content
-                    .replace(/^#\s+(.+)$/gm, '<h1 class="text-4xl font-bold mb-6 text-primary">$1</h1>')
-                    .replace(/^##\s+(.+)$/gm, '<h2 class="text-2xl font-semibold mb-4 mt-8 text-primary/80">$1</h2>')
-                    .replace(/^###\s+(.+)$/gm, '<h3 class="text-xl font-semibold mb-3 mt-6 text-primary/70">$1</h3>')
-                    .replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-primary">$1</strong>')
-                    .replace(/\*(.+?)\*/g, '<em class="italic text-primary/80">$1</em>')
-                    .replace(/\n\n/g, '</p><p class="mb-4 leading-relaxed text-foreground">')
-                    .replace(/^(.+)$/gm, '<p class="mb-4 leading-relaxed text-foreground">$1</p>')
-                    .replace(/<p class="mb-4 leading-relaxed text-foreground"><h1/g, '<h1')
-                    .replace(/<\/h1><\/p>/g, '</h1>')
-                    .replace(/<p class="mb-4 leading-relaxed text-foreground"><h2/g, '<h2')
-                    .replace(/<\/h2><\/p>/g, '</h2>')
-                    .replace(/<p class="mb-4 leading-relaxed text-foreground"><h3/g, '<h3')
-                    .replace(/<\/h3><\/p>/g, '</h3>')
-                    // Handle Markdown images: ![alt text](image-url)
-                    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="w-full my-6"><img src="$2" alt="$1" class="blog-image w-full h-auto max-w-[1920px] mx-auto rounded-lg shadow-md" loading="lazy" /></div>')
-                }}
-              />
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-3">
+              <article className="prose prose-lg max-w-none">
+                {/* MDX content rendering with component support */}
+                <MDXRenderer content={post.content} />
+              </article>
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-24 space-y-8">
+                {/* Table of Contents */}
+                <TableOfContents content={post.content} />
+
+                {/* Article Info Card */}
+                <div className="bg-secondary/50 rounded-lg p-4 space-y-3">
+                  <h3 className="font-semibold text-sm">Article Info</h3>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Author:</span>
+                      <span>{post.authorName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Read time:</span>
+                      <span>{post.readTime} min</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Published:</span>
+                      <span>{formattedDate}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Share Buttons */}
+                <ShareButtons
+                  title={post.title}
+                  url={`${process.env.NEXT_PUBLIC_WEB_URL || "https://watermarkcleaner.com"}/${locale}/blog/${slug}`}
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Related Posts */}
+      <RelatedPosts
+        currentPostSlug={slug}
+        posts={relatedPosts}
+        locale={locale}
+      />
 
       {/* Navigation */}
       <section className="py-8 border-t">
@@ -143,5 +225,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
     </article>
+    </>
   );
 }
