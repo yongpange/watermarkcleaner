@@ -53,7 +53,7 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
   }, [content]);
 
   return (
-    <div className="markdown-content">
+    <div className="markdown-content space-y-6 animate-fade-in-up animation-delay-400">
       {parsedContent.map((part, index) => {
         if (part.type === 'html') {
           return (
@@ -61,38 +61,50 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
               key={index}
               dangerouslySetInnerHTML={{
                 __html: part.content
-                  .replace(/^#\s+(.+)$/gm, '<h1 id="$1" class="text-4xl font-bold mb-6 text-primary">$1</h1>')
-                  .replace(/^##\s+(.+)$/gm, '<h2 id="$1" class="text-2xl font-semibold mb-4 mt-8 text-primary/80">$1</h2>')
-                  .replace(/^###\s+(.+)$/gm, '<h3 id="$1" class="text-xl font-semibold mb-3 mt-6 text-primary/70">$1</h3>')
-                  .replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-primary">$1</strong>')
+                  // 增强的标题样式
+                  .replace(/^#\s+(.+)$/gm, '<h1 id="$1" class="text-4xl md:text-5xl font-bold mb-8 text-primary scroll-mt-20 relative group">$1<span class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-primary/50 cursor-pointer">#</span></h1>')
+                  .replace(/^##\s+(.+)$/gm, '<h2 id="$1" class="text-2xl md:text-3xl font-semibold mb-6 mt-12 text-primary/90 scroll-mt-20 relative group border-b border-border/30 pb-2">$1<span class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-primary/50 cursor-pointer">#</span></h2>')
+                  .replace(/^###\s+(.+)$/gm, '<h3 id="$1" class="text-xl md:text-2xl font-semibold mb-4 mt-8 text-primary/80 scroll-mt-20 relative group">$1<span class="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-primary/50 cursor-pointer">#</span></h3>')
+                  // 增强的文本样式
+                  .replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-primary bg-primary/10 px-1 rounded">$1</strong>')
                   .replace(/\*(.+?)\*/g, '<em class="italic text-primary/80">$1</em>')
-                  .replace(/\n\n/g, '</p><p class="mb-4 leading-relaxed text-foreground">')
-                  .replace(/^(.+)$/gm, '<p class="mb-4 leading-relaxed text-foreground">$1</p>')
-                  .replace(/<p class="mb-4 leading-relaxed text-foreground"><h1/g, '<h1')
+                  // 增强的段落样式
+                  .replace(/\n\n/g, '</p><p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl">')
+                  .replace(/^(.+)$/gm, '<p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl">$1</p>')
+                  .replace(/<p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl"><h1/g, '<h1')
                   .replace(/<\/h1><\/p>/g, '</h1>')
-                  .replace(/<p class="mb-4 leading-relaxed text-foreground"><h2/g, '<h2')
+                  .replace(/<p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl"><h2/g, '<h2')
                   .replace(/<\/h2><\/p>/g, '</h2>')
-                  .replace(/<p class="mb-4 leading-relaxed text-foreground"><h3/g, '<h3')
+                  .replace(/<p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl"><h3/g, '<h3')
                   .replace(/<\/h3><\/p>/g, '</h3>')
-                  // Handle Markdown images: ![alt text](image-url)
-                  .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="w-full my-6"><img src="$2" alt="$1" class="blog-image w-full h-auto max-w-[1920px] mx-auto rounded-lg shadow-md" loading="lazy" /></div>')
-                  // Handle code blocks
-                  .replace(/```([\s\S]*?)```/g, '<pre class="bg-muted p-4 rounded-lg overflow-x-auto my-6"><code class="text-sm">$1</code></pre>')
-                  // Handle inline code
-                  .replace(/`([^`]+)`/g, '<code class="bg-muted px-1 py-0.5 rounded text-sm font-mono">$1</code>')
-                  // Handle blockquotes
-                  .replace(/^>\s+(.+)$/gm, '<blockquote class="border-l-4 border-primary pl-4 my-4 italic text-muted-foreground">$1</blockquote>')
+                  // 增强的图片样式
+                  .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div class="w-full my-8 flex justify-center"><div class="relative group max-w-4xl"><img src="$2" alt="$1" class="blog-image w-full h-auto rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]" loading="lazy" /><div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div></div></div>')
+                  // 增强的代码块样式
+                  .replace(/```([\s\S]*?)```/g, '<div class="code-block-enhanced my-8"><pre class="p-6 rounded-lg overflow-x-auto"><code class="text-sm leading-relaxed">$1</code></pre></div>')
+                  // 增强的内联代码样式
+                  .replace(/`([^`]+)`/g, '<code class="bg-muted px-2 py-1 rounded-md text-sm font-mono border border-border/50">$1</code>')
+                  // 增强的引用块样式
+                  .replace(/^>\s+(.+)$/gm, '<blockquote class="blockquote-enhanced my-8"><p class="!mb-0">$1</p></blockquote>')
+                  // 增强的列表样式
+                  .replace(/^\*\s+(.+)$/gm, '<li class="mb-2 ml-4 relative before:content-["•"] before:absolute before:-left-4 before:text-primary">$1</li>')
+                  .replace(/^\d+\.\s+(.+)$/gm, '<li class="mb-2 ml-4">$1</li>')
+                  // 添加链接样式
+                  .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:text-primary/80 underline underline-offset-4 decoration-2 hover:decoration-primary/50 transition-all duration-200">$1</a>')
               }}
             />
           );
         } else if (part.type === 'imageComparison') {
           return (
-            <ImageComparison
-              key={index}
-              beforeImage={part.beforeImage}
-              afterImage={part.afterImage}
-              autoPlay={false}
-            />
+            <div className="w-full my-8 flex justify-center">
+              <div className="w-full max-w-none md:max-w-3xl lg:max-w-4xl">
+                <ImageComparison
+                  key={index}
+                  beforeImage={part.beforeImage}
+                  afterImage={part.afterImage}
+                  autoPlay={false}
+                />
+              </div>
+            </div>
           );
         }
         return null;

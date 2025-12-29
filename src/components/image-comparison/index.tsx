@@ -167,7 +167,11 @@ export default function ImageComparison({
 
       <div
         ref={containerRef}
-        className="relative w-auto inline-block overflow-hidden rounded-xl shadow-2xl select-none mx-auto"
+        className={cn(
+          "relative w-full inline-block overflow-hidden rounded-xl shadow-2xl select-none mx-auto",
+          "max-w-none md:max-w-3xl lg:max-w-4xl", // 响应式宽度
+          className
+        )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleSliderClick}
@@ -177,7 +181,6 @@ export default function ImageComparison({
         aria-valuemax={100}
         aria-valuenow={Math.round(sliderPosition)}
         tabIndex={0}
-        style={{ maxWidth: '1200px' }}
       >
         {/* After image (displayed as background) */}
         <Image

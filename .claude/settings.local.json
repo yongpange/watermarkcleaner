@@ -11,7 +11,9 @@
       "Bash(TaskOutput:*)",
       "Bash(NODE_ENV=development npx tsx src/scripts/sync-blog-to-db.ts)",
       "Bash(node test-env.js:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add -A)"
     ]
   }
 }
