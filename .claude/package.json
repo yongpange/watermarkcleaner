@@ -1,0 +1,12 @@
+{
+  "name": "claude-git-helpers",
+  "version": "1.0.0",
+  "description": "Git 提交助手工具",
+  "scripts": {
+    "commit": "node ai-commit.js",
+    "commit-with-message": "node ai-commit.js"
+  },
+  "bin": {
+    "ai-commit": "./ai-commit.js"
+  }
+}

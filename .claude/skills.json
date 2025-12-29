@@ -1,0 +1,15 @@
+{
+  "skills": {
+    "commit": {
+      "name": "Git Commit Helper",
+      "description": "自动分析更改并创建 Git 提交",
+      "command": "bash",
+      "args": ["-c", "git add -A && git diff --cached --stat && echo '建议提交信息:' && git diff --cached --name-only | head -5 | sed 's/^/- /' | xargs -I {} echo '{}'"],
+      "prompt": "分析 git 更改并生成合适的提交信息，然后执行提交",
+      "interactive": true
+    },
+    "quick-commit": {
+      "name": "Quick Git Commit",
+      "description": "快速提交当前更改",
+      "command": "bash",
+      "args": ["-c", "git add -A && git commit -m '${message:-
