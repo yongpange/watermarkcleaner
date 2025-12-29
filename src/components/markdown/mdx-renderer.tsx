@@ -95,10 +95,9 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
           );
         } else if (part.type === 'imageComparison') {
           return (
-            <div className="w-full my-8 flex justify-center">
+            <div key={index} className="w-full my-8 flex justify-center">
               <div className="w-full max-w-none md:max-w-3xl lg:max-w-4xl">
                 <ImageComparison
-                  key={index}
                   beforeImage={part.beforeImage}
                   afterImage={part.afterImage}
                   autoPlay={false}
