@@ -13,7 +13,10 @@
       "Bash(node test-env.js:*)",
       "Bash(node:*)",
       "Bash(git checkout:*)",
-      "Bash(git add -A)"
+      "Bash(git add -A)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)"
     ]
   }
 }
