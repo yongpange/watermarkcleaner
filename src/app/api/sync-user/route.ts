@@ -36,14 +36,14 @@ export async function POST(request: Request) {
 
     // 先通过 email 查找现有用户（用于迁移场景）
     const { data: existingUserByEmail } = await supabase
-      .from('watermarkcleaner.users')
+      .from('users')
       .select('*')
       .eq('email', email)
       .single() as { data: User | null; error: unknown }
 
     // 再通过 uuid 查找（正常场景）
     const { data: existingUserByUuid } = await supabase
-      .from('watermarkcleaner.users')
+      .from('users')
       .select('*')
       .eq('uuid', uuid)
       .single() as { data: User | null; error: unknown }
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       }
 
       const { error: updateError } = await supabase
-        .from('watermarkcleaner.users')
+        .from('users')
         .update(updateData as never)
         .eq('email', email)
 
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       created_at: new Date().toISOString(),
     }
 
-    const { error: insertError } = await supabase.from('watermarkcleaner.users').insert(insertData as any)
+    const { error: insertError } = await supabase.from('users').insert(insertData as any)
 
     if (insertError) {
       console.error('Failed to create user:', insertError)

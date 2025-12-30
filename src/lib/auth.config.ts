@@ -13,6 +13,7 @@ import type { Adapter } from 'next-auth/adapters';
 
 export const authOptions = {
   // Use Supabase adapter for database operations
+  // 注意：表名已经通过重命名解决，这里不需要修改
   adapter: SupabaseAdapter({
     url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
