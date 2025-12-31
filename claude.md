@@ -4,6 +4,8 @@
 
 **WatermarkCleaner** 是一个现代化的 AI 驱动水印去除网站，提供在线图像处理服务。项目基于 Next.js 15、React 19 和 TypeScript 构建，支持多语言国际化，并提供完整的博客系统、用户认证、额度管理等功能。
 
+**✅ 最新更新**: 2025-12-30 完成数据库架构迁移，将表从 watermarkcleaner schema 迁移到 public schema，统一使用 wmc_ 前缀，确保数据库结构清晰且易于管理。
+
 ---
 
 ## 1. 技术栈 (Technology Stack)
@@ -393,28 +395,100 @@ newStorage().uploadFile({
 
 ## 5. 数据库架构 (Database Schema)
 
-### 5.1 用户表 (users)
+### 5.1 数据库迁移更新 (2025-12-30)
+
+**重要更新**: 已完成数据库表结构迁移，将表从 `watermarkcleaner` schema 迁移到 `public` schema，并统一使用 `wmc_` 前缀。
+
+**迁移内容**:
+- `watermarkcleaner.users` → `public.wmc_users`
+- `watermarkcleaner.accounts` → `public.wmc_accounts`
+- `watermarkcleaner.sessions` → `public.wmc_sessions`
+- `watermarkcleaner.verification_tokens` → `public.wmc_verification_tokens`
+- `watermarkcleaner.processing_history` → `public.wmc_processing_history`
+
+**迁移过程**:
+1. 备份原始数据
+2. 创建新表结构（保持原有结构不变）
+3. 迁移所有数据
+4. 更新代码中的表名引用
+5. 验证迁移结果
+
+**相关文件**:
+- 迁移脚本: `migration/` 目录下的 SQL 和 JS 文件
+- 类型定义: `src/types/database-wmc.types.ts`
+- 验证工具: `migration/verify-migration.js`
+
+### 5.2 用户表 (wmc_users)
 
 ```sql
-CREATE TABLE watermarkcleaner.users (
+CREATE TABLE public.wmc_users (
   id TEXT PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  name TEXT,
+  image TEXT,
+  emailVerified TIMESTAMPTZ,
+  tier TEXT DEFAULT 'unverified',
   creditsUsed INTEGER DEFAULT 0,
   creditsReset TIMESTAMPTZ,
-  tier TEXT DEFAULT 'unverified',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
 
-### 5.2 处理历史表 (processing_history)
+### 5.3 认证相关表 (NextAuth.js)
+
+**wmc_accounts 表**:
+```sql
+CREATE TABLE public.wmc_accounts (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  userId TEXT NOT NULL REFERENCES public.wmc_users(id) ON DELETE CASCADE,
+  type TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  providerAccountId TEXT NOT NULL,
+  refresh_token TEXT,
+  access_token TEXT,
+  expires_at BIGINT,
+  token_type TEXT,
+  scope TEXT,
+  id_token TEXT,
+  session_state TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**wmc_sessions 表**:
+```sql
+CREATE TABLE public.wmc_sessions (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  sessionToken TEXT UNIQUE NOT NULL,
+  userId TEXT NOT NULL REFERENCES public.wmc_users(id) ON DELETE CASCADE,
+  expires TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**wmc_verification_tokens 表**:
+```sql
+CREATE TABLE public.wmc_verification_tokens (
+  identifier TEXT NOT NULL,
+  token TEXT NOT NULL,
+  expires TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (identifier, token)
+);
+```
+
+### 5.4 处理历史表 (wmc_processing_history)
 
 ```sql
-CREATE TABLE watermarkcleaner.processing_history (
+CREATE TABLE public.wmc_processing_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id TEXT,              -- 可为空 (IP 用户)
-  ip_address TEXT,           -- 可为空 (登录用户)
+  user_id TEXT REFERENCES public.wmc_users(id) ON DELETE CASCADE,
+  ip_address TEXT,
   image_size INTEGER,
   success BOOLEAN,
+  processing_time_ms INTEGER,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
@@ -706,10 +780,11 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 
 ---
 
-**文档版本**: 1.1
-**最后更新**: 2025-12-29
+**文档版本**: 1.2
+**最后更新**: 2025-12-30
 **维护者**: Claude Code AI
 
 ### 更新日志 (Changelog)
+- **v1.2 (2025-12-30)**: 完成数据库迁移 - 将表从watermarkcleaner schema迁移到public schema，统一使用wmc_前缀
 - **v1.1 (2025-12-29)**: 添加博客页面优化特性、响应式图片对比组件、移动端触摸优化
 - **v1.0 (2025-12-25)**: 初始版本，包含完整架构文档
