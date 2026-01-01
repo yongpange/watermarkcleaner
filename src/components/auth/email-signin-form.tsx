@@ -41,7 +41,19 @@ export function EmailSignInForm() {
         router.push(`/auth/verify-request?email=${encodeURIComponent(email)}`);
       }
     } catch (err) {
-      setError("发送验证邮件失败，请稍后重试");
+      console.error('Email signin error:', err);
+      // 更友好的错误提示
+      if (err instanceof Error) {
+        if (err.message.includes('fetch')) {
+          setError("网络连接失败，请检查网络后重试");
+        } else if (err.message.includes('timeout')) {
+          setError("请求超时，邮件可能已发送，请检查邮箱");
+        } else {
+          setError("发送失败，邮件可能已发送，请检查邮箱");
+        }
+      } else {
+        setError("发送验证邮件失败，请稍后重试");
+      }
     } finally {
       setLoading(false);
     }
@@ -58,7 +70,10 @@ export function EmailSignInForm() {
           我们已向 <strong>{email}</strong> 发送了一封验证邮件
         </p>
         <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-          请检查您的收件箱（包括垃圾邮件文件夹）并点击验证链接
+          邮件已成功发送！请检查您的收件箱（包括垃圾邮件文件夹）并点击验证链接
+        </p>
+        <p className="text-xs text-orange-600 dark:text-orange-400 text-center mt-2">
+          💡 提示：某些邮箱可能需要几分钟才能收到邮件
         </p>
       </div>
     );

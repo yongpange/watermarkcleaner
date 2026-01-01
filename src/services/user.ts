@@ -4,13 +4,12 @@ import { findUserByEmail, findUserByUuid, insertUser } from "@/models/user";
 import { User } from "@/types/user";
 import { createClient } from "@/lib/supabase-server";
 import { getOneYearLaterTimestr } from "@/lib/time";
-import { getUserUuidByApiKey } from "@/models/apikey";
 import { headers } from "next/headers";
 import { increaseCredits } from "./credit";
 import { getUuid } from "@/lib/hash";
-import type { Database } from "@/types/database.types";
+import type { DatabaseWithWmc } from "@/types/database-wmc.types";
 
-type UserInsert = Database["public"]["Tables"]["users"]["Insert"];
+type UserInsert = DatabaseWithWmc["public"]["Tables"]["wmc_users"]["Insert"];
 
 // save user to database, if user not exist, create a new user
 export async function saveUser(user: User) {
@@ -30,7 +29,7 @@ export async function saveUser(user: User) {
 
       console.log("user to be inserted:", user);
 
-      const dbUser = await insertUser(supabase, user as UserInsert);
+      const dbUser = await insertUser(supabase, user as unknown as UserInsert);
 
       // increase credits for new user, expire in one year
       await increaseCredits({
@@ -58,39 +57,11 @@ export async function saveUser(user: User) {
 }
 
 export async function getUserUuid() {
-  let user_uuid = "";
-
-  const token = await getBearerToken();
-
-  if (token) {
-    // api key
-    if (token.startsWith("sk-")) {
-      const supabase = await createClient();
-      const user_uuid = await getUserUuidByApiKey(supabase, token);
-
-      return user_uuid || "";
-    }
-  }
-
-  // 使用 Supabase Auth 获取用户
+  // 简化版本：只使用 Supabase Auth 获取用户
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (user) {
-    user_uuid = user.id;
-  }
-
-  return user_uuid;
-}
-
-export async function getBearerToken() {
-  const h = await headers();
-  const auth = h.get("Authorization");
-  if (!auth) {
-    return "";
-  }
-
-  return auth.replace("Bearer ", "");
+  return user?.id || "";
 }
 
 export async function getUserEmail() {

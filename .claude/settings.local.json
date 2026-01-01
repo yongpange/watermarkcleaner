@@ -22,7 +22,10 @@
       "Bash(cat:*)",
       "Bash(npx next build:*)",
       "Bash(npx tsc --noEmit)",
-      "Bash(rm -rf .next:*)"
+      "Bash(rm -rf .next:*)",
+      "Bash(taskkill:*)",
+      "Bash(del nul:*)",
+      "Bash(unlink nul)"
     ]
   },
   "skills": {

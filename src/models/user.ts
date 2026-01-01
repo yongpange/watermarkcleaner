@@ -1,15 +1,15 @@
-import type { Database } from "@/types/database.types";
+import type { DatabaseWithWmc } from "@/types/database-wmc.types";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-type User = Database["public"]["Tables"]["users"]["Row"];
-type UserInsert = Database["public"]["Tables"]["users"]["Insert"];
+type User = DatabaseWithWmc["public"]["Tables"]["wmc_users"]["Row"];
+type UserInsert = DatabaseWithWmc["public"]["Tables"]["wmc_users"]["Insert"];
 
 export async function insertUser(
   supabase: SupabaseClient,
   data: UserInsert
 ): Promise<User | undefined> {
   const { data: user, error } = await supabase
-    .from("users")
+    .from("wmc_users")
     .insert(data as never)
     .select()
     .single() as { data: User | null; error: unknown };
@@ -27,7 +27,7 @@ export async function findUserByEmail(
   email: string
 ): Promise<User | undefined> {
   const { data: user, error } = await supabase
-    .from("users")
+    .from("wmc_users")
     .select("*")
     .eq("email", email)
     .limit(1)
@@ -47,7 +47,7 @@ export async function findUserByUuid(
   uuid: string
 ): Promise<User | undefined> {
   const { data: user, error } = await supabase
-    .from("users")
+    .from("wmc_users")
     .select("*")
     .eq("uuid", uuid)
     .limit(1)
@@ -70,7 +70,7 @@ export async function getUsers(
   const offset = (page - 1) * limit;
 
   const { data, error } = await supabase
-    .from("users")
+    .from("wmc_users")
     .select("*")
     .order("created_at", { ascending: false })
     .range(offset, offset + limit - 1) as { data: User[] | null; error: unknown };
@@ -89,7 +89,7 @@ export async function getUsersByUuids(
   user_uuids: string[]
 ): Promise<User[] | undefined> {
   const { data, error } = await supabase
-    .from("users")
+    .from("wmc_users")
     .select("*")
     .in("uuid", user_uuids) as { data: User[] | null; error: unknown };
 
@@ -103,7 +103,7 @@ export async function getUsersByUuids(
 
 export async function getUsersTotal(supabase: SupabaseClient): Promise<number> {
   const { count, error } = await supabase
-    .from("users")
+    .from("wmc_users")
     .select("*", { count: "exact", head: true });
 
   if (error) {
@@ -119,7 +119,7 @@ export async function getUserCountByDate(
   startTime: string
 ): Promise<Map<string, number> | undefined> {
   const { data, error } = await supabase
-    .from("users")
+    .from("wmc_users")
     .select("created_at")
     .gte("created_at", startTime)
     .order("created_at", { ascending: true }) as { data: { created_at: string | null }[] | null; error: unknown };

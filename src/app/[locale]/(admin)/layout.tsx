@@ -47,19 +47,9 @@ export default async function AdminLayout({
           icon: "RiUserLine",
         },
         {
-          title: "Orders",
-          icon: "RiOrderPlayLine",
-          url: "/admin/orders",
-        },
-        {
           title: "Posts",
           url: "/admin/posts",
           icon: "RiArticleLine",
-        },
-        {
-          title: "Feedbacks",
-          url: "/admin/feedbacks",
-          icon: "RiMessage2Line",
         },
       ],
     },

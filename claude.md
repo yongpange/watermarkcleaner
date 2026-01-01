@@ -6,6 +6,15 @@
 
 **✅ 最新更新**: 2025-12-30 完成数据库架构迁移，将表从 watermarkcleaner schema 迁移到 public schema，统一使用 wmc_ 前缀，确保数据库结构清晰且易于管理。
 
+**✅ 最新功能**: 2025-01-01 实现邮箱验证码认证系统，支持无密码注册/登录，使用 Resend 发送验证码，包含完整的速率限制和安全机制。
+
+**🐛 Bug修复**: 2026-01-01 修复邮箱验证码登录流程中的多个问题：
+- 修复 `createClient()` 异步调用缺少 `await` 的问题（涉及 `check-user`、`send-code`、`verify-code` 路由及 `verification.ts`）
+- 新增 `src/lib/supabase-admin.ts`，使用 Service Role Key 绕过 RLS 限制
+- 修复用户创建时缺少 `id` 字段和字段名不匹配问题
+- 修复 `purpose` 参数硬编码为 `'login'` 导致新用户无法注册的问题
+- 修复登录跳转 URL 缺少国际化语言前缀（如 `/zh/my-credits`）的问题
+
 ---
 
 ## 1. 技术栈 (Technology Stack)
@@ -101,7 +110,9 @@ watermarkcleaner_com/
 │   │   ├── blog/                     # 博客相关工具
 │   │   ├── credits/                  # 额度管理系统
 │   │   ├── storage.ts                # 存储服务
-│   │   ├── supabase*.ts              # Supabase 客户端
+│   │   ├── supabase-server.ts        # SSR Supabase 客户端 (anon key)
+│   │   ├── supabase-admin.ts         # 管理员 Supabase 客户端 (service role key, 绕过 RLS)
+│   │   ├── supabase-client.ts        # 浏览器端 Supabase 客户端
 │   │   ├── auth.config.ts            # 认证配置
 │   │   └── utils.ts                  # 通用工具
 │   │
@@ -226,8 +237,93 @@ content/
 **技术**: NextAuth.js + Supabase Adapter
 
 **认证方式**:
-- 邮箱登录 (Magic Link)
+- ✅ **邮箱验证码登录** (新增 - 2025-01-01) - 无密码认证系统
+- 邮箱登录 (Magic Link) - 传统链接验证
 - 社交登录 (Google, GitHub - 可扩展)
+
+**邮箱验证码认证系统** (新功能):
+
+**位置**:
+- 核心逻辑: `src/lib/auth/verification.ts`
+- 邮件服务: `src/lib/email/resend.ts`
+- 发送验证码 API: `src/app/api/auth/send-code/route.ts`
+- 验证验证码 API: `src/app/api/auth/verify-code/route.ts`
+- NextAuth 配置: `src/lib/auth.config.ts`
+
+**核心功能**:
+- 无密码注册和登录（只用邮箱验证码）
+- 6位数字验证码，5分钟有效期
+- 每个验证码最多尝试3次
+- IP速率限制（每小时最多5次请求）
+- 多语言邮件模板支持
+- 一次性验证码（使用后失效）
+
+**安全特性**:
+- 速率限制（IP + 用户级别）
+- 验证码过期机制
+- 尝试次数限制（防暴力破解）
+- Resend API 发送邮件
+- HTTPS 强制（生产环境）
+
+**前端流程**:
+1. 用户输入邮箱 → 发送验证码
+2. 接收邮件 → 输入6位验证码
+3. 验证成功 → 自动登录并重定向
+
+**数据库表**:
+```sql
+CREATE TABLE public.wmc_email_verification_codes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email TEXT NOT NULL,
+  code TEXT NOT NULL,  -- 6位数字
+  purpose TEXT NOT NULL,  -- 'register' | 'login' | 'update_email'
+  attempts INTEGER DEFAULT 0,
+  used BOOLEAN DEFAULT FALSE,
+  expires_at TIMESTAMPTZ NOT NULL
+);
+```
+
+**API 接口**:
+- `POST /api/auth/send-code` - 发送验证码
+- `POST /api/auth/verify-code` - 验证验证码
+- `POST /api/auth/check-user` - 检查用户是否存在（用于实时验证）
+- `NextAuth Credentials Provider (email-code)` - 认证提供者
+
+**前端组件** (Apple设计风格):
+```
+src/components/auth/
+├── auth-modal.tsx                    # 主认证弹窗（集成所有功能）
+├── email-input-section.tsx           # 邮箱输入区域（带用户检查）
+├── verification-code-input.tsx       # 验证码输入组件（6位独立输入框）
+├── google-login-button.tsx           # Google登录按钮组件
+├── magic-link-button.tsx             # 邮箱链接登录按钮组件
+└── magic-link-login-button.tsx       # 邮箱链接登录表单
+
+src/components/auth/apple-style/      # Apple风格基础UI组件
+├── button.tsx                        # 按钮组件（支持多种变体）
+├── input.tsx                         # 输入框组件（含验证码输入）
+└── divider.tsx                       # 分隔线组件
+```
+
+**组件特性**:
+- 使用 **Apple设计风格**: 毛玻璃效果、圆角、优雅动画
+- 响应式布局，完美支持移动端
+- **6位独立验证码输入框**，支持自动跳转和粘贴填充
+- 实时用户存在性检查（输入邮箱后）
+- 完整的动画系统（淡入淡出、弹簧效果）
+- 组件高度拆分，易于集成支付等其他功能
+
+**交互流程**:
+1. 用户输入邮箱 → 实时检查用户是否存在
+2. 点击发送验证码 → 60秒倒计时显示在重新发送按钮上
+3. 输入6位验证码 → 自动跳转/可粘贴填充
+4. 验证通过 → 自动登录并重定向到控制台
+
+**动画效果** (Framer Motion):
+- 弹窗打开/关闭: 淡入淡出 + 缩放动画
+- 内容切换: 滑动动画 + 透明度变化
+- 按钮状态变化: 微缩放动画
+- 输入框聚焦: 边框颜色渐变 + 阴影扩展
 
 **用户体系**:
 ```typescript
@@ -236,12 +332,16 @@ enum UserTier {
   verified = "已验证用户",     // 10张/月
   pro = "专业版"               // 无限
 }
+
+// 新增 username 字段（自动生成）
+// username = email.split('@')[0]（确保唯一性）
 ```
 
 **会话管理**:
 - Cookie 存储
-- JWT Token
-- RLS 策略
+- JWT Token（适用于无密码认证）
+- 数据库 Session（传统方式）
+- RLS 策略（行级安全）
 
 ### 3.4 额度管理系统 (Credit System)
 

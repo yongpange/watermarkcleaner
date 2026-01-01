@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -32,8 +33,12 @@ import { Menu } from "lucide-react";
 import SignToggle from "@/components/sign/toggle";
 import ThemeToggle from "@/components/theme/toggle";
 import { cn } from "@/lib/utils";
+import { AuthModal } from "@/components/auth/auth-modal";
+import { AppleButton } from "@/components/auth/apple-style/button";
 
 export default function Header({ header }: { header: HeaderType }) {
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   if (header.disabled) {
     return null;
   }
@@ -156,6 +161,16 @@ export default function Header({ header }: { header: HeaderType }) {
                 </Button>
               );
             })}
+
+            {/* 新增：登录按钮 */}
+            <AppleButton
+              onClick={() => setShowAuthModal(true)}
+              size="small"
+              variant="secondary"
+            >
+              登录
+            </AppleButton>
+
             {header.show_sign && <SignToggle />}
           </div>
         </nav>
@@ -278,6 +293,15 @@ export default function Header({ header }: { header: HeaderType }) {
                       );
                     })}
 
+                    {/* 移动端登录按钮 */}
+                    <AppleButton
+                      onClick={() => setShowAuthModal(true)}
+                      fullWidth
+                      variant="secondary"
+                    >
+                      登录
+                    </AppleButton>
+
                     {header.show_sign && <SignToggle />}
                   </div>
 
@@ -292,6 +316,13 @@ export default function Header({ header }: { header: HeaderType }) {
             </Sheet>
           </div>
         </div>
+
+        {/* 认证弹窗 */}
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          defaultMode="email-code"
+        />
       </div>
     </section>
   );

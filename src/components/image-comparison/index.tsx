@@ -187,11 +187,10 @@ export default function ImageComparison({
           src={afterImage.src}
           alt={afterImage.alt || 'After'}
           width={1200}
-          height={0}
+          height={675}
           className="w-full h-auto pointer-events-none bg-background"
           onLoad={handleImageLoad}
           onError={handleImageError}
-          priority
           style={{ opacity: imagesLoaded < 2 ? 0 : 1 }}
         />
 
@@ -206,7 +205,7 @@ export default function ImageComparison({
             src={beforeImage.src}
             alt={beforeImage.alt || 'Before'}
             width={1200}
-            height={0}
+            height={675}
             className="w-full h-auto pointer-events-none bg-background"
             onLoad={handleImageLoad}
             onError={handleImageError}

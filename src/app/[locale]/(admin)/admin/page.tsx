@@ -1,17 +1,13 @@
 import DataCards from "@/components/blocks/data-cards";
 import DataCharts from "@/components/blocks/data-charts";
 import Header from "@/components/dashboard/header";
-import { getOrderCountByDate, getPaidOrdersTotal } from "@/models/order";
 import { getUserCountByDate, getUsersTotal } from "@/models/user";
-import { getFeedbacksTotal } from "@/models/feedback";
 import { DataCard } from "@/types/blocks/base";
 import { createClient } from "@/lib/supabase-server";
 
 const AdminDashboardPage = async () => {
   const supabase = await createClient();
-  const totalPaidOrders = await getPaidOrdersTotal(supabase);
   const totalUsers = await getUsersTotal(supabase);
-  const totalFeedbacks = await getFeedbacksTotal(supabase);
 
   const dataCards: DataCard[] = [
     {
@@ -20,43 +16,26 @@ const AdminDashboardPage = async () => {
       value: (totalUsers || 0).toString(),
       description: "Total users registered in the system",
     },
-    {
-      title: "Paid Orders",
-      label: "",
-      value: (totalPaidOrders || 0).toString(),
-      description: "User Paid Orders in total",
-    },
-    {
-      title: "User Feedbacks",
-      label: "",
-      value: (totalFeedbacks || 0).toString(),
-      description: "Feedbacks in total",
-    },
+    // 移除已删除的统计卡片：订单、反馈
   ];
 
-  // Get data for the last 30 days
+  // Get data for the last 90 days - 只统计用户数据
   const startTime = new Date();
   startTime.setDate(startTime.getDate() - 90);
-  const orders = await getOrderCountByDate(supabase, startTime.toISOString(), "paid");
   const users = await getUserCountByDate(supabase, startTime.toISOString());
 
-  // Merge the data into a single array
-  const allDates = new Set([
-    ...(orders ? Array.from(orders.keys()) : []),
-    ...(users ? Array.from(users.keys()) : []),
-  ]);
-
-  const data = Array.from(allDates)
-    .sort()
-    .map((date) => ({
+  // 只处理用户数据，不再包含订单数据
+  const data = users ? Array.from(users.entries())
+    .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
+    .map(([date, count]) => ({
       date,
-      users: users?.get(date) || 0,
-      orders: orders?.get(date) || 0,
-    }));
+      users: count,
+      orders: 0, // 订单数据不再可用
+    })) : [];
 
   const fields = [
     { key: "users", label: "Users", color: "var(--primary)" },
-    { key: "orders", label: "Orders", color: "var(--secondary)" },
+    // 移除订单字段
   ];
 
   return (
@@ -70,8 +49,8 @@ const AdminDashboardPage = async () => {
               <DataCharts
                 data={data}
                 fields={fields}
-                title="Users and Orders Overview"
-                description="Daily users and orders data"
+                title="Users Overview"
+                description="Daily users data"
                 defaultTimeRange="90d"
               />
             </div>

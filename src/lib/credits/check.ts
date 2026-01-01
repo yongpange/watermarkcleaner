@@ -32,7 +32,7 @@ export async function checkCredits(userId: string) {
   const supabase = await createClient();
 
   const { data: user, error } = await (supabase as any)
-    .from('users')
+    .from('wmc_users')
     .select('*')
     .eq('id', userId)
     .single();
@@ -49,7 +49,7 @@ export async function checkCredits(userId: string) {
   if (now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
     // Reset credits for new month
     const { error: updateError } = await (supabase as any)
-      .from('users')
+      .from('wmc_users')
       .update({
         creditsUsed: 0,
         creditsReset: now.toISOString(),
@@ -87,7 +87,7 @@ export async function deductCredits(userId: string) {
 
   // First get the current user to get current creditsUsed
   const { data: user, error: fetchError } = await (supabase as any)
-    .from('watermarkcleaner.users')
+    .from('wmc_users')
     .select('creditsUsed')
     .eq('id', userId)
     .single();
@@ -98,7 +98,7 @@ export async function deductCredits(userId: string) {
 
   // Update with incremented value
   const { error } = await (supabase as any)
-    .from('watermarkcleaner.users')
+    .from('wmc_users')
     .update({
       creditsUsed: (user.creditsUsed || 0) + 1,
     })
@@ -128,7 +128,7 @@ export async function recordProcessingHistory({
 }) {
   const supabase = await createClient();
 
-  const { error } = await (supabase as any).from('processing_history').insert({
+  const { error } = await (supabase as any).from('wmc_processing_history').insert({
     user_id: userId,
     ip_address: userId ? null : identifier,
     image_size: imageSize,
@@ -166,7 +166,7 @@ export async function checkUserCredits(
 
     const supabase = await createClient();
     const { count } = await (supabase as any)
-      .from('processing_history')
+      .from('wmc_processing_history')
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', identifier)
       .gte('created_at', startOfMonth.toISOString())

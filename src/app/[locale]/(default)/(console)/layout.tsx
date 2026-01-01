@@ -16,24 +16,8 @@ const ConsoleLayoutWrapper = async ({ children }: { children: ReactNode }) => {
   const sidebar: Sidebar = {
     nav: {
       items: [
-        {
-          title: t("user.my_orders"),
-          url: "/my-orders",
-          icon: "RiOrderPlayLine",
-          is_active: false,
-        },
-        {
-          title: t("my_credits.title"),
-          url: "/my-credits",
-          icon: "RiBankCardLine",
-          is_active: false,
-        },
-        {
-          title: t("api_keys.title"),
-          url: "/api-keys",
-          icon: "RiKey2Line",
-          is_active: false,
-        },
+        // 移除已删除的页面：我的订单、我的积分、API密钥
+        // 控制台现在没有导航菜单项
       ],
     },
   };

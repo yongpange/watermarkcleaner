@@ -2,14 +2,14 @@ import { createClient } from '@/lib/supabase-server'
 import { NextResponse } from 'next/server'
 import { increaseCredits, CreditsTransType, CreditsAmount } from '@/services/credit'
 import { getOneYearLaterTimestr } from '@/lib/time'
-import type { Database } from '@/types/database.types'
+import type { DatabaseWithWmc } from '@/types/database-wmc.types'
 
-type User = Database['public']['Tables']['users']['Row']
-type UserUpdate = Database['public']['Tables']['users']['Update']
-type UserInsert = Database['public']['Tables']['users']['Insert']
+type User = DatabaseWithWmc['public']['Tables']['wmc_users']['Row']
+type UserUpdate = DatabaseWithWmc['public']['Tables']['wmc_users']['Update']
+type UserInsert = DatabaseWithWmc['public']['Tables']['wmc_users']['Insert']
 
 /**
- * 同步 Supabase Auth 用户到 users 表
+ * 同步 Supabase Auth 用户到 wmc_users 表
  * 
  * 调用时机：
  * - 用户首次登录（SIGNED_IN 事件）
@@ -36,31 +36,31 @@ export async function POST(request: Request) {
 
     // 先通过 email 查找现有用户（用于迁移场景）
     const { data: existingUserByEmail } = await supabase
-      .from('users')
+      .from('wmc_users')
       .select('*')
       .eq('email', email)
       .single() as { data: User | null; error: unknown }
 
     // 再通过 uuid 查找（正常场景）
     const { data: existingUserByUuid } = await supabase
-      .from('users')
+      .from('wmc_users')
       .select('*')
       .eq('uuid', uuid)
       .single() as { data: User | null; error: unknown }
 
     if (existingUserByEmail && !existingUserByUuid) {
       // 迁移场景：用户存在但 uuid 不匹配
-      // 更新现有用户的 uuid 为 Supabase Auth UUID
-      console.log(`Migrating user ${email}: updating uuid from ${existingUserByEmail.uuid} to ${uuid}`)
-      
+      // 更新现有用户的 id 为 Supabase Auth UUID
+      console.log(`Migrating user ${email}: updating id from ${existingUserByEmail.id} to ${uuid}`)
+
       const updateData: UserUpdate = {
-        uuid,
-        nickname: nickname || existingUserByEmail.nickname,
-        avatar_url: avatar_url || existingUserByEmail.avatar_url,
+        id: uuid, // wmc_users表使用id字段，不是uuid
+        name: nickname || existingUserByEmail.name, // wmc_users表使用name字段，不是nickname
+        image: avatar_url || existingUserByEmail.image, // wmc_users表使用image字段，不是avatar_url
       }
 
       const { error: updateError } = await supabase
-        .from('users')
+        .from('wmc_users')
         .update(updateData as never)
         .eq('email', email)
 
@@ -69,10 +69,10 @@ export async function POST(request: Request) {
         throw updateError
       }
 
-      return NextResponse.json({ 
-        success: true, 
+      return NextResponse.json({
+        success: true,
         migrated: true,
-        message: 'User migrated successfully' 
+        message: 'User migrated successfully'
       })
     }
 
@@ -89,17 +89,19 @@ export async function POST(request: Request) {
     console.log(`Creating new user: ${email}`)
 
     const insertData: UserInsert = {
-      uuid,
+      id: uuid, // wmc_users表使用id字段，不是uuid
       email,
-      nickname: nickname || email.split('@')[0],
-      avatar_url: avatar_url || '',
-      signin_type: 'oauth',
-      signin_provider: signin_provider || 'google',
-      signin_openid: uuid, // Supabase Auth UUID
+      name: nickname || email.split('@')[0], // wmc_users表使用name字段，不是nickname
+      image: avatar_url || '', // wmc_users表使用image字段，不是avatar_url
+      emailVerified: null, // 新用户邮箱未验证
+      tier: 'verified', // 默认设为已验证用户
+      creditsUsed: 0, // 初始积分为0
+      creditsReset: new Date().toISOString(), // 设置当前时间为重置时间
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     }
 
-    const { error: insertError } = await supabase.from('users').insert(insertData as any)
+    const { error: insertError } = await supabase.from('wmc_users').insert(insertData as any)
 
     if (insertError) {
       console.error('Failed to create user:', insertError)

@@ -1,8 +1,3 @@
-import {
-  CreditsAmount,
-  CreditsTransType,
-  decreaseCredits,
-} from "@/services/credit";
 import { respData, respErr } from "@/lib/resp";
 
 import { getUserUuid } from "@/services/user";
@@ -19,12 +14,8 @@ export async function POST(req: Request) {
       return respErr("no auth");
     }
 
-    // decrease credits for ping
-    await decreaseCredits({
-      user_uuid,
-      trans_type: CreditsTransType.Ping,
-      credits: CreditsAmount.PingCost,
-    });
+    // 简化版本：不再扣除积分，因为credits表已删除
+    // 只返回接收到的消息
 
     return respData({
       pong: `received message: ${message}`,
