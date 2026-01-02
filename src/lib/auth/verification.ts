@@ -1,4 +1,4 @@
-import { randomInt } from 'crypto';
+import { randomInt, randomBytes } from 'crypto';
 import { createAdminClient } from '@/lib/supabase-admin';
 
 // ============================================================================
@@ -38,8 +38,7 @@ export function generateVerificationCode(): string {
  * @returns 6位数字字符串
  */
 export function generateSecureVerificationCode(): string {
-  const crypto = require('crypto');
-  const buffer = crypto.randomBytes(3); // 3 bytes = 24 bits
+  const buffer = randomBytes(3); // 3 bytes = 24 bits
   const codeNum = buffer.readUIntBE(0, 3) % (10 ** VERIFICATION_CODE_LENGTH);
   return codeNum.toString().padStart(VERIFICATION_CODE_LENGTH, '0');
 }
@@ -293,11 +292,10 @@ export async function cleanupExpiredVerificationCodes(): Promise<number> {
  */
 export function generateRandomString(length: number): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const crypto = require('crypto');
   const result = [];
 
   for (let i = 0; i < length; i++) {
-    const randomIndex = crypto.randomInt(0, chars.length);
+    const randomIndex = randomInt(0, chars.length);
     result.push(chars[randomIndex]);
   }
 
