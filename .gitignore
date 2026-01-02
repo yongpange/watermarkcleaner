@@ -102,3 +102,6 @@ Thumbs.db
 test-*.js
 debug-*.js
 server*.log
+
+.vercel
+.env*.local
