@@ -2,6 +2,10 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { initializeSecurityServices } from "./lib/security/initialize";
+
+// 初始化安全服务（只执行一次）
+initializeSecurityServices();
 
 // 创建 next-intl middleware
 const intlMiddleware = createMiddleware(routing);

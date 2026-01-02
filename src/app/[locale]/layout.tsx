@@ -7,9 +7,9 @@ import { AppContextProvider } from "@/contexts/app";
 import { Metadata } from "next";
 import { SupabaseAuthProvider } from "@/providers/supabase-auth-provider";
 import { NextIntlClientProvider } from "next-intl";
-import { ThemeProvider } from "@/providers/theme";
 import { cn } from "@/lib/utils";
 import { OrganizationStructuredData } from "@/components/seo/structured-data";
+import AppProviderClient from "@/components/app-provider-client";
 
 export async function generateMetadata({
   params,
@@ -85,9 +85,9 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           <SupabaseAuthProvider>
             <AppContextProvider>
-              <ThemeProvider attribute="class" disableTransitionOnChange>
+              <AppProviderClient>
                 {children}
-              </ThemeProvider>
+              </AppProviderClient>
             </AppContextProvider>
           </SupabaseAuthProvider>
         </NextIntlClientProvider>

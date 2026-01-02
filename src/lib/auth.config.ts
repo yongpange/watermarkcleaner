@@ -1,8 +1,10 @@
 import EmailProvider from 'next-auth/providers/email';
 import Credentials from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import { SupabaseAdapter } from '@auth/supabase-adapter';
 import type { Adapter } from 'next-auth/adapters';
 import { createClient } from '@/lib/supabase-server';
+import { createAdminClient } from '@/lib/supabase-admin';
 import {
   verifyCode,
   markCodeAsUsed,
@@ -81,6 +83,20 @@ export const authOptions = {
       },
     }),
 
+    // ==================== Google OAuth 登录 ====================
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // 可选：只接受特定域名
+      // authorization: {
+      //   params: {
+      //     prompt: "consent",
+      //     access_type: "offline",
+      //     response_type: "code"
+      //   }
+      // }
+    }),
+
     // ==================== 新增：邮箱验证码认证 ====================
     Credentials({
       id: 'email-code',
@@ -117,7 +133,7 @@ export const authOptions = {
           console.log('[Credentials] Verification successful:', result.record?.id);
 
           // 3. 查找或创建用户
-          const supabase = createClient();
+          const supabase = createAdminClient();
           const { data: user } = await supabase
             .from('wmc_users')
             .select('*')
@@ -139,7 +155,7 @@ export const authOptions = {
                 .insert({
                   email: credentials.email,
                   username: usernameBase,
-                  tier: 'unverified',
+                  tier: 'verified',
                   creditsUsed: 0,
                   creditsReset: new Date().toISOString(),
                 })
@@ -209,22 +225,96 @@ export const authOptions = {
 
   // Callbacks to customize behavior
   callbacks: {
+    // Handle sign in events
+    async signIn({ user, account, profile }) {
+      console.log('[Auth] User signed in:', user.email, 'Provider:', account?.provider);
+
+      // 处理 Google 登录
+      if (account?.provider === 'google') {
+        try {
+          const supabase = createAdminClient();
+
+          // 检查用户是否已存在
+          const { data: existingUser } = await supabase
+            .from('wmc_users')
+            .select('*')
+            .eq('email', user.email!)
+            .single();
+
+          if (!existingUser) {
+            // 新用户：信任 Google 邮箱验证，直接设为 verified
+            console.log('[Google] Creating new user with verified tier:', user.email);
+
+            const username = user.name?.toLowerCase().replace(/[^a-z0-9_]/g, '_')
+              || user.email!.split('@')[0].toLowerCase();
+
+            const { error: createError } = await supabase
+              .from('wmc_users')
+              .insert({
+                id: user.id!,  // Google user ID
+                email: user.email!,
+                name: user.name || username,
+                image: user.image,
+                tier: 'verified',  // ✅ Google 邮箱已验证，直接升级
+                creditsUsed: 0,
+                creditsReset: new Date().toISOString(),
+              });
+
+            if (createError) {
+              console.error('[Google] Failed to create user:', createError);
+              return false;
+            }
+
+            console.log('[Google] User created successfully with verified tier');
+          } else {
+            // 已有用户：更新信息（可选）
+            console.log('[Google] Existing user signed in:', existingUser.email);
+          }
+        } catch (error) {
+          console.error('[Google] Error in signIn callback:', error);
+        }
+      }
+
+      return true;  // 允许登录
+    },
+
     // Include user data in JWT token
-    async jwt({ token, user }: { token: any; user: any }) {
+    async jwt({ token, user, account, trigger }) {
+      // 初始登录时
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.username = user.username;
+        token.username = (user as any).username;
         token.name = user.name;
         token.image = user.image;
-        token.tier = user.tier || 'unverified';
-        token.creditsUsed = user.creditsUsed || 0;
+        token.tier = (user as any).tier || 'unverified';
+        token.creditsUsed = (user as any).creditsUsed || 0;
       }
+
+      // 处理 Google 用户：从数据库获取最新 tier
+      if (account?.provider === 'google' && user?.email) {
+        try {
+          const supabase = createAdminClient();
+          const { data: dbUser } = await supabase
+            .from('wmc_users')
+            .select('tier, creditsUsed')
+            .eq('email', user.email)
+            .single();
+
+          if (dbUser) {
+            token.tier = dbUser.tier;
+            token.creditsUsed = dbUser.creditsUsed;
+          }
+        } catch (error) {
+          console.error('[jwt] Error fetching user tier:', error);
+        }
+      }
+
       return token;
     },
 
     // Include user data in session
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id;
         session.user.email = token.email;
@@ -238,7 +328,7 @@ export const authOptions = {
     },
 
     // Handle sign in
-    async signIn({ user, account, profile }: { user: any; account: any; profile?: any }) {
+    async signIn({ user, account, profile }) {
       console.log('[Auth] User signed in:', user.email, 'ID:', user.id);
       return true;
     },

@@ -25,7 +25,11 @@ interface ApiResponse {
   processingTime?: number;
 }
 
-export default function WatermarkEditor() {
+interface WatermarkEditorProps {
+  onProcessingComplete?: () => void;
+}
+
+export default function WatermarkEditor({ onProcessingComplete }: WatermarkEditorProps) {
   // State
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
@@ -140,6 +144,11 @@ export default function WatermarkEditor() {
         });
         setResultImageUrl(data.imageUrl);
         toast.success(t("watermark_removed_success"));
+
+        // Notify parent component to refresh credits
+        if (onProcessingComplete) {
+          onProcessingComplete();
+        }
       } else {
         throw new Error(data.error || processingT("processing_failed"));
       }

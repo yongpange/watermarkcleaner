@@ -4,16 +4,42 @@
 
 **WatermarkCleaner** 是一个现代化的 AI 驱动水印去除网站，提供在线图像处理服务。项目基于 Next.js 15、React 19 和 TypeScript 构建，支持多语言国际化，并提供完整的博客系统、用户认证、额度管理等功能。
 
-**✅ 最新更新**: 2025-12-30 完成数据库架构迁移，将表从 watermarkcleaner schema 迁移到 public schema，统一使用 wmc_ 前缀，确保数据库结构清晰且易于管理。
+**✅ 最新更新**: 2026-01-02 完成安全记录系统实施，包括IP地址匿名化处理、服务端专用API、数据自动清理和前端额度实时刷新功能。
+
+**✅ 核心安全特性**: 2026-01-02 实现完整的访客使用追踪系统：
+- ✅ **IP地址匿名化**：使用 SHA-256 加盐哈希处理，64字符哈希值存储，原始IP永不存储
+- ✅ **服务端专用API**：`record-processing` 端点使用 Service Role Key 安全绕过 RLS 限制
+- ✅ **数据自动清理**：72小时自动删除旧记录，符合 GDPR 合规要求
+- ✅ **实时额度刷新**：处理成功后 CreditsDisplay 自动更新（从 0/3 → 1/3）
+- ✅ **专用管理接口**：`/api/admin/cleanup` 支持手动触发和数据统计
+
+**✨ 系统架构升级**: 2026-01-02 优化服务器/客户端组件架构：
+- ✅ **服务端组件**：`generateMetadata` 在服务器执行，SEO友好
+- ✅ **客户端组件**：交互逻辑分离，状态管理更清晰
+- ✅ **混合渲染模式**：静态内容SSR，动态交互CSR，性能最优
 
 **✅ 最新功能**: 2025-01-01 实现邮箱验证码认证系统，支持无密码注册/登录，使用 Resend 发送验证码，包含完整的速率限制和安全机制。
+
+**✨ 用户体验升级**: 2026-01-01 实现完整的登录状态展示和 Header 重构：
+- ✅ **Header 用户状态展示**：登录后显示用户头像、用户名和剩余额度（如 👤 geyongpan (5/10)）
+- ✅ **下拉菜单**：支持快速访问"我的额度"、"升级专业版"和"退出登录"
+- ✅ **响应式设计**：完美适配移动端，提供完整的用户信息展示
+- ✅ **Toast 通知**：使用 react-hot-toast 实现优雅的登录成功提示
+- ✅ **Google OAuth 支持**：添加 Google Provider，新用户自动获得 verified 状态（10张额度）
+- ✅ **Session 检查优化**：VerificationPrompt 改为检查 tier 字段，逻辑更清晰
 
 **🐛 Bug修复**: 2026-01-01 修复邮箱验证码登录流程中的多个问题：
 - 修复 `createClient()` 异步调用缺少 `await` 的问题（涉及 `check-user`、`send-code`、`verify-code` 路由及 `verification.ts`）
 - 新增 `src/lib/supabase-admin.ts`，使用 Service Role Key 绕过 RLS 限制
 - 修复用户创建时缺少 `id` 字段和字段名不匹配问题
 - 修复 `purpose` 参数硬编码为 `'login'` 导致新用户无法注册的问题
-- 修复登录跳转 URL 缺少国际化语言前缀（如 `/zh/my-credits`）的问题
+- 修复登录跳转使用 `window.location.href` 导致的硬刷新问题（改用 `router.push` + `router.refresh`）
+
+**🔒 安全修复**: 2026-01-02 修复 IP 地址传递和组件架构问题：
+- 修复 IP 地址通过内部 fetch 调用丢失的问题（传递原始请求头）
+- 修复 `generateMetadata` 客户端组件错误（重构为服务器+客户端组件架构）
+- 确保 Service Role Key 仅在服务器端 API 路由中使用，不暴露给客户端
+- 修复 `/api/seededit` 中未定义 `clientIP` 变量导致的 ReferenceError，解决访客使用记录丢失问题
 
 ---
 
@@ -50,6 +76,9 @@
 - **Microsoft Clarity**: 用户行为追踪
 - **OpenPanel**: 隐私友好分析
 - **Vercel Analytics**: 性能监控
+
+### UI/UX 库
+- **react-hot-toast**: 2.5.1 - 优雅的 Toast 通知提示
 
 ---
 
@@ -152,7 +181,11 @@ watermarkcleaner_com/
 
 ### 3.1 水印编辑器 (Watermark Editor)
 
-**位置**: `src/app/[locale]/(default)/convert/page.tsx`
+**架构升级**: 2026-01-02 重构为服务端+客户端组件混合架构
+
+**位置**:
+- `src/app/[locale]/(default)/convert/page.tsx` (服务端组件 - 处理 SEO)
+- `src/app/[locale]/(default)/convert/convert-page-client.tsx` (客户端组件 - 管理交互状态)
 
 **主要组件**:
 - `WatermarkEditor` (主编辑器)
@@ -160,6 +193,8 @@ watermarkcleaner_com/
 - `ImagePreview` (图片预览)
 - `ProcessingOptions` (处理选项)
 - `ResultDisplay` (结果展示)
+- `CreditsDisplay` (额度显示)
+- `VerificationPrompt` (验证提示)
 
 **核心流程**:
 1. **上传阶段**: 用户上传图片 (支持 JPEG, PNG, WEBP, GIF)
@@ -168,7 +203,9 @@ watermarkcleaner_com/
    - 自动模式: 智能识别水印区域
    - 保守模式: 避免过度处理
    - 激进模式: 确保完全去除
+   - **处理历史记录**: 调用 `/api/record-processing` 记录安全日志（IP哈希匿名化）
 4. **结果阶段**: 展示对比效果并支持下载
+   - **实时额度刷新**: CreditsDisplay 自动更新使用次数
 
 **技术亮点**:
 - 多 AI 提供商支持 (Fal.ai, ByteDance Ark)
@@ -176,6 +213,14 @@ watermarkcleaner_com/
 - 客户端/服务端图像处理结合
 - 进度指示和错误处理
 - **响应式图片对比组件**: 支持触摸拖拽、自动播放、错误处理、加载状态
+- **混合渲染架构**: 服务端渲染 (generateMetadata) + 客户端交互 (state management)
+- **安全记录系统**: IP地址匿名化存储，符合 GDPR 合规要求
+
+**额度刷新机制**:
+1. 状态追踪: `ConvertPageClient` 使用 `processingCount` state 追踪处理次数
+2. 强制重新渲染: `CreditsDisplay` 接收 `key={processingCount}` prop，变化时强制重新渲染
+3. 回调触发: `WatermarkEditor` 处理成功后调用 `onProcessingComplete()` 回调
+4. 重新获取数据: 组件重新挂载，自动调用 `/api/credits/check-ip` 获取最新数据
 
 ### 3.2 博客系统 (Blog System)
 
@@ -239,7 +284,15 @@ content/
 **认证方式**:
 - ✅ **邮箱验证码登录** (新增 - 2025-01-01) - 无密码认证系统
 - 邮箱登录 (Magic Link) - 传统链接验证
-- 社交登录 (Google, GitHub - 可扩展)
+- ✅ **Google OAuth 登录** (新增 - 2026-01-01) - 完整的 OAuth 2.0 流程，自动同步用户信息
+
+**登录体验升级 (2026-01-01)**:
+- **Header 用户状态展示**：登录后自动显示用户头像、用户名和剩余额度（如 👤 geyongpan (5/10)）
+- **下拉菜单**：快速访问"我的额度"、"升级专业版"和"退出登录"
+- **响应式设计**：完美适配移动端，提供完整的用户信息展示
+- **Toast 通知**：使用 react-hot-toast 实现优雅的登录成功提示和错误通知
+- **Session 管理**：自动同步用户 tier 状态，实时更新额度显示
+- **信任 Google 验证**：新 Google 用户自动获得 verified 状态（10张额度），无需额外验证
 
 **邮箱验证码认证系统** (新功能):
 
@@ -349,18 +402,75 @@ enum UserTier {
 
 **核心逻辑**:
 - 月度计数周期 (每月1日重置)
-- 用户层级控制
-- IP-based 限制 (未登录用户)
+- 用户层级控制 (3-10-∞ 三层策略)
+- IP-based 限制 (未登录用户使用 IP 哈希追踪)
+
+**安全特性**:
+- ✅ **IP地址匿名化**: 使用 SHA-256 + 盐值哈希，64字符哈希值存储，原始IP永不存储
+- ✅ **服务端专用API**: `record-processing` 端点使用 Service Role Key，绕过 RLS 限制
+- ✅ **数据自动清理**: 72小时后自动删除记录，符合 GDPR 合规要求
+- ✅ **实时额度刷新**: 处理成功后前端 CreditsDisplay 自动更新
+
+**IP匿名化实现**:
+1. **哈希算法**: 使用 `crypto.createHash('sha256')` 生成 64 字符十六进制哈希
+2. **盐值保护**: 使用 `IP_HASH_SALT` 环境变量（32字节随机值）增强安全性
+3. **存储格式**: 数据库 `ip_address` 列存储 64 字符哈希值，无法反向推导出原始IP
+4. **查询逻辑**: 查询时使用相同的哈希算法，确保匹配一致性
+5. **调试日志**: 控制台输出 IP Hashing Debug 信息（开发环境）
+
+**关键修复**: 2026-01-02 修复 IP 哈希查询不匹配问题
+- **问题**: 数据库查询使用原始 IP 地址，而非哈希后的值
+- **影响**: 导致 `CreditsDisplay` 始终显示 "0 / 3 images"
+- **解决方案**:
+  1. 在 `checkUserCredits` 函数中添加 IP 哈希处理：`const hashedIdentifier = hashIPAddress(identifier);`
+  2. 查询时使用哈希值：`.eq('ip_address', hashedIdentifier)`
+  3. 确保查询结果与实际数据库记录匹配
+
+**额度刷新机制**:
+1. **状态追踪**: ConvertPageClient 使用 `processingCount` state 追踪处理次数
+2. **强制重新渲染**: CreditsDisplay 接收 `key={processingCount}` prop，变化时强制重新渲染
+3. **回调触发**: WatermarkEditor 处理成功后调用 `onProcessingComplete()` 回调
+4. **重新获取数据**: 组件重新挂载，自动调用 `/api/credits/check-ip` 获取最新数据
 
 **检查流程**:
-1. 验证用户身份 (session 或 IP)
-2. 查询本月使用次数
-3. 对比层级限制
-4. 处理或拒绝请求
+1. **用户认证**: 验证用户身份 (session 或 IP)
+2. **额度查询**:
+   - 已登录用户: 查询 `wmc_users` 表获取 `creditsUsed` 和 `tier`
+   - 未登录用户: 查询 `wmc_processing_history` 表，统计 IP 哈希的月度使用次数
+3. **限制对比**: 检查使用次数是否达到 `USER_TIER_CONFIG[tier].maxPerMonth` 限制
+4. **结果返回**: 返回 `used`、`limit` 和 `remaining` 值供前端显示
 
 **数据库表**:
-- `watermarkcleaner.users`: 用户信息 + 额度记录
-- `watermarkcleaner.processing_history`: 处理历史
+- `public.wmc_users`: 用户信息 + 额度记录（已登录用户）
+  - `tier`: 用户层级（unverified/verified/pro）
+  - `creditsUsed`: 本月已使用次数
+  - `creditsReset`: 上次重置时间
+
+- `public.wmc_processing_history`: 处理历史记录（已登录和未登录用户）
+  - `user_id`: 已登录用户的 ID（null 表示未登录）
+  - `ip_address`: 未登录用户的 IP 哈希值（已登录为 null）
+  - `image_size`: 处理的图片大小
+  - `success`: 处理是否成功
+  - `created_at`: 记录创建时间（用于月度统计）
+
+**API端点**:
+- `GET /api/credits/check` - 已登录用户额度检查
+- `GET /api/credits/check-ip` - 未登录用户（基于IP哈希）额度检查
+- `POST /api/record-processing` - 专用端点记录处理历史（使用 Service Role Key）
+
+**前端组件**:
+- `CreditsDisplay` (`src/components/CreditsDisplay.tsx`) - 额度显示组件
+  - 支持已登录和未登录用户
+  - 显示月度使用量、剩余额度、进度条
+  - 处理成功后自动刷新
+
+- `ConvertPageClient` (`src/app/[locale]/(default)/convert/convert-page-client.tsx`) - 客户端组件
+  - 管理 `processingCount` 状态
+  - 处理成功后触发重新渲染
+
+- `WatermarkEditor` (`src/components/watermark-editor/index.tsx`) - 编辑器组件
+  - 接收 `onProcessingComplete` 回调
+  - 处理成功后调用回调函数
 
 ### 3.5 文件存储 (File Storage)
 
@@ -469,7 +579,7 @@ newStorage().uploadFile({
 
 **Endpoint**: `GET /api/credits/check`
 
-**功能**: 检查用户剩余额度
+**功能**: 检查已登录用户剩余额度
 
 **响应**:
 ```json
@@ -481,7 +591,98 @@ newStorage().uploadFile({
 }
 ```
 
-### 4.4 Stripe 支付 API
+**Endpoint**: `GET /api/credits/check-ip`
+
+**功能**: 检查未登录用户（基于IP哈希）剩余额度
+
+**说明**: 使用 IP 地址加盐哈希后查询月度使用次数
+
+**响应**:
+```json
+{
+  "tier": "unverified",
+  "used": 2,
+  "limit": 3,
+  "remaining": 1
+}
+```
+
+### 4.4 记录处理历史 API
+
+**Endpoint**: `POST /api/record-processing`
+
+**功能**: 记录图片处理历史（服务端专用）
+
+**说明**: 使用 Service Role Key 绕过 RLS，安全记录用户处理历史
+
+**请求体**:
+```typescript
+interface RecordProcessingRequest {
+  imageSize: number;    // 必需：图片大小（字节）
+  userId?: string;       // 可选：已登录用户 ID
+  success?: boolean;     // 可选：是否成功（默认 true）
+}
+```
+
+**安全特性**:
+- ✅ 使用 Service Role Key（仅在服务器端）
+- ✅ IP 地址加盐哈希（使用 IP_HASH_SALT）
+- ✅ Origin 验证（仅限授权域名）
+- ✅ 参数验证和错误处理
+
+**流程**:
+1. 从请求头获取客户端 IP（`x-forwarded-for` 或 `x-real-ip`）
+2. IP 地址 SHA-256 加盐哈希（64 字符）
+3. 使用 Service Role Key 插入数据库（绕过 RLS）
+4. 已登录用户：`user_id` = 用户 ID, `ip_address` = null
+5. 未登录用户：`user_id` = null, `ip_address` = 哈希值
+
+**响应**:
+```json
+{
+  "success": true,
+  "message": "Processing history recorded successfully",
+  "hashedIP": "18849ddcfb4ac7c006228118ee75b12cea0f541bb8dea1b2977a8d82f89705de"
+}
+```
+
+### 4.5 数据清理管理 API
+
+**Endpoint**: `POST /api/admin/cleanup`
+
+**功能**: 获取清理统计信息（需要 Admin Key）
+
+**认证**: Bearer Token (ADMIN_API_KEY)
+
+**响应**:
+```json
+{
+  "success": true,
+  "totalRecords": 150,
+  "recordsOlderThan72Hours": 45,
+  "nextCleanup": "2026-01-05T12:00:00.000Z"
+}
+```
+
+**Endpoint**: `GET /api/admin/cleanup?days=3`
+
+**功能**: 手动触发数据清理（需要 Admin Key）
+
+**认证**: Bearer Token (ADMIN_API_KEY)
+
+**参数**:
+- `days`: 保留最近多少天的数据（默认 3 天）
+
+**响应**:
+```json
+{
+  "success": true,
+  "deletedCount": 45,
+  "cutoffDate": "2026-01-02T12:00:00.000Z"
+}
+```
+
+### 4.6 Stripe 支付 API
 
 **Endpoint**: `POST /api/checkout`
 
@@ -581,16 +782,80 @@ CREATE TABLE public.wmc_verification_tokens (
 
 ### 5.4 处理历史表 (wmc_processing_history)
 
+**用途**: 记录所有图片处理请求（包括成功和失败），用于额度追踪、统计分析和安全审计。
+
+**安全特性**:
+- ✅ **IP地址匿名化**: `ip_address` 存储 SHA-256 哈希值（64字符），原始IP永不存储
+- ✅ **数据自动清理**: 72小时后自动删除旧记录，符合 GDPR 要求
+- ✅ **RLS策略**: 启用行级安全，匿名用户仅可通过服务端API写入
+
 ```sql
 CREATE TABLE public.wmc_processing_history (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id TEXT REFERENCES public.wmc_users(id) ON DELETE CASCADE,
-  ip_address TEXT,
-  image_size INTEGER,
-  success BOOLEAN,
-  processing_time_ms INTEGER,
+  ip_address TEXT,              -- IP哈希值（未登录用户）或 null（已登录用户）
+  image_size INTEGER,           -- 图片大小（字节）
+  success BOOLEAN DEFAULT true, -- 处理是否成功
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+```
+
+**字段说明**:
+- `id`: 唯一标识符（UUID）
+- `user_id`: 已登录用户的 ID（外键关联 wmc_users），未登录用户为 null
+- `ip_address`: 未登录用户的 IP 哈希值（64字符SHA256），已登录用户为 null
+- `image_size`: 处理的图片大小（字节）
+- `success`: 处理是否成功（用于统计有效使用次数）
+- `created_at`: 记录创建时间（用于月度统计和自动清理）
+
+**索引优化**:
+```sql
+-- IP地址和日期范围查询
+CREATE INDEX idx_processing_history_ip_date
+ON public.wmc_processing_history(ip_address, created_at)
+WHERE success = true;
+
+-- 用户和日期范围查询
+CREATE INDEX idx_processing_history_user_date
+ON public.wmc_processing_history(user_id, created_at)
+WHERE success = true;
+
+-- 清理操作优化
+CREATE INDEX idx_processing_history_created_at
+ON public.wmc_processing_history(created_at);
+```
+
+**数据保留策略**:
+- **自动清理**: 72小时前的记录自动删除（符合 GDPR）
+- **清理频率**: 每 24 小时执行一次
+- **手动清理**: 可通过 `/api/admin/cleanup` 手动触发
+
+**数据示例**:
+```sql
+-- 已登录用户记录
+INSERT INTO wmc_processing_history (user_id, ip_address, image_size)
+VALUES ('user-123', null, 1024000);
+
+-- 未登录用户记录（IP已哈希）
+INSERT INTO wmc_processing_history (user_id, ip_address, image_size)
+VALUES (null, '18849ddcfb4ac7c006228118ee75b12cea0f541...', 2048000);
+```
+
+**查询示例**:
+```sql
+-- 查询某用户的月度使用次数
+SELECT COUNT(*)
+FROM wmc_processing_history
+WHERE user_id = 'user-123'
+  AND success = true
+  AND created_at >= date_trunc('month', CURRENT_DATE);
+
+-- 查询某IP哈希的月度使用次数（未登录用户）
+SELECT COUNT(*)
+FROM wmc_processing_history
+WHERE ip_address = '18849ddcfb4ac7c006228118ee75b12cea0f...'
+  AND success = true
+  AND created_at >= date_trunc('month', CURRENT_DATE);
 ```
 
 ---
@@ -880,11 +1145,26 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 
 ---
 
-**文档版本**: 1.2
-**最后更新**: 2025-12-30
+**文档版本**: 1.4
+**最后更新**: 2026-01-02
 **维护者**: Claude Code AI
 
 ### 更新日志 (Changelog)
+- **v1.4 (2026-01-02)**: 实现完整的访客使用追踪和安全记录系统
+  - **安全架构**: 实现 IP 地址匿名化（SHA-256 加盐哈希）
+  - **服务端专用**: `/api/record-processing` 使用 Service Role Key 绕过 RLS 限制
+  - **数据清理**: 72小时自动清理机制，符合 GDPR 合规要求
+  - **实时刷新**: CreditsDisplay 处理成功后自动更新（0/3 → 1/3）
+  - **架构重构**: 修复 `generateMetadata` 错误，重写为服务器+客户端组件架构
+  - **关键修复**: 修复 IP 哈希查询不匹配问题（查询使用哈希值而非原始IP）
+  - **环境变量**: 生成真正的随机盐值（IP_HASH_SALT）增强安全性
+- **v1.3 (2026-01-01)**: 实现完整的用户登录状态展示和 Header 重构
+  - 添加 Header 用户状态展示（头像、用户名、额度）
+  - 实现下拉菜单和响应式设计
+  - 集成 react-hot-toast 实现优雅的通知提示
+  - 添加 Google OAuth 支持，信任 Google 验证自动升级用户等级
+  - 优化 VerificationPrompt，改为检查 tier 字段
+  - 修复登录跳转硬刷新问题，改用 router.push + router.refresh
 - **v1.2 (2025-12-30)**: 完成数据库迁移 - 将表从watermarkcleaner schema迁移到public schema，统一使用wmc_前缀
 - **v1.1 (2025-12-29)**: 添加博客页面优化特性、响应式图片对比组件、移动端触摸优化
 - **v1.0 (2025-12-25)**: 初始版本，包含完整架构文档

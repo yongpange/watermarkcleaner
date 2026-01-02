@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase-server';
+import { hashIPAddress } from '@/lib/security/ip-hash';
 
 // User tier configuration matching the 3-10 tier strategy
 export type UserTier = 'unverified' | 'verified' | 'pro';
@@ -164,11 +165,21 @@ export async function checkUserCredits(
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
+    // IMPORTANT: Hash the IP before querying database
+    // The database stores IP hashes, not raw IPs
+    const hashedIdentifier = hashIPAddress(identifier);
+
+    console.log("IP Hashing Debug:", {
+      originalIP: identifier,
+      hashedIP: hashedIdentifier,
+      first10Chars: hashedIdentifier.substring(0, 10)
+    });
+
     const supabase = await createClient();
     const { count } = await (supabase as any)
       .from('wmc_processing_history')
       .select('*', { count: 'exact', head: true })
-      .eq('ip_address', identifier)
+      .eq('ip_address', hashedIdentifier)  // Use hashed IP to match stored hashes
       .gte('created_at', startOfMonth.toISOString())
       .eq('success', true);
 

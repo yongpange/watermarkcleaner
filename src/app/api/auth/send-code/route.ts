@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendVerificationEmail } from '@/lib/email/resend';
 import { generateVerificationCode, storeVerificationCode, isValidEmail } from '@/lib/auth/verification';
-import { createClient } from '@/lib/supabase-server';
+import { createAdminClient } from '@/lib/supabase-admin';
 import { getClientIp } from '@/lib/ip';
 import { checkRateLimit } from '@/lib/rate-limit/index';
 
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
     console.log('[SendCode] Rate limit check passed:', rateLimitResult.count, 'requests');
 
     // 检查用户是否存在（根据purpose）
-    const supabase = await createClient();
+    const supabase = await createAdminClient();
 
     const { data: existingUser, error: userError } = await supabase
       .from('wmc_users')

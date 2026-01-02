@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase-server';
+import { createAdminClient } from '@/lib/supabase-admin';
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    const supabase = await createAdminClient();
 
     // 检查用户是否存在
     const { data: user, error } = await supabase

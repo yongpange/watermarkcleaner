@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { AnimatePresence, motion } from 'framer-motion';
 import { signIn } from 'next-auth/react';
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 import { AppleIconButton } from '@/components/auth/apple-style/button';
 import { AppleDivider } from '@/components/auth/apple-style/divider';
 import { EmailInputSection } from '@/components/auth/email-input-section';
@@ -23,6 +25,7 @@ export interface AuthModalProps {
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'email-code' }) => {
   const t = useTranslations('auth');
   const locale = useLocale();
+  const router = useRouter();
 
   // 状态管理
   const [email, setEmail] = useState('');
@@ -105,33 +108,36 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
     try {
       // 根据用户是否存在决定 purpose
       const purpose = userExists ? 'login' : 'register';
-      
-      const response = await fetch('/api/auth/verify-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          code,
-          purpose,
-        }),
+
+      // 直接使用 NextAuth 登录 (authorize 回调会验证验证码)
+      const result = await signIn('email-code', {
+        email,
+        code,
+        purpose,
+        redirect: false,
       });
 
-      const data = await response.json();
+      if (result?.ok) {
+        // 登录成功，关闭弹窗并显示成功消息
+        onClose();
 
-      if (response.ok) {
-        // 使用 NextAuth 登录
-        await signIn('email-code', {
-          email,
-          code,
-          purpose,
-          redirect: false,
+        // 显示 Toast 提示
+        toast.success(purpose === 'register'
+          ? '🎉 注册成功！欢迎加入 WatermarkCleaner！'
+          : '👋 登录成功！欢迎回来！', {
+          duration: 3000,
+          position: 'top-center',
+          icon: '🎉',
         });
 
-        // 登录成功，关闭弹窗并跳转到我的额度页面
-        onClose();
-        window.location.href = `/${locale}/my-credits`;
+        // 刷新页面状态并跳转到编辑器
+        router.refresh();
+        router.push(`/${locale}/convert`);
       } else {
-        setError(data.error || '验证码错误');
+        console.error('Login failed:', result?.error);
+        setError(result?.error === 'CredentialsSignin' 
+          ? '验证码错误或已过期' 
+          : '验证失败，请重试');
       }
     } catch (error) {
       console.error('Failed to verify code:', error);
