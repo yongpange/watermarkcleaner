@@ -283,7 +283,12 @@ export const authOptions = {
     },
 
     // Include user data in JWT token
-    async jwt({ token, user, account, trigger }) {
+    async jwt({ token, user, account, trigger }: {
+      token: any;
+      user?: any;
+      account?: any;
+      trigger?: 'signIn' | 'signUp' | 'update';
+    }) {
       // 初始登录时
       if (user) {
         token.id = user.id;
@@ -318,7 +323,10 @@ export const authOptions = {
     },
 
     // Include user data in session
-    async session({ session, token }) {
+    async session({ session, token }: {
+      session: any;
+      token: any;
+    }) {
       if (session.user) {
         session.user.id = token.id;
         session.user.email = token.email;
