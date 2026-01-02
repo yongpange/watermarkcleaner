@@ -226,11 +226,15 @@ export const authOptions = {
   // Callbacks to customize behavior
   callbacks: {
     // Handle sign in events
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile }: {
+      user: any;
+      account: any;
+      profile?: any
+    }) {
       console.log('[Auth] User signed in:', user.email, 'Provider:', account?.provider);
 
       // 处理 Google 登录
-      if (account?.provider === 'google') {
+      if (account?.provider === 'google' && profile) {
         try {
           const supabase = createAdminClient();
 
@@ -325,12 +329,6 @@ export const authOptions = {
         session.user.creditsUsed = token.creditsUsed;
       }
       return session;
-    },
-
-    // Handle sign in
-    async signIn({ user, account, profile }) {
-      console.log('[Auth] User signed in:', user.email, 'ID:', user.id);
-      return true;
     },
 
     // Handle redirects
