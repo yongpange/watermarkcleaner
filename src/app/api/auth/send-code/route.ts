@@ -97,14 +97,14 @@ export async function POST(req: NextRequest) {
     );
 
     if (!rateLimitResult.allowed) {
-      console.warn('[SendCode] Rate limit exceeded for IP:', ip, 'Count:', rateLimitResult.count);
+      console.warn('[SendCode] Rate limit exceeded for IP:', ip);
       return NextResponse.json(
         { error: 'Too many requests. Please try again later.' },
         { status: 429 }
       );
     }
 
-    console.log('[SendCode] Rate limit check passed:', rateLimitResult.count, 'requests');
+    console.log('[SendCode] Rate limit check passed.');
 
     // 检查用户是否存在（根据purpose）
     const supabase = await createAdminClient();
