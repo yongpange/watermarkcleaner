@@ -324,17 +324,16 @@ export async function POST(request: NextRequest) {
       // 记录处理历史 - 直接使用 Admin Client 写入数据库
       // 这是安全的，因为此代码在服务端运行
       const { createAdminClient } = await import("@/lib/supabase-admin");
-      const { hashIPAddress } = await import("@/lib/security/ip-hash");
+      const { getClientIP, hashIPAddress } = await import("@/lib/security/ip-hash");
       
       const adminClient = createAdminClient();
       
-      // Get forwardedFor from headers again since it was in the removed block
-      const forwardedFor = request.headers.get('x-forwarded-for');
-      
-      // 对于未登录用户，需要对 IP 进行哈希处理
-      // 优先使用了 forwardedFor (x-forwarded-for)，如果不存在则使用 headers 中的 fallback
-      const ipToHash = forwardedFor || 'unknown-ip';
+      // Standardize usage of getClientIP for consistency
+      const clientIP = getClientIP(request);
+      const ipToHash = clientIP || 'unknown-ip';
       const hashedIP = hashIPAddress(ipToHash);
+
+      console.log(`[IP DEBUG] seededit: Raw="${clientIP}", Hashed="${hashedIP.substring(0, 10)}..."`);
       
       const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert({
         user_id: isAuthenticated ? userId : null,

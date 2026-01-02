@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkUserCredits } from "@/lib/credits/check";
+import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
 
 /**
  * API endpoint to check IP-based credits for unauthenticated users
@@ -7,10 +8,11 @@ import { checkUserCredits } from "@/lib/credits/check";
  */
 export async function GET(request: NextRequest) {
   try {
-    // Get IP address from request headers
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-               request.headers.get("x-real-ip") ||
-               "unknown-ip";
+    // Standardized IP extraction
+    const ip = getClientIP(request);
+    const hashedIP = hashIPAddress(ip);
+
+    console.log(`[IP DEBUG] check-ip: Raw="${ip}", Hashed="${hashedIP.substring(0, 10)}..."`);
 
     // Check credits using IP as identifier for unauthenticated users
     const credits = await checkUserCredits(ip, false, undefined);
