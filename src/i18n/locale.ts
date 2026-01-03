@@ -24,7 +24,7 @@ export type AppPathname =
   | "/"
   | "/blog"
   | "/blog/[slug]"
-  | "/converter"
+  | "/convert"
   | "/dashboard"
   | "/pricing"
   | "/console"
@@ -39,7 +39,7 @@ export const pathnames = {
   "/": "/",
   "/blog": "/blog",
   "/blog/[slug]": "/blog/[slug]",
-  "/converter": "/converter",
+  "/convert": "/convert",
   "/dashboard": "/dashboard",
   "/pricing": "/pricing",
   "/console": "/console",
