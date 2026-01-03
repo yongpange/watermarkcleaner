@@ -150,9 +150,12 @@ export const authOptions = {
 
               // 生成用户名
               const usernameBase = credentials.email.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '_');
+              const userId = crypto.randomUUID(); // 生成唯一的用户ID
+
               const { error } = await supabase
                 .from('wmc_users')
                 .insert({
+                  id: userId,  // 明确指定ID，确保与返回的ID一致
                   email: credentials.email,
                   name: usernameBase,
                   tier: 'verified',
