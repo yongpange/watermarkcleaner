@@ -138,7 +138,7 @@ export const authOptions = {
             .from('wmc_users')
             .select('*')
             .eq('email', credentials.email)
-            .single();
+            .single() as any;
 
           if (!user) {
             // 注册用户不存在（理论上不应该发生，因为verify-code API应该已经创建了用户）
@@ -150,20 +150,18 @@ export const authOptions = {
 
               // 生成用户名
               const usernameBase = credentials.email.split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '_');
-              const { data: newUser } = await supabase
+              const { error } = await supabase
                 .from('wmc_users')
                 .insert({
                   email: credentials.email,
-                  username: usernameBase,
+                  name: usernameBase,
                   tier: 'verified',
                   creditsUsed: 0,
                   creditsReset: new Date().toISOString(),
-                })
-                .select()
-                .single();
+                } as any);
 
-              if (!newUser) {
-                console.error('[Credentials] Failed to create user');
+              if (error) {
+                console.error('[Credentials] Failed to create user', error);
                 return null;
               }
 
@@ -172,11 +170,25 @@ export const authOptions = {
                 await markCodeAsUsed(result.record.id);
               }
 
+              // 重新查询用户信息
+              const { data: createdUsers } = await supabase
+                .from('wmc_users')
+                .select('*')
+                .eq('email', credentials.email)
+                .limit(1) as any;
+
+              const createdUser = createdUsers && createdUsers.length > 0 ? createdUsers[0] : null;
+
+              if (!createdUser) {
+                console.error('[Credentials] Failed to find created user');
+                return null;
+              }
+
               return {
-                id: newUser.id,
-                email: newUser.email,
-                username: newUser.username,
-                tier: newUser.tier,
+                id: createdUser.id,
+                email: createdUser.email,
+                username: createdUser.username || usernameBase,
+                tier: createdUser.tier,
               };
             }
 
@@ -243,7 +255,7 @@ export const authOptions = {
             .from('wmc_users')
             .select('*')
             .eq('email', user.email!)
-            .single();
+            .single() as any;
 
           if (!existingUser) {
             // 新用户：信任 Google 邮箱验证，直接设为 verified
@@ -262,7 +274,7 @@ export const authOptions = {
                 tier: 'verified',  // ✅ Google 邮箱已验证，直接升级
                 creditsUsed: 0,
                 creditsReset: new Date().toISOString(),
-              });
+              } as any);
 
             if (createError) {
               console.error('[Google] Failed to create user:', createError);
@@ -308,7 +320,7 @@ export const authOptions = {
             .from('wmc_users')
             .select('tier, creditsUsed')
             .eq('email', user.email)
-            .single();
+            .single() as any;
 
           if (dbUser) {
             token.tier = dbUser.tier;

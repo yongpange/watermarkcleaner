@@ -6,7 +6,7 @@ import crypto from 'crypto';
  */
 
 // 从环境变量获取盐值（如果不存在则生成随机盐值）
-const IP_HASH_SALT = process.env.IP_HASH_SALT || crypto.randomBytes(32).toString('hex');
+const IP_HASH_SALT = (process.env.IP_HASH_SALT as string) || crypto.randomBytes(32).toString('hex');
 
 // 缓存哈希实例以提高性能
 const hashCache = new Map<string, string>();
@@ -35,8 +35,11 @@ export function hashIPAddress(ip: string): string {
   // 存储到缓存（LRU策略）
   if (hashCache.size >= CACHE_MAX_SIZE) {
     // 删除最老的条目
-    const firstKey = hashCache.keys().next().value;
-    hashCache.delete(firstKey);
+    const iterator = hashCache.keys();
+    const firstKey = iterator.next().value;
+    if (firstKey) {
+      hashCache.delete(firstKey);
+    }
   }
   hashCache.set(ip, hashedIP);
 

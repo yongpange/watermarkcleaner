@@ -1,8 +1,5 @@
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import WatermarkEditor from "@/components/watermark-editor";
-import { VerificationPrompt } from "@/components/VerificationPrompt";
-import { CreditsDisplay } from "@/components/CreditsDisplay";
 import { ConvertPageClient } from "./convert-page-client";
 
 export async function generateMetadata({

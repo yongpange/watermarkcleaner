@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const supabase = await createClient()
     const body = await request.json()
 
-    const { uuid, email, nickname, avatar_url, signin_provider } = body
+    const { uuid, email, nickname, avatar_url, signin_provider: _signin_provider } = body
 
     if (!uuid || !email) {
       return NextResponse.json(

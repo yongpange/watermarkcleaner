@@ -1,15 +1,15 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import type { Database } from '@/types/database.types'
+import type { Database } from '@/types/database-merged'
 
 /**
  * 创建服务端 Supabase 客户端（支持 SSR）
- * 
+ *
  * 用于：
  * - Server Components
  * - Server Actions
  * - Route Handlers (API Routes)
- * 
+ *
  * 特点：
  * - 自动处理 cookies
  * - 支持 Supabase Auth session

@@ -8,28 +8,6 @@ const FAL_API_KEY = process.env.FAL_AI_API_KEY;
 // Maximum file size: 20MB
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
-interface FalResponse {
-  images?: Array<{ url: string }>;
-  image?: { url: string };
-  error?: string;
-}
-
-interface FalQueueResponse {
-  request_id: string;
-  status: string;
-}
-
-interface FalResultResponse {
-  images?: Array<{ url: string }>;
-  image?: { url: string };
-  error?: string;
-}
-
-// Debug: Fal.ai API raw response structure
-interface FalDebugResponse {
-  [key: string]: any;
-}
-
 // Helper function to convert File/Blob to base64 data URL
 async function fileToBase64(file: File | Blob): Promise<string> {
   const buffer = await file.arrayBuffer();

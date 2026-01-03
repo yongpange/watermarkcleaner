@@ -171,7 +171,9 @@ export const AppleCodeInput: React.FC<AppleCodeInputProps> = ({
         {Array.from({ length: 6 }).map((_, index) => (
           <input
             key={index}
-            ref={(el) => (inputRefs.current[index] = el)}
+            ref={(el: HTMLInputElement | null) => {
+              inputRefs.current[index] = el;
+            }}
             type="text"
             inputMode="numeric"
             maxLength={1}

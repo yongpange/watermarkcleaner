@@ -23,7 +23,6 @@ export interface AuthModalProps {
  * 支持邮箱验证码登录/注册、Google登录、邮箱Magic Link登录
  */
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'email-code' }) => {
-  const t = useTranslations('auth');
   const locale = useLocale();
   const router = useRouter();
 
@@ -154,7 +153,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
   };
 
   // 处理 Google 登录
-  const handleGoogleLogin = async () => {
+  const _handleGoogleLogin = async () => {
     setLoading(true);
     try {
       await signIn('google', {
@@ -225,7 +224,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
         {/* Google 登录 */}
         <GoogleLoginButton
           disabled={loading}
-          onClick={handleGoogleLogin}
         />
 
         {/* Magic Link 登录 */}

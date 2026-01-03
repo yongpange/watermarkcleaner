@@ -73,9 +73,9 @@ export async function storeVerificationCode(params: StoreVerificationCodeParams)
       code,
       purpose,
       expires_at: expiresAt.toISOString(),
-    })
-    .select()
-    .single();
+    } as any);
+
+  const insertedData = error ? null : data && (data as any)[0];
 
   if (error) {
     console.error('[Verification] Failed to store verification code:', error);
@@ -86,10 +86,9 @@ export async function storeVerificationCode(params: StoreVerificationCodeParams)
     email,
     purpose,
     expiresAt: expiresAt.toISOString(),
-    recordId: data?.id
   });
 
-  return data;
+  return insertedData;
 }
 
 // ============================================================================
@@ -125,7 +124,7 @@ export async function verifyCode(
   const supabase = createAdminClient();
 
   // 查找匹配的验证码记录
-  const { data: record, error } = await supabase
+  const { data: records, error } = await supabase
     .from('wmc_email_verification_codes')
     .select('*')
     .eq('email', email)
@@ -133,8 +132,9 @@ export async function verifyCode(
     .eq('purpose', purpose)
     .eq('used', false)
     .order('created_at', { ascending: false })
-    .limit(1)
-    .single();
+    .limit(1);
+
+  const record = records && records.length > 0 ? records[0] as any : null;
 
   if (error) {
     console.log('[Verification] Code not found:', { email, code, purpose });
@@ -175,7 +175,7 @@ export async function verifyCode(
 
   return {
     valid: true,
-    record
+    record: record as any
   };
 }
 
@@ -192,7 +192,7 @@ export async function markCodeAsUsed(codeId: string) {
 
   const { error } = await supabase
     .from('wmc_email_verification_codes')
-    .update({ used: true })
+    .update({ used: true } as never)
     .eq('id', codeId);
 
   if (error) {
@@ -210,20 +210,27 @@ export async function markCodeAsUsed(codeId: string) {
 export async function incrementAttempts(codeId: string) {
   const supabase = createAdminClient();
 
-  const { data: current, error: fetchError } = await supabase
+  const { data: records, error: fetchError } = await supabase
     .from('wmc_email_verification_codes')
     .select('attempts')
     .eq('id', codeId)
-    .single();
+    .limit(1);
+
+  const current = records && records.length > 0 ? records[0] as any : null;
 
   if (fetchError) {
     console.error('[Verification] Failed to fetch current attempts:', fetchError);
     throw fetchError;
   }
 
+  if (!current) {
+    console.error('[Verification] Code record not found:', codeId);
+    throw new Error('Code record not found');
+  }
+
   const { error: updateError } = await supabase
     .from('wmc_email_verification_codes')
-    .update({ attempts: current.attempts + 1 })
+    .update({ attempts: current.attempts + 1 } as never)
     .eq('id', codeId);
 
   if (updateError) {

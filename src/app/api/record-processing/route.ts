@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
       image_size: imageSize,
       success,
       created_at: new Date().toISOString(),
-    });
+    } as any);
 
     if (error) {
       console.error("Failed to record processing history:", error);

@@ -1,9 +1,9 @@
 /**
  * Database types for Supabase
- * 
+ *
  * 这个文件定义了所有数据库表的 TypeScript 类型
  * 通常应该使用 `supabase gen types typescript` 命令生成
- * 
+ *
  * 如果需要重新生成，请运行：
  * npx supabase gen types typescript --project-id <your-project-id> > src/types/database.types.ts
  */
@@ -16,9 +16,14 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
-  public: {
-    Tables: {
+// 导入 wmc_ 表的类型定义
+import { DatabaseWithWmc } from './database-wmc.types'
+
+// 合并 Database 和 DatabaseWithWmc
+export interface Database extends Omit<DatabaseWithWmc, 'public'> {
+  public: DatabaseWithWmc['public'] & {
+    Tables: DatabaseWithWmc['public']['Tables'] & {
+      // 原有的表定义（保持不变）
       users: {
         Row: {
           id: number

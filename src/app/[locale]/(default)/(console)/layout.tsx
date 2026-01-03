@@ -11,7 +11,7 @@ const ConsoleLayoutWrapper = async ({ children }: { children: ReactNode }) => {
     redirect("/auth/signin");
   }
 
-  const t = await getTranslations();
+  const _t = await getTranslations();
 
   const sidebar: Sidebar = {
     nav: {

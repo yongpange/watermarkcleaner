@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase-admin';
+import type { DatabaseWithWmc } from '@/types/database-wmc.types';
 import {
   verifyCode,
   markCodeAsUsed,
   incrementAttempts,
   VerifyCodeResult
 } from '@/lib/auth/verification';
+
+type UserInsert = DatabaseWithWmc['public']['Tables']['wmc_users']['Insert'];
 
 // ============================================================================
 // 请求验证
@@ -178,16 +181,14 @@ export async function POST(req: NextRequest) {
 
       // 创建新用户
       const userId = crypto.randomUUID();
-      const { data: newUser, error: createError } = await supabase
+      const { error: createError } = await supabase
         .from('wmc_users')
         .insert({
           id: userId,
           email,
           name: username, // name 字段是标准的 NextAuth 字段
           tier: 'verified', // 邮箱验证后直接设为 verified
-        })
-        .select()
-        .single();
+        } as any);
 
       if (createError) {
         console.error('[VerifyCode] Failed to create user:', createError);
@@ -206,7 +207,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      console.log('[VerifyCode] User created successfully:', newUser?.id);
+      console.log('[VerifyCode] User created successfully:', userId);
 
       // 标记验证码为已使用
       if (result.record?.id) {
@@ -218,10 +219,10 @@ export async function POST(req: NextRequest) {
         success: true,
         message: 'Registration successful',
         user: {
-          id: newUser.id,
-          email: newUser.email,
-          username: newUser.username,
-          tier: newUser.tier
+          id: userId,
+          email,
+          username,
+          tier: 'verified'
         },
         // 前端需要调用 next-auth 的 signIn 方法完成登录
         requiresSignIn: true
@@ -229,13 +230,13 @@ export async function POST(req: NextRequest) {
 
     } else if (purpose === 'login') {
       // 查找用户
-      const { data: user } = await supabase
+      const { data: users, error: userError } = await supabase
         .from('wmc_users')
         .select('*')
         .eq('email', email)
-        .single();
+        .limit(1) as any;
 
-      if (!user) {
+      if (userError || !users || users.length === 0) {
         console.log('[VerifyCode] User not found during login:', email);
         return NextResponse.json(
           { error: 'User not found' },
@@ -243,6 +244,7 @@ export async function POST(req: NextRequest) {
         );
       }
 
+      const user = users[0];
       console.log('[VerifyCode] User found for login:', user.id);
 
       // 标记验证码为已使用

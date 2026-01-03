@@ -5,7 +5,7 @@ import { getUserUuid } from "@/services/user";
 import { User } from "@/types/user";
 import { createClient } from "@/lib/supabase-server";
 
-export async function POST(req: Request) {
+export async function POST(_req: Request) {
   try {
     const user_uuid = await getUserUuid();
     if (!user_uuid) {

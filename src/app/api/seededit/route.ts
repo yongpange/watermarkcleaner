@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
       // Use IP address for non-authenticated users
       userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
     }
-  } catch (error) {
+  } catch (_error) {
     // Fallback to IP if session check fails
     userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
   }

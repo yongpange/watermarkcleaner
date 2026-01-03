@@ -208,7 +208,7 @@ export async function POST(req: NextRequest) {
  * GET /api/auth/send-code
  * 获取速率限制状态（调试用）
  */
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
     const ip = await getClientIp();
     const ipHash = Buffer.from(ip).toString('base64');
@@ -223,7 +223,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       rateLimit: {
         allowed: rateLimitResult.allowed,
-        remaining: Math.max(0, RATE_LIMIT_MAX_REQUESTS - rateLimitResult.count),
+        remaining: Math.max(0, rateLimitResult.remaining),
         totalAllowed: RATE_LIMIT_MAX_REQUESTS
       }
     });
