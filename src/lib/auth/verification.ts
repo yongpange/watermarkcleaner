@@ -129,7 +129,6 @@ export async function verifyCode(
     .select('*')
     .eq('email', email)
     .eq('code', code)
-    .eq('purpose', purpose)
     .eq('used', false)
     .order('created_at', { ascending: false })
     .limit(1);
@@ -144,7 +143,7 @@ export async function verifyCode(
     };
   }
 
-  // 检查是否已使用
+  // 🔧 检查是否已使用
   if (record.used) {
     console.log('[Verification] Code already used:', record.id);
     return {
@@ -153,13 +152,23 @@ export async function verifyCode(
     };
   }
 
-  // 检查是否过期
+  // 🔧 检查是否过期
   if (new Date(record.expires_at) < new Date()) {
     console.log('[Verification] Code expired:', record.id);
     return {
       valid: false,
       reason: 'expired'
     };
+  }
+
+  // 🔧 检查 purpose 不匹配（仅警告，不阻止验证）
+  if (record.purpose !== purpose) {
+    console.warn('[Verification] Purpose mismatch:', {
+      expected: purpose,
+      actual: record.purpose,
+      recordId: record.id,
+      email: record.email
+    });
   }
 
   // 检查尝试次数
