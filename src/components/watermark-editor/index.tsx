@@ -8,12 +8,11 @@ import { RiCloseCircleLine, RiImageAddLine, RiMagicLine, RiLoader4Line } from "r
 import { Button } from "@/components/ui/button";
 import ImageUploader from "./ImageUploader";
 import ImagePreview from "./ImagePreview";
-import ProcessingOptions, { ProcessingMode } from "./ProcessingOptions";
 import ResultDisplay from "./ResultDisplay";
 import { useTranslations } from "next-intl";
 
 interface ProcessOptions {
-  mode: ProcessingMode;
+  mode: "auto" | "conservative" | "aggressive";
   prompt?: string;
 }
 
@@ -29,6 +28,11 @@ interface WatermarkEditorProps {
   onProcessingComplete?: () => void;
 }
 
+// API 端点配置
+// 开发环境可以启用 Mock API 以节省成本
+const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true';
+const API_ENDPOINT = USE_MOCK_API ? '/api/mock-seededit' : '/api/seededit';
+
 export default function WatermarkEditor({ onProcessingComplete }: WatermarkEditorProps) {
   // State
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -36,13 +40,18 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
   const [imageMetadata, setImageMetadata] = useState<{ width: number; height: number } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [resultImageUrl, setResultImageUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | React.ReactNode | null>(null);
   const [processingOptions, setProcessingOptions] = useState<ProcessOptions>({
     mode: "auto",
   });
   const t = useTranslations("convert.watermark_removal");
   const processingT = useTranslations("convert.processing");
   const imageT = useTranslations("convert.image");
+
+  // 显示当前 API 模式（开发环境）
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`[WatermarkEditor] API mode: ${USE_MOCK_API ? 'MOCK' : 'REAL'} (${API_ENDPOINT})`);
+  }
 
   // Zustand store for uploaded images (from homepage)
   const searchParams = useSearchParams();
@@ -120,8 +129,9 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
         formData.append("prompt", processingOptions.prompt);
       }
 
-      console.log("Sending request to /api/seededit...");
-      const response = await fetch("/api/seededit", {
+      console.log(`Sending request to ${API_ENDPOINT}...`);
+      console.log(`[WatermarkEditor] API mode: ${USE_MOCK_API ? 'MOCK' : 'REAL'}`);
+      const response = await fetch(API_ENDPOINT, {
         method: "POST",
         body: formData,
         // Set timeout at fetch level (2 minutes)
@@ -131,6 +141,72 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
       // Handle response
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+
+        // 额度用完特殊处理（Toast + 内联错误）
+        if (response.status === 403 && errorData.code === 'CREDIT_LIMIT_EXCEEDED') {
+          console.log('[WatermarkEditor] Credit limit exceeded, showing special error UI');
+
+          // 1. Toast 通知（顶部弹出，红色错误样式）
+          toast.error(errorData.error, {
+            duration: 8000,
+            icon: '⚠️',
+            style: {
+              background: '#fee2e2',
+              color: '#dc2626',
+              border: '1px solid #fecaca',
+            },
+          });
+
+          // 2. 内联错误详情（保留在编辑器内，包含操作按钮）
+          setError(
+            <div className="space-y-4">
+              <div>
+                <p className="font-medium text-red-800 mb-2">{errorData.details}</p>
+                <div className="text-sm text-red-700">
+                  <p className="mb-2">💡 您可以选择：</p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    {errorData.tier === 'unverified' && (
+                      <li>验证邮箱可获得10张/月额度</li>
+                    )}
+                    <li>升级到专业版获得无限额度</li>
+                    <li>等待下月额度重置</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="flex gap-3 flex-wrap">
+                {errorData.tier === 'unverified' && (
+                  <button
+                    onClick={() => window.location.href = errorData.upgradeUrl}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg
+                      hover:from-blue-600 hover:to-blue-700 transition font-medium shadow-sm"
+                  >
+                    ✉️ 验证邮箱
+                  </button>
+                )}
+                <button
+                  onClick={() => window.location.href = '/pricing'}
+                  className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg
+                    hover:from-red-600 hover:to-red-700 transition font-medium shadow-sm"
+                >
+                  💎 升级到专业版
+                </button>
+                <button
+                  onClick={() => setError(null)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50
+                    transition font-medium text-gray-700"
+                >
+                  稍后再试
+                </button>
+              </div>
+            </div>
+          );
+
+          // 不抛出错误，直接返回（避免进入通用错误处理）
+          setIsProcessing(false);
+          return;
+        }
+
         throw new Error(errorData.error || `HTTP error: ${response.status}`);
       }
 
@@ -234,15 +310,6 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
             onRemove={handleRemoveImage}
           />
 
-          {/* 处理选项 */}
-          <div className="transition-all duration-300">
-            <ProcessingOptions
-              value={processingOptions}
-              onChange={setProcessingOptions}
-              compact={false}
-            />
-          </div>
-
           {/* 错误信息 */}
           {error && (
             <div className="p-4 bg-destructive/10 border-destructive rounded-lg">
@@ -274,7 +341,7 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
                 size="lg"
                 onClick={handleProcess}
                 disabled={isProcessing || !imageFile}
-                className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 px-8 min-w-[200px]"
+                className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 px-8 min-w-[200px] cursor-pointer disabled:cursor-not-allowed"
               >
                 {isProcessing ? (
                   <>

@@ -162,6 +162,14 @@ export default function ResultDisplay({
                 : "border-transparent hover:border-border",
               "w-24 h-24"  // 固定尺寸，确保一致
             )}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setActiveImage('original');
+              }
+            }}
           >
             <img
               src={originalImageUrl}
@@ -188,6 +196,14 @@ export default function ResultDisplay({
                 : "border-transparent hover:border-border",
               "w-24 h-24"  // 固定尺寸，确保一致
             )}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setActiveImage('result');
+              }
+            }}
           >
             <img
               src={resultImageUrl}
@@ -213,6 +229,14 @@ export default function ResultDisplay({
               "flex items-center justify-center",
               "bg-muted border-border hover:bg-primary/10"
             )}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleUploadNew();
+              }
+            }}
           >
             <div className="flex flex-col items-center justify-center">
               <RiImageAddLine className="w-6 h-6 text-primary mb-1" />
@@ -239,7 +263,7 @@ export default function ResultDisplay({
           variant="outline"
           size="lg"
           onClick={onReset}
-          className="flex items-center gap-2 min-w-[180px] justify-center"
+          className="flex items-center gap-2 min-w-[180px] justify-center cursor-pointer"
         >
           <RiRefreshLine className="w-5 h-5" />
           {t('process_another_image')}
@@ -250,7 +274,7 @@ export default function ResultDisplay({
           size="lg"
           onClick={handleDownload}
           disabled={isDownloading}
-          className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 min-w-[180px] justify-center"
+          className="flex items-center gap-2 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 min-w-[180px] justify-center cursor-pointer disabled:cursor-not-allowed"
         >
           <RiDownloadLine className="w-5 h-5" />
           {isDownloading ? t('downloading') : t('download_image')}

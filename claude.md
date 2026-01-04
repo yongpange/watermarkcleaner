@@ -339,7 +339,8 @@ CREATE TABLE public.wmc_email_verification_codes (
   purpose TEXT NOT NULL,  -- 'register' | 'login' | 'update_email'
   attempts INTEGER DEFAULT 0,
   used BOOLEAN DEFAULT FALSE,
-  expires_at TIMESTAMPTZ NOT NULL
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
 

@@ -134,9 +134,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
         router.push(`/${locale}/convert`);
       } else {
         console.error('Login failed:', result?.error);
-        setError(result?.error === 'CredentialsSignin' 
-          ? '验证码错误或已过期' 
-          : '验证失败，请重试');
+        
+        let errorMessage = '验证失败，请重试';
+        
+        // Map backend errors to valid messages
+        if (result?.error === 'expired' || result?.error?.includes('expired')) {
+          errorMessage = '验证码已过期，请重新发送';
+        } else if (result?.error === 'invalid_code' || result?.error?.includes('invalid_code')) {
+          errorMessage = '验证码错误，请检查输入';
+        } else if (result?.error === 'max_attempts' || result?.error?.includes('max_attempts')) {
+          errorMessage = '尝试次数过多，请重新发送验证码';
+        } else if (result?.error === 'used' || result?.error?.includes('used')) {
+          errorMessage = '验证码已失效，请重新发送';
+        } else if (result?.error === 'CredentialsSignin') {
+          // 如果抛出了 Error('invalid_code')，NextAuth 可能会返回 'CredentialsSignin' 
+          // 或者 error=invalid_code (取决于版本和配置)
+          // 这里做一个通用提示，但通常上面的检查会捕获到具体原因
+          errorMessage = '验证码错误或已过期';
+        }
+
+        setError(errorMessage);
       }
     } catch (error) {
       console.error('Failed to verify code:', error);

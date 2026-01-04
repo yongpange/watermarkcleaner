@@ -1,0 +1,161 @@
+flowchart TD
+    %% 样式定义
+    classDef startEnd fill:#0ea5e9,stroke:#0284c7,stroke-width:2px,color:#fff
+    classDef process fill:#6366f1,stroke:#4f46e5,stroke-width:2px,color:#fff
+    classDef decision fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    classDef error fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
+    classDef success fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    classDef warning fill=#fbbf24,stroke=#d97706,stroke-width=2px,color=#000
+
+    %% 开始
+    Start([开始]):::startEnd --> UserInputEmail[用户输入邮箱]:::process
+
+    %% 发送验证码流程
+    UserInputEmail --> CheckUserExists{检查用户
+是否存在?}:::decision
+    CheckUserExists -->|存在| SetPurposeLogin[设置 Purpose = 'login']:::process
+    CheckUserExists -->|不存在| SetPurposeRegister[设置 Purpose = 'register']:::process
+
+    SetPurposeLogin --> CallSendCodeAPI[调用 /api/auth/send-code]:::process
+    SetPurposeRegister --> CallSendCodeAPI
+
+    CallSendCodeAPI --> ValidateEmailFormat[验证邮箱格式]:::process
+    ValidateEmailFormat --> CheckUserInDB[检查数据库用户]:::process
+    CheckUserInDB --> GenerateCode[生成6位数字验证码]:::process
+    GenerateCode --> StoreInDB[存储到数据库
+wmc_email_verification_codes]:::process
+    StoreInDB --> SendEmail[发送邮件 via Resend]:::process
+    SendEmail --> ReturnSuccess[返回成功]:::success
+    ReturnSuccess --> ShowCodeInput[显示验证码输入界面]:::process
+
+    %% 输入验证码
+    ShowCodeInput --> UserInputCode[用户输入6位验证码]:::process
+    UserInputCode --> CallSignIn[调用 signIn('email-code', ...)]:::process
+
+    %% NextAuth 验证流程
+    CallSignIn --> NextAuthCredentials[NextAuth Credentials Provider]:::process
+    NextAuthCredentials --> CallVerifyCode[调用 verifyCode() 函数]:::process
+
+    CallVerifyCode --> QueryDB[查询数据库
+email + code
+按 created_at 降序]:::process
+    QueryDB --> RecordFound{找到记录?}:::decision
+
+    RecordFound -->|否| ReturnInvalidCode[返回 invalid_code]:::error
+    RecordFound -->|是| CheckUsed{检查 used 字段
+是否已使用?}:::decision
+
+    CheckUsed -->|已使用| ReturnUsed[返回 used]:::error
+    CheckUsed -->|未使用| CheckExpired{检查是否过期
+expires_at < now?}:::decision
+
+    CheckExpired -->|已过期| ReturnExpired[返回 expired]:::error
+    CheckExpired -->|未过期| CheckAttempts{检查尝试次数
+attempts >= 3?}:::decision
+
+    CheckAttempts -->|超过| ReturnMaxAttempts[返回 max_attempts]:::error
+    CheckAttempts -->|正常| CheckPurpose[检查 purpose
+(仅警告)]:::warning
+
+    CheckPurpose --> ValidationSuccess[验证成功]:::success
+
+    %% 用户处理
+    ValidationSuccess --> FindUser[查询用户是否存在]:::process
+    FindUser --> UserExists{用户存在?}:::decision
+
+    UserExists -->|不存在 + register| CreateUser[创建新用户
+设置 tier='verified']:::process
+    UserExists -->|存在 + login| UseExistingUser[使用现有用户]:::process
+
+    CreateUser --> MarkCodeUsed[标记验证码为已使用
+used = true]:::process
+    UseExistingUser --> MarkCodeUsed
+
+    MarkCodeUsed --> ReturnUserInfo[返回用户信息]:::success
+    ReturnUserInfo --> SignInSuccess[登录成功
+跳转到 /convert]:::success
+
+    %% 错误处理
+    ReturnInvalidCode --> ShowError[显示错误
+"验证码错误"]:::error
+    ReturnUsed --> ShowError
+    ReturnExpired --> ShowErrorExpired[显示错误
+"验证码已过期"]:::error
+    ReturnMaxAttempts --> ShowErrorMax[显示错误
+"尝试次数过多"]:::error
+
+    %% 错误日志
+    ReturnInvalidCode --> LogDebug[记录调试信息
+email, code, length, chars]:::process
+    ReturnExpired --> LogTimeDebug[记录时间信息
+now, expires_at]:::process
+
+    %% 连接错误处理
+    ShowError --> End([结束]):::startEnd
+    ShowErrorExpired --> End
+    ShowErrorMax --> End
+    SignInSuccess --> End
+
+    %% 循环（如果验证码错误，用户可以重新输入）
+    ShowError --> UserInputCode
+    ShowErrorExpired --> ShowCodeInput
+    ShowErrorMax --> ShowCodeInput
+
+    %% 后端 API 失败处理
+    CallSendCodeAPI --> SendCodeError{发送失败?}:::decision
+    SendCodeError -->|是| ReturnSendError[返回错误]:::error
+    SendCodeError -->|否| ReturnSuccess
+
+    ReturnSendError --> ShowSendError[显示发送错误]:::error
+    ShowSendError --> End
+
+    %% 添加说明
+    note right of QueryDB
+        **关键查询条件**
+        - email = 用户邮箱
+        - code = 输入的验证码
+        - order by created_at DESC
+        - limit 1
+
+        **潜在问题**
+        1. code 包含空格
+        2. email 大小写不匹配
+        3. created_at 为 NULL
+        4. 返回了旧记录
+    end note
+
+    note right of CheckExpired
+        **时间比较问题**
+        - expires_at: UTC 时间戳
+        - now: 本地时间
+        - 可能有时区偏差
+
+        **解决方案**
+        使用 getTime() 毫秒比较
+        增加宽限时间（1-2分钟）
+    end note
+
+    note left of NextAuthCredentials
+        **重要发现**
+        前端没有直接调用
+        /api/auth/verify-code API
+
+        而是直接使用
+        signIn('email-code')
+
+        这意味着:
+        1. 验证码只验证一次
+        2. 验证后立即标记为已使用
+        3. /api/auth/verify-code API 未使用
+    end note
+
+    note right of CheckAttempts
+        **尝试次数限制**
+        - 最大尝试: 3 次
+        - 每次失败 +1
+        - 达到 3 次后锁定
+
+        **用户困扰**
+        用户不知道尝试次数
+        建议显示剩余次数
+    end note

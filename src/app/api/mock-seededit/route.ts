@@ -1,0 +1,278 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { v4 as uuidv4 } from 'uuid';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/lib/auth.config';
+import { checkUserCredits, deductCredits, USER_TIER_CONFIG } from '@/lib/credits/check';
+import { getClientIP, hashIPAddress } from '@/lib/security/ip-hash';
+import { createAdminClient } from '@/lib/supabase-admin';
+import { rateLimitMiddleware } from '@/lib/rate-limit';
+
+// 配置常量（与真实 API 保持一致）
+const CONFIG = {
+  // 最大文件大小：20MB
+  MAX_FILE_SIZE: 20 * 1024 * 1024,
+
+  // 支持的图片格式
+  SUPPORTED_FORMATS: [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+  ] as const,
+
+  // 速率限制（IP级别）
+  RATE_LIMIT: {
+    MAX_REQUESTS_PER_HOUR: 10, // 每小时最多10次请求
+  },
+
+  // 1小时窗口（毫秒）
+  WINDOW_MS: 60 * 60 * 1000,
+};
+
+/**
+ * Mock API 用于测试额度用尽场景
+ * 完全模拟真实 API 的输入输出，但不调用真实的 AI 服务
+ * 返回原图或轻微修改的模拟结果
+ * 重要：会真实扣除额度（调用 deductCredits）并检查额度限制
+ * 同时包含速率限制、文件格式验证等真实 API 的所有特性
+ */
+
+export async function POST(req: NextRequest) {
+  try {
+    // 0. 速率限制检查（IP限流）- 与真实 API 保持一致
+    const rateLimitResult = await rateLimitMiddleware(req, {
+      limit: CONFIG.RATE_LIMIT.MAX_REQUESTS_PER_HOUR,
+      windowMs: CONFIG.WINDOW_MS || 3600000,
+    });
+
+    if (!rateLimitResult.allowed && rateLimitResult.response) {
+      return rateLimitResult.response;
+    }
+
+    // 添加速率限制信息到日志
+    const rateLimitInfo = {
+      limit: rateLimitResult.limit,
+      remaining: rateLimitResult.remaining,
+      resetTime: rateLimitResult.resetTime,
+    };
+    console.log(`[Mock API] Rate limit check passed: ${rateLimitInfo.remaining}/${rateLimitInfo.limit} remaining`);
+
+    const formData = await req.formData();
+    const image = formData.get('image') as File | null;
+    const mode = formData.get('mode') as string;
+    const prompt = formData.get('prompt') as string;
+
+    if (!image) {
+      return NextResponse.json(
+        { error: 'No image provided' },
+        { status: 400 }
+      );
+    }
+
+    // 1. 文件格式验证（与真实 API 保持一致）
+    if (!CONFIG.SUPPORTED_FORMATS.includes(image.type as any)) {
+      console.log(`[Mock API] Unsupported file format: ${image.type}`);
+      return NextResponse.json(
+        {
+          error: 'Unsupported file format',
+          details: `Supported formats: ${CONFIG.SUPPORTED_FORMATS.join(', ')}. Your file: ${image.type}`
+        },
+        { status: 400 }
+      );
+    }
+
+    // 2. 文件大小限制（与真实 API 保持一致）
+    if (image.size > CONFIG.MAX_FILE_SIZE) {
+      console.log(`[Mock API] File too large: ${(image.size / 1024 / 1024).toFixed(2)}MB`);
+      return NextResponse.json(
+        {
+          error: 'File too large',
+          details: `Maximum file size: ${CONFIG.MAX_FILE_SIZE / 1024 / 1024}MB. Your file: ${(image.size / 1024 / 1024).toFixed(2)}MB`
+        },
+        { status: 400 }
+      );
+    }
+
+    // 获取用户会话（如果已登录）
+    let session: any = null;
+    let userId: string | undefined;
+    let isAuthenticated = false;
+    let userIdentifier: string;
+
+    try {
+      session = await getServerSession(authOptions);
+      if (session?.user) {
+        isAuthenticated = true;
+        userId = session.user.id;
+        userIdentifier = userId || 'authenticated-user';
+        console.log(`[Mock API] Authenticated user: ${userId}`);
+      } else {
+        // Use IP address for non-authenticated users
+        userIdentifier = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown-ip';
+        console.log(`[Mock API] Guest user (IP: ${userIdentifier})`);
+      }
+    } catch (_error) {
+      // Fallback to IP if session check fails
+      userIdentifier = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown-ip';
+      console.log(`[Mock API] Session check failed, treating as guest (IP: ${userIdentifier})`);
+    }
+
+    // 检查用户额度（月度限额）- 在模拟处理之前检查
+    try {
+      const credits = await checkUserCredits(userIdentifier, isAuthenticated, userId);
+
+      if (credits.remaining <= 0) {
+        const tierConfig = USER_TIER_CONFIG[credits.tier];
+        console.log(`[Mock API] Credit limit exceeded for user ${userIdentifier}. Used: ${credits.used}/${tierConfig.maxPerMonth}`);
+        return NextResponse.json(
+          {
+            error: '额度已用完',
+            details: `您本月已使用 ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} 张额度`,
+            code: 'CREDIT_LIMIT_EXCEEDED',
+            tier: credits.tier, // 添加tier信息
+            used: credits.used, // 添加已使用数量
+            limit: credits.limit, // 添加限额
+            action: credits.tier === 'unverified'
+              ? '验证邮箱可获得10张/月额度 →'
+              : '升级到专业版获得无限额度 →',
+            upgradeUrl: credits.tier === 'unverified' ? '/auth/signin' : '/pricing',
+          },
+          { status: 403 }
+        );
+      }
+      console.log(`[Mock API] Credit check passed. Remaining: ${credits.remaining}/${credits.limit}`);
+    } catch (error) {
+      console.error('[Mock API] Failed to check credits:', error);
+      // Continue with request but log the error
+    }
+
+    // 模拟处理延迟（200ms - 2s 随机，模拟真实 API 延迟）
+    const delay = Math.random() * 1800 + 200;
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+    // 读取图片信息
+    const buffer = Buffer.from(await image.arrayBuffer());
+    const originalSize = buffer.length;
+    const originalType = image.type;
+
+    console.log(`[Mock API] Processing image:`, {
+      name: image.name,
+      type: originalType,
+      size: originalSize,
+      mode: mode,
+      authenticated: isAuthenticated,
+      userId: userId || 'guest',
+      delay: `${delay.toFixed(0)}ms`
+    });
+
+    // 扣除额度（对已认证用户）并记录处理历史
+    try {
+      // Deduct credit for authenticated users
+      if (isAuthenticated && userId) {
+        console.log(`[Mock API] Attempting to deduct credits for user ${userId}...`);
+        await deductCredits(userId);
+        console.log(`[Mock API] Credits deducted successfully for user ${userId}.`);
+      }
+
+      // 记录处理历史 - 直接使用 Admin Client 写入数据库
+      const adminClient = createAdminClient();
+      const clientIP = getClientIP(req);
+      const ipToHash = clientIP || 'unknown-ip';
+      const hashedIP = hashIPAddress(ipToHash);
+
+      console.log(`[Mock API] Recording processing history...`);
+
+      const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert({
+        user_id: isAuthenticated ? userId : null,
+        ip_address: isAuthenticated ? null : hashedIP,
+        image_size: image.size,
+        success: true,
+        created_at: new Date().toISOString(),
+      });
+
+      if (recordError) {
+        console.error("[Mock API] Failed to record processing history:", recordError);
+      } else {
+        console.log("[Mock API] Processing history recorded successfully");
+      }
+    } catch (error) {
+      console.error("[Mock API] Failed to deduct credits/record history:", error);
+      // Continue even if recording fails - we don't want to block the user
+    }
+
+    // 生成唯一的 Mock ID
+    const mockResultId = uuidv4();
+
+    // 返回模拟的处理结果（匹配前端 ApiResponse 接口）
+    return NextResponse.json({
+      success: true,
+      imageUrl: `/api/mock-seededit/result?id=${mockResultId}`, // 前端期望 imageUrl 字段
+      processingTime: delay
+    });
+
+  } catch (error) {
+    console.error('[Mock API] Error:', error);
+    return NextResponse.json(
+      { error: 'Mock processing failed', details: error instanceof Error ? error.message : String(error) },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * GET /api/mock-seededit/result?id=<uuid>
+ * 返回模拟的处理结果图片
+ */
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Result ID required' },
+        { status: 400 }
+      );
+    }
+
+    console.log(`[Mock API] Fetching result: ${id}`);
+
+    // 返回一个 1x1 的透明 PNG（最小化数据传输）
+    const transparentPixel = Buffer.from(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
+      'base64'
+    );
+
+    return new NextResponse(transparentPixel, {
+      headers: {
+        'Content-Type': 'image/png',
+        'Content-Length': transparentPixel.length.toString(),
+        'X-Mock-Result': 'true',
+        'X-Original-ID': id,
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+      }
+    });
+
+  } catch (error) {
+    console.error('[Mock API] GET Error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch result' },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * OPTIONS 处理 CORS 预检请求
+ */
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '86400'
+    }
+  });
+}

@@ -1,4 +1,7 @@
+import 'server-only'; // 🚨 禁止在客户端导入 - 包含 Service Role Key
+
 import { createClient } from '@/lib/supabase-server';
+import { createAdminClient } from '@/lib/supabase-admin';
 import { hashIPAddress } from '@/lib/security/ip-hash';
 
 // User tier configuration matching the 3-10 tier strategy
@@ -30,7 +33,10 @@ export const USER_TIER_CONFIG: Record<UserTier, UserTierConfig> = {
  * @returns Object containing tier info, usage stats, and remaining credits
  */
 export async function checkCredits(userId: string) {
-  const supabase = await createClient();
+  // Use admin client to ensure we can read/update strictly
+  const supabase = createAdminClient();
+
+  console.log(`[Credits] Checking credits for user: ${userId}`);
 
   const { data: user, error } = await (supabase as any)
     .from('wmc_users')
@@ -39,27 +45,36 @@ export async function checkCredits(userId: string) {
     .single();
 
   if (error || !user) {
+    console.error(`[Credits] User not found or error:`, error);
     throw new Error('User not found');
   }
 
   // Check if we need to reset monthly credits (on the 1st of each month)
   const now = new Date();
-  const lastReset = new Date((user as any).creditsReset || now);
+  const lastReset = new Date((user as any).creditsreset || now); // Note lower case match DB
+  
+  // Debug log for fields
+  console.log(`[Credits] User found. Tier: ${user.tier}, Used: ${user.creditsused}, Reset: ${user.creditsreset}`);
 
   // Reset if we're in a different month/year than last reset
   if (now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
+    console.log(`[Credits] Resetting credits for user ${userId}. Last reset: ${lastReset}, Now: ${now}`);
+    
     // Reset credits for new month
     const { error: updateError } = await (supabase as any)
       .from('wmc_users')
       .update({
-        creditsUsed: 0,
-        creditsReset: now.toISOString(),
+        creditsused: 0,
+        creditsreset: now.toISOString(),
       })
       .eq('id', userId);
 
     if (updateError) {
+      console.error(`[Credits] Failed to reset credits:`, updateError);
       throw new Error(`Failed to reset credits: ${updateError.message}`);
     }
+    
+    console.log(`[Credits] Credits reset successfully.`);
 
     return {
       tier: user.tier as UserTier,
@@ -70,12 +85,13 @@ export async function checkCredits(userId: string) {
   }
 
   const tierConfig = USER_TIER_CONFIG[user.tier as UserTier];
+  const used = (user as any).creditsused || 0;
 
   return {
     tier: user.tier as UserTier,
-    used: user.creditsUsed || 0,
+    used: used,
     limit: tierConfig.maxPerMonth,
-    remaining: Math.max(0, tierConfig.maxPerMonth - (user.creditsUsed || 0)),
+    remaining: Math.max(0, tierConfig.maxPerMonth - used),
   };
 }
 
@@ -84,30 +100,42 @@ export async function checkCredits(userId: string) {
  * @param userId - The user's ID
  */
 export async function deductCredits(userId: string) {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS for credit updates
+  const supabase = createAdminClient();
+  
+  console.log(`[Credits] Deducting credit for user: ${userId}`);
 
-  // First get the current user to get current creditsUsed
+  // First get the current user to get current creditsused
   const { data: user, error: fetchError } = await (supabase as any)
     .from('wmc_users')
-    .select('creditsUsed')
+    .select('creditsused')
     .eq('id', userId)
     .single();
 
   if (fetchError || !user) {
+    console.error(`[Credits] Failed to fetch user for deduction:`, fetchError);
     throw new Error('User not found');
   }
+  
+  const currentUsed = (user.creditsused || 0);
+  const newUsed = currentUsed + 1;
+  
+  console.log(`[Credits] Current usage: ${currentUsed}, New usage: ${newUsed}`);
 
   // Update with incremented value
   const { error } = await (supabase as any)
     .from('wmc_users')
     .update({
-      creditsUsed: (user.creditsUsed || 0) + 1,
+      creditsused: newUsed,
     })
     .eq('id', userId);
 
   if (error) {
+    console.error(`[Credits] Failed to update creditsused in DB:`, error);
     throw new Error(`Failed to deduct credits: ${error.message}`);
   }
+  
+  console.log(`[Credits] Deduct success. User ${userId} now has ${newUsed} used credits.`);
 }
 
 /**

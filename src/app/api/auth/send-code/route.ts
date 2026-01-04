@@ -152,7 +152,7 @@ export async function POST(req: NextRequest) {
         email,
         code,
         purpose,
-        expiresInMinutes: 5
+        // expiresInMinutes: 5 // 使用默认值 (15分钟)
       });
     } catch (error) {
       console.error('[SendCode] Failed to store verification code:', error);

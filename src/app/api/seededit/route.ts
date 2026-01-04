@@ -318,7 +318,9 @@ export async function POST(request: NextRequest) {
     try {
       // Deduct credit for authenticated users
       if (isAuthenticated && userId) {
+        console.log(`[API] Attempting to deduct credits for user ${userId}...`);
         await deductCredits(userId);
+        console.log(`[API] Credits deducted successfully for user ${userId}.`);
       }
 
       // 记录处理历史 - 直接使用 Admin Client 写入数据库

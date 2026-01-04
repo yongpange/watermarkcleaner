@@ -8,8 +8,8 @@ import { createAdminClient } from '@/lib/supabase-admin';
 // 验证码长度（6位数字）
 export const VERIFICATION_CODE_LENGTH = 6;
 
-// 验证码有效期（5分钟）
-export const VERIFICATION_CODE_EXPIRY_MINUTES = 5;
+// 验证码有效期（15分钟）
+export const VERIFICATION_CODE_EXPIRY_MINUTES = 15;
 
 // 最大尝试次数
 export const MAX_VERIFICATION_ATTEMPTS = 3;
@@ -63,8 +63,11 @@ export async function storeVerificationCode(params: StoreVerificationCodeParams)
 
   const supabase = createAdminClient();
 
+  // 确保 expiresInMinutes 使用最新的默认值（如果传入 undefined）
+  const actualExpiresInMinutes = expiresInMinutes || VERIFICATION_CODE_EXPIRY_MINUTES;
+
   const expiresAt = new Date();
-  expiresAt.setMinutes(expiresAt.getMinutes() + expiresInMinutes);
+  expiresAt.setMinutes(expiresAt.getMinutes() + actualExpiresInMinutes);
 
   const { error, data } = await supabase
     .from('wmc_email_verification_codes')
@@ -124,18 +127,24 @@ export async function verifyCode(
   const supabase = createAdminClient();
 
   // 查找匹配的验证码记录
+  // 移除 .eq('used', false) 以便此处能区分"无效"和"已使用"
+  // 注意：created_at 已确认存在
   const { data: records, error } = await supabase
     .from('wmc_email_verification_codes')
     .select('*')
     .eq('email', email)
     .eq('code', code)
-    .eq('used', false)
     .order('created_at', { ascending: false })
     .limit(1);
 
   const record = records && records.length > 0 ? records[0] as any : null;
 
   if (error) {
+    console.error('[Verification] DB Error:', error);
+    return { valid: false, reason: 'invalid_code' };
+  }
+
+  if (!record) {
     console.log('[Verification] Code not found:', { email, code, purpose });
     return {
       valid: false,
@@ -153,8 +162,16 @@ export async function verifyCode(
   }
 
   // 🔧 检查是否过期
-  if (new Date(record.expires_at) < new Date()) {
-    console.log('[Verification] Code expired:', record.id);
+  const now = new Date();
+  const expiresAt = new Date(record.expires_at);
+
+  if (expiresAt < now) {
+    console.log('[Verification] Code expired:', {
+      id: record.id,
+      now: now.toISOString(),
+      expiresAt: expiresAt.toISOString(),
+      diff: now.getTime() - expiresAt.getTime()
+    });
     return {
       valid: false,
       reason: 'expired'

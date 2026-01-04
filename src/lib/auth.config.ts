@@ -127,7 +127,8 @@ export const authOptions = {
 
           if (!result.valid) {
             console.log('[Credentials] Invalid verification code:', result.reason);
-            return null; // 返回 null 表示认证失败
+            // Throw specific error for client handling - NextAuth will capture this
+            throw new Error(result.reason || 'Verification failed');
           }
 
           console.log('[Credentials] Verification successful:', result.record?.id);
@@ -159,8 +160,8 @@ export const authOptions = {
                   email: credentials.email,
                   name: usernameBase,
                   tier: 'verified',
-                  creditsUsed: 0,
-                  creditsReset: new Date().toISOString(),
+                  creditsused: 0,
+                  creditsreset: new Date().toISOString(),
                 } as any);
 
               if (error) {
@@ -212,7 +213,7 @@ export const authOptions = {
             username: user.username,
             name: user.name,
             tier: user.tier,
-            creditsUsed: user.creditsUsed,
+            creditsUsed: (user as any).creditsused || 0,
           };
 
         } catch (error) {
@@ -275,8 +276,8 @@ export const authOptions = {
                 name: user.name || username,
                 image: user.image,
                 tier: 'verified',  // ✅ Google 邮箱已验证，直接升级
-                creditsUsed: 0,
-                creditsReset: new Date().toISOString(),
+                creditsused: 0,
+                creditsreset: new Date().toISOString(),
               } as any);
 
             if (createError) {
@@ -321,13 +322,13 @@ export const authOptions = {
           const supabase = createAdminClient();
           const { data: dbUser } = await supabase
             .from('wmc_users')
-            .select('tier, creditsUsed')
+            .select('tier, creditsused')
             .eq('email', user.email)
             .single() as any;
 
           if (dbUser) {
             token.tier = dbUser.tier;
-            token.creditsUsed = dbUser.creditsUsed;
+            token.creditsUsed = dbUser.creditsused;
           }
         } catch (error) {
           console.error('[jwt] Error fetching user tier:', error);

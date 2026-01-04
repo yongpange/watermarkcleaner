@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -38,24 +38,66 @@ import Icon from "@/components/icon";
 import { Link } from "@/i18n/routing";
 import LocaleToggle from "@/components/locale/toggle";
 import { Menu, User, CreditCard, LogOut, ChevronDown } from "lucide-react";
-import SignToggle from "@/components/sign/toggle";
 import ThemeToggle from "@/components/theme/toggle";
 import { cn } from "@/lib/utils";
 import { AuthModal } from "@/components/auth/auth-modal";
-import { AppleButton } from "@/components/auth/apple-style/button";
 import { useSession, signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
+
+interface CreditsInfo {
+  tier: "unverified" | "verified" | "pro";
+  used: number;
+}
 
 export default function Header({ header }: { header: HeaderType }) {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { data: session, status } = useSession();
   const t = useTranslations();
 
-  // 获取用户显示名和邮箱
+  // 用户基本信息（从 session 获取）
   const userName = session?.user?.name || session?.user?.email?.split('@')[0] || '';
   const userEmail = session?.user?.email || '';
-  const userTier = (session?.user as any)?.tier;
-  const creditsUsed = (session?.user as any)?.creditsUsed || 0;
+
+  // 额度信息（主动查询，不是从 session）
+  const [creditsInfo, setCreditsInfo] = useState<CreditsInfo | null>(null);
+  const [creditsLoading, setCreditsLoading] = useState(false);
+
+  // 获取用户额度（实时查询，不依赖 session）
+  useEffect(() => {
+    async function fetchCredits() {
+      if (status !== "authenticated" || !session?.user) {
+        setCreditsInfo(null);
+        return;
+      }
+
+      setCreditsLoading(true);
+      try {
+        const response = await fetch("/api/credits/check");
+        if (response.ok) {
+          const data = await response.json();
+          setCreditsInfo({
+            tier: data.tier,
+            used: data.used
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch credits in header:", error);
+        // Fallback to session data if API fails
+        setCreditsInfo({
+          tier: (session.user as any)?.tier || 'unverified',
+          used: (session.user as any)?.creditsused || 0
+        });
+      } finally {
+        setCreditsLoading(false);
+      }
+    }
+
+    fetchCredits();
+  }, [session, status]);
+
+  // 计算额度显示
+  const userTier = creditsInfo?.tier || (session?.user as any)?.tier || 'unverified';
+  const creditsUsed = creditsInfo?.used ?? ((session?.user as any)?.creditsused || 0);
   const creditsLimit = userTier === 'pro' ? '∞' : userTier === 'verified' ? 10 : 3;
 
   if (header.disabled) {
@@ -240,16 +282,12 @@ export default function Header({ header }: { header: HeaderType }) {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <>
-                <AppleButton
-                  onClick={() => setShowAuthModal(true)}
-                  size="small"
-                  variant="secondary"
-                >
-                  登录
-                </AppleButton>
-                {header.show_sign && <SignToggle />}
-              </>
+              <Button
+                onClick={() => setShowAuthModal(true)}
+                className="cursor-pointer"
+              >
+                登录
+              </Button>
             )}
           </div>
         </nav>
@@ -432,15 +470,12 @@ export default function Header({ header }: { header: HeaderType }) {
                       })}
 
                       {/* 移动端登录按钮 */}
-                      <AppleButton
+                      <Button
                         onClick={() => setShowAuthModal(true)}
-                        fullWidth
-                        variant="secondary"
+                        className="w-full"
                       >
                         登录
-                      </AppleButton>
-
-                      {header.show_sign && <SignToggle />}
+                      </Button>
                     </div>
                   )}
 
