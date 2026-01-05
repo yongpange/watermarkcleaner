@@ -4,21 +4,36 @@
       "id": "updates",
       "name": {
         "en": "Product Updates",
-        "zh": "产品更新"
+        "zh": "产品更新",
+        "es": "Actualizaciones de Producto",
+        "ru": "Обновления Продукта",
+        "fr": "Mises à Jour du Produit",
+        "ar": "تحديثات المنتج",
+        "ko": "제품 업데이트"
       }
     },
     {
       "id": "tutorials",
       "name": {
         "en": "Tutorials",
-        "zh": "教程"
+        "zh": "教程",
+        "es": "Tutoriales",
+        "ru": "Учебные Материалы",
+        "fr": "Tutoriels",
+        "ar": "دروس تعليمية",
+        "ko": "튜토리얼"
       }
     },
     {
       "id": "tips",
       "name": {
         "en": "Tips & Tricks",
-        "zh": "技巧与窍门"
+        "zh": "技巧与窍门",
+        "es": "Consejos y Trucos",
+        "ru": "Советы и Хитрости",
+        "fr": "Astuces et Conseils",
+        "ar": "نصائح وحيل",
+        "ko": "팁과 트릭"
       }
     }
   ],
@@ -27,10 +42,15 @@
       "id": "team",
       "name": {
         "en": "WatermarkCleaner Team",
-        "zh": "WatermarkCleaner 团队"
+        "zh": "WatermarkCleaner 团队",
+        "es": "Equipo de WatermarkCleaner",
+        "ru": "Команда WatermarkCleaner",
+        "fr": "Équipe WatermarkCleaner",
+        "ar": "فريق WatermarkCleaner",
+        "ko": "WatermarkCleaner 팀"
       }
     }
   ],
   "defaultLocale": "en",
-  "supportedLocales": ["en", "zh"]
+  "supportedLocales": ["en", "zh", "es", "ru", "fr", "ar", "ko"]
 }

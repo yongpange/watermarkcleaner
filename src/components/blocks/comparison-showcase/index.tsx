@@ -19,7 +19,7 @@ export default function ComparisonShowcase({
   reversed = false,
 }: ComparisonShowcaseProps) {
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-violet-950/10 dark:to-indigo-950/10">
+    <section className="py-16 lg:py-24 bg-gradient-to-br from-violet-50 to-indigo-50 dark:bg-none">
       <div className="container px-4 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Text Content */}

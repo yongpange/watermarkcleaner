@@ -4,7 +4,7 @@
 
 **WatermarkCleaner** 是一个现代化的 AI 驱动水印去除网站，提供在线图像处理服务。项目基于 Next.js 15、React 19 和 TypeScript 构建，支持多语言国际化，并提供完整的博客系统、用户认证、额度管理等功能。
 
-**✅ 最新更新**: 2026-01-06 完成 TypeScript 构建错误修复和 i18n 路由配置修正，确保 Vercel 部署成功。
+**✅ 最新更新**: 2026-01-07 修复 Tailwind CSS v4 暗色模式支持，添加 `@custom-variant` 定义，确保所有组件完整支持主题切换。
 
 **✅ 构建系统修复**: 2026-01-06 修复所有 TypeScript 类型错误：
 - ✅ **Supabase 类型推断**：修复所有 `never` 类型错误，使用 `as any` 断言绕过复杂类型推断
@@ -12,6 +12,12 @@
 - ✅ **组件类型安全**：修复所有 Link 组件的 href 类型错误，确保与 `AppPathname` 定义一致
 - ✅ **IP 哈希缓存优化**：添加 Map iterator 的类型保护，防止 undefined 错误
 - ✅ **测试代码清理**：删除导致构建失败的测试目录
+
+**🎨 UI 修复**: 2026-01-07 修复 Tailwind CSS v4 暗色模式支持：
+- [x] **暗色模式变体定义**：在 `src/app/globals.css` 中添加 `@custom-variant dark (\&:where(.dark, .dark *))` 定义
+- [x] **对比组件修复**：修复 `ComparisonShowcase` 在暗色模式下背景依然为亮色的问题 (移除 `dark:from-violet-950/10` 渐变，改用 `dark:bg-none`)
+- [x] **Tailwind v4 迁移**：移除 `darkMode` 配置（v4 不需要），改用 CSS 自定义变体语法
+- [x] **影响组件**：首页对比展示组件、博客图片对比组件等支持完整暗色主题
 
 **✅ 核心安全特性**: 2026-01-02 实现完整的访客使用追踪系统：
 - ✅ **IP地址匿名化**：使用 SHA-256 加盐哈希处理，64字符哈希值存储，原始IP永不存储
@@ -1159,11 +1165,17 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 
 ---
 
-**文档版本**: 1.5
-**最后更新**: 2026-01-06
+**文档版本**: 1.6
+**最后更新**: 2026-01-07
 **维护者**: Claude Code AI
 
 ### 更新日志 (Changelog)
+- **v1.6 (2026-01-07)**: 修复 Tailwind CSS v4 暗色模式支持
+  - **暗色模式变体**：在 `src/app/globals.css` 添加 `@custom-variant dark (\\u0026\:where(.dark, .dark *))` 定义
+  - **背景渐变修复**：首页对比组件、博客图片对比组件支持 `dark:from-*` / `dark:to-*` 类
+  - **技术栈更新**：完善 Tailwind CSS v4 迁移，移除 v3 的 `darkMode` 配置需求
+  - **影响范围**：所有使用 `dark:` 前缀的组件（首页、博客、编辑器）
+  - **修复状态**: ✅ 暗色模式完整支持通过
 - **v1.5 (2026-01-06)**: 修复 TypeScript 构建错误和 i18n 路由配置
   - **Supabase 类型推断**：修复所有 `never` 类型错误，使用 `as any` 断言
   - **i18n 路由配置**：修正 `pathnames` 配置中的 `/converter` → `/convert`，与实际文件路径一致

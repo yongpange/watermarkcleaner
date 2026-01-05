@@ -197,25 +197,49 @@ export async function checkUserCredits(
     // The database stores IP hashes, not raw IPs
     const hashedIdentifier = hashIPAddress(identifier);
 
-    console.log("IP Hashing Debug:", {
-      originalIP: identifier,
-      hashedIP: hashedIdentifier,
-      first10Chars: hashedIdentifier.substring(0, 10)
-    });
+    console.log('[Credits Check] ===== IP-based User Check Started =====');
+    console.log('[Credits Check] Original IP:', identifier);
+    console.log('[Credits Check] Hashed IP:', hashedIdentifier);
+    console.log('[Credits Check] Query period:', startOfMonth.toISOString(), 'to', now.toISOString());
 
-    const supabase = await createClient();
-    const { count } = await (supabase as any)
+    // FIX: Use admin client for IP-based queries to bypass RLS
+    console.log('[Credits Check] Creating admin client (bypass RLS)...');
+    const supabase = createAdminClient();
+
+    console.log('[Credits Check] Executing Supabase query...');
+    console.log('[Credits Check] Table: wmc_processing_history');
+    console.log('[Credits Check] Conditions:');
+    console.log('  - ip_address:', hashedIdentifier);
+    console.log('  - created_at >=', startOfMonth.toISOString());
+    console.log('  - success: true');
+
+    const { count, error } = await (supabase as any)
       .from('wmc_processing_history')
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', hashedIdentifier)  // Use hashed IP to match stored hashes
       .gte('created_at', startOfMonth.toISOString())
       .eq('success', true);
 
-    return {
+    if (error) {
+      console.error('[Credits Check] Supabase query error:', error);
+      throw error;
+    }
+
+    // FIX: Supabase count can be null when no records found, default to 0
+    const actualCount = count ?? 0;
+
+    console.log('[Credits Check] Query result count:', count, '(raw) =>', actualCount, '(used)');
+
+    const result = {
       tier,
-      used: count || 0,
+      used: actualCount,
       limit: tierConfig.maxPerMonth,
-      remaining: Math.max(0, tierConfig.maxPerMonth - (count || 0)),
+      remaining: Math.max(0, tierConfig.maxPerMonth - actualCount),
     };
+
+    console.log('[Credits Check] Final result:', result);
+    console.log('[Credits Check] ===== IP-based User Check Completed =====');
+
+    return result;
   }
 }

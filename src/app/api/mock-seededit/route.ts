@@ -126,15 +126,12 @@ export async function POST(req: NextRequest) {
         console.log(`[Mock API] Credit limit exceeded for user ${userIdentifier}. Used: ${credits.used}/${tierConfig.maxPerMonth}`);
         return NextResponse.json(
           {
-            error: '额度已用完',
-            details: `您本月已使用 ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} 张额度`,
             code: 'CREDIT_LIMIT_EXCEEDED',
-            tier: credits.tier, // 添加tier信息
-            used: credits.used, // 添加已使用数量
-            limit: credits.limit, // 添加限额
-            action: credits.tier === 'unverified'
-              ? '验证邮箱可获得10张/月额度 →'
-              : '升级到专业版获得无限额度 →',
+            error: "Credit limit exceeded",
+            details: `You have used ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} credits this month`,
+            tier: credits.tier,
+            used: credits.used,
+            limit: tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth,
             upgradeUrl: credits.tier === 'unverified' ? '/auth/signin' : '/pricing',
           },
           { status: 403 }
@@ -167,11 +164,17 @@ export async function POST(req: NextRequest) {
 
     // 扣除额度（对已认证用户）并记录处理历史
     try {
+      console.log('[Mock API] ===== Processing Complete - Recording History =====');
+      console.log('[Mock API] isAuthenticated:', isAuthenticated);
+      console.log('[Mock API] userId:', userId || 'N/A (guest)');
+
       // Deduct credit for authenticated users
       if (isAuthenticated && userId) {
-        console.log(`[Mock API] Attempting to deduct credits for user ${userId}...`);
+        console.log(`[Mock API] Deducting credits for authenticated user: ${userId}`);
         await deductCredits(userId);
-        console.log(`[Mock API] Credits deducted successfully for user ${userId}.`);
+        console.log(`[Mock API] Credits deducted via deductCredits()`);
+      } else {
+        console.log('[Mock API] Guest user - skipping credit deduction (IP-based tracking)');
       }
 
       // 记录处理历史 - 直接使用 Admin Client 写入数据库
@@ -180,23 +183,36 @@ export async function POST(req: NextRequest) {
       const ipToHash = clientIP || 'unknown-ip';
       const hashedIP = hashIPAddress(ipToHash);
 
-      console.log(`[Mock API] Recording processing history...`);
+      console.log('[Mock API] IP Information:');
+      console.log('  - Raw IP:', clientIP);
+      console.log('  - Hash salt (first 10 chars):', process.env.IP_HASH_SALT?.substring(0, 10));
+      console.log('  - Hashed IP:', hashedIP);
+      console.log('  - Is authenticated:', isAuthenticated);
+      console.log('  - Will store IP hash:', !isAuthenticated);
 
-      const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert({
+      const recordData = {
         user_id: isAuthenticated ? userId : null,
         ip_address: isAuthenticated ? null : hashedIP,
         image_size: image.size,
         success: true,
         created_at: new Date().toISOString(),
-      });
+      };
+
+      console.log('[Mock API] Recording to wmc_processing_history:', recordData);
+
+      const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert(recordData);
 
       if (recordError) {
         console.error("[Mock API] Failed to record processing history:", recordError);
       } else {
         console.log("[Mock API] Processing history recorded successfully");
+        console.log("[Mock API] Query this record with:");
+        console.log(`  SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}'`);
       }
+
+      console.log('[Mock API] ===== Recording History Completed =====');
     } catch (error) {
-      console.error("[Mock API] Failed to deduct credits/record history:", error);
+      console.error("[Mock API] Failed to record processing/deduct history:", error);
       // Continue even if recording fails - we don't want to block the user
     }
 

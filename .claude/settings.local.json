@@ -25,7 +25,8 @@
       "Bash(rm -rf .next:*)",
       "Bash(taskkill:*)",
       "Bash(del nul:*)",
-      "Bash(unlink nul)"
+      "Bash(unlink nul)",
+      "Bash(findstr:*)"
     ]
   },
   "skills": {

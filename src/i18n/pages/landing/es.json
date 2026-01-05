@@ -376,6 +376,11 @@
               "title": "Preguntas frecuentes",
               "url": "/#faq",
               "target": "_self"
+            },
+            {
+              "title": "Guía Definitiva 2025: Cómo Usar IA para Eliminar Marcas de Agua",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
+              "target": "_self"
             }
           ]
         },

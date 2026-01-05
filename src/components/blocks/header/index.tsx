@@ -52,7 +52,7 @@ interface CreditsInfo {
 export default function Header({ header }: { header: HeaderType }) {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { data: session, status } = useSession();
-  const t = useTranslations();
+  const t = useTranslations('header');
 
   // 用户基本信息（从 session 获取）
   const userName = session?.user?.name || session?.user?.email?.split('@')[0] || '';
@@ -255,7 +255,7 @@ export default function Header({ header }: { header: HeaderType }) {
                   <DropdownMenuItem asChild>
                     <Link href="/convert" className="flex items-center gap-2 cursor-pointer">
                       <CreditCard className="w-4 h-4" />
-                      我的额度 ({creditsUsed}/{creditsLimit})
+                      {t('my_credits')} ({creditsUsed}/{creditsLimit})
                     </Link>
                   </DropdownMenuItem>
 
@@ -265,7 +265,7 @@ export default function Header({ header }: { header: HeaderType }) {
                         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
-                        升级专业版
+                        {t('upgrade_pro')}
                       </Link>
                     </DropdownMenuItem>
                   )}
@@ -277,7 +277,7 @@ export default function Header({ header }: { header: HeaderType }) {
                     className="flex items-center gap-2 text-red-600 focus:text-red-600"
                   >
                     <LogOut className="w-4 h-4" />
-                    退出登录
+                    {t('sign_out')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -286,7 +286,7 @@ export default function Header({ header }: { header: HeaderType }) {
                 onClick={() => setShowAuthModal(true)}
                 className="cursor-pointer"
               >
-                登录
+                {t('sign_in')}
               </Button>
             )}
           </div>
@@ -474,7 +474,7 @@ export default function Header({ header }: { header: HeaderType }) {
                         onClick={() => setShowAuthModal(true)}
                         className="w-full"
                       >
-                        登录
+                        {t('sign_in')}
                       </Button>
                     </div>
                   )}
@@ -495,7 +495,6 @@ export default function Header({ header }: { header: HeaderType }) {
         <AuthModal
           isOpen={showAuthModal}
           onClose={() => setShowAuthModal(false)}
-          defaultMode="email-code"
         />
       </div>
     </section>

@@ -1,0 +1,136 @@
+/* 简化博客样式 - 黑白专业风格 */
+
+/* 移除所有动画和装饰效果 */
+.animate-fade-in-up,
+.animation-delay-200,
+.animation-delay-400 {
+  animation: none !important;
+}
+
+/* 简化背景 - 移除所有渐变 */
+.bg-grid-pattern,
+.bg-gradient-to-b,
+.bg-gradient-to-br,
+.bg-gradient-to-r {
+  background: none !important;
+  background-image: none !important;
+}
+
+/* 使用简单的边框和背景 */
+.border {
+  border-color: #e5e5e5 !important;
+}
+
+.bg-gray-100 {
+  background-color: #f5f5f5 !important;
+}
+
+.bg-gray-200 {
+  background-color: #e5e5e5 !important;
+}
+
+/* 所有文字强制为纯黑色 */
+h1, h2, h3, h4, h5, h6,
+p, li, span, div, a, strong, em,
+.text-gray-600,
+.text-gray-400,
+.text-gray-700,
+.text-gray-900,
+.text-foreground,
+.text-muted-foreground,
+.prose * {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
+/* 链接样式也改为黑色 */
+a {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  text-decoration: underline;
+}
+
+/* 简化圆角和阴影 */
+.rounded-xl,
+.rounded-lg,
+.rounded {
+  border-radius: 0 !important;
+}
+
+.shadow-sm,
+.shadow-md,
+.shadow-lg {
+  box-shadow: none !important;
+}
+
+/* 减小正文字号但保持标题不变 */
+.prose p,
+.prose li,
+.prose td,
+.prose th {
+  font-size: 0.95rem !important;
+  line-height: 1.7 !important;
+}
+
+.prose ol > li,
+.prose ul > li {
+  font-size: 0.95rem !important;
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+  h1, h2, h3, h4, h5, h6,
+  p, li, span, div, a, strong, em,
+  .text-gray-600,
+  .text-gray-400,
+  .text-gray-700,
+  .text-gray-900,
+  .text-foreground,
+  .text-muted-foreground,
+  .prose * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  a {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  a:hover {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  .bg-gray-100 {
+    background-color: #2a2a2a !important;
+  }
+
+  .bg-gray-200 {
+    background-color: #3a3a3a !important;
+  }
+
+  .border {
+    border-color: #404040 !important;
+  }
+
+  /* 暗色模式下也保持减小的正文字号 */
+  .prose p,
+  .prose li,
+  .prose td,
+  .prose th {
+    font-size: 0.95rem !important;
+    line-height: 1.7 !important;
+  }
+
+  .prose ol > li,
+  .prose ul > li {
+    font-size: 0.95rem !important;
+  }
+}

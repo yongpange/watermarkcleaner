@@ -163,13 +163,13 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
               <div>
                 <p className="font-medium text-red-800 mb-2">{errorData.details}</p>
                 <div className="text-sm text-red-700">
-                  <p className="mb-2">💡 您可以选择：</p>
+                  <p className="mb-2">💡 {t("you_can:")}</p>
                   <ul className="list-disc list-inside space-y-1 ml-2">
                     {errorData.tier === 'unverified' && (
-                      <li>验证邮箱可获得10张/月额度</li>
+                      <li>{t("verify_email_for_credits")}</li>
                     )}
-                    <li>升级到专业版获得无限额度</li>
-                    <li>等待下月额度重置</li>
+                    <li>{t("upgrade_to_pro")}</li>
+                    <li>{t("wait_for_reset")}</li>
                   </ul>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
                     className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg
                       hover:from-blue-600 hover:to-blue-700 transition font-medium shadow-sm"
                   >
-                    ✉️ 验证邮箱
+                    {t("verify_email_button")}
                   </button>
                 )}
                 <button
@@ -189,14 +189,14 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
                   className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg
                     hover:from-red-600 hover:to-red-700 transition font-medium shadow-sm"
                 >
-                  💎 升级到专业版
+                  {t("upgrade_to_pro_button")}
                 </button>
                 <button
                   onClick={() => setError(null)}
                   className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50
                     transition font-medium text-gray-700"
                 >
-                  稍后再试
+                  {t("try_again_later")}
                 </button>
               </div>
             </div>

@@ -5,8 +5,33 @@ import crypto from 'crypto';
  * 用于匿名化IP地址，保护用户隐私
  */
 
-// 从环境变量获取盐值（如果不存在则生成随机盐值）
-const IP_HASH_SALT = (process.env.IP_HASH_SALT as string) || crypto.randomBytes(32).toString('hex');
+// 从环境变量获取盐值（如果不存在则生成随机盐值，但记录警告）
+let IP_HASH_SALT = process.env.IP_HASH_SALT as string;
+
+if (!IP_HASH_SALT) {
+  console.warn('⚠️  WARNING: IP_HASH_SALT not found in environment variables!');
+  console.warn('   This will cause inconsistent IP hashing across server restarts.');
+  console.warn('   Generate a stable salt with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"');
+
+  // 仅在首次未设置时生成，存储在模块变量中（不会随热重载改变）
+  const generatedSalt = crypto.randomBytes(32).toString('hex');
+  console.warn(`   Generated temporary salt: ${generatedSalt.substring(0, 20)}...`);
+  console.warn('   Add this to your .env.local file to make it persistent.');
+
+  IP_HASH_SALT = generatedSalt;
+} else {
+  // 验证盐值格式
+  if (!/^[a-f0-9]{64}$/.test(IP_HASH_SALT)) {
+    console.warn('⚠️  WARNING: IP_HASH_SALT should be a 64-character hex string (32 bytes)');
+    console.warn(`   Current value: ${IP_HASH_SALT} (length: ${IP_HASH_SALT.length})`);
+    console.warn('   Expected format: 1f8b83c74037ae6b2d473c1f2ffd4d070a0f335431c938216a71fec88e68dcd3');
+  }
+
+  // 盐值已设置，记录调试信息（开发环境）
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`🔑 IP_HASH_SALT loaded: ${IP_HASH_SALT.substring(0, 10)}...`);
+  }
+}
 
 // 缓存哈希实例以提高性能
 const hashCache = new Map<string, string>();

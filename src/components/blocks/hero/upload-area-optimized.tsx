@@ -4,6 +4,7 @@ import React, { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import { Button } from "@/components/ui/button";
 import { RiUploadCloud2Line, RiImageLine, RiCloseLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
+import { useTranslations } from 'next-intl';
 
 interface UploadAreaProps {
   onFileSelect: (file: File) => void;
@@ -16,6 +17,7 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
   const [isDragging, setIsDragging] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const t = useTranslations('convert.dropzone');
 
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -58,14 +60,14 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
     // 验证文件类型
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
     if (!acceptedFormats.includes(fileExtension)) {
-      alert(`不支持的文件格式。请上传 ${acceptedFormats.join(', ')} 格式的文件。`);
+      alert(t('unsupported_file_format', { formats: acceptedFormats.join(', ') }));
       return;
     }
 
     // 验证文件大小
     const fileSizeMB = file.size / (1024 * 1024);
     if (fileSizeMB > maxSize) {
-      alert(`文件大小超过限制。最大支持 ${maxSize}MB。`);
+      alert(`${t('file_too_large')}: ${t('max_size')} ${maxSize}MB`);
       return;
     }
 
@@ -161,13 +163,13 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
               "text-xl lg:text-2xl font-bold text-foreground transition-colors duration-300",
               isDragging && "text-violet-600 dark:text-violet-400"
             )}>
-              {preview ? '文件已选择' : (isDragging ? '释放文件以上传' : '上传图片文件')}
+              {preview ? t('file_selected') : (isDragging ? t('release_to_upload') : t('upload_image_file'))}
             </h3>
 
             <p className="text-muted-foreground text-sm lg:text-base">
               {preview
-                ? '文件准备就绪'
-                : (isDragging ? '即将开始处理您的图片...' : '拖拽文件到此处，或点击选择文件')
+                ? t('file_ready')
+                : (isDragging ? t('about_to_process') : t('drag_or_click'))
               }
             </p>
 
@@ -181,7 +183,7 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
                 </React.Fragment>
               ))}
               <span>•</span>
-              <span>最大 {maxSize}MB</span>
+              <span>{t('max_size')} {maxSize}MB</span>
             </div>
           </div>
 
@@ -203,7 +205,7 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
               )}
             >
               <RiImageLine className="w-5 h-5 mr-2" />
-              选择文件
+              {t('select_file')}
             </Button>
           )}
 
@@ -213,7 +215,7 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
             isDragging ? 'opacity-100' : 'opacity-0'
           )}>
             <div className="bg-violet-500/90 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 animate-pulse">
-              <span>✨</span> 释放文件开始上传
+              <span>✨</span> {t('release_to_start_upload')}
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/routing";
 import "@/components/markdown/markdown.css";
 import "./blog-post.css";
+import "./simple-styles.css";
 import BlogBreadcrumb from "@/components/blocks/blog/breadcrumb";
 import TableOfContents from "@/components/blocks/blog/table-of-contents";
 import RelatedPosts from "@/components/blocks/blog/related-posts";
@@ -131,18 +132,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <article className="min-h-screen bg-gradient-to-b from-background to-secondary/20">
         {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-background via-primary/5 to-secondary/10 relative overflow-hidden"
-        style={{
-          '--primary': 'hsl(var(--primary))',
-          '--secondary': 'hsl(var(--secondary))',
-          '--primary-foreground': 'hsl(var(--primary-foreground))'
-        } as React.CSSProperties}
-      >
-        {/* 装饰性背景元素 */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
-
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* 面包屑导航 */}
             <div className="mb-8 animate-fade-in-up">
@@ -150,35 +141,33 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
 
             {/* 文章头部信息 */}
-            <div className="text-center animate-fade-in-up animation-delay-200">
+            <div className="text-center">
               <div className="flex items-center justify-center gap-4 mb-6">
-                <span className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium border border-primary/20 shadow-sm hover:shadow-md transition-all duration-300">
+                <span className="px-4 py-2 bg-gray-100 text-gray-900 rounded-full text-sm font-medium border border-gray-200">
                   {post.categoryName}
                 </span>
-                <span className="text-muted-foreground text-sm flex items-center gap-1">
+                <span className="text-gray-600 text-sm flex items-center gap-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   {t("min_read", { minutes: post.readTime })}
                 </span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent leading-tight"
-                style={{ backgroundImage: 'linear-gradient(to right, var(--primary), var(--primary) / 0.8, var(--primary) / 0.6)' }}
-              >
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-foreground">
                 {post.title}
               </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl md:text-2xl text-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
                 {post.description}
               </p>
               <div className="flex items-center justify-center gap-6 text-sm">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                    <span className="text-primary font-medium text-xs">{post.authorName.charAt(0)}</span>
+                <div className="flex items-center gap-2 text-foreground">
+                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-700 font-medium text-xs">{post.authorName.charAt(0)}</span>
                   </div>
                   <span>{t("by_author", { author: post.authorName })}</span>
                 </div>
-                <span className="text-muted-foreground/50">•</span>
-                <time className="text-muted-foreground" dateTime={post.publishDate}>
+                <span className="text-gray-400">•</span>
+                <time className="text-foreground" dateTime={post.publishDate}>
                   {formattedDate}
                 </time>
               </div>

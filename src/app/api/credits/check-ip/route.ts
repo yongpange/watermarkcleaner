@@ -10,18 +10,37 @@ export async function GET(request: NextRequest) {
   try {
     // Standardized IP extraction
     const ip = getClientIP(request);
+
+    // Debug logs
+    console.log('[Credits API] ===== Credit Check Started =====');
+    console.log(`[Credits API] Raw IP: "${ip}"`);
+    console.log(`[Credits API] Request headers:`, Object.fromEntries(request.headers.entries()));
+    console.log(`[Credits API] IP Hash Salt: "${process.env.IP_HASH_SALT?.substring(0, 10)}..."`);
+
     const hashedIP = hashIPAddress(ip);
 
-    console.log(`[IP DEBUG] check-ip: Raw="${ip}", Hashed="${hashedIP.substring(0, 10)}..."`);
+    console.log(`[Credits API] Hashed IP: "${hashedIP}"`);
+    console.log(`[Credits API] Hashed IP (first 10 chars): "${hashedIP.substring(0, 10)}..."`);
+    console.log(`[Credits API] Full hashed IP length: ${hashedIP.length} chars`);
 
     // Check credits using IP as identifier for unauthenticated users
+    console.log('[Credits API] Calling checkUserCredits...');
     const credits = await checkUserCredits(ip, false, undefined);
+
+    console.log('[Credits API] Check result:', {
+      tier: credits.tier,
+      used: credits.used,
+      limit: credits.limit,
+      remaining: credits.remaining
+    });
+
+    console.log('[Credits API] ===== Credit Check Completed =====');
 
     return NextResponse.json(credits, {
       status: 200,
     });
   } catch (error) {
-    console.error("Failed to check IP credits:", error);
+    console.error("[Credits API] Error checking IP credits:", error);
 
     // Return default unverified tier on error
     return NextResponse.json(

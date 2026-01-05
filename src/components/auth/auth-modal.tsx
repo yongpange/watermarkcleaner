@@ -9,26 +9,24 @@ import { AppleDivider } from '@/components/auth/apple-style/divider';
 import { EmailInputSection } from '@/components/auth/email-input-section';
 import VerificationCodeInput from '@/components/auth/verification-code-input';
 import { GoogleLoginButton } from '@/components/auth/google-login-button';
-import { MagicLinkLoginButton } from '@/components/auth/magic-link-button';
-import { MagicLinkLoginForm } from '@/components/auth/magic-link-login-button';
 
 export interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  defaultMode?: 'email-code' | 'magic-link';
 }
 
 /**
  * 主认证弹窗组件
- * 支持邮箱验证码登录/注册、Google登录、邮箱Magic Link登录
+ * 支持邮箱验证码登录/注册、Google登录
  */
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'email-code' }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const locale = useLocale();
   const router = useRouter();
+  const t = useTranslations('auth');
+  const tModal = useTranslations('sign_modal');
 
   // 状态管理
   const [email, setEmail] = useState('');
-  const [mode, setMode] = useState<'email-code' | 'magic-link'>('email-code');
   const [step, setStep] = useState<'email' | 'code'>('email');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +36,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
   // 当打开弹窗时重置状态
   useEffect(() => {
     if (isOpen) {
-      setMode(defaultMode);
       setStep('email');
       setEmail('');
       setError(null);
@@ -46,7 +43,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
       setCountdown(0);
       setUserExists(null);
     }
-  }, [isOpen, defaultMode]);
+  }, [isOpen]);
 
   // 倒计时
   useEffect(() => {
@@ -62,7 +59,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
   // 发送验证码
   const handleSendCode = async () => {
     if (!email) {
-      setError('请输入邮箱地址');
+      setError(t('errors.enter_email'));
       return;
     }
 
@@ -89,11 +86,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
         setStep('code');
         setCountdown(60); // 60秒倒计时
       } else {
-        setError(data.error || '发送失败');
+        setError(data.error || t('errors.send_failed'));
       }
     } catch (error) {
       console.error('Failed to send code:', error);
-      setError('发送失败，请重试');
+      setError(t('errors.send_failed_retry'));
     } finally {
       setLoading(false);
     }
@@ -122,8 +119,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
 
         // 显示 Toast 提示
         toast.success(purpose === 'register'
-          ? '🎉 注册成功！欢迎加入 WatermarkCleaner！'
-          : '👋 登录成功！欢迎回来！', {
+          ? t('success.register_success')
+          : t('success.login_success'), {
           duration: 3000,
           position: 'top-center',
           icon: '🎉',
@@ -135,29 +132,29 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
       } else {
         console.error('Login failed:', result?.error);
         
-        let errorMessage = '验证失败，请重试';
+        let errorMessage = t('errors.verification_failed');
         
         // Map backend errors to valid messages
         if (result?.error === 'expired' || result?.error?.includes('expired')) {
-          errorMessage = '验证码已过期，请重新发送';
+          errorMessage = t('errors.code_expired');
         } else if (result?.error === 'invalid_code' || result?.error?.includes('invalid_code')) {
-          errorMessage = '验证码错误，请检查输入';
+          errorMessage = t('errors.invalid_code');
         } else if (result?.error === 'max_attempts' || result?.error?.includes('max_attempts')) {
-          errorMessage = '尝试次数过多，请重新发送验证码';
+          errorMessage = t('errors.max_attempts');
         } else if (result?.error === 'used' || result?.error?.includes('used')) {
-          errorMessage = '验证码已失效，请重新发送';
+          errorMessage = t('errors.code_used');
         } else if (result?.error === 'CredentialsSignin') {
           // 如果抛出了 Error('invalid_code')，NextAuth 可能会返回 'CredentialsSignin' 
           // 或者 error=invalid_code (取决于版本和配置)
           // 这里做一个通用提示，但通常上面的检查会捕获到具体原因
-          errorMessage = '验证码错误或已过期';
+          errorMessage = t('errors.code_invalid_or_expired');
         }
 
         setError(errorMessage);
       }
     } catch (error) {
       console.error('Failed to verify code:', error);
-      setError('验证失败，请重试');
+      setError(t('errors.verification_failed'));
     } finally {
       setLoading(false);
     }
@@ -178,21 +175,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
       });
     } catch (error) {
       console.error('Google login error:', error);
-      setError('Google 登录失败');
+      setError(t('errors.login_failed'));
     } finally {
       setLoading(false);
     }
-  };
-
-  // 切换到 Magic Link 模式
-  const switchToMagicLink = () => {
-    setMode('magic-link');
-  };
-
-  // 切换回邮箱验证码模式
-  const switchToEmailCode = () => {
-    setMode('email-code');
-    setStep('email');
   };
 
   // 关闭弹窗
@@ -204,11 +190,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
 
   // 模态框内容
   const renderContent = () => {
-    if (mode === 'magic-link') {
-      return <MagicLinkLoginForm onBack={switchToEmailCode} />;
-    }
-
-    // 邮箱验证码模式
+    // 验证码模式
     if (step === 'code') {
       return (
         <VerificationCodeInput
@@ -236,17 +218,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
         />
 
         {/* 分隔线 */}
-        <AppleDivider>或使用以下方式登录</AppleDivider>
+        <AppleDivider>{tModal('or')}</AppleDivider>
 
         {/* Google 登录 */}
         <GoogleLoginButton
           disabled={loading}
-        />
-
-        {/* Magic Link 登录 */}
-        <MagicLinkLoginButton
-          disabled={loading}
-          onClick={switchToMagicLink}
         />
       </div>
     );
@@ -312,17 +288,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMo
                     </div>
 
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                      欢迎来到 WatermarkCleaner
+                      {tModal('welcome')}
                     </h2>
 
                     <p className="text-sm text-gray-600">
-                      登录以使用我们的AI去水印服务
+                      {tModal('login_to_use')}
                     </p>
                   </div>
 
                   {/* 主要内容 */}
                   <motion.div
-                    key={step + mode}
+                    key={step}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}

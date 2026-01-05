@@ -2,50 +2,75 @@
 
 import { useMemo } from 'react';
 import ImageComparison from '@/components/image-comparison';
+import CTAButton from '@/components/blog/CTAButton';
 
 interface MDXRendererProps {
   content: string;
 }
 
 export default function MDXRenderer({ content }: MDXRendererProps) {
-  // 解析内容中的ImageComparison组件
+  // 解析内容中的自定义组件
   const parsedContent = useMemo(() => {
     // 查找所有ImageComparison组件
     const imageComparisonRegex = /<ImageComparison\s*beforeImage=\{\{[^}]+\}\}\s*afterImage=\{\{[^}]+\}\}\s*autoPlay=\{false\}\s*\/>/g;
-
-    const parts = content.split(imageComparisonRegex);
-    const matches = content.match(imageComparisonRegex);
-
-    if (!matches) return [{ type: 'html', content }];
+    // 查找CTAButton组件
+    const ctaButtonRegex = /<CTAButton[^>]*>.*?<\/CTAButton>/g;
 
     const result: any[] = [];
+    let lastIndex = 0;
+    let match;
 
-    for (let i = 0; i < parts.length; i++) {
-      if (parts[i].trim()) {
-        result.push({ type: 'html', content: parts[i] });
+    // 创建一个匹配所有组件的正则
+    const combinedRegex = /<ImageComparison\s*beforeImage=\{\{[^}]+\}\}\s*afterImage=\{\{[^}]+\}\}\s*autoPlay=\{false\}\s*\/>|<CTAButton[^>]*>.*?<\/CTAButton>/g;
+
+    while ((match = combinedRegex.exec(content)) !== null) {
+      // 添加匹配前的HTML内容
+      if (match.index > lastIndex) {
+        const htmlContent = content.substring(lastIndex, match.index);
+        if (htmlContent.trim()) {
+          result.push({ type: 'html', content: htmlContent });
+        }
       }
 
-      if (matches[i]) {
-        // 解析组件参数
+      // 处理匹配的组件
+      if (match[0].startsWith('<ImageComparison')) {
+        // 解析ImageComparison组件参数
         const srcRegex = /src:\s*"([^"]+)"/g;
         const altRegex = /alt:\s*"([^"]+)"/g;
 
-        const srcMatches = [...matches[i].matchAll(srcRegex)];
-        const altMatches = [...matches[i].matchAll(altRegex)];
+        const srcMatches = [...match[0].matchAll(srcRegex)];
+        const altMatches = [...match[0].matchAll(altRegex)];
 
-        if (srcMatches.length >= 2 && altMatches.length >= 2) {
+        if (srcMatches.length >= 2) {
           result.push({
             type: 'imageComparison',
             beforeImage: {
-              src: srcMatches[0][1],
-              alt: altMatches[0][1]
+              src: srcMatches[0]?.[1] || '',
+              alt: altMatches[0]?.[1] || 'Before'
             },
             afterImage: {
-              src: srcMatches[1][1],
-              alt: altMatches[1][1]
+              src: srcMatches[1]?.[1] || '',
+              alt: altMatches[1]?.[1] || 'After'
             }
           });
         }
+      } else if (match[0].startsWith('<CTAButton')) {
+        // 解析CTAButton内容
+        const buttonContent = match[0].replace(/<\/?CTAButton[^>]*>/g, '').trim();
+        result.push({
+          type: 'ctaButton',
+          content: buttonContent
+        });
+      }
+
+      lastIndex = combinedRegex.lastIndex;
+    }
+
+    // 添加剩余HTML内容
+    if (lastIndex < content.length) {
+      const htmlContent = content.substring(lastIndex);
+      if (htmlContent.trim()) {
+        result.push({ type: 'html', content: htmlContent });
       }
     }
 
@@ -105,6 +130,8 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
               </div>
             </div>
           );
+        } else if (part.type === 'ctaButton') {
+          return <CTAButton key={index}>{part.content}</CTAButton>;
         }
         return null;
       })}

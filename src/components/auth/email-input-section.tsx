@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AppleInput } from '@/components/auth/apple-style/input';
 import { AppleButton } from '@/components/auth/apple-style/button';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 export interface EmailInputSectionProps {
   email: string;
@@ -28,6 +29,7 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
 }) => {
   const [userExists, setUserExists] = useState<boolean | null>(null);
   const [checking, setChecking] = useState(false);
+  const t = useTranslations('auth.email_input');
 
   // 检查用户是否存在
   useEffect(() => {
@@ -68,20 +70,20 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
 
   // 动态按钮文本
   const getButtonText = () => {
-    if (checking) return '检查中...';
-    if (userExists === true) return '发送登录验证码';
-    if (userExists === false) return '发送注册验证码';
-    return '发送验证码';
+    if (checking) return t('checking');
+    if (userExists === true) return t('send_login_code');
+    if (userExists === false) return t('send_register_code');
+    return t('send_code');
   };
 
   return (
     <div className="space-y-4">
       <AppleInput
-        label="邮箱地址"
+        label={t('email_label')}
         type="email"
         value={email}
         onChange={(e) => onEmailChange(e.target.value)}
-        placeholder="输入您的邮箱地址"
+        placeholder={t('email_placeholder')}
         disabled={disabled}
         error={error}
         fullWidth
@@ -94,8 +96,8 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
           userExists ? 'text-blue-600' : 'text-green-600'
         )}>
           {userExists
-            ? '✓ 检测到已有账户，将发送登录验证码'
-            : '欢迎新用户，将发送注册验证码'
+            ? t('existing_user')
+            : t('new_user')
           }
         </div>
       )}

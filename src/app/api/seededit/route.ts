@@ -154,11 +154,12 @@ export async function POST(request: NextRequest) {
       const tierConfig = USER_TIER_CONFIG[credits.tier];
       return NextResponse.json(
         {
-          error: "额度已用完",
-          details: `您本月已使用 ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} 张额度`,
-          action: credits.tier === "unverified"
-            ? "验证邮箱可获得10张/月额度 →"
-            : "升级到专业版获得无限额度 →",
+          code: 'CREDIT_LIMIT_EXCEEDED',
+          error: "Credit limit exceeded",
+          details: `You have used ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} credits this month`,
+          tier: credits.tier,
+          used: credits.used,
+          limit: tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth,
           upgradeUrl: credits.tier === "unverified" ? "/auth/signin" : "/pricing",
         },
         { status: 403 }
@@ -316,43 +317,62 @@ export async function POST(request: NextRequest) {
 
     // 11. 扣除额度（对已认证用户）并记录处理历史
     try {
+      console.log('[SeedEdit API] ===== Processing Complete - Recording History =====');
+      console.log('[SeedEdit API] isAuthenticated:', isAuthenticated);
+      console.log('[SeedEdit API] userId:', userId || 'N/A (guest)');
+
       // Deduct credit for authenticated users
       if (isAuthenticated && userId) {
-        console.log(`[API] Attempting to deduct credits for user ${userId}...`);
+        console.log(`[SeedEdit API] Deducting credits for authenticated user: ${userId}`);
         await deductCredits(userId);
-        console.log(`[API] Credits deducted successfully for user ${userId}.`);
+        console.log(`[SeedEdit API] Credits deducted via deductCredits()`);
+      } else {
+        console.log('[SeedEdit API] Guest user - skipping credit deduction (IP-based tracking)');
       }
 
       // 记录处理历史 - 直接使用 Admin Client 写入数据库
       // 这是安全的，因为此代码在服务端运行
       const { createAdminClient } = await import("@/lib/supabase-admin");
       const { getClientIP, hashIPAddress } = await import("@/lib/security/ip-hash");
-      
+
       const adminClient = createAdminClient();
-      
+
       // Standardize usage of getClientIP for consistency
       const clientIP = getClientIP(request);
       const ipToHash = clientIP || 'unknown-ip';
       const hashedIP = hashIPAddress(ipToHash);
 
-      console.log(`[IP DEBUG] seededit: Raw="${clientIP}", Hashed="${hashedIP.substring(0, 10)}..."`);
-      
-      const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert({
+      console.log('[SeedEdit API] IP Information:');
+      console.log('  - Raw IP:', clientIP);
+      console.log('  - Hash salt (first 10 chars):', process.env.IP_HASH_SALT?.substring(0, 10));
+      console.log('  - Hashed IP:', hashedIP);
+      console.log('  - Is authenticated:', isAuthenticated);
+      console.log('  - Will store IP hash:', !isAuthenticated);
+
+      const recordData = {
         user_id: isAuthenticated ? userId : null,
-        ip_address: isAuthenticated ? null : hashedIP, // 已登录用户不存储IP哈希
+        ip_address: isAuthenticated ? null : hashedIP,
         image_size: image.size,
         success: true,
         created_at: new Date().toISOString(),
-      });
+      };
+
+      console.log('[SeedEdit API] Recording to wmc_processing_history:', recordData);
+
+      const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert(recordData);
 
       if (recordError) {
-        console.error("Failed to record processing history:", recordError);
+        console.error("[SeedEdit API] Failed to record processing history:", recordError);
         // 继续执行，不阻塞用户
       } else {
-        console.log("Processing history recorded successfully (Direct DB Insert)");
+        console.log("[SeedEdit API] Processing history recorded successfully");
+        console.log("[SeedEdit API] Query this record with:");
+        console.log(`  SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}'`);
       }
+
+      console.log('[SeedEdit API] ===== Recording History Completed =====');
     } catch (error) {
-      console.error("Failed to record processing/deduct credits:", error);
+      console.error("[SeedEdit API] Failed to record processing/deduct credits:", error);
       // Continue even if recording fails - we don't want to block the user
     }
 

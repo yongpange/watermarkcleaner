@@ -22,54 +22,95 @@ export function CreditsDisplay() {
   const { data: session, status } = useSession();
   const [credits, setCredits] = useState<CreditsInfo | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const t = useTranslations("convert.credits");
+
+  // Debug: Log component lifecycle
+  console.log('[CreditsDisplay] ===== COMPONENT RENDERED =====');
+  console.log('[CreditsDisplay] Status:', status);
+  console.log('[CreditsDisplay] Session exists:', !!session);
+  console.log('[CreditsDisplay] Credits state:', credits);
+  console.log('[CreditsDisplay] Loading state:', loading);
 
   // Fetch credits info for both authenticated and unauthenticated users
   useEffect(() => {
+    console.log('[CreditsDisplay] :::: useEffect TRIGGERED ::::');
+    console.log('[CreditsDisplay] Dependencies - Status:', status);
+    console.log('[CreditsDisplay] Dependencies - Session:', !!session);
+    console.log('[CreditsDisplay] Dependencies - Credits:', !!credits);
+
     async function fetchCredits() {
+      console.log('[CreditsDisplay] >>>>> Starting fetchCredits <<<<<');
       setLoading(true);
+      setError(null);
+
       try {
+        // FIXED: Use proper dependency checking logic
+        // Only skip if credits already exists AND status hasn't changed to unauthenticated
+        if (status === "loading" && credits !== null) {
+          console.log('[CreditsDisplay] Mode: LOADING with existing credits (skipping)');
+          setLoading(false);
+          return;
+        }
+
         if (status === "authenticated" && session?.user) {
-          // For authenticated users, use user ID
+          console.log('[CreditsDisplay] Mode: AUTHENTICATED USER');
           const response = await fetch("/api/credits/check");
+          console.log('[CreditsDisplay] Response status:', response.status);
+
           if (response.ok) {
             const data = await response.json();
-            setCredits(data);
-          }
-        } else if (status === "unauthenticated") {
-          // For unauthenticated users, use IP address
-          const response = await fetch("/api/credits/check-ip");
-          if (response.ok) {
-            const data = await response.json();
+            console.log('[CreditsDisplay] SUCCESS - Got data:', data);
             setCredits(data);
           } else {
-            // Fallback to default if API fails
-            setCredits({
-              tier: "unverified",
-              used: 0,
-              limit: 3,
-              remaining: 3
-            });
+            console.error('[CreditsDisplay] FAILED - Status:', response.status);
+            setError(`API error: ${response.status}`);
+            setCredits(null);
           }
+        } else if (status === "unauthenticated") {
+          console.log('[CreditsDisplay] Mode: UNAUTHENTICATED USER (IP-based)');
+          console.log('[CreditsDisplay] Calling /api/credits/check-ip...');
+
+          const response = await fetch("/api/credits/check-ip");
+          console.log('[CreditsDisplay] Response status:', response.status);
+          console.log('[CreditsDisplay] Response headers:', Object.fromEntries(response.headers.entries()));
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log('[CreditsDisplay] SUCCESS - Got data:', data);
+            setCredits(data);
+          } else {
+            console.error('[CreditsDisplay] FAILED - Status:', response.status);
+            console.error('[CreditsDisplay] FAILED - Text:', await response.text());
+            setError(`API error: ${response.status}`);
+            setCredits(null);
+          }
+        } else if (status === "loading") {
+          console.log('[CreditsDisplay] Mode: LOADING (skipping fetch)');
+          // don't set credits, keep as null
+        } else {
+          console.warn('[CreditsDisplay] Unknown status:', status);
         }
       } catch (error) {
-        console.error("Failed to fetch credits:", error);
-        // Fallback for unauthenticated users
-        if (status === "unauthenticated") {
-          setCredits({
-            tier: "unverified",
-            used: 0,
-            limit: 3,
-            remaining: 3
-          });
-        }
+        console.error('[CreditsDisplay] EXCEPTION:', error);
+        setError(error instanceof Error ? error.message : 'Unknown error');
+        setCredits(null);
       } finally {
+        console.log('[CreditsDisplay] >>>>> fetchCredits COMPLETED <<<<<<');
         setLoading(false);
       }
     }
 
     fetchCredits();
-  }, [session, status]);
+  }, [session, status]);  // FIXED: Remove credits from dependencies to prevent infinite loop
+
+  console.log('[CreditsDisplay] Render check - Final states:', {
+    loading,
+    credits: !!credits,
+    error: !!error
+  });
+
+  // Show loading state
 
   // Show loading state
   if (loading) {
@@ -129,8 +170,8 @@ export function CreditsDisplay() {
 
   const tierNames = {
     unverified: t("free_trial"),
-    verified: "已验证用户",
-    pro: "专业版",
+    verified: t("verified_user"),
+    pro: t("pro_user"),
   };
 
   const isUnlimited = credits.limit === Infinity;

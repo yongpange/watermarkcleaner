@@ -376,6 +376,11 @@
               "title": "Часто задаваемые вопросы",
               "url": "/#faq",
               "target": "_self"
+            },
+            {
+              "title": "Полное Руководство 2025: Как Использовать ИИ для Удаления Водяных Знаков",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
+              "target": "_self"
             }
           ]
         },

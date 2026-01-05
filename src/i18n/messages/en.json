@@ -13,6 +13,12 @@
     "user_center": "User Center",
     "admin_system": "Admin System"
   },
+  "header": {
+    "my_credits": "My Credits",
+    "upgrade_pro": "Upgrade to Pro",
+    "sign_in": "Sign In",
+    "sign_out": "Sign Out"
+  },
   "sign_modal": {
     "sign_in_title": "Sign In",
     "sign_in_description": "Sign in to your account",
@@ -30,7 +36,46 @@
     "google_sign_in": "Sign in with Google",
     "github_sign_in": "Sign in with GitHub",
     "close_title": "Close",
-    "cancel_title": "Cancel"
+    "cancel_title": "Cancel",
+    "welcome": "Welcome to WatermarkCleaner",
+    "login_to_use": "Login to use our AI watermark removal service"
+  },
+  "auth": {
+    "email_input": {
+      "email_label": "Email Address",
+      "email_placeholder": "Enter your email address",
+      "checking": "Checking...",
+      "send_login_code": "Send Login Code",
+      "send_register_code": "Send Registration Code",
+      "send_code": "Send Verification Code",
+      "existing_user": "✓ Existing account detected, login code will be sent",
+      "new_user": "Welcome new user, registration code will be sent"
+    },
+    "code_input": {
+      "code_sent_to": "Verification code sent to",
+      "resend_in": "Resend in ({countdown}s)",
+      "resend_code": "Resend verification code",
+      "verify_and_login": "Verify and Login"
+    },
+    "errors": {
+      "enter_email": "Please enter email address",
+      "send_failed": "Failed to send, please retry",
+      "send_failed_retry": "Send failed, please retry",
+      "verification_failed": "Verification failed, please retry",
+      "code_expired": "Verification code expired, please resend",
+      "invalid_code": "Invalid code, please check input",
+      "max_attempts": "Too many attempts, please resend code",
+      "code_used": "Code invalidated, please resend",
+      "code_invalid_or_expired": "Invalid or expired code",
+      "login_failed": "Login failed"
+    },
+    "google_login": {
+      "button_text": "Google Login"
+    },
+    "success": {
+      "register_success": "🎉 Registration successful! Welcome to WatermarkCleaner!",
+      "login_success": "👋 Login successful! Welcome back!"
+    }
   },
   "my_orders": {
     "title": "My Orders",
@@ -126,7 +171,18 @@
       "idle": "Drag files here or click to select",
       "dragover": "Drop files to start conversion",
       "supported": "Supported: PDF, DOCX, TXT, MD (Max 20MB)",
-      "click_to_select": "Click to select files"
+      "click_to_select": "Click to select files",
+      "upload_image_file": "Upload Image File",
+      "drag_or_click": "Drag file here or click to select",
+      "select_file": "Select File",
+      "max_size": "Max",
+      "file_selected": "File Selected",
+      "file_ready": "File ready, click to continue or select another file",
+      "release_to_upload": "Release to upload",
+      "release_to_start_upload": "Release to start upload",
+      "unsupported_file_format": "Unsupported file format. Please upload {formats} format files.",
+      "about_to_process": "About to process your image...",
+      "processing_image": "Processing image..."
     },
     "status": {
       "uploading": "Uploading...",
@@ -168,6 +224,8 @@
     "credits": {
       "loading": "Loading credits...",
       "free_trial": "Free Trial (Guest Mode)",
+      "verified_user": "Verified User",
+      "pro_user": "Pro User",
       "unlimited": "✨ Unlimited",
       "monthly_usage": "Monthly usage: {used} / {limit} images",
       "remaining": "Remaining: {remaining} images",
@@ -228,7 +286,16 @@
       "watermark_removed_success": "Watermark removal successful!",
       "watermark_removal_failed": "Watermark removal failed",
       "download_failed": "Download failed. Please try right-clicking the image and selecting 'Save image as' to save the image.",
-      "open_new_window": "Opening new window..."
+      "open_new_window": "Opening new window...",
+      "credit_limit_exceeded": "Credit limit exceeded",
+      "you_have_used": "You have used {used} / {limit} credits this month",
+      "you_can": "You can:",
+      "verify_email_for_credits": "Verify email to get 10 credits/month",
+      "upgrade_to_pro": "Upgrade to Pro for unlimited credits",
+      "wait_for_reset": "Wait for next month's reset",
+      "verify_email_button": "✉️ Verify Email",
+      "upgrade_to_pro_button": "💎 Upgrade to Pro",
+      "try_again_later": "Try again later"
     }
   },
   "workspace": {

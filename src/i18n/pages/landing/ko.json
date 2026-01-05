@@ -356,6 +356,11 @@
               "title": "자주 묻는 질문",
               "url": "/#faq",
               "target": "_self"
+            },
+            {
+              "title": "2025년 완벽 가이드: AI로 워터마크 제거하는 방법",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
+              "target": "_self"
             }
           ]
         },

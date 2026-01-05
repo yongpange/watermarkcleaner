@@ -13,6 +13,12 @@
     "user_center": "用户中心",
     "admin_system": "管理后台"
   },
+  "header": {
+    "my_credits": "我的额度",
+    "upgrade_pro": "升级专业版",
+    "sign_in": "登录",
+    "sign_out": "退出登录"
+  },
   "sign_modal": {
     "sign_in_title": "登录",
     "sign_in_description": "登录您的账户",
@@ -30,7 +36,46 @@
     "google_sign_in": "使用 Google 登录",
     "github_sign_in": "使用 GitHub 登录",
     "close_title": "关闭",
-    "cancel_title": "取消"
+    "cancel_title": "取消",
+    "welcome": "欢迎来到 WatermarkCleaner",
+    "login_to_use": "登录以使用我们的 AI 去水印服务"
+  },
+  "auth": {
+    "email_input": {
+      "email_label": "邮箱地址",
+      "email_placeholder": "输入您的邮箱地址",
+      "checking": "检查中...",
+      "send_login_code": "发送登录验证码",
+      "send_register_code": "发送注册验证码",
+      "send_code": "发送验证码",
+      "existing_user": "✓ 检测到已有账户，将发送登录验证码",
+      "new_user": "欢迎新用户，将发送注册验证码"
+    },
+    "code_input": {
+      "code_sent_to": "验证码已发送到",
+      "resend_in": "重新发送 ({countdown}s)",
+      "resend_code": "重新发送验证码",
+      "verify_and_login": "验证并登录"
+    },
+    "errors": {
+      "enter_email": "请输入邮箱地址",
+      "send_failed": "发送失败",
+      "send_failed_retry": "发送失败，请重试",
+      "verification_failed": "验证失败，请重试",
+      "code_expired": "验证码已过期，请重新发送",
+      "invalid_code": "验证码错误，请检查输入",
+      "max_attempts": "尝试次数过多，请重新发送验证码",
+      "code_used": "验证码已失效，请重新发送",
+      "code_invalid_or_expired": "验证码错误或已过期",
+      "login_failed": "登录失败"
+    },
+    "google_login": {
+      "button_text": "Google 登录"
+    },
+    "success": {
+      "register_success": "🎉 注册成功！欢迎加入 WatermarkCleaner！",
+      "login_success": "👋 登录成功！欢迎回来！"
+    }
   },
   "my_orders": {
     "title": "我的订单",
@@ -126,7 +171,18 @@
       "idle": "拖拽文件到此处或点击选择",
       "dragover": "松开鼠标开始转换",
       "supported": "支持格式：PDF、DOCX、TXT、MD（最大 20MB）",
-      "click_to_select": "点击选择文件"
+      "click_to_select": "点击选择文件",
+      "upload_image_file": "上传图片文件",
+      "drag_or_click": "拖拽文件到此处，或点击选择文件",
+      "select_file": "选择文件",
+      "max_size": "最大",
+      "file_selected": "文件已选择",
+      "file_ready": "文件准备就绪，点击继续或选择其他文件",
+      "release_to_upload": "释放文件以上传",
+      "release_to_start_upload": "释放文件开始上传",
+      "unsupported_file_format": "不支持的文件格式。请上传 {formats} 格式的文件。",
+      "about_to_process": "即将开始处理您的图片...",
+      "processing_image": "正在处理图片..."
     },
     "status": {
       "uploading": "上传中...",
@@ -168,6 +224,8 @@
     "credits": {
       "loading": "加载额度中...",
       "free_trial": "免费试用（访客模式）",
+      "verified_user": "已验证用户",
+      "pro_user": "专业版用户",
       "unlimited": "✨ 无限额度",
       "monthly_usage": "本月使用: {used} / {limit} 张",
       "remaining": "剩余: {remaining} 张",
@@ -228,7 +286,16 @@
       "watermark_removed_success": "水印移除成功！",
       "watermark_removal_failed": "水印移除失败",
       "download_failed": "下载失败。请尝试右键点击图片并选择\"图片另存为\"来保存图片。",
-      "open_new_window": "正在打开新窗口..."
+      "open_new_window": "正在打开新窗口...",
+      "credit_limit_exceeded": "额度已用完",
+      "you_have_used": "您本月已使用 {used} / {limit} 张额度",
+      "you_can": "您可以选择：",
+      "verify_email_for_credits": "验证邮箱可获得10张/月额度",
+      "upgrade_to_pro": "升级到专业版获得无限额度",
+      "wait_for_reset": "等待下月额度重置",
+      "verify_email_button": "✉️ 验证邮箱",
+      "upgrade_to_pro_button": "💎 升级到专业版",
+      "try_again_later": "稍后再试"
     }
   },
   "workspace": {

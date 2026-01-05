@@ -375,6 +375,11 @@
               "title": "الأسئلة الشائعة",
               "url": "/#faq",
               "target": "_self"
+            },
+            {
+              "title": "الدليل النهائي 2025: كيفية استخدام الذكاء الاصطناعي لإزالة العلامات المائية",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
+              "target": "_self"
             }
           ]
         },

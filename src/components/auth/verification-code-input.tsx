@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { AppleCodeInput } from '@/components/auth/apple-style/input';
 import { AppleButton } from '@/components/auth/apple-style/button';
 
@@ -27,6 +28,7 @@ export const VerificationCodeInput: React.FC<VerificationCodeInputProps> = ({
   email,
 }) => {
   const [code, setCode] = useState<string[]>(['', '', '', '', '', '']);
+  const t = useTranslations('auth.code_input');
 
   // 处理验证码完成
   const handleCodeComplete = (completedCode: string) => {
@@ -49,7 +51,7 @@ export const VerificationCodeInput: React.FC<VerificationCodeInputProps> = ({
     <div className="space-y-4">
       {/* 提示信息 */}
       <div className="text-center text-sm text-gray-600">
-        <p>验证码已发送到</p>
+        <p>{t('code_sent_to')}</p>
         <p className="font-medium text-gray-900">{email}</p>
       </div>
 
@@ -66,7 +68,7 @@ export const VerificationCodeInput: React.FC<VerificationCodeInputProps> = ({
       <div className="flex justify-center">
         {countdown > 0 ? (
           <span className="text-sm text-gray-500">
-            重新发送 ({countdown}s)
+            {t('resend_in', { countdown })}
           </span>
         ) : (
           <button
@@ -74,7 +76,7 @@ export const VerificationCodeInput: React.FC<VerificationCodeInputProps> = ({
             disabled={loading}
             className="text-sm text-blue-600 hover:text-blue-700 font-medium disabled:opacity-50"
           >
-            重新发送验证码
+            {t('resend_code')}
           </button>
         )}
       </div>
@@ -86,7 +88,7 @@ export const VerificationCodeInput: React.FC<VerificationCodeInputProps> = ({
         disabled={!canSubmit || loading || disabled}
         fullWidth
       >
-        验证并登录
+        {t('verify_and_login')}
       </AppleButton>
     </div>
   );
