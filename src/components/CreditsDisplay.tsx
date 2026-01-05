@@ -13,24 +13,21 @@ interface CreditsInfo {
   remaining: number;
 }
 
+interface CreditsDisplayProps {
+  onVerifyEmail?: () => void;
+}
+
 /**
  * Displays user's monthly credits in the UI
  * Shows current usage, tier information, and upgrade options
  * Supports both authenticated and unauthenticated (IP-based) users
  */
-export function CreditsDisplay() {
+export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
   const { data: session, status } = useSession();
   const [credits, setCredits] = useState<CreditsInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const t = useTranslations("convert.credits");
-
-  // Debug: Log component lifecycle
-  console.log('[CreditsDisplay] ===== COMPONENT RENDERED =====');
-  console.log('[CreditsDisplay] Status:', status);
-  console.log('[CreditsDisplay] Session exists:', !!session);
-  console.log('[CreditsDisplay] Credits state:', credits);
-  console.log('[CreditsDisplay] Loading state:', loading);
 
   // Fetch credits info for both authenticated and unauthenticated users
   useEffect(() => {
@@ -157,12 +154,12 @@ export function CreditsDisplay() {
         </div>
 
         <div className="mt-3 pt-2 border-t border-violet-200 dark:border-violet-800">
-          <Link
-            href="/auth/verify"
-            className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block"
+          <button
+            onClick={onVerifyEmail}
+            className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block text-left cursor-pointer"
           >
             {t("verify_email")}
-          </Link>
+          </button>
         </div>
       </div>
     );
@@ -220,7 +217,11 @@ export function CreditsDisplay() {
       {credits.remaining <= 5 && credits.tier !== "pro" && (
         <div className="mt-3 pt-2 border-t border-violet-200 dark:border-violet-800">
           <Link
-            href={credits.tier === "unverified" ? "/auth/signin" : "/pricing"}
+            href={credits.tier === "unverified" ? "#" : "/pricing"}
+            onClick={credits.tier === "unverified" ? (e) => {
+              e.preventDefault();
+              onVerifyEmail?.();
+            } : undefined}
             className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block"
           >
             {credits.tier === "unverified" ? t("verify_email") : t("upgrade_pro")}

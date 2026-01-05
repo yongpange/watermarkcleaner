@@ -4,18 +4,27 @@ import { useState } from "react";
 import WatermarkEditor from "@/components/watermark-editor";
 import { CreditsDisplay } from "@/components/CreditsDisplay";
 import { VerificationPrompt } from "@/components/VerificationPrompt";
+import { AuthModal } from "@/components/auth/auth-modal";
 
 /**
  * Client component for interactive parts of the convert page
- * Manages state for credits refresh after image processing
+ * Manages state for credits refresh after image processing and auth modal
  */
 export function ConvertPageClient() {
   // State to track processing count for refreshing credits
   const [processingCount, setProcessingCount] = useState(0);
 
+  // State for auth modal
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+
   // Callback to refresh credits after successful processing
   const handleProcessingComplete = () => {
     setProcessingCount(prev => prev + 1);
+  };
+
+  // Callback to open auth modal
+  const handleVerifyEmail = () => {
+    setAuthModalOpen(true);
   };
 
   return (
@@ -24,11 +33,17 @@ export function ConvertPageClient() {
       <div className="max-w-4xl mx-auto space-y-6">
         <VerificationPrompt />
         {/* Key prop forces re-render when processingCount changes */}
-        <CreditsDisplay key={processingCount} />
+        <CreditsDisplay key={processingCount} onVerifyEmail={handleVerifyEmail} />
       </div>
 
       {/* Editor */}
       <WatermarkEditor onProcessingComplete={handleProcessingComplete} />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+      />
     </>
   );
 }

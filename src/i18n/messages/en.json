@@ -38,7 +38,8 @@
     "close_title": "Close",
     "cancel_title": "Cancel",
     "welcome": "Welcome to WatermarkCleaner",
-    "login_to_use": "Login to use our AI watermark removal service"
+    "login_to_use": "Login to use our AI watermark removal service",
+    "credit_upgrade_info": "Guest users 3 credits/month → Logged-in users 10 credits/month"
   },
   "auth": {
     "email_input": {

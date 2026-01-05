@@ -294,6 +294,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                     <p className="text-sm text-gray-600">
                       {tModal('login_to_use')}
                     </p>
+                    <div className="mt-2 text-xs text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">
+                      🎉 {tModal('credit_upgrade_info')}
+                    </div>
                   </div>
 
                   {/* 主要内容 */}

@@ -38,7 +38,8 @@
     "close_title": "关闭",
     "cancel_title": "取消",
     "welcome": "欢迎来到 WatermarkCleaner",
-    "login_to_use": "登录以使用我们的 AI 去水印服务"
+    "login_to_use": "登录以使用我们的 AI 去水印服务",
+    "credit_upgrade_info": "访客用户 3 张/月 → 登录用户 10 张/月"
   },
   "auth": {
     "email_input": {
