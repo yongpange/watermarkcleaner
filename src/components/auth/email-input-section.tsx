@@ -31,6 +31,10 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
   const [checking, setChecking] = useState(false);
   const t = useTranslations('auth.email_input');
 
+  const handleUserExistsChange = React.useCallback((exists: boolean | null) => {
+    onUserExistsChange?.(exists);
+  }, [onUserExistsChange]);
+
   // 检查用户是否存在
   useEffect(() => {
     const validateEmail = async (email: string) => {
@@ -49,10 +53,11 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
 
         const data = await response.json();
         setUserExists(data.exists);
-        onUserExistsChange?.(data.exists);
-      } catch (error) {
+        handleUserExistsChange(data.exists);
+      } catch {
         // 静默处理错误
         setUserExists(null);
+        handleUserExistsChange(null);
       } finally {
         setChecking(false);
       }
@@ -64,7 +69,7 @@ export const EmailInputSection: React.FC<EmailInputSectionProps> = ({
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [email]);
+  }, [email, handleUserExistsChange]);
 
   const canSendCode = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !checking && !disabled;
 

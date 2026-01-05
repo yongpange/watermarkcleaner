@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { RiUploadCloud2Line, RiImageLine, RiCloseLine, RiFlashlightLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from 'next-intl';
 
 interface UploadAreaProps {
   onFileSelect: (file: File) => void;

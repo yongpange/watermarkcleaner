@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, Tag, ArrowRight, User } from "lucide-react";
+import { Calendar, Clock, Tag, ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import type { LocalizedPostSummary } from "@/lib/blog";
 import Image from "next/image";

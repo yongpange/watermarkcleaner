@@ -292,8 +292,8 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
           onImageLoad={handleImageLoad}
           isDragging={false}
           setIsDragging={() => {}}
-          error={error}
-          setError={setError}
+          error={typeof error === 'string' ? error : null}
+          setError={(err) => setError(err)}
         />
       ) : (
         <>
