@@ -18,7 +18,7 @@ export const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   const handleGoogleLogin = async () => {
     try {
       await signIn('google', {
-        callbackUrl: '/my-credits',
+        callbackUrl: '/convert',
       });
     } catch (error) {
       console.error('Google login error:', error);

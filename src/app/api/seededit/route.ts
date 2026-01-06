@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth.config";
+import { auth } from "@/auth";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
 import { checkUserCredits, deductCredits, recordProcessingHistory, USER_TIER_CONFIG } from "@/lib/credits/check";
 
@@ -132,7 +131,7 @@ export async function POST(request: NextRequest) {
   let formData: FormData | null = null;
 
   try {
-    session = await getServerSession(authOptions);
+    session = await auth();
     if (session?.user) {
       isAuthenticated = true;
       userId = session.user.id;

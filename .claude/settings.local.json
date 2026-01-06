@@ -26,7 +26,12 @@
       "Bash(taskkill:*)",
       "Bash(del nul:*)",
       "Bash(unlink nul)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(next build:*)",
+      "Bash(netstat -ano:*)",
+      "Bash(timeout:*)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(nul:*)"
     ]
   },
   "skills": {

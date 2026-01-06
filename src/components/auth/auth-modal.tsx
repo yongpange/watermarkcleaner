@@ -171,7 +171,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     setLoading(true);
     try {
       await signIn('google', {
-        callbackUrl: '/my-credits',
+        callbackUrl: '/convert',
       });
     } catch (error) {
       console.error('Google login error:', error);

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth.config';
+import { auth } from '@/auth';
 import { checkUserCredits, deductCredits, USER_TIER_CONFIG } from '@/lib/credits/check';
 import { getClientIP, hashIPAddress } from '@/lib/security/ip-hash';
 import { createAdminClient } from '@/lib/supabase-admin';
@@ -100,7 +99,7 @@ export async function POST(req: NextRequest) {
     let userIdentifier: string;
 
     try {
-      session = await getServerSession(authOptions);
+      session = await auth();
       if (session?.user) {
         isAuthenticated = true;
         userId = session.user.id;

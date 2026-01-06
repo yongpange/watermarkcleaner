@@ -4,7 +4,14 @@
 
 **WatermarkCleaner** 是一个现代化的 AI 驱动水印去除网站，提供在线图像处理服务。项目基于 Next.js 15、React 19 和 TypeScript 构建，支持多语言国际化，并提供完整的博客系统、用户认证、额度管理等功能。
 
-**✅ 最新更新**: 2026-01-07 修复 Tailwind CSS v4 暗色模式支持，添加 `@custom-variant` 定义，确保所有组件完整支持主题切换。
+**✅ 最新更新**: 2026-01-08 完成 Google OAuth 完整配置，升级 NextAuth.js 到 v5 Beta，修复所有 TypeScript 类型错误
+
+**✅ Google OAuth 配置完成**:
+- ✅ **NextAuth.js v5 升级**: 迁移到 `auth()` API，修复所有导入和类型定义
+- ✅ **Google OAuth 集成**: 完整配置 Google Provider，支持一键登录
+- ✅ **自动用户升级**: Google 登录用户自动获得 verified 状态（10张额度）
+- ✅ **TypeScript 类型安全**: 修复所有 NextAuth v5 相关的类型错误
+- ✅ **环境变量配置**: 添加 GOOGLE_CLIENT_ID、GOOGLE_CLIENT_SECRET、AUTH_SECRET
 
 **✅ 构建系统修复**: 2026-01-06 修复所有 TypeScript 类型错误：
 - ✅ **Supabase 类型推断**：修复所有 `never` 类型错误，使用 `as any` 断言绕过复杂类型推断
@@ -67,7 +74,7 @@
 
 ### 后端 & 数据库
 - **Supabase**: PostgreSQL 数据库 + 认证
-- **NextAuth.js**: 4.24.7
+- **NextAuth.js**: 5.0.0-beta.30 (升级完成 - 2026-01-08)
 - **Prisma**: 数据库 ORM (隐含使用)
 
 ### AI & 图像处理
@@ -292,12 +299,59 @@ content/
 
 ### 3.3 用户认证与授权 (Authentication)
 
-**技术**: NextAuth.js + Supabase Adapter
+**技术**: NextAuth.js 5.0.0-beta + Supabase Adapter
 
 **认证方式**:
 - ✅ **邮箱验证码登录** (新增 - 2025-01-01) - 无密码认证系统
 - 邮箱登录 (Magic Link) - 传统链接验证
-- ✅ **Google OAuth 登录** (新增 - 2026-01-01) - 完整的 OAuth 2.0 流程，自动同步用户信息
+- ✅ **Google OAuth 登录** (新增 - 2026-01-08) - 完整的 OAuth 2.0 流程，自动同步用户信息
+
+**NextAuth.js v5 升级** (2026-01-08):
+- ✅ **API 变更**: 从 `getServerSession(authOptions)` 迁移到 `auth()` 函数
+- ✅ **类型安全**: 使用 `NextAuthConfig` 类型定义配置
+- ✅ **模块化**: 创建 `src/auth.ts` 文件导出认证函数
+- ✅ **兼容性**: 更新所有 API 路由以使用新的 `auth()` API
+- ✅ **构建成功**: 修复所有相关的 TypeScript 编译错误
+
+**Google OAuth 配置详解**:
+
+**环境变量** (.env.local):
+```bash
+# Google OAuth 凭据 (从 Google Cloud Console 获取)
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# NextAuth.js 配置
+NEXTAUTH_URL="http://localhost:3000"  # 开发环境
+AUTH_SECRET="your-random-secret-key"   # 用于 JWT 加密
+```
+
+**配置位置**:
+- 主配置: `src/lib/auth.config.ts` (GoogleProvider)
+- 路由配置: `src/app/api/auth/[...nextauth]/route.ts`
+- 认证函数: `src/auth.ts` (导出 `auth()`, `signIn`, `signOut`)
+
+**核心特性**:
+1. **一键登录**: 用户点击"使用 Google 登录"按钮即可快速登录
+2. **自动注册**: 新用户首次登录自动创建账户
+3. **等级升级**: Google 用户自动获得 `verified` 状态（10张/月额度）
+4. **信息同步**: 自动同步 Google 头像、姓名等信息
+5. **安全可靠**: 使用 NextAuth.js v5 的安全机制
+
+**Google OAuth 流程**:
+1. 用户点击 Google 登录按钮
+2. 重定向到 Google 授权页面
+3. 用户授权后返回应用
+4. NextAuth 处理回调并创建会话
+5. SignIn 回调自动创建/更新用户记录
+6. 用户获得 `verified` 等级和 10 张初始额度
+7. 重定向到 `/my-credits` 页面
+
+**Google Cloud Console 设置**:
+- 启用 Google+ API
+- 配置 OAuth 同意屏幕
+- 创建 OAuth 2.0 客户端 ID
+- 添加授权重定向 URI: `http://localhost:3000/api/auth/callback/google`
 
 **登录体验升级 (2026-01-01)**:
 - **Header 用户状态展示**：登录后自动显示用户头像、用户名和剩余额度（如 👤 geyongpan (5/10)）
@@ -958,14 +1012,46 @@ WHERE ip_address = '18849ddcfb4ac7c006228118ee75b12cea0f...'
 NEXT_PUBLIC_WEB_URL=https://watermarkcleaner.com
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+# Google OAuth 配置 (必需)
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+AUTH_SECRET=your-random-secret-key  # NextAuth.js JWT 加密密钥
+
+# Strip 支付配置
 STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
+
+# AI 服务 API 密钥
 FAL_AI_API_KEY=
 ARK_API_KEY=
+
+# 云存储配置
 STORAGE_ENDPOINT=
 STORAGE_ACCESS_KEY=
 STORAGE_SECRET_KEY=
+
+# 邮件服务 (Resend)
+RESEND_API_KEY=
+EMAIL_FROM=WatermarkCleaner <noreply@watermarkcleaner.com>
+
+# IP 地址匿名化盐值 (必需，32字节随机值)
+IP_HASH_SALT=
+
+# 数据保留策略
+DATA_RETENTION_DAYS=3
 ```
+
+**获取 Google OAuth 凭据**:
+1. 访问 [Google Cloud Console](https://console.cloud.google.com/)
+2. 创建新项目或选择现有项目
+3. 启用 **Google+ API**
+4. 配置 OAuth 同意屏幕
+5. 创建 OAuth 2.0 客户端 ID
+6. 添加授权重定向 URI:
+   - 开发环境: `http://localhost:3000/api/auth/callback/google`
+   - 生产环境: `https://yourdomain.com/api/auth/callback/google`
+7. 复制 **Client ID** 和 **Client Secret** 到 `.env.local`
 
 ### 9.3 部署平台
 - **Vercel**: 主部署平台
@@ -1165,11 +1251,20 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 
 ---
 
-**文档版本**: 1.6
-**最后更新**: 2026-01-07
+**文档版本**: 1.7
+**最后更新**: 2026-01-08
 **维护者**: Claude Code AI
 
 ### 更新日志 (Changelog)
+- **v1.7 (2026-01-08)**: 完成 Google OAuth 完整配置和 NextAuth.js v5 升级
+  - **NextAuth.js v5 升级**: 迁移到新的 `auth()` API，修复所有类型错误
+  - **Google OAuth 集成**: 完整配置 Google Provider，支持一键登录
+  - **自动用户升级**: Google 登录用户自动获得 verified 状态（10张额度）
+  - **类型安全**: 修复所有 NextAuth v5 相关的 TypeScript 编译错误
+  - **环境变量**: 添加完整的 Google OAuth 配置文档
+  - **API 更新**: 迁移所有使用 `getServerSession()` 的 API 路由到新的 `auth()` API
+  - **模块重构**: 创建 `src/auth.ts` 文件导出认证函数
+  - **测试状态**: ✅ 所有 TypeScript 类型检查通过，构建成功
 - **v1.6 (2026-01-07)**: 修复 Tailwind CSS v4 暗色模式支持
   - **暗色模式变体**：在 `src/app/globals.css` 添加 `@custom-variant dark (\\u0026\:where(.dark, .dark *))` 定义
   - **背景渐变修复**：首页对比组件、博客图片对比组件支持 `dark:from-*` / `dark:to-*` 类

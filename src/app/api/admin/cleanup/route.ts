@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cleanupProcessingHistory, getCleanupStats } from "@/lib/security/cleanup";
 
+// 配置为 Node.js 运行时（因为使用了 Supabase Node.js API）
+export const runtime = 'nodejs';
+
 /**
  * 管理员API：手动触发数据清理
  * GET /api/admin/cleanup

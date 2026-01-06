@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth.config";
+import { auth } from "@/auth";
 import { checkCredits } from "@/lib/credits/check";
 
 /**
  * API endpoint to check user's credits
  * GET /api/credits/check
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const session = (await getServerSession(authOptions)) as any;
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(
