@@ -4,102 +4,161 @@
     "label": "Pricing",
     "title": "Pricing",
     "description": "Get all features, build your AI SaaS startups fast.",
-    "groups": [],
+    "groups": [
+      {
+        "name": "free",
+        "title": "Free"
+      },
+      {
+        "name": "monthly",
+        "title": "Monthly"
+      },
+      {
+        "name": "yearly",
+        "title": "Yearly"
+      }
+    ],
     "items": [
       {
-        "title": "Starter",
-        "description": "Get started with your first SaaS startup.",
+        "title": "Free",
+        "description": "Get started with basic features.",
+        "price": "$0",
+        "unit": "USD",
+        "interval": "one-time",
+        "product_id": "free-plan",
+        "credits": 10,
         "features_title": "Includes",
         "features": [
-          "100 credits, valid for 1 month",
-          "NextJS boilerplate",
-          "SEO-friendly structure",
-          "Payment with Stripe",
-          "Data storage with Supabase",
-          "Google Oauth & One-Tap Login",
-          "i18n support"
+          "10 Credits/month",
+          "Limited usage",
+          "No watermark removal",
+          "Basic support"
         ],
-        "interval": "one-time",
-        "amount": 9900,
-        "cn_amount": 69900,
-        "currency": "USD",
-        "price": "$99",
-        "original_price": "$199",
-        "unit": "USD",
-        "is_featured": false,
-        "tip": "Pay once. Build unlimited projects!",
         "button": {
           "title": "Get Started",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "starter",
+        "tip": "Try free. Build your first project!",
+        "group": "free"
+      },
+      {
+        "title": "Basic",
+        "description": "Start building fast",
+        "price": "$6.99",
+        "unit": "/month",
+        "interval": "month",
+        "product_id": "basic-monthly",
+        "amount": 699,
+        "currency": "USD",
         "credits": 100,
-        "valid_months": 1
+        "features_title": "Includes",
+        "features": [
+          "100 Credits/month",
+          "$0.07/credit",
+          "100 images/month"
+        ],
+        "button": {
+          "title": "Get Started",
+          "url": "#pricing"
+        },
+        "tip": "Pay once. Build unlimited projects!",
+        "group": "monthly"
       },
       {
-        "title": "Standard",
-        "description": "Ship Fast with your SaaS Startups.",
+        "title": "Pro",
+        "description": "Build faster with more credits",
         "label": "Popular",
-        "features_title": "Everything in Starter, plus",
-        "features": [
-          "200 credits, valid for 3 month",
-          "Deploy with Vercel or Cloudflare",
-          "Generation of Privacy & Terms",
-          "Google Analytics Integration",
-          "Google Search Console Integration",
-          "Discord community",
-          "Technical support for your first ship",
-          "Lifetime updates"
-        ],
-        "interval": "one-time",
-        "amount": 19900,
-        "cn_amount": 139900,
+        "price": "$9.99",
+        "unit": "/month",
+        "interval": "month",
+        "product_id": "pro-monthly",
+        "amount": 999,
         "currency": "USD",
-        "price": "$199",
-        "original_price": "$299",
-        "unit": "USD",
-        "is_featured": true,
-        "tip": "Pay once. Build unlimited projects!",
+        "credits": 200,
+        "features_title": "Includes",
+        "features": [
+          "200 Credits/month",
+          "$0.05/credit",
+          "200 images/month"
+        ],
         "button": {
           "title": "Get Started",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "standard",
-        "credits": 200,
-        "valid_months": 3
+        "tip": "Pay once. Build unlimited projects!",
+        "group": "monthly",
+        "is_featured": true
       },
       {
-        "title": "Premium",
-        "description": "Ship Any AI SaaS Startups.",
-        "features_title": "Everything in Standard, plus",
-        "features": [
-          "300 credits, valid for 1 year",
-          "Business Functions with AI",
-          "User Center",
-          "Credits System",
-          "API Sales for your SaaS",
-          "Admin System",
-          "Priority Technical Support"
-        ],
-        "interval": "one-time",
-        "amount": 29900,
-        "cn_amount": 199900,
+        "title": "Business",
+        "description": "Scale your AI SaaS startup",
+        "price": "$14.99",
+        "unit": "/month",
+        "interval": "month",
+        "product_id": "business-monthly",
+        "amount": 1499,
         "currency": "USD",
-        "price": "$299",
-        "original_price": "$399",
-        "unit": "USD",
-        "is_featured": false,
-        "tip": "Pay once. Build unlimited projects!",
+        "credits": 500,
+        "features_title": "Includes",
+        "features": [
+          "500 Credits/month",
+          "$0.03/credit",
+          "500 images/month"
+        ],
         "button": {
           "title": "Get Started",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "premium",
-        "credits": 300,
-        "valid_months": 12
+        "tip": "Pay once. Build unlimited projects!",
+        "group": "monthly"
+      },
+      {
+        "title": "Yearly Basic",
+        "description": "Save 50% — $3.75/month",
+        "label": "Save 50%",
+        "price": "$44.99",
+        "unit": "/year",
+        "interval": "year",
+        "product_id": "basic-yearly",
+        "amount": 4499,
+        "currency": "USD",
+        "credits": 1200,
+        "features_title": "Includes",
+        "features": [
+          "1200 Credits/year (100/month)",
+          "$0.04/credit",
+          "1200 images/year"
+        ],
+        "button": {
+          "title": "Get Started",
+          "url": "#pricing"
+        },
+        "tip": "Pay once. Build unlimited projects!",
+        "group": "yearly"
+      },
+      {
+        "title": "Yearly Pro",
+        "description": "Save 50% — $5.83/month",
+        "label": "Save 50%",
+        "price": "$69.99",
+        "unit": "/year",
+        "interval": "year",
+        "product_id": "pro-yearly",
+        "amount": 6999,
+        "currency": "USD",
+        "credits": 2400,
+        "features_title": "Includes",
+        "features": [
+          "2400 Credits/year",
+          "$0.03/credit",
+          "2400 images/year"
+        ],
+        "button": {
+          "title": "Get Started",
+          "url": "#pricing"
+        },
+        "tip": "Pay once. Build unlimited projects!",
+        "group": "yearly"
       }
     ]
   }

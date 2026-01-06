@@ -17,7 +17,7 @@ import Image from "next/image";
 export default function Pricing({ pricing }: { pricing: PricingType }) {
   const { user, setShowSignModal } = useAppContext();
 
-  const [group, setGroup] = useState(pricing.groups?.[0]?.name);
+  const [group, setGroup] = useState(pricing.groups?.find(g => g.name === "monthly")?.name || pricing.groups?.[0]?.name || "monthly");
   const [isLoading, setIsLoading] = useState(false);
   const [productId, setProductId] = useState<string | null>(null);
 
@@ -91,9 +91,17 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
   useEffect(() => {
     if (pricing.disabled) return;
 
-    if (pricing.items) {
-      setGroup(pricing.items[0].group);
-      setProductId(pricing.items[0].product_id);
+    if (pricing.items && pricing.items.length > 0) {
+      // 优先选择 monthly 分组的第一个产品
+      const monthlyItem = pricing.items.find(item => item.group === "monthly");
+      if (monthlyItem) {
+        setGroup(monthlyItem.group);
+        setProductId(monthlyItem.product_id);
+      } else {
+        // 回退到第一个产品
+        setGroup(pricing.items[0].group);
+        setProductId(pricing.items[0].product_id);
+      }
       setIsLoading(false);
     }
   }, [pricing.items, pricing.disabled]);
