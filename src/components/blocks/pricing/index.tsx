@@ -94,13 +94,16 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
     if (pricing.items && pricing.items.length > 0) {
       // 优先选择 monthly 分组的第一个产品
       const monthlyItem = pricing.items.find(item => item.group === "monthly");
-      if (monthlyItem) {
+      if (monthlyItem && monthlyItem.group) {
         setGroup(monthlyItem.group);
         setProductId(monthlyItem.product_id);
       } else {
         // 回退到第一个产品
-        setGroup(pricing.items[0].group);
-        setProductId(pricing.items[0].product_id);
+        const firstItem = pricing.items[0];
+        if (firstItem.group) {
+          setGroup(firstItem.group);
+          setProductId(firstItem.product_id);
+        }
       }
       setIsLoading(false);
     }

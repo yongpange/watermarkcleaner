@@ -43,6 +43,7 @@ import { cn } from "@/lib/utils";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { useSession, signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { USER_TIER_CONFIG } from "@/lib/credits/config";
 
 interface CreditsInfo {
   tier: "unverified" | "verified" | "pro";
@@ -98,7 +99,9 @@ export default function Header({ header }: { header: HeaderType }) {
   // 计算额度显示
   const userTier = creditsInfo?.tier || (session?.user as any)?.tier || 'unverified';
   const creditsUsed = creditsInfo?.used ?? ((session?.user as any)?.creditsused || 0);
-  const creditsLimit = userTier === 'pro' ? '∞' : userTier === 'verified' ? 10 : 3;
+  const creditsLimit = USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth === Infinity
+    ? '∞'
+    : USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth || 3;
 
   if (header.disabled) {
     return null;

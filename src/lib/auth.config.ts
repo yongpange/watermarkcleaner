@@ -2,7 +2,7 @@ import EmailProvider from 'next-auth/providers/email';
 import Credentials from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { SupabaseAdapter } from '@auth/supabase-adapter';
-import type { AuthOptions } from 'next-auth';
+import type { NextAuthOptions, User, Account, Profile, Session, TokenSet } from 'next-auth';
 import { createClient } from '@/lib/supabase-server';
 import { createAdminClient } from '@/lib/supabase-admin';
 import {
@@ -21,7 +21,7 @@ import {
  * - Custom session callbacks to include user data
  */
 
-export const authOptions: AuthOptions = {
+export const authConfig: NextAuthOptions = {
   // 暂时禁用 SupabaseAdapter 以测试 Google OAuth
   // adapter: SupabaseAdapter({
   //   url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -97,7 +97,7 @@ export const authOptions: AuthOptions = {
                   name: usernameBase,
                   tier: 'verified',
                   creditsused: 0,
-                  creditsreset: new Date().toISOString(),
+                  // creditsreset field deprecated - keeping for compatibility but not used
                 } as any);
 
               if (error) {
@@ -168,7 +168,7 @@ export const authOptions: AuthOptions = {
   // Callbacks to customize behavior
   callbacks: {
     // Handle sign in events
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account, profile }: any) {
       console.log('[Auth] User signed in:', user.email, 'Provider:', account?.provider);
       console.log('[Auth] User details:', { user, account, profile });
 
@@ -206,7 +206,7 @@ export const authOptions: AuthOptions = {
               image: user.image,
               tier: 'verified',
               creditsused: 0,
-              creditsreset: new Date().toISOString(),
+              // creditsreset field deprecated - keeping for compatibility but not used
             });
 
             const { error: createError } = await supabase
@@ -218,7 +218,7 @@ export const authOptions: AuthOptions = {
                 image: user.image,
                 tier: 'verified',  // ✅ Google 邮箱已验证，直接升级
                 creditsused: 0,
-                creditsreset: new Date().toISOString(),
+                // creditsreset field deprecated - keeping for compatibility but not used
               } as any);
 
             if (createError) {
@@ -243,7 +243,7 @@ export const authOptions: AuthOptions = {
     },
 
     // Include user data in JWT token
-    async jwt({ token, user, account, trigger }) {
+    async jwt({ token, user, account, trigger }: any) {
       // 初始登录时
       if (user) {
         token.id = user.id;
@@ -278,7 +278,7 @@ export const authOptions: AuthOptions = {
     },
 
     // Include user data in session
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         (session.user as any).id = token.id as string;
         (session.user as any).email = token.email as string;
@@ -292,7 +292,7 @@ export const authOptions: AuthOptions = {
     },
 
     // Handle redirects
-    async redirect({ url, baseUrl }) {
+    async redirect({ url, baseUrl }: any) {
       // Allows relative callback URLs
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       // Allows callback URLs on the same origin

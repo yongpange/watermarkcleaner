@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import ImageComparison from '@/components/image-comparison';
 import CTAButton from '@/components/blog/CTAButton';
+import { parseMarkdownTable, MarkdownTable } from '@/components/markdown/table-renderer';
 
 interface MDXRendererProps {
   content: string;
@@ -15,13 +16,15 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
     const imageComparisonRegex = /<ImageComparison\s*beforeImage=\{\{[^}]+\}\}\s*afterImage=\{\{[^}]+\}\}\s*autoPlay=\{false\}\s*\/>/g;
     // 查找CTAButton组件
     const ctaButtonRegex = /<CTAButton[^>]*>.*?<\/CTAButton>/g;
+    // 查找Markdown表格
+    const tableRegex = /\n?\n?\|(.+?)\|\n\|[-:\s]+\|\n((?:\|.+?\|\n?)+)/g;
 
     const result: any[] = [];
     let lastIndex = 0;
     let match;
 
-    // 创建一个匹配所有组件的正则
-    const combinedRegex = /<ImageComparison\s*beforeImage=\{\{[^}]+\}\}\s*afterImage=\{\{[^}]+\}\}\s*autoPlay=\{false\}\s*\/>|<CTAButton[^>]*>.*?<\/CTAButton>/g;
+    // 创建一个匹配所有组件的正则（包括表格）
+    const combinedRegex = /<ImageComparison\s*beforeImage=\{\{[^}]+\}\}\s*afterImage=\{\{[^}]+\}\}\s*autoPlay=\{false\}\s*\/>|<CTAButton[^>]*>.*?<\/CTAButton>|\n?\n?\|(.+?)\|\n\|[-:\s]+\|\n((?:\|.+?\|\n?)+)/g;
 
     while ((match = combinedRegex.exec(content)) !== null) {
       // 添加匹配前的HTML内容
@@ -33,7 +36,16 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
       }
 
       // 处理匹配的组件
-      if (match[0].startsWith('<ImageComparison')) {
+      if (match[0].startsWith('|')) {
+        // 处理Markdown表格
+        const tableData = parseMarkdownTable(match[0]);
+        if (tableData) {
+          result.push({
+            type: 'table',
+            data: tableData
+          });
+        }
+      } else if (match[0].startsWith('<ImageComparison')) {
         // 解析ImageComparison组件参数
         const srcRegex = /src:\s*"([^"]+)"/g;
         const altRegex = /alt:\s*"([^"]+)"/g;
@@ -132,6 +144,8 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
           );
         } else if (part.type === 'ctaButton') {
           return <CTAButton key={index}>{part.content}</CTAButton>;
+        } else if (part.type === 'table') {
+          return <MarkdownTable key={index} data={part.data} />;
         }
         return null;
       })}

@@ -155,7 +155,7 @@ export async function POST(request: NextRequest) {
         {
           code: 'CREDIT_LIMIT_EXCEEDED',
           error: "Credit limit exceeded",
-          details: `You have used ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} credits this month`,
+          details: `You have used ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} credits`,
           tier: credits.tier,
           used: credits.used,
           limit: tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth,

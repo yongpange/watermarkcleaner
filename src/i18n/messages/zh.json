@@ -39,7 +39,7 @@
     "cancel_title": "取消",
     "welcome": "欢迎来到 WatermarkCleaner",
     "login_to_use": "登录以使用我们的 AI 去水印服务",
-    "credit_upgrade_info": "访客用户 3 张/月 → 登录用户 10 张/月"
+    "credit_upgrade_info": "访客用户获得 3 张额度 → 登录获得更多额度"
   },
   "auth": {
     "email_input": {
@@ -224,12 +224,12 @@
     },
     "credits": {
       "loading": "加载额度中...",
-      "free_trial": "免费试用（访客模式）",
+      "free_trial": "免费试用",
       "verified_user": "已验证用户",
       "pro_user": "专业版用户",
       "unlimited": "✨ 无限额度",
-      "monthly_usage": "本月使用: {used} / {limit} 张",
-      "remaining": "剩余: {remaining} 张",
+      "monthly_usage": "已使用: {used} / {limit}",
+      "remaining": "剩余: {remaining}",
       "verify_email": "🔐 验证邮箱获得更多额度 →",
       "upgrade_pro": "💎 升级专业版获得无限额度 →",
       "trial_activated": "试用已激活"
@@ -289,11 +289,11 @@
       "download_failed": "下载失败。请尝试右键点击图片并选择\"图片另存为\"来保存图片。",
       "open_new_window": "正在打开新窗口...",
       "credit_limit_exceeded": "额度已用完",
-      "you_have_used": "您本月已使用 {used} / {limit} 张额度",
+      "you_have_used": "您已使用 {used} / {limit} 张额度",
       "you_can": "您可以选择：",
-      "verify_email_for_credits": "验证邮箱可获得10张/月额度",
+      "verify_email_for_credits": "验证邮箱可获得更多额度",
       "upgrade_to_pro": "升级到专业版获得无限额度",
-      "wait_for_reset": "等待下月额度重置",
+      "wait_for_reset": "稍后再试或等待更多额度",
       "verify_email_button": "✉️ 验证邮箱",
       "upgrade_to_pro_button": "💎 升级到专业版",
       "try_again_later": "稍后再试"

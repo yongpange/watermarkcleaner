@@ -49,6 +49,18 @@
         "ar": "فريق WatermarkCleaner",
         "ko": "WatermarkCleaner 팀"
       }
+    },
+    {
+      "id": "WatermarkCleaner Team",
+      "name": {
+        "en": "WatermarkCleaner Team",
+        "zh": "WatermarkCleaner 团队",
+        "es": "Equipo de WatermarkCleaner",
+        "ru": "Команда WatermarkCleaner",
+        "fr": "Équipe WatermarkCleaner",
+        "ar": "فريق WatermarkCleaner",
+        "ko": "WatermarkCleaner 팀"
+      }
     }
   ],
   "defaultLocale": "en",

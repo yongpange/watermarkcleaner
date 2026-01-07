@@ -1,0 +1,21 @@
+{
+  "slug": "automatic-vs-manual-watermark-removal",
+  "title": {
+    "zh": "一键去水印 vs 手动涂抹：两种去除水印方式的实际效果对比",
+    "en": "One-Click vs Manual: Comparing Two Watermark Removal Approaches"
+  },
+  "description": {
+    "zh": "深入对比watermarkcleaner.com与Magic Eraser.org两款主流AI去水印工具，从操作便捷性、全屏水印处理能力、画质保护效果和商用适用性四大维度，为不同需求的用户提供科学选择依据。",
+    "en": "An in-depth comparison of watermarkcleaner.com and Magic Eraser.org from four key dimensions: ease of use, full-screen watermark handling, image quality preservation, and commercial applicability."
+  },
+  "date": "2026-01-08",
+  "author": "WatermarkCleaner Team",
+  "tags": {
+    "en": ["watermark removal", "AI tools", "comparison", "image processing", "productivity"],
+    "zh": ["去水印", "AI工具", "对比评测", "图像处理", "效率工具"]
+  },
+  "category": "tips",
+  "featured": true,
+  "readingTime": 8,
+  "image": "/images/blog/automatic-vs-manual-watermark-removal/cover.jpg"
+}

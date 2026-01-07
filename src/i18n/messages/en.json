@@ -39,7 +39,7 @@
     "cancel_title": "Cancel",
     "welcome": "Welcome to WatermarkCleaner",
     "login_to_use": "Login to use our AI watermark removal service",
-    "credit_upgrade_info": "Guest users 3 credits/month → Logged-in users 10 credits/month"
+    "credit_upgrade_info": "Guest users get 3 credits → Sign in to get more credits"
   },
   "auth": {
     "email_input": {
@@ -224,11 +224,11 @@
     },
     "credits": {
       "loading": "Loading credits...",
-      "free_trial": "Free Trial (Guest Mode)",
+      "free_trial": "Free Trial",
       "verified_user": "Verified User",
       "pro_user": "Pro User",
       "unlimited": "✨ Unlimited",
-      "monthly_usage": "Monthly usage: {used} / {limit} images",
+      "monthly_usage": "Used: {used} / {limit}",
       "remaining": "Remaining: {remaining} images",
       "verify_email": "🔐 Verify email for more credits →",
       "upgrade_pro": "💎 Upgrade to Pro for unlimited credits →",
@@ -289,11 +289,11 @@
       "download_failed": "Download failed. Please try right-clicking the image and selecting 'Save image as' to save the image.",
       "open_new_window": "Opening new window...",
       "credit_limit_exceeded": "Credit limit exceeded",
-      "you_have_used": "You have used {used} / {limit} credits this month",
+      "you_have_used": "You have used {used} / {limit} credits",
       "you_can": "You can:",
-      "verify_email_for_credits": "Verify email to get 10 credits/month",
+      "verify_email_for_credits": "Verify email to get more credits",
       "upgrade_to_pro": "Upgrade to Pro for unlimited credits",
-      "wait_for_reset": "Wait for next month's reset",
+      "wait_for_reset": "Check back later for more credits",
       "verify_email_button": "✉️ Verify Email",
       "upgrade_to_pro_button": "💎 Upgrade to Pro",
       "try_again_later": "Try again later"

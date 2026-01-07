@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       emailVerified: null, // 新用户邮箱未验证
       tier: 'verified', // 默认设为已验证用户
       creditsUsed: 0, // 初始积分为0
-      creditsReset: new Date().toISOString(), // 设置当前时间为重置时间
+      // creditsReset field deprecated - keeping for compatibility but not used
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     }

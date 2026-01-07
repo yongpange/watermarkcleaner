@@ -37,3 +37,74 @@
     border-radius: 0.375rem;
   }
 }
+
+/* 表格样式 */
+.table-container {
+  margin: 2rem 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+
+.table-container th {
+  background-color: var(--muted);
+  color: var(--foreground);
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+}
+
+.table-container td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.table-container tr:last-child td {
+  border-bottom: none;
+}
+
+.table-container tr:hover {
+  background-color: var(--muted);
+  transition: background-color 0.2s ease;
+}
+
+/* 暗色模式下的表格样式 */
+@media (prefers-color-scheme: dark) {
+  .table-container {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  .table-container th {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .table-container tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* 移动设备上的表格响应式处理 */
+@media (max-width: 768px) {
+  .table-container {
+    font-size: 0.875rem;
+  }
+
+  .table-container th,
+  .table-container td {
+    padding: 0.75rem 1rem;
+  }
+
+  /* 允许水平滚动 */
+  .table-container {
+    overflow-x: auto;
+  }
+}

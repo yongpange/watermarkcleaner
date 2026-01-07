@@ -3,93 +3,55 @@ import 'server-only'; // 🚨 禁止在客户端导入 - 包含 Service Role Key
 import { createClient } from '@/lib/supabase-server';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { hashIPAddress } from '@/lib/security/ip-hash';
+import { USER_TIER_CONFIG, type UserTier, type UserTierConfig } from '@/lib/credits/config';
 
-// User tier configuration matching the 3-10 tier strategy
-export type UserTier = 'unverified' | 'verified' | 'pro';
-
-export interface UserTierConfig {
-  maxPerMonth: number; // Maximum images per month
-  displayName: string; // Display name for the tier
-}
-
-export const USER_TIER_CONFIG: Record<UserTier, UserTierConfig> = {
-  unverified: {
-    maxPerMonth: 3, // 3 images per month for unverified users
-    displayName: '免费试用',
-  },
-  verified: {
-    maxPerMonth: 10, // 10 images per month for verified users
-    displayName: '已验证用户',
-  },
-  pro: {
-    maxPerMonth: Infinity, // Unlimited for pro users
-    displayName: '专业版',
-  },
-};
+// Re-export types and config for backward compatibility
+export { UserTier, UserTierConfig, USER_TIER_CONFIG };
 
 /**
- * Check user's available credits
+ * Check user's available credits (All users have 3 credits, based on processing history)
  * @param userId - The user's ID from the database
  * @returns Object containing tier info, usage stats, and remaining credits
  */
 export async function checkCredits(userId: string) {
-  // Use admin client to ensure we can read/update strictly
+  // Use admin client to bypass RLS for accurate counting
   const supabase = createAdminClient();
 
   console.log(`[Credits] Checking credits for user: ${userId}`);
 
-  const { data: user, error } = await (supabase as any)
+  // Get user data from database to determine tier
+  const { data: user, error: userError } = await (supabase as any)
     .from('wmc_users')
-    .select('*')
+    .select('tier')
     .eq('id', userId)
     .single();
 
-  if (error || !user) {
-    console.error(`[Credits] User not found or error:`, error);
+  if (userError || !user) {
+    console.error(`[Credits] Failed to fetch user:`, userError);
     throw new Error('User not found');
   }
 
-  // Check if we need to reset monthly credits (on the 1st of each month)
-  const now = new Date();
-  const lastReset = new Date((user as any).creditsreset || now); // Note lower case match DB
-  
-  // Debug log for fields
-  console.log(`[Credits] User found. Tier: ${user.tier}, Used: ${user.creditsused}, Reset: ${user.creditsreset}`);
+  // Count lifetime processing history for this user (not monthly)
+  const { count, error: countError } = await (supabase as any)
+    .from('wmc_processing_history')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', userId)
+    .eq('success', true);
 
-  // Reset if we're in a different month/year than last reset
-  if (now.getMonth() !== lastReset.getMonth() || now.getFullYear() !== lastReset.getFullYear()) {
-    console.log(`[Credits] Resetting credits for user ${userId}. Last reset: ${lastReset}, Now: ${now}`);
-    
-    // Reset credits for new month
-    const { error: updateError } = await (supabase as any)
-      .from('wmc_users')
-      .update({
-        creditsused: 0,
-        creditsreset: now.toISOString(),
-      })
-      .eq('id', userId);
-
-    if (updateError) {
-      console.error(`[Credits] Failed to reset credits:`, updateError);
-      throw new Error(`Failed to reset credits: ${updateError.message}`);
-    }
-    
-    console.log(`[Credits] Credits reset successfully.`);
-
-    return {
-      tier: user.tier as UserTier,
-      used: 0,
-      limit: USER_TIER_CONFIG[user.tier as UserTier].maxPerMonth,
-      remaining: USER_TIER_CONFIG[user.tier as UserTier].maxPerMonth,
-    };
+  if (countError) {
+    console.error(`[Credits] Failed to count processing history:`, countError);
+    throw new Error('Failed to check credits');
   }
 
-  const tierConfig = USER_TIER_CONFIG[user.tier as UserTier];
-  const used = (user as any).creditsused || 0;
+  const used = count ?? 0;
+  const tier: UserTier = (user.tier as UserTier) || 'unverified';
+  const tierConfig = USER_TIER_CONFIG[tier];
+
+  console.log(`[Credits] User ${userId} has used ${used} credits, limit: ${tierConfig.maxPerMonth}`);
 
   return {
-    tier: user.tier as UserTier,
-    used: used,
+    tier,
+    used,
     limit: tierConfig.maxPerMonth,
     remaining: Math.max(0, tierConfig.maxPerMonth - used),
   };
@@ -172,8 +134,8 @@ export async function recordProcessingHistory({
 
 /**
  * Check remaining credits for both authenticated and IP-based users
- * For authenticated users: Use their tier from the database
- * For IP-based users: Determine tier based on verification status (simplified)
+ * For authenticated users: Use lifetime processing history count
+ * For IP-based users: Use lifetime IP-based processing history count
  */
 export async function checkUserCredits(
   identifier: string,
@@ -181,17 +143,12 @@ export async function checkUserCredits(
   userId?: string
 ) {
   if (isAuthenticated && userId) {
-    // For authenticated users, use database records
+    // For authenticated users, use database records (lifetime count)
     return checkCredits(userId);
   } else {
     // For IP-based users, use simplified logic
-    // These are always considered 'unverified' tier
     const tier: UserTier = 'unverified';
     const tierConfig = USER_TIER_CONFIG[tier];
-
-    // Count IP-based processing history for this month
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
     // IMPORTANT: Hash the IP before querying database
     // The database stores IP hashes, not raw IPs
@@ -200,25 +157,18 @@ export async function checkUserCredits(
     console.log('[Credits Check] ===== IP-based User Check Started =====');
     console.log('[Credits Check] Original IP:', identifier);
     console.log('[Credits Check] Hashed IP:', hashedIdentifier);
-    console.log('[Credits Check] Query period:', startOfMonth.toISOString(), 'to', now.toISOString());
+    console.log('[Credits Check] Counting lifetime usage (no monthly filter)');
 
     // FIX: Use admin client for IP-based queries to bypass RLS
     console.log('[Credits Check] Creating admin client (bypass RLS)...');
     const supabase = createAdminClient();
 
-    console.log('[Credits Check] Executing Supabase query...');
-    console.log('[Credits Check] Table: wmc_processing_history');
-    console.log('[Credits Check] Conditions:');
-    console.log('  - ip_address:', hashedIdentifier);
-    console.log('  - created_at >=', startOfMonth.toISOString());
-    console.log('  - success: true');
-
     const { count, error } = await (supabase as any)
       .from('wmc_processing_history')
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', hashedIdentifier)  // Use hashed IP to match stored hashes
-      .gte('created_at', startOfMonth.toISOString())
       .eq('success', true);
+      // ❌ Removed: .gte('created_at', startOfMonth.toISOString()) - No monthly filter
 
     if (error) {
       console.error('[Credits Check] Supabase query error:', error);
