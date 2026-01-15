@@ -165,9 +165,6 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
                 <div className="text-sm text-red-700">
                   <p className="mb-2">💡 {t("you_can:")}</p>
                   <ul className="list-disc list-inside space-y-1 ml-2">
-                    {errorData.tier === 'unverified' && (
-                      <li>{t("verify_email_for_credits")}</li>
-                    )}
                     <li>{t("upgrade_to_pro")}</li>
                     <li>{t("wait_for_reset")}</li>
                   </ul>
@@ -175,15 +172,6 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
               </div>
 
               <div className="flex gap-3 flex-wrap">
-                {errorData.tier === 'unverified' && (
-                  <button
-                    onClick={() => window.location.href = errorData.upgradeUrl}
-                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg
-                      hover:from-blue-600 hover:to-blue-700 transition font-medium shadow-sm"
-                  >
-                    {t("verify_email_button")}
-                  </button>
-                )}
                 <button
                   onClick={() => window.location.href = '/pricing'}
                   className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg

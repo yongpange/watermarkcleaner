@@ -1,7 +1,6 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { VerificationPrompt } from "@/components/VerificationPrompt";
 import { CreditsDisplay } from "@/components/CreditsDisplay";
 
 /**
@@ -13,11 +12,6 @@ export function ClientSessionProvider({ children }: { children: React.ReactNode 
   return (
     <SessionProvider>
       <div className="space-y-6">
-        {/* Verification Prompt for unauthenticated users */}
-        <div className="max-w-4xl mx-auto">
-          <VerificationPrompt />
-        </div>
-
         {/* Credits Display for all users */}
         <div className="max-w-4xl mx-auto">
           <CreditsDisplay />

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import WatermarkEditor from "@/components/watermark-editor";
 import { CreditsDisplay } from "@/components/CreditsDisplay";
-import { VerificationPrompt } from "@/components/VerificationPrompt";
 import { AuthModal } from "@/components/auth/auth-modal";
 
 /**
@@ -29,9 +28,8 @@ export function ConvertPageClient() {
 
   return (
     <>
-      {/* Verification Prompt and Credits Display */}
+      {/* Credits Display */}
       <div className="max-w-4xl mx-auto space-y-6">
-        <VerificationPrompt />
         {/* Key prop forces re-render when processingCount changes */}
         <CreditsDisplay key={processingCount} onVerifyEmail={handleVerifyEmail} />
       </div>

@@ -158,7 +158,7 @@ export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
             onClick={onVerifyEmail}
             className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block text-left cursor-pointer"
           >
-            {t("verify_email")}
+            🔐 Sign in to continue
           </button>
         </div>
       </div>
@@ -217,14 +217,10 @@ export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
       {credits.remaining <= 5 && credits.tier !== "pro" && (
         <div className="mt-3 pt-2 border-t border-violet-200 dark:border-violet-800">
           <Link
-            href={credits.tier === "unverified" ? "#" : "/pricing"}
-            onClick={credits.tier === "unverified" ? (e) => {
-              e.preventDefault();
-              onVerifyEmail?.();
-            } : undefined}
+            href="/pricing"
             className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block"
           >
-            {credits.tier === "unverified" ? t("verify_email") : t("upgrade_pro")}
+            {t("upgrade_pro")}
           </Link>
         </div>
       )}

@@ -2,7 +2,8 @@ import EmailProvider from 'next-auth/providers/email';
 import Credentials from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { SupabaseAdapter } from '@auth/supabase-adapter';
-import type { NextAuthOptions, User, Account, Profile, Session, TokenSet } from 'next-auth';
+import type { NextAuthConfig, User, Account, Profile, Session } from 'next-auth';
+import type { TokenSet } from '@auth/core/types';
 import { createClient } from '@/lib/supabase-server';
 import { createAdminClient } from '@/lib/supabase-admin';
 import {
@@ -21,7 +22,7 @@ import {
  * - Custom session callbacks to include user data
  */
 
-export const authConfig: NextAuthOptions = {
+export const authConfig: NextAuthConfig = {
   // 暂时禁用 SupabaseAdapter 以测试 Google OAuth
   // adapter: SupabaseAdapter({
   //   url: process.env.NEXT_PUBLIC_SUPABASE_URL!,

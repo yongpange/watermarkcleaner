@@ -230,7 +230,6 @@
       "unlimited": "✨ 无限额度",
       "monthly_usage": "已使用: {used} / {limit}",
       "remaining": "剩余: {remaining}",
-      "verify_email": "🔐 验证邮箱获得更多额度 →",
       "upgrade_pro": "💎 升级专业版获得无限额度 →",
       "trial_activated": "试用已激活"
     },
@@ -291,10 +290,8 @@
       "credit_limit_exceeded": "额度已用完",
       "you_have_used": "您已使用 {used} / {limit} 张额度",
       "you_can": "您可以选择：",
-      "verify_email_for_credits": "验证邮箱可获得更多额度",
       "upgrade_to_pro": "升级到专业版获得无限额度",
       "wait_for_reset": "稍后再试或等待更多额度",
-      "verify_email_button": "✉️ 验证邮箱",
       "upgrade_to_pro_button": "💎 升级到专业版",
       "try_again_later": "稍后再试"
     }

@@ -4,15 +4,22 @@
 
 **WatermarkCleaner** 是一个现代化的 AI 驱动水印去除网站，提供在线图像处理服务。项目基于 Next.js 15、React 19 和 TypeScript 构建，支持多语言国际化，并提供完整的博客系统、用户认证、额度管理等功能。
 
-**✅ 最新更新**: 2026-01-08 额度系统重大更新 - 统一所有用户额度为3次
+**✅ 最新更新**: 2026-01-09 移除 VerificationPrompt 组件，额度显示统一由 CreditsDisplay 管理
 
-**💰 额度系统统一化**:
+**🚫 VerificationPrompt 组件移除**:
+- ✅ **组件删除**: 移除 `src/components/VerificationPrompt.tsx` 组件
+- ✅ **UI简化**: 额度提示统一由 `CreditsDisplay` 组件管理
+- ✅ **文案优化**: 未登录用户显示 "🔐 Sign in to continue" 替代 "Verify email"
+- ✅ **错误提示优化**: 额度用完时的错误提示移除邮箱验证选项
+- ✅ **防误导**: 避免用户误解"验证邮箱可获得更多额度"
+
+**💰 额度系统统一化 (2026-01-08)**:
 - ✅ **统一额度**: 所有用户（登录/未登录）统一为3次额度
 - ✅ **逻辑简化**: 登录用户额度检查从 wmc_users.creditsused 改为 wmc_processing_history 计数
 - ✅ **数据一致性**: 所有用户使用相同的额度计算方式（基于处理历史）
 - ✅ **向后兼容**: 保留 wmc_users.creditsused 字段更新，确保数据完整性
 
-**📝 博客内容更新**:
+**📝 博客内容更新 (2026-01-08)**:
 - ✅ **新文章发布**: 发布对比评测文章 "一键去水印 vs 手动涂抹"
 - ✅ **四大维度评测**: 涵盖操作便捷性、全屏水印处理、画质保护、商用适用性
 - ✅ **完整数据支持**: 包含技术指标（SSIM、PSNR）、用户反馈、实际案例
@@ -249,11 +256,17 @@ watermarkcleaner_com/
 - **混合渲染架构**: 服务端渲染 (generateMetadata) + 客户端交互 (state management)
 - **安全记录系统**: IP地址匿名化存储，符合 GDPR 合规要求
 
+**协调组件关系**:
+- `ConvertPageClient` → 管理 `processingCount` state，协调额度刷新
+- `CreditsDisplay` → 接收 `key={processingCount}` prop，强制重新渲染
+- `WatermarkEditor` → 调用 `onProcessingComplete()` 回调触发刷新
+- `AuthModal` → 登录成功后触发额度重新计算
+
 **额度刷新机制**:
-1. 状态追踪: `ConvertPageClient` 使用 `processingCount` state 追踪处理次数
-2. 强制重新渲染: `CreditsDisplay` 接收 `key={processingCount}` prop，变化时强制重新渲染
-3. 回调触发: `WatermarkEditor` 处理成功后调用 `onProcessingComplete()` 回调
-4. 重新获取数据: 组件重新挂载，自动调用 `/api/credits/check-ip` 获取最新数据
+1. **状态追踪**: `ConvertPageClient` 使用 `processingCount` state 追踪处理次数
+2. **强制重新渲染**: `CreditsDisplay` 接收 `key={processingCount}` prop，变化时强制刷新
+3. **回调触发**: `WatermarkEditor` 处理成功后调用 `onProcessingComplete()` 回调
+4. **重新获取数据**: 组件重新挂载，自动调用 `/api/credits/check-ip` 获取最新数据
 
 ### 3.2 博客系统 (Blog System)
 
@@ -349,7 +362,7 @@ AUTH_SECRET="your-random-secret-key"   # 用于 JWT 加密
 **核心特性**:
 1. **一键登录**: 用户点击"使用 Google 登录"按钮即可快速登录
 2. **自动注册**: 新用户首次登录自动创建账户
-3. **等级升级**: Google 用户自动获得 `verified` 状态（10张/月额度）
+3. **等级设置**: Google 用户自动获得 `verified` 状态（统一3张额度）
 4. **信息同步**: 自动同步 Google 头像、姓名等信息
 5. **安全可靠**: 使用 NextAuth.js v5 的安全机制
 
@@ -359,8 +372,8 @@ AUTH_SECRET="your-random-secret-key"   # 用于 JWT 加密
 3. 用户授权后返回应用
 4. NextAuth 处理回调并创建会话
 5. SignIn 回调自动创建/更新用户记录
-6. 用户获得 `verified` 等级和 10 张初始额度
-7. 重定向到 `/my-credits` 页面
+6. 用户获得 `verified` 等级和统一额度（3张）
+7. 重定向到 `/convert` 页面继续处理
 
 **Google Cloud Console 设置**:
 - 启用 Google+ API
@@ -368,13 +381,13 @@ AUTH_SECRET="your-random-secret-key"   # 用于 JWT 加密
 - 创建 OAuth 2.0 客户端 ID
 - 添加授权重定向 URI: `http://localhost:3000/api/auth/callback/google`
 
-**登录体验升级 (2026-01-01)**:
-- **Header 用户状态展示**：登录后自动显示用户头像、用户名和剩余额度（如 👤 geyongpan (5/10)）
+**登录体验升级 (2026-01-09)**:
+- **Header 用户状态展示**：登录后自动显示用户头像、用户名和剩余额度（如 👤 geyongpan (2/3)）
 - **下拉菜单**：快速访问"我的额度"、"升级专业版"和"退出登录"
 - **响应式设计**：完美适配移动端，提供完整的用户信息展示
 - **Toast 通知**：使用 react-hot-toast 实现优雅的登录成功提示和错误通知
 - **Session 管理**：自动同步用户 tier 状态，实时更新额度显示
-- **信任 Google 验证**：新 Google 用户自动获得 verified 状态（10张额度），无需额外验证
+- **登录即验证**：Google 用户登录即获得 verified 状态，额度统一为3张
 
 **邮箱验证码认证系统** (新功能):
 
@@ -516,7 +529,17 @@ enum UserTier {
 3. **回调触发**: WatermarkEditor 处理成功后调用 `onProcessingComplete()` 回调
 4. **重新获取数据**: 组件重新挂载，自动调用 `/api/credits/check-ip` 获取最新数据
 
-**检查流程** (2026-01-08 更新):
+**额度配置** (2026-01-09 统一化):
+```typescript
+// 所有用户统一为3次额度
+USER_TIER_CONFIG = {
+  unverified: { maxPerMonth: 3 },  // 未登录用户
+  verified:   { maxPerMonth: 3 },  // 已登录用户（Google/邮箱）
+  pro:        { maxPerMonth: Infinity }  // 专业版用户
+}
+```
+
+**检查流程** (2026-01-09 更新):
 1. **用户认证**: 验证用户身份 (session 或 IP)
 2. **额度查询**:
    - **已登录用户**: 查询 `wmc_processing_history` 表，统计 user_id 匹配的记录数
@@ -533,7 +556,7 @@ enum UserTier {
 **数据库表**:
 - `public.wmc_users`: 用户信息 + 额度记录（已登录用户）
   - `tier`: 用户层级（unverified/verified/pro）
-  - `creditsUsed`: 本月已使用次数
+  - `creditsUsed`: 本月已使用次数（保留字段，额度计算不再依赖）
   - `creditsReset`: 上次重置时间
 
 - `public.wmc_processing_history`: 处理历史记录（已登录和未登录用户）
@@ -542,6 +565,7 @@ enum UserTier {
   - `image_size`: 处理的图片大小
   - `success`: 处理是否成功
   - `created_at`: 记录创建时间（用于月度统计）
+  - **用途**: 额度计算基于此表的实际处理记录数，而非 `wmc_users.creditsused`
 
 **API端点**:
 - `GET /api/credits/check` - 已登录用户额度检查
@@ -675,9 +699,9 @@ newStorage().uploadFile({
 ```json
 {
   "tier": "verified",
-  "used": 5,
-  "limit": 10,
-  "remaining": 5
+  "used": 2,
+  "limit": 3,
+  "remaining": 1
 }
 ```
 
@@ -696,6 +720,11 @@ newStorage().uploadFile({
   "remaining": 1
 }
 ```
+
+**额度限制说明** (2026-01-09):
+- 所有用户（无论登录/未登录）统一为 **3次额度**
+- `tier` 字段用于识别用户类型，但不影响额度数量
+- 用完后需要升级到 **Pro** 获得无限额度
 
 ### 4.4 记录处理历史 API
 
@@ -1137,6 +1166,8 @@ DATA_RETENTION_DAYS=3
 - **修复 Supabase 类型推断**：使用 `as any` 断言解决 `never` 类型错误
 - **i18n 路由配置**：确保 `pathnames` 配置与实际文件路径一致
 - **组件类型安全**：修复所有 `Link` 组件的 href 类型错误
+- **VerificationPrompt 移除**：清理相关导入和文案，简化额度提示系统
+- **NextAuth v5 升级**：修复 `auth()` 函数导入问题，升级至 5.0.0-beta.25
 - **构建验证**：本地和 Vercel 部署构建均通过 ✅
 
 **优化 2**: 监控告警
@@ -1242,9 +1273,10 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 - 完善的国际化支持 (7种语言)
 - 多 AI 提供商的容错设计 (Fal.ai, ByteDance Ark)
 - 完整的博客和内容营销系统 (文件系统存储)
-- 健全的额度管理和用户体系 (3-10-无限层级)
+- 健全的额度管理和用户体系 (统一3次，Pro无限)
 - 优秀的 SEO 和性能优化 (ISR + SSG)
 - 实时内容更新，无需重新部署
+- 简化的UI组件架构 (移除冗余的 VerificationPrompt)
 
 ### 改进方向 🔧
 - 异步任务队列和实时进度 (WebSocket)
@@ -1273,17 +1305,25 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 
 ---
 
-**文档版本**: 1.9
-**最后更新**: 2026-01-08
+**文档版本**: 2.0
+**最后更新**: 2026-01-09
 **维护者**: Claude Code AI
 
 ### 更新日志 (Changelog)
+- **v2.0 (2026-01-09)**: 移除 VerificationPrompt 组件，UI简化
+  - **组件移除**: 删除 `src/components/VerificationPrompt.tsx` 和相关引用
+  - **UI简化**: 额度提示统一由 `CreditsDisplay` 组件管理
+  - **文案优化**: 未登录用户显示 "🔐 Sign in to continue"
+  - **错误提示优化**: 额度用完时的错误提示移除邮箱验证选项
+  - **国际化清理**: 删除 `verify_email` 相关文案（3个key）
+  - **用户体验**: 避免用户误解"验证邮箱可获得更多额度"
+
 - **v1.9 (2026-01-08)**: 额度系统重大更新 - 统一所有用户为3次额度，修复 NextAuth v5 类型错误
   - **额度系统统一化**: 所有用户（登录/未登录）统一为3次额度
   - **查询逻辑优化**: 登录用户额度检查改为基于 `wmc_processing_history` 表计数
   - **数据一致性**: 所有用户使用相同的额度计算方式（基于处理历史）
   - **向后兼容**: 保留 `wmc_users.creditsused` 字段更新，确保数据完整性
-  - **NextAuth v5 修复**: 修复 `auth is not a function` 错误，更新 `AuthOptions` → `NextAuthConfig`
+  - **NextAuth v5 升级**: 升级至 5.0.0-beta.25，修复 `react/index.js` 导入问题
   - **影响范围**: 所有额度检查 API、CreditsDisplay 组件、额度扣除逻辑
 
 - **v1.8 (2026-01-08)**: 新增深度评测博客文章 - 对比 watermarkcleaner.com 与 Magic Eraser.org

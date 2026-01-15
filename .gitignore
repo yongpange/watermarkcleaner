@@ -95,6 +95,9 @@ temp/
 ehthumbs.db
 Thumbs.db
 
+# Windows nul file (may appear accidentally)
+nul
+
 # AI Assistant
 .trae/
 

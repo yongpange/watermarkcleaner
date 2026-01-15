@@ -230,7 +230,6 @@
       "unlimited": "✨ Unlimited",
       "monthly_usage": "Used: {used} / {limit}",
       "remaining": "Remaining: {remaining} images",
-      "verify_email": "🔐 Verify email for more credits →",
       "upgrade_pro": "💎 Upgrade to Pro for unlimited credits →",
       "trial_activated": "Trial Activated"
     },
@@ -291,10 +290,8 @@
       "credit_limit_exceeded": "Credit limit exceeded",
       "you_have_used": "You have used {used} / {limit} credits",
       "you_can": "You can:",
-      "verify_email_for_credits": "Verify email to get more credits",
       "upgrade_to_pro": "Upgrade to Pro for unlimited credits",
       "wait_for_reset": "Check back later for more credits",
-      "verify_email_button": "✉️ Verify Email",
       "upgrade_to_pro_button": "💎 Upgrade to Pro",
       "try_again_later": "Try again later"
     }
