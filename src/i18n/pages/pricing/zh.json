@@ -26,10 +26,10 @@
         "unit": "USD",
         "interval": "one-time",
         "product_id": "free-plan",
-        "credits": 10,
+        "credits": 3,
         "features_title": "包含",
         "features": [
-          "10 积分/月",
+          "3 积分 (终身免费)",
           "有限使用",
           "无水印去除",
           "基础支持"

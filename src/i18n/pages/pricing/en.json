@@ -26,10 +26,10 @@
         "unit": "USD",
         "interval": "one-time",
         "product_id": "free-plan",
-        "credits": 10,
+        "credits": 3,
         "features_title": "Includes",
         "features": [
-          "10 Credits/month",
+          "3 Credits (lifetime free)",
           "Limited usage",
           "No watermark removal",
           "Basic support"

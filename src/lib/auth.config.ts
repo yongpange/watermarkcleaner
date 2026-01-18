@@ -306,9 +306,29 @@ export const authConfig: NextAuthConfig = {
   events: {
     async createUser({ user }: { user: any }) {
       console.log('[Auth] New user created:', user.email, 'ID:', user.id);
+
+      // Grant free-plan to new user
+      try {
+        const { grantFreePlan } = await import('@/lib/credits/grant');
+        await grantFreePlan(user.id);
+        console.log('[Auth] Free-plan granted to new user:', user.email);
+      } catch (error) {
+        console.error('[Auth] Failed to grant free-plan:', error);
+        // Don't block user creation if free-plan grant fails
+      }
     },
     async signIn({ user }: { user: any }) {
       console.log('[Auth] User signed in:', user.email, 'ID:', user.id);
+
+      // Ensure user has subscription (grant free-plan if none exists)
+      try {
+        const { ensureUserHasSubscription } = await import('@/lib/credits/grant');
+        await ensureUserHasSubscription(user.id);
+        console.log('[Auth] User subscription ensured:', user.email);
+      } catch (error) {
+        console.error('[Auth] Failed to ensure subscription:', error);
+        // Don't block login if subscription check fails
+      }
     },
   },
 

@@ -4,20 +4,31 @@
 
 **WatermarkCleaner** 是一个现代化的 AI 驱动水印去除网站，提供在线图像处理服务。项目基于 Next.js 15、React 19 和 TypeScript 构建，支持多语言国际化，并提供完整的博客系统、用户认证、额度管理等功能。
 
-**✅ 最新更新**: 2026-01-09 移除 VerificationPrompt 组件，额度显示统一由 CreditsDisplay 管理
+**✅ 最新更新**: 2026-01-18 CREEM支付系统完整迁移
 
-**🚫 VerificationPrompt 组件移除**:
-- ✅ **组件删除**: 移除 `src/components/VerificationPrompt.tsx` 组件
-- ✅ **UI简化**: 额度提示统一由 `CreditsDisplay` 组件管理
-- ✅ **文案优化**: 未登录用户显示 "🔐 Sign in to continue" 替代 "Verify email"
-- ✅ **错误提示优化**: 额度用完时的错误提示移除邮箱验证选项
-- ✅ **防误导**: 避免用户误解"验证邮箱可获得更多额度"
+**✅ CREEM支付系统迁移 (2026-01-18)**:
+- ✅ **完整支付系统**: 从shipany_two_vercel迁移完整CREEM支付架构
+- ✅ **支付提供商**: 支持 Creem/Stripe/PayPal（首期启用Creem）
+- ✅ **数据库表**: 新建 `wmc_order`, `wmc_subscription`, `wmc_credit` 表
+- ✅ **API路由**: `/api/payment/checkout` 和 `/api/payment/notify/[provider]`
+- ✅ **额度管理**: Pro用户基于wmc_credit精确额度，Free用户维持wmc_processing_history
+- ✅ **配置模板**: 创建 `.env.local.example` 完整配置模板
+- 📄 **使用文档**: `docs/creem-payment-migration-guide.md` 详细迁移指南
 
-**💰 额度系统统一化 (2026-01-08)**:
-- ✅ **统一额度**: 所有用户（登录/未登录）统一为3次额度
-- ✅ **逻辑简化**: 登录用户额度检查从 wmc_users.creditsused 改为 wmc_processing_history 计数
-- ✅ **数据一致性**: 所有用户使用相同的额度计算方式（基于处理历史）
-- ✅ **向后兼容**: 保留 wmc_users.creditsused 字段更新，确保数据完整性
+**📝 博客内容更新 (2026-01-08)**:
+- ✅ **新文章发布**: 发布对比评测文章 "一键去水印 vs 手动涂抹"
+- ✅ **四大维度评测**: 涵盖操作便捷性、全屏水印处理、画质保护、商用适用性
+- ✅ **完整数据支持**: 包含技术指标（SSIM、PSNR）、用户反馈、实际案例
+- ✅ **SEO优化**: 文章标题、描述、标签均已完成 SEO 优化配置
+- ✅ **表格渲染**: 实现 Markdown 表格解析和美观的表格样式展示
+
+**✅ Google OAuth 配置完成**:
+- ✅ **NextAuth.js v5 升级**: 迁移到 `auth()` API，修复所有导入和类型定义
+- ✅ **Google OAuth 集成**: 完整配置 Google Provider，支持一键登录
+- ✅ **自动用户升级**: Google 登录用户自动获得 verified 状态（10张额度）
+- ✅ **TypeScript 类型安全**: 修复所有 NextAuth v5 相关的类型错误
+- ✅ **环境变量配置**: 添加 GOOGLE_CLIENT_ID、GOOGLE_CLIENT_SECRET、AUTH_SECRET
+- ✅ **过期机制**: 支持积分过期（月度/年度套餐）
 
 **📝 博客内容更新 (2026-01-08)**:
 - ✅ **新文章发布**: 发布对比评测文章 "一键去水印 vs 手动涂抹"
@@ -95,7 +106,9 @@
 ### 后端 & 数据库
 - **Supabase**: PostgreSQL 数据库 + 认证
 - **NextAuth.js**: 5.0.0-beta.30 (升级完成 - 2026-01-08)
-- **Prisma**: 数据库 ORM (隐含使用)
+- **积分系统**: 2026-01-17 升级为完整信用积分制
+  - 表前缀: `wmc_` (public schema)
+  - 核心表: `wmc_credit`, `wmc_subscription`, `wmc_config`
 
 ### AI & 图像处理
 - **Fal.ai**: 主要 AI 图像处理服务 (SDXL Inpainting)
@@ -119,6 +132,63 @@
 
 ### UI/UX 库
 - **react-hot-toast**: 2.5.1 - 优雅的 Toast 通知提示
+
+---
+
+## 核心架构变更 (2026-01-17 → 2026-01-18)
+
+### 数据库架构升级
+```
+public schema
+├── wmc_users                -- 用户表 (NextAuth)
+├── wmc_accounts             -- OAuth账户
+├── wmc_sessions             -- 会话
+├── wmc_verification_tokens  -- 验证令牌
+├── wmc_processing_history   -- 处理历史 (Free用户)
+├── wmc_order               -- 支付订单表 (新增)
+├── wmc_subscription        -- 订阅管理表 (新增)
+├── wmc_credit              -- 信用额度表 (Pro用户)
+└── wmc_config              -- 系统配置表
+```
+
+### 支付系统架构 (2026-01-18 新增)
+
+**双系统额度管理**:
+- **Free用户**: 使用 `wmc_processing_history` 表计数，3张/月限制
+- **Pro用户**: 使用 `wmc_credit` 表精确管理（FIFO算法）
+
+**支付系统核心表**:
+- **wmc_order**: 支付订单管理
+  - 订单号 `order_no` (ORD-前缀)
+  - 多支付提供商支持 (Creem/Stripe/PayPal)
+  - 价格验证和幂等性保证
+  - 状态管理 (pending/paid/canceled)
+
+- **wmc_subscription**: 订阅生命周期管理
+  - 订阅周期 (month/year)
+  - 自动续费处理
+  - 周期额度授予
+  - 状态追踪 (active/trialing/canceled)
+
+- **wmc_credit**: 精确额度管理（FIFO算法）
+  - 交易记录（grant/consume）
+  - 实时余额计算：`SUM(credits)`
+  - 过期机制支持
+  - 关联订阅自动授予
+
+**配置表**:
+- **wmc_config**: 系统配置管理
+  - 产品ID映射 (JSON格式)
+  - 多提供商产品配置
+  - 动态配置更新
+
+### 关键特性提升
+- **双轨额度**: Free/Pro用户分别管理，互不影响
+- **精确管理**: Pro用户基于FIFO算法精确扣减额度
+- **自动续期**: 订阅续费时自动授予新额度
+- **过期机制**: 额度支持设置过期时间，符合订阅周期
+- **事务安全**: 数据库事务保证支付和额度一致性
+- **幂等性**: Webhook处理保证不重复授予额度
 
 ---
 
@@ -979,6 +1049,145 @@ WHERE ip_address = '18849ddcfb4ac7c006228118ee75b12cea0f...'
 
 ---
 
+### 5.5 支付订单表 (wmc_order)
+
+**用途**: 记录所有支付订单，支持多支付提供商，保证幂等性和事务一致性。
+
+**核心字段**:
+```sql
+CREATE TABLE public.wmc_order (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  order_no TEXT UNIQUE NOT NULL,              -- 订单号 (ORD-前缀)
+  user_id TEXT REFERENCES public.wmc_users(id) ON DELETE CASCADE,
+  user_email TEXT NOT NULL,                   -- 用户邮箱
+  product_id TEXT NOT NULL,                   -- 产品ID (pro-monthly等)
+  product_name TEXT NOT NULL,                 -- 产品名称
+  description TEXT,                           -- 订单描述
+  amount INTEGER NOT NULL,                    -- 金额（分/美分）
+  currency TEXT NOT NULL,                     -- 货币 (usd/cny)
+  payment_type TEXT NOT NULL,                 -- 支付类型 (subscription/one-time)
+  payment_interval TEXT,                      -- 支付周期 (month/year)
+  payment_provider TEXT NOT NULL,             -- 支付提供商 (creem/stripe)
+  payment_session_id TEXT,                    -- 支付会话ID
+  provider_order_id TEXT,                     -- 提供商订单ID
+  status TEXT DEFAULT 'pending',              -- 订单状态
+  credits_amount INTEGER,                     -- 授予的积分数
+  credits_valid_days INTEGER,                 -- 积分有效期（天）
+  customer JSONB,                             -- 客户信息
+  metadata JSONB,                             -- 元数据
+  success_url TEXT,                           -- 成功回调URL
+  cancel_url TEXT,                            -- 取消回调URL
+  paid_at TIMESTAMPTZ,                        -- 支付成功时间
+  expired_at TIMESTAMPTZ,                     -- 订单过期时间
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 索引
+CREATE INDEX idx_wmc_order_user_id ON public.wmc_order(user_id);
+CREATE INDEX idx_wmc_order_order_no ON public.wmc_order(order_no);
+CREATE INDEX idx_wmc_order_status ON public.wmc_order(status);
+CREATE INDEX idx_wmc_order_created_at ON public.wmc_order(created_at DESC);
+```
+
+### 5.6 订阅管理表 (wmc_subscription)
+
+**用途**: 管理用户订阅生命周期，支持自动续费、额度授予和过期处理。
+
+**核心字段**:
+```sql
+CREATE TABLE public.wmc_subscription (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  subscription_no TEXT UNIQUE NOT NULL,      -- 订阅号 (SUB-前缀)
+  user_id TEXT NOT NULL REFERENCES public.wmc_users(id) ON DELETE CASCADE,
+  product_id TEXT NOT NULL,                  -- 产品ID (pro-monthly等)
+  product_name TEXT NOT NULL,                -- 产品名称
+  status TEXT NOT NULL,                      -- 订阅状态 (active/trialing/canceled)
+  interval TEXT NOT NULL,                    -- 订阅周期 (month/year)
+  currency TEXT NOT NULL,                    -- 货币
+  amount INTEGER NOT NULL,                   -- 金额（分/美分）
+  credits_amount INTEGER NOT NULL,           -- 每期授予积分数
+  provider_subscription_id TEXT,             -- 提供商订阅ID
+  payment_provider TEXT NOT NULL,            -- 支付提供商
+  current_period_start TIMESTAMPTZ,          -- 当前周期开始
+  current_period_end TIMESTAMPTZ,            -- 当前周期结束
+  cancel_at_period_end BOOLEAN DEFAULT FALSE,-- 周期末取消
+  canceled_at TIMESTAMPTZ,                   -- 取消时间
+  metadata JSONB,                            -- 元数据
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  deleted_at TIMESTAMPTZ
+);
+
+-- 索引
+CREATE INDEX idx_wmc_subscription_user_id ON public.wmc_subscription(user_id);
+CREATE INDEX idx_wmc_subscription_status ON public.wmc_subscription(status);
+CREATE INDEX idx_wmc_subscription_period_end ON public.wmc_subscription(current_period_end);
+CREATE INDEX idx_wmc_subscription_provider ON public.wmc_subscription(payment_provider, provider_subscription_id);
+```
+
+### 5.7 信用额度表 (wmc_credit)
+
+**用途**: 精确管理用户信用额度（Credits），支持FIFO消费、过期机制和交易追踪。
+
+**设计原则**:
+- **实时余额**: SUM(credits) 计算，无冗余字段
+- **原子操作**: 使用 Supabase RPC 保证一致性
+- **过期支持**: 支持积分过期机制
+- **事务追踪**: 记录所有授予/消费记录
+
+**核心字段**:
+```sql
+CREATE TABLE public.wmc_credit (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  user_id TEXT NOT NULL REFERENCES public.wmc_users(id) ON DELETE CASCADE,
+  user_email TEXT,                           -- 用户邮箱（冗余）
+  order_no TEXT REFERENCES public.wmc_order(order_no) ON DELETE SET NULL,
+  subscription_no TEXT REFERENCES public.wmc_subscription(subscription_no) ON DELETE SET NULL,
+  subscription_id TEXT,                      -- 关联订阅表
+  transaction_no TEXT UNIQUE NOT NULL,       -- 交易号 (CR-/CC-前缀)
+  transaction_type TEXT NOT NULL,            -- 交易类型 (grant/consume)
+  transaction_scene TEXT,                    -- 交易场景 (payment/subscription/migration)
+  credits INTEGER NOT NULL,                  -- 积分数（正/负）
+  description TEXT,                          -- 描述
+  metadata JSONB,                            -- 元数据
+  expires_at TIMESTAMPTZ,                    -- 过期时间
+  status TEXT DEFAULT 'active',              -- 状态 (active/expired)
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  deleted_at TIMESTAMPTZ
+);
+
+-- 索引
+CREATE INDEX idx_wmc_credit_user_id ON public.wmc_credit(user_id);
+CREATE INDEX idx_wmc_credit_transaction_type ON public.wmc_credit(transaction_type);
+CREATE INDEX idx_wmc_credit_status ON public.wmc_credit(status);
+CREATE INDEX idx_wmc_credit_expires_at ON public.wmc_credit(expires_at) WHERE status = 'active' AND transaction_type = 'grant';
+CREATE INDEX idx_wmc_credit_created_at ON public.wmc_credit(created_at DESC);
+```
+
+### 5.8 配置表 (wmc_config)
+
+**用途**: 存储系统配置，包括支付提供商的产品ID映射等。
+
+**核心字段**:
+```sql
+CREATE TABLE public.wmc_config (
+  id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+  name TEXT UNIQUE NOT NULL,                  -- 配置名称
+  value TEXT NOT NULL,                        -- 配置值（JSON字符串）
+  description TEXT,                           -- 描述
+  metadata JSONB,                             -- 元数据
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 示例数据
+INSERT INTO public.wmc_config (name, value, description) VALUES
+('creem_product_ids', '{"pro-monthly":"prod_xxxxx","business-monthly":"prod_yyyyy"}', 'Creem产品ID映射'),
+('stripe_product_ids', '{"pro-monthly":"price_xxxxx","business-monthly":"price_yyyyy"}', 'Stripe价格ID映射');
+```
+
 ## 6. 国际化 (Internationalization)
 
 **支持语言**: 7 种
@@ -1305,11 +1514,18 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 
 ---
 
-**文档版本**: 2.0
-**最后更新**: 2026-01-09
+**文档版本**: 2.1
+**最后更新**: 2026-01-18
 **维护者**: Claude Code AI
 
 ### 更新日志 (Changelog)
+- **v2.1 (2026-01-18)**: CREEM支付系统完整迁移
+  - **支付架构**: 从shipany_two_vercel迁移完整支付系统
+  - **新增表**: wmc_order, wmc_subscription, wmc_credit
+  - **API路由**: /api/payment/checkout 和 Webhook处理
+  - **配置模板**: .env.local.example 完整配置
+  - **文档**: docs/creem-payment-migration-guide.md
+
 - **v2.0 (2026-01-09)**: 移除 VerificationPrompt 组件，UI简化
   - **组件移除**: 删除 `src/components/VerificationPrompt.tsx` 和相关引用
   - **UI简化**: 额度提示统一由 `CreditsDisplay` 组件管理

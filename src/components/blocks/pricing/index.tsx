@@ -30,18 +30,18 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
 
       const params = {
         product_id: item.product_id,
-        product_name: item.product_name,
-        credits: item.credits,
-        interval: item.interval,
-        amount: cn_pay ? item.cn_amount : item.amount,
-        currency: cn_pay ? "cny" : item.currency,
-        valid_months: item.valid_months,
+        amount: cn_pay ? item.cn_amount : (item.amount || 0), // Free 计划 amount 为 0
+        currency: cn_pay ? "cny" : (item.currency || 'usd'),
+        // 可选字段，如果有值才传递
+        ...(item.credits && { credits: item.credits }),
+        ...(item.interval && { interval: item.interval }),
+        ...(item.valid_months && { valid_months: item.valid_months }),
       };
 
       setIsLoading(true);
       setProductId(item.product_id);
 
-      const response = await fetch("/api/checkout", {
+      const response = await fetch("/api/payment/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,26 +57,45 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
         return;
       }
 
-      const { code, message, data } = await response.json();
-      if (code !== 0) {
-        toast.error(message);
+      const result = await response.json();
+
+      if (!result.success) {
+        toast.error(result.error || result.message || "checkout failed");
+        setIsLoading(false);
+        setProductId(null);
         return;
       }
 
-      const { public_key, session_id } = data;
+      // 处理支付响应 - 兼容 Creem 和 Stripe 格式
+      const { data } = result;
 
-      const stripe = await loadStripe(public_key);
-      if (!stripe) {
-        toast.error("checkout failed");
-        return;
-      }
+      if (data.checkoutUrl) {
+        // Creem 格式 - 直接跳转
+        window.location.href = data.checkoutUrl;
+      } else if (data.checkout_url) {
+        // 其他格式 - 直接跳转
+        window.location.href = data.checkout_url;
+      } else if (data.public_key && data.session_id) {
+        // 兼容旧的 Stripe 格式
+        const stripe = await loadStripe(data.public_key);
+        if (!stripe) {
+          toast.error("checkout failed");
+          setIsLoading(false);
+          setProductId(null);
+          return;
+        }
 
-      const result = await stripe.redirectToCheckout({
-        sessionId: session_id,
-      });
+        const stripeResult = await stripe.redirectToCheckout({
+          sessionId: data.session_id,
+        });
 
-      if (result.error) {
-        toast.error(result.error.message);
+        if (stripeResult.error) {
+          toast.error(stripeResult.error.message);
+        }
+      } else {
+        toast.error("Invalid checkout response");
+        setIsLoading(false);
+        setProductId(null);
       }
     } catch (e) {
       console.log("checkout failed: ", e);

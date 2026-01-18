@@ -9,7 +9,9 @@ import { SupabaseAuthProvider } from "@/providers/supabase-auth-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { cn } from "@/lib/utils";
 import { OrganizationStructuredData } from "@/components/seo/structured-data";
-import AppProviderClient from "@/components/app-provider-client";
+import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "@/providers/theme";
+import { Toaster } from "react-hot-toast";
 
 export async function generateMetadata({
   params,
@@ -83,13 +85,16 @@ export default async function RootLayout({
         )}
       >
         <NextIntlClientProvider messages={messages}>
-          <SupabaseAuthProvider>
-            <AppContextProvider>
-              <AppProviderClient>
-                {children}
-              </AppProviderClient>
-            </AppContextProvider>
-          </SupabaseAuthProvider>
+          <SessionProvider>
+            <SupabaseAuthProvider>
+              <AppContextProvider>
+                <ThemeProvider attribute="class" disableTransitionOnChange>
+                  {children}
+                  <Toaster position="top-center" />
+                </ThemeProvider>
+              </AppContextProvider>
+            </SupabaseAuthProvider>
+          </SessionProvider>
         </NextIntlClientProvider>
       </body>
     </html>

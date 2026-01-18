@@ -1,31 +1,45 @@
 import { respData, respErr, respJson } from "@/lib/resp";
-
-import { findUserByUuid } from "@/models/user";
-import { getUserUuid } from "@/services/user";
-import { User } from "@/types/user";
+import { findUserByEmail, findUserByUuid } from "@/models/user";
 import { createClient } from "@/lib/supabase-server";
+import { auth } from "@/auth";
 
 export async function POST(_req: Request) {
   try {
-    const user_uuid = await getUserUuid();
-    if (!user_uuid) {
+    // 尝试获取 NextAuth session (Google OAuth)
+    const session = await auth();
+    let user_email = session?.user?.email;
+    let user_id = session?.user?.id;
+
+    // 如果没有 NextAuth session，尝试 Supabase Auth
+    if (!user_email) {
+      const supabase = await createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user) {
+        user_email = user.email;
+        user_id = user.id;
+      }
+    }
+
+    if (!user_email || !user_id) {
       return respJson(-2, "no auth");
     }
 
     const supabase = await createClient();
 
-    const dbUser = await findUserByUuid(supabase, user_uuid);
+    // 根据 email 查找用户（因为 NextAuth 的 ID 可能和 Supabase 不同）
+    const dbUser = await findUserByEmail(supabase, user_email);
+
     if (!dbUser) {
-      return respErr("user not exist");
+      // 如果用户不存在，可能是新用户，尝试用 ID 查找
+      const dbUserById = await findUserByUuid(supabase, user_id);
+      if (!dbUserById) {
+        return respErr("user not exist");
+      }
+      return respData(dbUserById);
     }
 
-    // 简化版本：只返回用户基本信息，不再包含积分详情
-    const user = {
-      ...(dbUser as unknown as User),
-      // credits 字段已移除，因为credits表已删除
-    };
-
-    return respData(user);
+    return respData(dbUser);
   } catch (e) {
     console.log("get user info failed: ", e);
     return respErr("get user info failed");

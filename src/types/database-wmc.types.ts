@@ -3,7 +3,7 @@
  *
  * 这个文件定义了所有带 wmc_ 前缀的数据库表的 TypeScript 类型
  *
- * 这些表是从 watermarkcleaner schema 迁移到 public schema 的表
+ * 这些表已经在 public schema 中使用 wmc_ 前缀
  */
 
 export type Json =
