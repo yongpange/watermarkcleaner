@@ -16,11 +16,10 @@ import {
 } from '@/lib/payment/service';
 import type { PaymentEventType } from '@/extensions/payment/types';
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { provider: string } }
-): Promise<NextResponse> {
-  const provider = params.provider;
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  // Extract provider from the URL path
+  const pathname = request.nextUrl.pathname;
+  const provider = pathname.split('/').slice(-2, -1)[0]; // Get the provider from /api/payment/notify/[provider]/route
 
   try {
     console.log(`Webhook received from provider: ${provider}`);
@@ -44,12 +43,12 @@ export async function POST(
     let event;
     try {
       event = await paymentProvider.getPaymentEvent({ req: request });
-    } catch (error: any) {
-      console.error(`Webhook parsing error for provider ${provider}:`, error);
+    } catch (_error: any) {
+      console.error(`Webhook parsing error for provider ${provider}:`, _error);
       return NextResponse.json(
         {
           success: false,
-          message: `Invalid webhook: ${error.message}`,
+          message: `Invalid webhook: ${_error.message}`,
         },
         { status: 400 }
       );
@@ -256,14 +255,14 @@ export async function POST(
       message: 'Webhook processed successfully',
     });
 
-  } catch (error: any) {
-    console.error(`Webhook processing error for provider ${provider}:`, error);
+  } catch (_error: any) {
+    console.error(`Webhook processing error for provider ${provider}:`, _error);
 
     return NextResponse.json(
       {
         success: false,
         message: 'Internal server error',
-        error: error.message,
+        error: _error.message,
       },
       { status: 500 }
     );
