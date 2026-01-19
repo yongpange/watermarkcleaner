@@ -189,18 +189,28 @@ export async function consumeCredits({
 
 /**
  * Get user's current credit balance
+ * Calculates balance by summing all transactions (grant - consume)
+ * Instead of relying on remaining_credits field which is not maintained
  */
 export async function getCreditBalance(userId: string): Promise<number> {
-  const { data, error } = await supabase.rpc('get_credit_balance', {
-    p_user_id: userId,
-  });
+  // Get all active transactions for the user
+  const { data: transactions, error } = await supabase
+    .from('wmc_credit')
+    .select('transaction_type, credits')
+    .eq('user_id', userId)
+    .eq('status', 'active');
 
   if (error) {
     console.error('Failed to get credit balance:', error);
     return 0;
   }
 
-  return data || 0;
+  // Calculate balance by summing all credits (positive for grant, negative for consume)
+  const balance = (transactions || []).reduce((sum, tx) => {
+    return sum + (tx.credits || 0);
+  }, 0);
+
+  return Math.max(0, balance); // Never return negative balance
 }
 
 /**

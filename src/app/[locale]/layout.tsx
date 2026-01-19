@@ -5,7 +5,6 @@ import { locales } from "@/i18n/locale";
 
 import { AppContextProvider } from "@/contexts/app";
 import { Metadata } from "next";
-import { SupabaseAuthProvider } from "@/providers/supabase-auth-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { cn } from "@/lib/utils";
 import { OrganizationStructuredData } from "@/components/seo/structured-data";
@@ -86,14 +85,12 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <SessionProvider>
-            <SupabaseAuthProvider>
-              <AppContextProvider>
-                <ThemeProvider attribute="class" disableTransitionOnChange>
-                  {children}
-                  <Toaster position="top-center" />
-                </ThemeProvider>
-              </AppContextProvider>
-            </SupabaseAuthProvider>
+            <AppContextProvider>
+              <ThemeProvider attribute="class" disableTransitionOnChange>
+                {children}
+                <Toaster position="top-center" />
+              </ThemeProvider>
+            </AppContextProvider>
           </SessionProvider>
         </NextIntlClientProvider>
       </body>

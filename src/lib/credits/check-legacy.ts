@@ -134,8 +134,8 @@ export async function recordProcessingHistory({
 
 /**
  * Check remaining credits for both authenticated and IP-based users
- * For authenticated users: Use lifetime processing history count
- * For IP-based users: Use lifetime IP-based processing history count
+ * For authenticated users: Use credit system (wmc_credit table)
+ * For IP-based users: Use lifetime processing history count (3 trials total)
  */
 export async function checkUserCredits(
   identifier: string,
@@ -143,47 +143,43 @@ export async function checkUserCredits(
   userId?: string
 ) {
   if (isAuthenticated && userId) {
-    // For authenticated users, use database records (lifetime count)
+    // For authenticated users, use legacy check (wmc_processing_history)
     return checkCredits(userId);
   } else {
-    // For IP-based users, use simplified logic
+    // For IP-based users: 3 trials TOTAL (lifetime, not monthly)
     const tier: UserTier = 'unverified';
     const tierConfig = USER_TIER_CONFIG[tier];
 
     // IMPORTANT: Hash the IP before querying database
-    // The database stores IP hashes, not raw IPs
     const hashedIdentifier = hashIPAddress(identifier);
 
     console.log('[Credits Check] ===== IP-based User Check Started =====');
     console.log('[Credits Check] Original IP:', identifier);
     console.log('[Credits Check] Hashed IP:', hashedIdentifier);
-    console.log('[Credits Check] Counting lifetime usage (no monthly filter)');
+    console.log('[Credits Check] Counting LIFETIME usage (3 trials total)');
 
-    // FIX: Use admin client for IP-based queries to bypass RLS
-    console.log('[Credits Check] Creating admin client (bypass RLS)...');
+    // Use admin client for IP-based queries to bypass RLS
     const supabase = createAdminClient();
 
     const { count, error } = await (supabase as any)
       .from('wmc_processing_history')
       .select('*', { count: 'exact', head: true })
-      .eq('ip_address', hashedIdentifier)  // Use hashed IP to match stored hashes
+      .eq('ip_address', hashedIdentifier)
       .eq('success', true);
-      // ❌ Removed: .gte('created_at', startOfMonth.toISOString()) - No monthly filter
 
     if (error) {
       console.error('[Credits Check] Supabase query error:', error);
       throw error;
     }
 
-    // FIX: Supabase count can be null when no records found, default to 0
     const actualCount = count ?? 0;
 
-    console.log('[Credits Check] Query result count:', count, '(raw) =>', actualCount, '(used)');
+    console.log('[Credits Check] Trials used:', actualCount, '/', tierConfig.maxPerMonth);
 
     const result = {
       tier,
       used: actualCount,
-      limit: tierConfig.maxPerMonth,
+      limit: tierConfig.maxPerMonth, // 3 trials total for unauthenticated
       remaining: Math.max(0, tierConfig.maxPerMonth - actualCount),
     };
 

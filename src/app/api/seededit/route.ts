@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
-import { checkUserCredits, deductCredits, recordProcessingHistory, USER_TIER_CONFIG } from "@/lib/credits/check";
+import { checkUserCredits, USER_TIER_CONFIG } from "@/lib/credits/check-legacy";
 
 // 字节跳动方舟API配置
 const ARK_API_URL = process.env.ARK_API_URL || "https://ark.cn-beijing.volces.com/api/v3/images/generations";
@@ -132,10 +132,11 @@ export async function POST(request: NextRequest) {
 
   try {
     session = await auth();
-    if (session?.user) {
+    // 收紧判定：必须有 user.id 才算 authenticated
+    if (session?.user?.id) {
       isAuthenticated = true;
       userId = session.user.id;
-      userIdentifier = userId || "authenticated-user";
+      userIdentifier = userId;
     } else {
       // Use IP address for non-authenticated users
       userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
@@ -314,29 +315,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 11. 扣除额度（对已认证用户）并记录处理历史
+    // 11. ===== 关键修复：拆分逻辑，确保 wmc_processing_history 优先写入 =====
+    console.log('[SeedEdit API] ===== Processing Complete - Recording History =====');
+    console.log('[SeedEdit API] isAuthenticated:', isAuthenticated);
+    console.log('[SeedEdit API] userId:', userId || 'N/A (guest)');
+
+    // 第一步：优先写入 wmc_processing_history（lifetime 计数的唯一依据）
     try {
-      console.log('[SeedEdit API] ===== Processing Complete - Recording History =====');
-      console.log('[SeedEdit API] isAuthenticated:', isAuthenticated);
-      console.log('[SeedEdit API] userId:', userId || 'N/A (guest)');
-
-      // Deduct credit for authenticated users
-      if (isAuthenticated && userId) {
-        console.log(`[SeedEdit API] Deducting credits for authenticated user: ${userId}`);
-        await deductCredits(userId);
-        console.log(`[SeedEdit API] Credits deducted via deductCredits()`);
-      } else {
-        console.log('[SeedEdit API] Guest user - skipping credit deduction (IP-based tracking)');
-      }
-
-      // 记录处理历史 - 直接使用 Admin Client 写入数据库
-      // 这是安全的，因为此代码在服务端运行
       const { createAdminClient } = await import("@/lib/supabase-admin");
       const { getClientIP, hashIPAddress } = await import("@/lib/security/ip-hash");
 
       const adminClient = createAdminClient();
-
-      // Standardize usage of getClientIP for consistency
       const clientIP = getClientIP(request);
       const ipToHash = clientIP || 'unknown-ip';
       const hashedIP = hashIPAddress(ipToHash);
@@ -349,8 +338,8 @@ export async function POST(request: NextRequest) {
       console.log('  - Will store IP hash:', !isAuthenticated);
 
       const recordData = {
-        user_id: isAuthenticated ? userId : null,
-        ip_address: isAuthenticated ? null : hashedIP,
+        user_id: isAuthenticated && userId ? userId : null,
+        ip_address: isAuthenticated && userId ? null : hashedIP,
         image_size: image.size,
         success: true,
         created_at: new Date().toISOString(),
@@ -361,19 +350,43 @@ export async function POST(request: NextRequest) {
       const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert(recordData);
 
       if (recordError) {
-        console.error("[SeedEdit API] Failed to record processing history:", recordError);
-        // 继续执行，不阻塞用户
+        console.error("[SeedEdit API] ❌ Failed to record processing history:", recordError);
+        // 这是关键错误，但不阻塞用户
       } else {
-        console.log("[SeedEdit API] Processing history recorded successfully");
-        console.log("[SeedEdit API] Query this record with:");
-        console.log(`  SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}'`);
+        console.log("[SeedEdit API] ✅ Processing history recorded successfully");
+        if (!isAuthenticated) {
+          console.log("[SeedEdit API] Query this record with:");
+          console.log(`  SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}' ORDER BY created_at DESC LIMIT 5;`);
+        } else {
+          console.log(`  SELECT * FROM wmc_processing_history WHERE user_id = '${userId}' ORDER BY created_at DESC LIMIT 5;`);
+        }
       }
-
-      console.log('[SeedEdit API] ===== Recording History Completed =====');
     } catch (error) {
-      console.error("[SeedEdit API] Failed to record processing/deduct credits:", error);
-      // Continue even if recording fails - we don't want to block the user
+      console.error("[SeedEdit API] ❌ Critical: Failed to record processing history:", error);
+      // 即使失败也继续，避免阻塞用户
     }
+
+    // 第二步：尝试扣除新 credit 系统额度（单独 try/catch，失败不影响上面的 history 写入）
+    if (isAuthenticated && userId) {
+      try {
+        console.log(`[SeedEdit API] Attempting to consume credits from wmc_credit table for user: ${userId}`);
+        const { consumeCredits } = await import('@/lib/models/credit');
+        await consumeCredits({
+          userId: userId,
+          amount: 1,
+          scene: 'image_processing',
+          imageSize: image.size,
+        });
+        console.log(`[SeedEdit API] ✅ Credit consumed successfully via consumeCredits()`);
+      } catch (creditError) {
+        console.error("[SeedEdit API] ⚠️ Failed to consume credits (wmc_credit), but processing history already recorded:", creditError);
+        // 不阻塞用户，因为 legacy 计数（wmc_processing_history）已经写入成功
+      }
+    } else {
+      console.log('[SeedEdit API] Guest user - skipping wmc_credit deduction (using IP-based wmc_processing_history tracking)');
+    }
+
+    console.log('[SeedEdit API] ===== Recording History Completed =====');
 
     // 12. 返回结果（包含速率限制信息）
     return NextResponse.json(
@@ -410,20 +423,30 @@ export async function POST(request: NextRequest) {
     console.error("Processing error:", error);
 
     // 记录失败的请求（如果有图片信息）
+    // NOTE: use admin client + hashed IP (never store raw IP)
     try {
       if (formData) {
         const image = formData.get("image") as File | null;
         if (image) {
-          await recordProcessingHistory({
-            identifier: userIdentifier,
-            imageSize: image.size,
-            userId: isAuthenticated ? userId : undefined,
+          const { createAdminClient } = await import("@/lib/supabase-admin");
+          const { getClientIP, hashIPAddress } = await import("@/lib/security/ip-hash");
+
+          const adminClient = createAdminClient();
+          const clientIP = getClientIP(request);
+          const hashedIP = hashIPAddress(clientIP);
+
+          await (adminClient as any).from("wmc_processing_history").insert({
+            user_id: isAuthenticated && userId ? userId : null,
+            ip_address: isAuthenticated && userId ? null : hashedIP,
+            image_size: image.size,
             success: false,
+            created_at: new Date().toISOString(),
           });
+          console.log("[SeedEdit API] Failed processing recorded to wmc_processing_history");
         }
       }
     } catch (recordError) {
-      console.error("Failed to record failed processing:", recordError);
+      console.error("[SeedEdit API] Failed to record failed processing:", recordError);
     }
 
     // 处理超时错误

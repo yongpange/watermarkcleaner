@@ -15,6 +15,8 @@ interface CreditsInfo {
 
 interface CreditsDisplayProps {
   onVerifyEmail?: () => void;
+  // Key prop to force re-fetch when it changes
+  refreshKey?: number;
 }
 
 /**
@@ -22,7 +24,7 @@ interface CreditsDisplayProps {
  * Shows current usage, tier information, and upgrade options
  * Supports both authenticated and unauthenticated (IP-based) users
  */
-export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
+export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProps) {
   const { data: session, status } = useSession();
   const [credits, setCredits] = useState<CreditsInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -34,7 +36,7 @@ export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
     console.log('[CreditsDisplay] :::: useEffect TRIGGERED ::::');
     console.log('[CreditsDisplay] Dependencies - Status:', status);
     console.log('[CreditsDisplay] Dependencies - Session:', !!session);
-    console.log('[CreditsDisplay] Dependencies - Credits:', !!credits);
+    console.log('[CreditsDisplay] Dependencies - RefreshKey:', refreshKey);
 
     async function fetchCredits() {
       console.log('[CreditsDisplay] >>>>> Starting fetchCredits <<<<<');
@@ -42,14 +44,7 @@ export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
       setError(null);
 
       try {
-        // FIXED: Use proper dependency checking logic
-        // Only skip if credits already exists AND status hasn't changed to unauthenticated
-        if (status === "loading" && credits !== null) {
-          console.log('[CreditsDisplay] Mode: LOADING with existing credits (skipping)');
-          setLoading(false);
-          return;
-        }
-
+        // FIXED: Fetch fresh data on every trigger
         if (status === "authenticated" && session?.user) {
           console.log('[CreditsDisplay] Mode: AUTHENTICATED USER');
           const response = await fetch("/api/credits/check");
@@ -83,8 +78,8 @@ export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
             setCredits(null);
           }
         } else if (status === "loading") {
-          console.log('[CreditsDisplay] Mode: LOADING (skipping fetch)');
-          // don't set credits, keep as null
+          console.log('[CreditsDisplay] Mode: LOADING (keep existing credits)');
+          // don't set credits, keep as is
         } else {
           console.warn('[CreditsDisplay] Unknown status:', status);
         }
@@ -99,7 +94,7 @@ export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
     }
 
     fetchCredits();
-  }, [session, status]);  // FIXED: Remove credits from dependencies to prevent infinite loop
+  }, [session, status, refreshKey]);  // Triggers on auth state change or refreshKey change
 
   console.log('[CreditsDisplay] Render check - Final states:', {
     loading,
@@ -146,7 +141,7 @@ export function CreditsDisplay({ onVerifyEmail }: CreditsDisplayProps) {
 
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-600 dark:text-gray-400">
-            {t("monthly_usage", { used: credits.used, limit: credits.limit })}
+            {t("lifetime_usage", { used: credits.used, limit: credits.limit })}
           </span>
           <span className="font-medium text-violet-900 dark:text-violet-100">
             {t("remaining", { remaining: credits.remaining })}

@@ -44,26 +44,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const finalProductName = product_name || product_id;
     const finalAmount = amount || 0; // Free 计划金额为 0
 
-    // Get user session - 支持 NextAuth 和 Supabase Auth
-    let user_email: string | null = null;
-    let user_id: string | null = null;
+    // Get user session - 仅使用 NextAuth (纯 NextAuth + Supabase 数据库)
+    const session = await auth();
 
-    // 1. 尝试获取 NextAuth session (Google OAuth)
-    const nextAuthSession = await auth();
-    if (nextAuthSession?.user) {
-      user_email = nextAuthSession.user.email;
-      user_id = nextAuthSession.user.id;
-    } else {
-      // 2. 没有 NextAuth session，尝试 Supabase Auth
-      const supabaseClient = createClient();
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      if (session?.user) {
-        user_email = session.user.email;
-        user_id = session.user.id;
-      }
-    }
-
-    if (!user_email || !user_id) {
+    if (!session?.user?.email || !session?.user?.id) {
       return NextResponse.json(
         {
           success: false,
@@ -73,6 +57,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         { status: 401 }
       );
     }
+
+    const user_email = session.user.email;
+    const user_id = session.user.id;
 
     const user = { email: user_email, id: user_id };
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { checkUserCredits } from "@/lib/credits/check";
+import { checkUserCredits } from "@/lib/credits/check-legacy";
 import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
 
 /**

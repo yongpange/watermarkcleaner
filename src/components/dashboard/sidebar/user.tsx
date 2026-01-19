@@ -22,23 +22,22 @@ import {
 import Icon from "@/components/icon";
 
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase-client";
 import { useAppContext } from "@/contexts/app";
 import { useTranslations } from "next-intl";
 import { Account } from "@/types/blocks/base";
 import { Fragment } from "react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function SidebarUser({ account }: { account?: Account }) {
   const t = useTranslations();
   const router = useRouter();
-  const supabase = createClient();
 
   const { user, setShowSignModal } = useAppContext();
   const { isMobile, open } = useSidebar();
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await signOut({ redirect: false });
     router.push('/');
     router.refresh();
   };

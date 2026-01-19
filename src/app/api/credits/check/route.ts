@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { checkCredits } from "@/lib/credits/check";
+import { checkCredits } from "@/lib/credits/check-legacy";
 
 /**
  * API endpoint to check user's credits

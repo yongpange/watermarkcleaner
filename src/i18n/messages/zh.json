@@ -229,6 +229,7 @@
       "pro_user": "专业版用户",
       "unlimited": "✨ 无限额度",
       "monthly_usage": "已使用: {used} / {limit}",
+      "lifetime_usage": "已使用: {used} / {limit} (终身)",
       "remaining": "剩余: {remaining}",
       "upgrade_pro": "💎 升级专业版获得无限额度 →",
       "trial_activated": "试用已激活"

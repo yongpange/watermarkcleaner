@@ -15,13 +15,36 @@ export const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   className,
 }) => {
   const t = useTranslations('auth.google_login');
+
   const handleGoogleLogin = async () => {
     try {
-      await signIn('google', {
-        callbackUrl: '/convert',
+      // 获取当前 locale（从 URL 或浏览器语言）
+      const pathParts = window.location.pathname.split('/');
+      const localeFromPath = ['zh', 'en', 'es', 'ar', 'ru', 'fr', 'ko'].includes(pathParts[1]) ? pathParts[1] : 'zh';
+
+      console.log('[Google] Starting sign in with callback:', `/${localeFromPath}/convert`);
+
+      // 使用 NextAuth 的 signIn 方法
+      const result = await signIn('google', {
+        callbackUrl: `/${localeFromPath}/convert`,
+        redirect: false, // 先不自动跳转，以便捕获错误
       });
+
+      if (result?.error) {
+        console.error('[Google] Sign in error:', result.error);
+        // 如果有错误，显示错误信息
+        alert(`登录失败: ${result.error}`);
+        return;
+      }
+
+      if (result?.url) {
+        console.log('[Google] Sign in successful, redirecting to:', result.url);
+        // 成功登录，手动跳转
+        window.location.href = result.url;
+      }
     } catch (error) {
-      console.error('Google login error:', error);
+      console.error('[Google] Exception during sign in:', error);
+      alert('登录过程中发生错误，请查看控制台');
     }
   };
 

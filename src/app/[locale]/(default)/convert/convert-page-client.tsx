@@ -30,8 +30,11 @@ export function ConvertPageClient() {
     <>
       {/* Credits Display */}
       <div className="max-w-4xl mx-auto space-y-6">
-        {/* Key prop forces re-render when processingCount changes */}
-        <CreditsDisplay key={processingCount} onVerifyEmail={handleVerifyEmail} />
+        {/* refreshKey forces re-fetch of credits data after each processing */}
+        <CreditsDisplay
+          refreshKey={processingCount}
+          onVerifyEmail={handleVerifyEmail}
+        />
       </div>
 
       {/* Editor */}

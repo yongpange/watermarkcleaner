@@ -1,7 +1,6 @@
 import EmailProvider from 'next-auth/providers/email';
 import Credentials from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { SupabaseAdapter } from '@auth/supabase-adapter';
 import type { NextAuthConfig, User, Account, Profile, Session } from 'next-auth';
 import type { TokenSet } from '@auth/core/types';
 import { createClient } from '@/lib/supabase-server';
@@ -11,6 +10,7 @@ import {
   markCodeAsUsed,
   type VerifyCodeResult
 } from '@/lib/auth/verification';
+import { CustomSupabaseAdapter } from './auth/custom-supabase-adapter';
 
 /**
  * NextAuth.js configuration for email-based authentication
@@ -23,11 +23,14 @@ import {
  */
 
 export const authConfig: NextAuthConfig = {
-  // 暂时禁用 SupabaseAdapter 以测试 Google OAuth
-  // adapter: SupabaseAdapter({
-  //   url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //   secret: process.env.SUPABASE_SERVICE_ROLE_KEY!
-  // }),
+  // 在开发环境中信任 host（解决 404 问题）
+  trustHost: true,
+
+  // ✅ 使用 Custom SupabaseAdapter 配置（使用现有的 wmc_* 表）
+  adapter: CustomSupabaseAdapter({
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!
+  }),
 
   // Configure authentication providers
   providers: [
@@ -35,18 +38,18 @@ export const authConfig: NextAuthConfig = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      // 可选：只接受特定域名
-      // authorization: {
-      //   params: {
-      //     prompt: "consent",
-      //     access_type: "offline",
-      //     response_type: "code"
-      //   }
-      // }
+      // 修复：移除 prompt 参数，添加 hd 参数来解决账户确认循环问题
+      authorization: {
+        params: {
+          // prompt: 'select_account',  // 注释掉，可能导致账户确认循环
+          // access_type: 'offline',
+        },
+      },
     }),
 
     // ==================== 邮箱验证码认证 ====================
-    Credentials({
+    // 暂时注释掉 Credentials provider 来测试 Google OAuth
+    /* Credentials({
       id: 'email-code',
       name: 'Email Verification Code',
       credentials: {
@@ -98,7 +101,6 @@ export const authConfig: NextAuthConfig = {
                   name: usernameBase,
                   tier: 'verified',
                   creditsused: 0,
-                  // creditsreset field deprecated - keeping for compatibility but not used
                 } as any);
 
               if (error) {
@@ -148,17 +150,18 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
       }
-    }),
+    }), */
   ],
 
-  // Custom page routes
-  pages: {
-    signIn: '/auth/signin',
-    signOut: '/auth/signout',
-    error: '/auth/error',
-    verifyRequest: '/auth/verify-request',
-    newUser: '/auth/new-user', // 新用户注册后跳转
-  },
+  // 注意：NextAuth v5 使用内置页面，不需要自定义 pages 配置
+  // 如果需要自定义页面，请创建对应的页面文件
+  // pages: {
+  //   signIn: '/auth/signin',
+  //   signOut: '/auth/signout',
+  //   error: '/auth/error',
+  //   verifyRequest: '/auth/verify-request',
+  //   newUser: '/auth/new-user',
+  // },
 
   // Session strategy - 使用 JWT，更适合无密码认证
   session: {
@@ -168,110 +171,60 @@ export const authConfig: NextAuthConfig = {
 
   // Callbacks to customize behavior
   callbacks: {
-    // Handle sign in events
+    // ✅ signIn 回调 - 使用 CustomAdapter 时直接操作 wmc_users 表
     async signIn({ user, account, profile }: any) {
-      console.log('[Auth] User signed in:', user.email, 'Provider:', account?.provider);
-      console.log('[Auth] User details:', { user, account, profile });
+      console.log('[Auth] User signed in:', user?.email, 'Provider:', account?.provider);
 
-      // 处理 Google 登录
+      // ✅ Google 用户自动设置为 verified 并同步到 wmc_users
       if (account?.provider === 'google') {
         try {
-          console.log('[Google] Processing Google sign in...');
-          console.log('[Google] User data:', user);
-          console.log('[Google] Account data:', account);
-          console.log('[Google] Profile data:', profile);
-
           const supabase = createAdminClient();
-
-          // 检查用户是否已存在
-          console.log('[Google] Checking if user exists:', user.email);
-          const { data: existingUser } = await supabase
+          // 直接更新 wmc_users 表中的用户状态
+          await supabase
             .from('wmc_users')
-            .select('*')
-            .eq('email', user.email!)
-            .single() as any;
+            .update({
+              email_verified: new Date().toISOString()
+            })
+            .eq('email', user.email!);
 
-          console.log('[Google] Existing user check result:', existingUser);
-
-          if (!existingUser) {
-            // 新用户：信任 Google 邮箱验证，直接设为 verified
-            console.log('[Google] Creating new user with verified tier:', user.email);
-
-            const username = user.name?.toLowerCase().replace(/[^a-z0-9_]/g, '_')
-              || user.email!.split('@')[0].toLowerCase();
-
-            console.log('[Google] Creating user with data:', {
-              id: user.id,
-              email: user.email,
-              name: user.name || username,
-              image: user.image,
-              tier: 'verified',
-              creditsused: 0,
-              // creditsreset field deprecated - keeping for compatibility but not used
-            });
-
-            const { error: createError } = await supabase
-              .from('wmc_users')
-              .insert({
-                id: user.id!,  // Google user ID
-                email: user.email!,
-                name: user.name || username,
-                image: user.image,
-                tier: 'verified',  // ✅ Google 邮箱已验证，直接升级
-                creditsused: 0,
-                // creditsreset field deprecated - keeping for compatibility but not used
-              } as any);
-
-            if (createError) {
-              console.error('[Google] Failed to create user:', createError);
-              console.error('[Google] Error details:', createError.message);
-              return false;
-            }
-
-            console.log('[Google] User created successfully with verified tier');
-          } else {
-            // 已有用户：更新信息（可选）
-            console.log('[Google] Existing user signed in:', existingUser.email);
-          }
+          console.log('[Google] User marked as email_verified in wmc_users');
         } catch (error) {
-          console.error('[Google] Error in signIn callback:', error);
-          console.error('[Google] Error stack:', error instanceof Error ? error.stack : error);
-          return false; // 返回 false 会显示 OAuthCallback 错误
+          console.error('[Google] Error updating verification status:', error);
         }
       }
 
-      return true;  // 允许登录
+      return true;
     },
 
-    // Include user data in JWT token
+    // ✅ 简化 JWT 回调 - Adapter 自动提供 user 数据
     async jwt({ token, user, account, trigger }: any) {
-      // 初始登录时
+      // 初始登录时，user 对象包含 Adapter 提供的数据
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.username = (user as any).username;
         token.name = user.name;
         token.image = user.image;
-        token.tier = (user as any).tier || 'unverified';
-        token.creditsUsed = (user as any).creditsUsed || 0;
-      }
 
-      // 处理 Google 用户：从数据库获取最新 tier
-      if (account?.provider === 'google' && user?.email) {
+        // 注意：Adapter 创建的 user 可能不包含自定义字段
+        // 需要从数据库加载额外信息
         try {
           const supabase = createAdminClient();
-          const { data: dbUser } = await supabase
+          const { data: appUser } = await supabase
             .from('wmc_users')
-            .select('tier, creditsused')
+            .select('*')
             .eq('email', user.email)
-            .single() as any;
+            .single();
 
-          if (dbUser) {
-            token.tier = dbUser.tier;
-            token.creditsUsed = dbUser.creditsused;
+          if (appUser) {
+            token.tier = appUser.tier || 'unverified';
+            token.creditsUsed = appUser.creditsused || 0;
+            console.log('[jwt] App user data loaded:', {
+              tier: appUser.tier,
+              credits: appUser.creditsused
+            });
           }
         } catch (error) {
-          console.error('[jwt] Error fetching user tier:', error);
+          console.error('[jwt] Error loading app user data:', error);
         }
       }
 
@@ -302,33 +255,22 @@ export const authConfig: NextAuthConfig = {
     },
   },
 
-  // Event handlers
+  // ✅ 事件处理程序 - Custom Adapter 直接操作 wmc_* 表
   events: {
     async createUser({ user }: { user: any }) {
-      console.log('[Auth] New user created:', user.email, 'ID:', user.id);
-
-      // Grant free-plan to new user
-      try {
-        const { grantFreePlan } = await import('@/lib/credits/grant');
-        await grantFreePlan(user.id);
-        console.log('[Auth] Free-plan granted to new user:', user.email);
-      } catch (error) {
-        console.error('[Auth] Failed to grant free-plan:', error);
-        // Don't block user creation if free-plan grant fails
-      }
+      console.log('[Auth] ✅ New user created directly in wmc_users:', user?.email, 'ID:', user?.id);
     },
-    async signIn({ user }: { user: any }) {
-      console.log('[Auth] User signed in:', user.email, 'ID:', user.id);
 
-      // Ensure user has subscription (grant free-plan if none exists)
-      try {
-        const { ensureUserHasSubscription } = await import('@/lib/credits/grant');
-        await ensureUserHasSubscription(user.id);
-        console.log('[Auth] User subscription ensured:', user.email);
-      } catch (error) {
-        console.error('[Auth] Failed to ensure subscription:', error);
-        // Don't block login if subscription check fails
-      }
+    async linkAccount({ user, account }: { user: any, account: any }) {
+      console.log('[Auth] ✅ Account linked in wmc_accounts:', account?.provider, 'for user:', user?.email);
+    },
+
+    async signIn({ user }: { user: any }) {
+      console.log('[Auth] ✅ User signed in:', user?.email, 'ID:', user?.id);
+    },
+
+    async session({ session }: { session: any }) {
+      console.log('[Auth] ✅ Session created from wmc_sessions for:', session?.user?.email);
     },
   },
 

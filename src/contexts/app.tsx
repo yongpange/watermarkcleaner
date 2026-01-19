@@ -12,16 +12,14 @@ import { useSession } from "next-auth/react";
 
 import { ContextValue } from "@/types/context";
 import { User } from "@/types/user";
-import { useSupabaseAuth } from "@/providers/supabase-auth-provider";
 
 const AppContext = createContext({} as ContextValue);
 
 export const useAppContext = () => useContext(AppContext);
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  // 同时支持 NextAuth.js (Google OAuth) 和 Supabase Auth
-  const { data: nextAuthSession, status: nextAuthStatus } = useSession();
-  const { user: supabaseUser, loading: supabaseLoading } = useSupabaseAuth();
+  // 纯 NextAuth.js 认证
+  const { data: session, status } = useSession();
 
   const [theme, setTheme] = useState<string>(() => {
     const defaultTheme = process.env.NEXT_PUBLIC_DEFAULT_THEME;
@@ -36,9 +34,9 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [showFeedback, setShowFeedback] = useState<boolean>(false);
 
-  // 优先使用 NextAuth.js session（Google OAuth），回退到 Supabase Auth
-  const effectiveUser = nextAuthSession?.user || supabaseUser;
-  const isLoading = nextAuthStatus === "loading" || supabaseLoading;
+  // 使用 NextAuth 用户
+  const effectiveUser = session?.user;
+  const isLoading = status === "loading";
 
   const fetchUserInfo = useCallback(async function () {
     try {
@@ -68,7 +66,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [effectiveUser, isLoading, fetchUserInfo]);
 
-  // 构建统一的 user 对象，优先使用 NextAuth 数据
+  // 使用 NextAuth 用户数据
   const unifiedUser = user || (effectiveUser ? {
     id: effectiveUser.id,
     email: effectiveUser.email,

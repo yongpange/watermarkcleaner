@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { auth } from '@/auth';
-import { checkUserCredits, deductCredits, USER_TIER_CONFIG } from '@/lib/credits/check';
+import { checkUserCredits, USER_TIER_CONFIG } from '@/lib/credits/check-legacy';
 import { getClientIP, hashIPAddress } from '@/lib/security/ip-hash';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { rateLimitMiddleware } from '@/lib/rate-limit';
@@ -100,10 +100,11 @@ export async function POST(req: NextRequest) {
 
     try {
       session = await auth();
-      if (session?.user) {
+      // 收紧判定：必须有 user.id 才算 authenticated
+      if (session?.user?.id) {
         isAuthenticated = true;
         userId = session.user.id;
-        userIdentifier = userId || 'authenticated-user';
+        userIdentifier = userId;
         console.log(`[Mock API] Authenticated user: ${userId}`);
       } else {
         // Use IP address for non-authenticated users
@@ -161,22 +162,13 @@ export async function POST(req: NextRequest) {
       delay: `${delay.toFixed(0)}ms`
     });
 
-    // 扣除额度（对已认证用户）并记录处理历史
+    // ===== 关键修复：拆分逻辑，确保 wmc_processing_history 优先写入 =====
+    console.log('[Mock API] ===== Processing Complete - Recording History =====');
+    console.log('[Mock API] isAuthenticated:', isAuthenticated);
+    console.log('[Mock API] userId:', userId || 'N/A (guest)');
+
+    // 第一步：优先写入 wmc_processing_history（lifetime 计数的唯一依据）
     try {
-      console.log('[Mock API] ===== Processing Complete - Recording History =====');
-      console.log('[Mock API] isAuthenticated:', isAuthenticated);
-      console.log('[Mock API] userId:', userId || 'N/A (guest)');
-
-      // Deduct credit for authenticated users
-      if (isAuthenticated && userId) {
-        console.log(`[Mock API] Deducting credits for authenticated user: ${userId}`);
-        await deductCredits(userId);
-        console.log(`[Mock API] Credits deducted via deductCredits()`);
-      } else {
-        console.log('[Mock API] Guest user - skipping credit deduction (IP-based tracking)');
-      }
-
-      // 记录处理历史 - 直接使用 Admin Client 写入数据库
       const adminClient = createAdminClient();
       const clientIP = getClientIP(req);
       const ipToHash = clientIP || 'unknown-ip';
@@ -190,8 +182,8 @@ export async function POST(req: NextRequest) {
       console.log('  - Will store IP hash:', !isAuthenticated);
 
       const recordData = {
-        user_id: isAuthenticated ? userId : null,
-        ip_address: isAuthenticated ? null : hashedIP,
+        user_id: isAuthenticated && userId ? userId : null,
+        ip_address: isAuthenticated && userId ? null : hashedIP,
         image_size: image.size,
         success: true,
         created_at: new Date().toISOString(),
@@ -202,18 +194,43 @@ export async function POST(req: NextRequest) {
       const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert(recordData);
 
       if (recordError) {
-        console.error("[Mock API] Failed to record processing history:", recordError);
+        console.error("[Mock API] ❌ Failed to record processing history:", recordError);
+        // 这是关键错误，但不阻塞用户
       } else {
-        console.log("[Mock API] Processing history recorded successfully");
-        console.log("[Mock API] Query this record with:");
-        console.log(`  SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}'`);
+        console.log("[Mock API] ✅ Processing history recorded successfully");
+        if (!isAuthenticated) {
+          console.log("[Mock API] Query this record with:");
+          console.log(`  SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}' ORDER BY created_at DESC LIMIT 5;`);
+        } else {
+          console.log(`  SELECT * FROM wmc_processing_history WHERE user_id = '${userId}' ORDER BY created_at DESC LIMIT 5;`);
+        }
       }
-
-      console.log('[Mock API] ===== Recording History Completed =====');
     } catch (error) {
-      console.error("[Mock API] Failed to record processing/deduct history:", error);
-      // Continue even if recording fails - we don't want to block the user
+      console.error("[Mock API] ❌ Critical: Failed to record processing history:", error);
+      // 即使失败也继续，避免阻塞用户
     }
+
+    // 第二步：尝试扣除新 credit 系统额度（单独 try/catch，失败不影响上面的 history 写入）
+    if (isAuthenticated && userId) {
+      try {
+        console.log(`[Mock API] Attempting to consume credits from wmc_credit table for user: ${userId}`);
+        const { consumeCredits } = await import('@/lib/models/credit');
+        await consumeCredits({
+          userId: userId,
+          amount: 1,
+          scene: 'image_processing',
+          imageSize: originalSize,
+        });
+        console.log(`[Mock API] ✅ Credit consumed successfully via consumeCredits()`);
+      } catch (creditError) {
+        console.error("[Mock API] ⚠️ Failed to consume credits (wmc_credit), but processing history already recorded:", creditError);
+        // 不阻塞用户，因为 legacy 计数（wmc_processing_history）已经写入成功
+      }
+    } else {
+      console.log('[Mock API] Guest user - skipping wmc_credit deduction (using IP-based wmc_processing_history tracking)');
+    }
+
+    console.log('[Mock API] ===== Recording History Completed =====');
 
     // 生成唯一的 Mock ID
     const mockResultId = uuidv4();

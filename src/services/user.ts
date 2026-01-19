@@ -56,30 +56,24 @@ export async function saveUser(user: User) {
   }
 }
 
-export async function getUserUuid() {
-  // 简化版本：只使用 Supabase Auth 获取用户
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+import { auth } from "@/auth";
 
-  return user?.id || "";
+export async function getUserUuid() {
+  // 纯 NextAuth：获取用户 ID
+  const session = await auth();
+  return session?.user?.id || "";
 }
 
 export async function getUserEmail() {
-  let user_email = "";
-
-  // 使用 Supabase Auth 获取用户
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (user && user.email) {
-    user_email = user.email;
-  }
-
-  return user_email;
+  // 纯 NextAuth：获取用户邮箱
+  const session = await auth();
+  return session?.user?.email || "";
 }
 
 export async function getUserInfo() {
-  const user_uuid = await getUserUuid();
+  // 纯 NextAuth：获取完整用户信息
+  const session = await auth();
+  const user_uuid = session?.user?.id;
 
   if (!user_uuid) {
     return;

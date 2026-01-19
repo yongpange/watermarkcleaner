@@ -170,8 +170,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const _handleGoogleLogin = async () => {
     setLoading(true);
     try {
+      // 获取当前 locale（从 URL 或浏览器语言）
+      const pathParts = window.location.pathname.split('/');
+      const localeFromPath = ['zh', 'en', 'es', 'ar', 'ru', 'fr', 'ko'].includes(pathParts[1]) ? pathParts[1] : 'zh';
+
       await signIn('google', {
-        callbackUrl: '/convert',
+        callbackUrl: `/${localeFromPath}/convert`,
       });
     } catch (error) {
       console.error('Google login error:', error);

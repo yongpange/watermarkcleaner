@@ -154,7 +154,7 @@ public schema
 ### 支付系统架构 (2026-01-18 新增)
 
 **双系统额度管理**:
-- **Free用户**: 使用 `wmc_processing_history` 表计数，3张/月限制
+- **Free用户**: 使用 `wmc_processing_history` 表计数，**3次终身（lifetime）限制**（当前实现）
 - **Pro用户**: 使用 `wmc_credit` 表精确管理（FIFO算法）
 
 **支付系统核心表**:
@@ -547,8 +547,8 @@ src/components/auth/apple-style/      # Apple风格基础UI组件
 **用户体系**:
 ```typescript
 enum UserTier {
-  unverified = "免费试用",    // 3张/月
-  verified = "已验证用户",     // 10张/月
+  unverified = "免费试用",    // 3次（终身 / lifetime）
+  verified = "已验证用户",     // 3次（终身 / lifetime）
   pro = "专业版"               // 无限
 }
 
@@ -567,7 +567,7 @@ enum UserTier {
 **位置**: `src/lib/credits/check.ts`
 
 **核心逻辑** (2026-01-08 更新):
-- **统一额度**: 所有用户（登录/未登录）统一为3次额度
+- **统一额度**: 所有用户（登录/未登录）统一为 **3次额度（终身 / lifetime，不重置）**
 - **基于处理历史**: 额度计算基于 `wmc_processing_history` 表的实际处理记录
 - **终身计数**: 使用处理历史总数作为已使用额度（不再使用 `creditsused` 字段）
 - **向后兼容**: 保留 `wmc_users.creditsused` 字段更新，确保数据完整性
@@ -576,6 +576,7 @@ enum UserTier {
 - ✅ **IP地址匿名化**: 使用 SHA-256 + 盐值哈希，64字符哈希值存储，原始IP永不存储
 - ✅ **服务端专用API**: `record-processing` 端点使用 Service Role Key，绕过 RLS 限制
 - ✅ **数据自动清理**: 72小时后自动删除记录，符合 GDPR 合规要求
+  - ⚠️ 注意：如果额度策略是 **终身计数（lifetime）**，则不应清理 `wmc_processing_history(success=true)`，否则会导致额度计数回退
 - ✅ **实时额度刷新**: 处理成功后前端 CreditsDisplay 自动更新
 
 **IP匿名化实现**:
@@ -601,7 +602,8 @@ enum UserTier {
 
 **额度配置** (2026-01-09 统一化):
 ```typescript
-// 所有用户统一为3次额度
+// 所有用户统一为3次额度（终身 / lifetime）
+// 注意：字段名仍为 maxPerMonth（legacy 命名），但当前实现不做月度重置
 USER_TIER_CONFIG = {
   unverified: { maxPerMonth: 3 },  // 未登录用户
   verified:   { maxPerMonth: 3 },  // 已登录用户（Google/邮箱）
@@ -634,7 +636,7 @@ USER_TIER_CONFIG = {
   - `ip_address`: 未登录用户的 IP 哈希值（已登录为 null）
   - `image_size`: 处理的图片大小
   - `success`: 处理是否成功
-  - `created_at`: 记录创建时间（用于月度统计）
+  - `created_at`: 记录创建时间（用于审计/排序；额度计数为终身/lifetime）
   - **用途**: 额度计算基于此表的实际处理记录数，而非 `wmc_users.creditsused`
 
 **API端点**:
@@ -645,7 +647,7 @@ USER_TIER_CONFIG = {
 **前端组件**:
 - `CreditsDisplay` (`src/components/CreditsDisplay.tsx`) - 额度显示组件
   - 支持已登录和未登录用户
-  - 显示月度使用量、剩余额度、进度条
+  - 显示使用量、剩余额度、进度条
   - 处理成功后自动刷新
 
 - `ConvertPageClient` (`src/app/[locale]/(default)/convert/convert-page-client.tsx`) - 客户端组件
@@ -683,7 +685,7 @@ newStorage().uploadFile({
 
 **策略**:
 - IP 级别: 每小时最大请求数
-- 用户级别: 每月处理额度
+- 用户级别: 终身处理额度（当前实现）
 - 窗口限制: 60分钟滑动窗口
 
 **存储**: Upstash Redis (serverless)
@@ -779,7 +781,7 @@ newStorage().uploadFile({
 
 **功能**: 检查未登录用户（基于IP哈希）剩余额度
 
-**说明**: 使用 IP 地址加盐哈希后查询月度使用次数
+**说明**: 使用 IP 地址加盐哈希后查询终身使用次数（lifetime）
 
 **响应**:
 ```json
@@ -792,7 +794,7 @@ newStorage().uploadFile({
 ```
 
 **额度限制说明** (2026-01-09):
-- 所有用户（无论登录/未登录）统一为 **3次额度**
+- 所有用户（无论登录/未登录）统一为 **3次额度（终身 / lifetime，不重置）**
 - `tier` 字段用于识别用户类型，但不影响额度数量
 - 用完后需要升级到 **Pro** 获得无限额度
 
@@ -976,6 +978,7 @@ CREATE TABLE public.wmc_verification_tokens (
 **安全特性**:
 - ✅ **IP地址匿名化**: `ip_address` 存储 SHA-256 哈希值（64字符），原始IP永不存储
 - ✅ **数据自动清理**: 72小时后自动删除旧记录，符合 GDPR 要求
+  - ⚠️ 注意：如果额度策略是 **终身计数（lifetime）**，则不应清理 `wmc_processing_history(success=true)`，否则会导致额度计数回退
 - ✅ **RLS策略**: 启用行级安全，匿名用户仅可通过服务端API写入
 
 ```sql
@@ -995,7 +998,7 @@ CREATE TABLE public.wmc_processing_history (
 - `ip_address`: 未登录用户的 IP 哈希值（64字符SHA256），已登录用户为 null
 - `image_size`: 处理的图片大小（字节）
 - `success`: 处理是否成功（用于统计有效使用次数）
-- `created_at`: 记录创建时间（用于月度统计和自动清理）
+- `created_at`: 记录创建时间（用于审计/排序；当前额度为终身计数，不做月度截断）
 
 **索引优化**:
 ```sql
@@ -1032,19 +1035,19 @@ VALUES (null, '18849ddcfb4ac7c006228118ee75b12cea0f541...', 2048000);
 
 **查询示例**:
 ```sql
--- 查询某用户的月度使用次数
+-- 查询某用户的终身使用次数（lifetime）
 SELECT COUNT(*)
 FROM wmc_processing_history
 WHERE user_id = 'user-123'
   AND success = true
-  AND created_at >= date_trunc('month', CURRENT_DATE);
+;
 
--- 查询某IP哈希的月度使用次数（未登录用户）
+-- 查询某IP哈希的终身使用次数（lifetime，未登录用户）
 SELECT COUNT(*)
 FROM wmc_processing_history
 WHERE ip_address = '18849ddcfb4ac7c006228118ee75b12cea0f...'
   AND success = true
-  AND created_at >= date_trunc('month', CURRENT_DATE);
+;
 ```
 
 ---
@@ -1482,7 +1485,7 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 - 完善的国际化支持 (7种语言)
 - 多 AI 提供商的容错设计 (Fal.ai, ByteDance Ark)
 - 完整的博客和内容营销系统 (文件系统存储)
-- 健全的额度管理和用户体系 (统一3次，Pro无限)
+- 健全的额度管理和用户体系 (统一3次终身，Pro无限)
 - 优秀的 SEO 和性能优化 (ISR + SSG)
 - 实时内容更新，无需重新部署
 - 简化的UI组件架构 (移除冗余的 VerificationPrompt)
@@ -1534,8 +1537,8 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
   - **国际化清理**: 删除 `verify_email` 相关文案（3个key）
   - **用户体验**: 避免用户误解"验证邮箱可获得更多额度"
 
-- **v1.9 (2026-01-08)**: 额度系统重大更新 - 统一所有用户为3次额度，修复 NextAuth v5 类型错误
-  - **额度系统统一化**: 所有用户（登录/未登录）统一为3次额度
+- **v1.9 (2026-01-08)**: 额度系统重大更新 - 统一所有用户为3次额度（终身/lifetime），修复 NextAuth v5 类型错误
+  - **额度系统统一化**: 所有用户（登录/未登录）统一为3次额度（终身/lifetime）
   - **查询逻辑优化**: 登录用户额度检查改为基于 `wmc_processing_history` 表计数
   - **数据一致性**: 所有用户使用相同的额度计算方式（基于处理历史）
   - **向后兼容**: 保留 `wmc_users.creditsused` 字段更新，确保数据完整性
@@ -1552,7 +1555,7 @@ WatermarkCleaner 是一个架构清晰、功能完整的现代化 Web 应用。�
 - **v1.7 (2026-01-08)**: 完成 Google OAuth 完整配置和 NextAuth.js v5 升级
   - **NextAuth.js v5 升级**: 迁移到新的 `auth()` API，修复所有类型错误
   - **Google OAuth 集成**: 完整配置 Google Provider，支持一键登录
-  - **自动用户升级**: Google 登录用户自动获得 verified 状态（10张额度）
+- **自动用户升级**: Google 登录用户自动获得 verified 状态（3次终身额度）
   - **类型安全**: 修复所有 NextAuth v5 相关的 TypeScript 编译错误
   - **环境变量**: 添加完整的 Google OAuth 配置文档
   - **API 更新**: 迁移所有使用 `getServerSession()` 的 API 路由到新的 `auth()` API

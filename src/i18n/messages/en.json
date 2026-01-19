@@ -229,6 +229,7 @@
       "pro_user": "Pro User",
       "unlimited": "✨ Unlimited",
       "monthly_usage": "Used: {used} / {limit}",
+      "lifetime_usage": "Used: {used} / {limit} (lifetime)",
       "remaining": "Remaining: {remaining} images",
       "upgrade_pro": "💎 Upgrade to Pro for unlimited credits →",
       "trial_activated": "Trial Activated"
