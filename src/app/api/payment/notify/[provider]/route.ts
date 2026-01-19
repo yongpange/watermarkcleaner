@@ -296,7 +296,3 @@ function detectRenewal(session: any): boolean {
   // If transaction ID exists and is new, it's likely a renewal
   return true; // Default to renewal if we can't determine
 }
-
-export default {
-  POST,
-};
