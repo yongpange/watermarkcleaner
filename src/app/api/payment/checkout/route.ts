@@ -3,7 +3,7 @@ import { initPaymentManager, getPaymentConfigs } from '@/lib/payment/service';
 import { createOrder, isOrderPaid } from '@/lib/models/order';
 import type { PaymentOrder } from '@/extensions/payment/types';
 import { auth } from '@/auth';
-import { createClient } from '@/lib/supabase-admin';
+import { createClient } from '@/lib/supabase-server';
 
 // ==========================================================================
 // POST /api/payment/checkout
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const user = { email: user_email, id: user_id };
 
     // Initialize Supabase client for database operations
-    const adminSupabase = createClient();
+    const adminSupabase = await createClient();
 
     // Check if user already has an active subscription for this product
     const { data: existingOrder } = await adminSupabase
