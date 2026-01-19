@@ -38,3 +38,6 @@ export function createClient() {
     },
   })
 }
+
+// Backward compatibility alias for createAdminClient
+export { createClient as createAdminClient }
