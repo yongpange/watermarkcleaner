@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
 
     // 检查用户是否存在
     const { data: user, error } = await supabase

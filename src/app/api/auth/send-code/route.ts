@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
     console.log('[SendCode] Rate limit check passed.');
 
     // 检查用户是否存在（根据purpose）
-    const supabase = await createAdminClient();
+    const supabase = createAdminClient();
 
     const { data: existingUser, error: userError } = await supabase
       .from('wmc_users')
