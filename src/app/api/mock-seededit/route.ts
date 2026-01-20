@@ -96,7 +96,7 @@ export async function POST(req: NextRequest) {
     let session: any = null;
     let userId: string | undefined;
     let isAuthenticated = false;
-    let userIdentifier: string;
+    let userIdentifier: string | undefined;
 
     try {
       session = await auth();
