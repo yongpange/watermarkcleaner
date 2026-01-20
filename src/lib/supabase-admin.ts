@@ -12,10 +12,10 @@ import type { Database } from '@/types/database-merged'
  *
  * 🚨 不要在客户端使用！会导致密钥泄露！
  */
-export function createClient() {
+export function createAdminClient() {
   // 🛡️ 运行时安全检查 - 防止在浏览器中调用
   if (typeof window !== 'undefined') {
-    console.error('🚨 SECURITY ERROR: createClient() called in browser!')
+    console.error('🚨 SECURITY ERROR: createAdminClient() called in browser!')
     console.error('This would expose the Service Role Key to the client.')
     console.error('Call stack:', new Error().stack)
     throw new Error(
@@ -38,6 +38,3 @@ export function createClient() {
     },
   })
 }
-
-// Backward compatibility alias for createAdminClient
-export { createClient as createAdminClient }
