@@ -59,7 +59,7 @@ export class PaymentUtils {
     amount: number,
     options?: {
       scene?: string;
-      imageSize?: string;
+      imageSize?: number;
       processingTime?: string;
       metadata?: Record<string, any>;
     }

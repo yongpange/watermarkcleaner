@@ -134,7 +134,7 @@ export async function consumeCredits({
   userId: string;
   amount: number;
   scene?: CreditTransactionScene;
-  imageSize?: string;
+  imageSize?: number;
   processingTime?: string;
   metadata?: Record<string, any>;
 }): Promise<Credit> {
