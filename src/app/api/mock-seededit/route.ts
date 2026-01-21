@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
 
     // 检查用户额度（月度限额）- 在模拟处理之前检查
     try {
-      const credits = await checkUserCredits(userIdentifier, isAuthenticated, userId);
+      const credits = await checkUserCredits(userIdentifier ?? 'unknown-ip', isAuthenticated, userId);
 
       if (credits.remaining <= 0) {
         const tierConfig = USER_TIER_CONFIG[credits.tier];
