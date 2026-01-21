@@ -82,11 +82,16 @@ export default function Footer({ footer }: { footer: FooterType }) {
             </div>
           </div>
           <div className="mt-8 flex flex-col justify-between gap-4 border-t pt-8 text-center text-sm font-medium text-muted-foreground lg:flex-row lg:items-center lg:text-left">
-            {footer.copyright && (
-              <p>
-                {footer.copyright}
-              </p>
-            )}
+            <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-center">
+              {footer.copyright && (
+                <p>
+                  {footer.copyright}
+                </p>
+              )}
+              <a href="https://aidirs.org/item/ai-powered-watermark-remover" target="_blank" rel="noopener noreferrer" className="inline-block hover:opacity-80 transition-opacity">
+                <img src="https://aidirs.org/badges/badge-listed-dark.svg" alt="Listed on AIDirs" className="h-6 w-auto" />
+              </a>
+            </div>
 
             {footer.agreement && (
               <ul className="flex justify-center gap-4 lg:justify-start">
