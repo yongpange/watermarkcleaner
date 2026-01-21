@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
 import { checkUserCredits, USER_TIER_CONFIG } from "@/lib/credits/check-legacy";
+import { CreditTransactionScene } from '@/extensions/payment/types';
 
 // 字节跳动方舟API配置
 const ARK_API_URL = process.env.ARK_API_URL || "https://ark.cn-beijing.volces.com/api/v3/images/generations";
@@ -374,7 +375,7 @@ export async function POST(request: NextRequest) {
         await consumeCredits({
           userId: userId,
           amount: 1,
-          scene: 'IMAGE_PROCESSING',
+          scene: CreditTransactionScene.IMAGE_PROCESSING,
           imageSize: image.size,
         });
         console.log(`[SeedEdit API] ✅ Credit consumed successfully via consumeCredits()`);

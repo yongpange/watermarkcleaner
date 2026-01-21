@@ -5,6 +5,7 @@ import { checkUserCredits, USER_TIER_CONFIG } from '@/lib/credits/check-legacy';
 import { getClientIP, hashIPAddress } from '@/lib/security/ip-hash';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { rateLimitMiddleware } from '@/lib/rate-limit';
+import { CreditTransactionScene } from '@/extensions/payment/types';
 
 // 配置常量（与真实 API 保持一致）
 const CONFIG = {
@@ -218,7 +219,7 @@ export async function POST(req: NextRequest) {
         await consumeCredits({
           userId: userId,
           amount: 1,
-          scene: 'IMAGE_PROCESSING',
+          scene: CreditTransactionScene.IMAGE_PROCESSING,
           imageSize: originalSize,
         });
         console.log(`[Mock API] ✅ Credit consumed successfully via consumeCredits()`);
