@@ -374,7 +374,7 @@ export async function POST(request: NextRequest) {
         await consumeCredits({
           userId: userId,
           amount: 1,
-          scene: 'image_processing',
+          scene: 'IMAGE_PROCESSING',
           imageSize: image.size,
         });
         console.log(`[SeedEdit API] ✅ Credit consumed successfully via consumeCredits()`);

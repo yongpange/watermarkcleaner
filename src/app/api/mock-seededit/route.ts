@@ -218,7 +218,7 @@ export async function POST(req: NextRequest) {
         await consumeCredits({
           userId: userId,
           amount: 1,
-          scene: 'image_processing',
+          scene: 'IMAGE_PROCESSING',
           imageSize: originalSize,
         });
         console.log(`[Mock API] ✅ Credit consumed successfully via consumeCredits()`);
