@@ -11,7 +11,7 @@ import {
 import { useSession } from "next-auth/react";
 
 import { ContextValue } from "@/types/context";
-import { User } from "@/types/user";
+import { User } from "@/types/next-auth";
 
 const AppContext = createContext({} as ContextValue);
 
@@ -66,14 +66,25 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [effectiveUser, isLoading, fetchUserInfo]);
 
-  // 使用 NextAuth 用户数据
+  // 使用 NextAuth 用户数据，创建完整的User对象
   const unifiedUser = user || (effectiveUser ? {
+    // 核心字段（必需）
     id: effectiveUser.id,
     email: effectiveUser.email,
+    tier: effectiveUser.tier,
+    creditsUsed: effectiveUser.creditsUsed,
+
+    // 可选字段（可能为null）
     name: effectiveUser.name,
     image: effectiveUser.image,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+
+    // 扩展字段（可选，可空）
+    nickname: effectiveUser.nickname || null,
+    avatarUrl: effectiveUser.avatarUrl || effectiveUser.image || null,
+
+    // 时间戳
+    createdAt: effectiveUser.createdAt || new Date(),
+    updatedAt: new Date()
   } : null);
 
   return (
