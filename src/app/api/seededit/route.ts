@@ -137,7 +137,8 @@ export async function POST(request: NextRequest) {
     if (session?.user?.id) {
       isAuthenticated = true;
       userId = session.user.id;
-      userIdentifier = userId;
+      // userId is guaranteed to be string here (checked in condition)
+      userIdentifier = userId as string;
     } else {
       // Use IP address for non-authenticated users
       userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
