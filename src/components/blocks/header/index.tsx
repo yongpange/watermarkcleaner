@@ -44,6 +44,53 @@ import { AuthModal } from "@/components/auth/auth-modal";
 import { useSession, signOut } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { USER_TIER_CONFIG } from "@/lib/credits/config";
+import type { User as NextAuthUser } from "@/types/next-auth";
+import { Link as NextIntlLink } from "@/i18n/routing";
+import type { AppPathname } from "@/i18n/locale";
+
+/**
+ * 安全链接组件 - 根据URL类型渲染内部Link或外部a标签
+ */
+const SafeLink = ({
+  href,
+  children,
+  className,
+  target,
+  ...props
+}: {
+  href?: string;  // 直接使用string类型，避免next-intl的复杂类型检查
+  children: React.ReactNode;
+  className?: string;
+  target?: string;
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+  // 如果没有href，回退到首页
+  const url = href || "/";
+
+  // 判断是否为外部链接
+  const isExternal = url.startsWith("http://") || url.startsWith("https://");
+
+  // 内部链接使用Next.js Link
+  if (!isExternal) {
+    return (
+      <NextIntlLink href={url as any} className={className} {...props}>
+        {children}
+      </NextIntlLink>
+    );
+  }
+
+  // 外部链接使用原生a标签
+  return (
+    <a
+      href={url}
+      className={className}
+      target={target || "_blank"}
+      rel="noopener noreferrer"
+      {...props}
+    >
+      {children}
+    </a>
+  );
+};
 
 interface CreditsInfo {
   tier: "unverified" | "verified" | "pro";
@@ -85,8 +132,8 @@ export default function Header({ header }: { header: HeaderType }) {
         console.error("Failed to fetch credits in header:", error);
         // Fallback to session data if API fails
         setCreditsInfo({
-          tier: (session.user as any)?.tier || 'unverified',
-          used: (session.user as any)?.creditsused || 0
+          tier: session?.user?.tier || 'unverified',
+          used: session?.user?.creditsUsed || 0
         });
       } finally {
         setCreditsLoading(false);
@@ -97,8 +144,8 @@ export default function Header({ header }: { header: HeaderType }) {
   }, [session, status]);
 
   // 计算额度显示
-  const userTier = creditsInfo?.tier || (session?.user as any)?.tier || 'unverified';
-  const creditsUsed = creditsInfo?.used ?? ((session?.user as any)?.creditsused || 0);
+  const userTier = creditsInfo?.tier || session?.user?.tier || 'unverified';
+  const creditsUsed = creditsInfo?.used ?? (session?.user?.creditsUsed || 0);
   const creditsLimit = USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth === Infinity
     ? '∞'
     : USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth || 3;
@@ -116,8 +163,8 @@ export default function Header({ header }: { header: HeaderType }) {
       <div className="container">
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
-            <Link
-              href={(header.brand?.url || "/") as any}
+            <SafeLink
+              href={header.brand?.url || "/"}
               className="flex items-center gap-2"
             >
               {header.brand?.title && (
@@ -125,7 +172,7 @@ export default function Header({ header }: { header: HeaderType }) {
                   {header.brand?.title || ""}
                 </span>
               )}
-            </Link>
+            </SafeLink>
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
@@ -150,11 +197,11 @@ export default function Header({ header }: { header: HeaderType }) {
                               <NavigationMenuLink>
                                 {item.children.map((iitem, ii) => (
                                   <li key={ii}>
-                                    <Link
+                                    <SafeLink
                                       className={cn(
                                         "flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                       )}
-                                      href={(iitem.url || "/") as any}
+                                      href={iitem.url || "/"}
                                       target={iitem.target}
                                     >
                                       {iitem.icon && (
@@ -171,7 +218,7 @@ export default function Header({ header }: { header: HeaderType }) {
                                           {iitem.description}
                                         </p>
                                       </div>
-                                    </Link>
+                                    </SafeLink>
                                   </li>
                                 ))}
                               </NavigationMenuLink>
@@ -183,7 +230,7 @@ export default function Header({ header }: { header: HeaderType }) {
 
                     return (
                       <NavigationMenuItem key={i}>
-                        <Link
+                        <SafeLink
                           className={cn(
                             "text-muted-foreground",
                             navigationMenuTriggerStyle,
@@ -191,7 +238,7 @@ export default function Header({ header }: { header: HeaderType }) {
                               variant: "ghost",
                             })
                           )}
-                          href={(item.url || "/") as any}
+                          href={item.url || "/"}
                           target={item.target}
                         >
                           {item.icon && (
@@ -201,7 +248,7 @@ export default function Header({ header }: { header: HeaderType }) {
                             />
                           )}
                           {item.title}
-                        </Link>
+                        </SafeLink>
                       </NavigationMenuItem>
                     );
                   })}
@@ -216,8 +263,8 @@ export default function Header({ header }: { header: HeaderType }) {
             {header.buttons?.map((item, i) => {
               return (
                 <Button key={i} variant={item.variant}>
-                  <Link
-                    href={(item.url || "/") as any}
+                  <SafeLink
+                    href={item.url || "/"}
                     target={item.target || ""}
                     className="flex items-center gap-1 cursor-pointer"
                   >
@@ -225,7 +272,7 @@ export default function Header({ header }: { header: HeaderType }) {
                     {item.icon && (
                       <Icon name={item.icon} className="size-4 shrink-0" />
                     )}
-                  </Link>
+                  </SafeLink>
                 </Button>
               );
             })}
@@ -256,20 +303,20 @@ export default function Header({ header }: { header: HeaderType }) {
                   <DropdownMenuSeparator />
 
                   <DropdownMenuItem asChild>
-                    <Link href="/convert" className="flex items-center gap-2 cursor-pointer">
+                    <SafeLink href="/convert" className="flex items-center gap-2 cursor-pointer">
                       <CreditCard className="w-4 h-4" />
                       {t('my_credits')} ({creditsUsed}/{creditsLimit})
-                    </Link>
+                    </SafeLink>
                   </DropdownMenuItem>
 
                   {userTier !== 'pro' && (
                     <DropdownMenuItem asChild>
-                      <Link href="/pricing" className="flex items-center gap-2 cursor-pointer">
+                      <SafeLink href="/pricing" className="flex items-center gap-2 cursor-pointer">
                         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
                         {t('upgrade_pro')}
-                      </Link>
+                      </SafeLink>
                     </DropdownMenuItem>
                   )}
 
@@ -297,8 +344,8 @@ export default function Header({ header }: { header: HeaderType }) {
 
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
-            <Link
-              href={(header.brand?.url || "/") as any}
+            <SafeLink
+              href={header.brand?.url || "/"}
               className="flex items-center gap-2"
             >
               {header.brand?.title && (
@@ -306,7 +353,7 @@ export default function Header({ header }: { header: HeaderType }) {
                   {header.brand?.title || ""}
                 </span>
               )}
-            </Link>
+            </SafeLink>
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="default" size="icon">
@@ -316,8 +363,8 @@ export default function Header({ header }: { header: HeaderType }) {
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>
-                    <Link
-                      href={(header.brand?.url || "/") as any}
+                    <SafeLink
+                      href={header.brand?.url || "/"}
                       className="flex items-center gap-2"
                     >
                       {header.brand?.title && (
@@ -325,7 +372,7 @@ export default function Header({ header }: { header: HeaderType }) {
                           {header.brand?.title || ""}
                         </span>
                       )}
-                    </Link>
+                    </SafeLink>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="mb-8 mt-8 flex flex-col gap-4">
@@ -343,12 +390,12 @@ export default function Header({ header }: { header: HeaderType }) {
                             </AccordionTrigger>
                             <AccordionContent className="mt-2">
                               {item.children.map((iitem, ii) => (
-                                <Link
+                                <SafeLink
                                   key={ii}
                                   className={cn(
                                     "flex select-none gap-4 rounded-md p-3 leading-none outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                   )}
-                                  href={(iitem.url || "/") as any}
+                                  href={iitem.url || "/"}
                                   target={iitem.target}
                                 >
                                   {iitem.icon && (
@@ -365,16 +412,16 @@ export default function Header({ header }: { header: HeaderType }) {
                                       {iitem.description}
                                     </p>
                                   </div>
-                                </Link>
+                                </SafeLink>
                               ))}
                             </AccordionContent>
                           </AccordionItem>
                         );
                       }
                       return (
-                        <Link
+                        <SafeLink
                           key={i}
-                          href={(item.url || "/") as any}
+                          href={item.url || "/"}
                           target={item.target}
                           className="font-semibold my-4 flex items-center gap-2 px-4"
                         >
@@ -385,7 +432,7 @@ export default function Header({ header }: { header: HeaderType }) {
                             />
                           )}
                           {item.title}
-                        </Link>
+                        </SafeLink>
                       );
                     })}
                   </Accordion>
@@ -412,7 +459,7 @@ export default function Header({ header }: { header: HeaderType }) {
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 px-2">
-                        <Link
+                        <SafeLink
                           href="/convert"
                           className={cn(
                             buttonVariants({ variant: "ghost" }),
@@ -421,10 +468,10 @@ export default function Header({ header }: { header: HeaderType }) {
                         >
                           <CreditCard className="w-4 h-4" />
                           <span className="text-sm">我的额度</span>
-                        </Link>
+                        </SafeLink>
 
                         {userTier !== 'pro' && (
-                          <Link
+                          <SafeLink
                             href="/pricing"
                             className={cn(
                               buttonVariants({ variant: "ghost" }),
@@ -435,7 +482,7 @@ export default function Header({ header }: { header: HeaderType }) {
                               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                             </svg>
                             <span className="text-sm">升级</span>
-                          </Link>
+                          </SafeLink>
                         )}
 
                         <button
@@ -455,8 +502,8 @@ export default function Header({ header }: { header: HeaderType }) {
                       {header.buttons?.map((item, i) => {
                         return (
                           <Button key={i} variant={item.variant}>
-                            <Link
-                              href={(item.url || "/") as any}
+                            <SafeLink
+                              href={item.url || "/"}
                               target={item.target || ""}
                               className="flex items-center gap-1"
                             >
@@ -467,7 +514,7 @@ export default function Header({ header }: { header: HeaderType }) {
                                   className="size-4 shrink-0"
                                 />
                               )}
-                            </Link>
+                            </SafeLink>
                           </Button>
                         );
                       })}

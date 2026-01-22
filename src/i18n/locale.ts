@@ -20,6 +20,7 @@ export const localeDetection =
   process.env.NEXT_PUBLIC_LOCALE_DETECTION === "true";
 
 // 定义所有支持的路径键
+// 使用交叉类型允许内部路由或外部URL
 export type AppPathname =
   | "/"
   | "/blog"
@@ -33,7 +34,9 @@ export type AppPathname =
   | "/auth/forgot"
   | "/pay-success/[session_id]"
   | "/privacy-policy"
-  | "/terms-of-service";
+  | "/terms-of-service"
+  | `http://${string}`  // 允许外部HTTP URL
+  | `https://${string}`; // 允许外部HTTPS URL
 
 export const pathnames = {
   "/": "/",

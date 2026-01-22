@@ -3,6 +3,8 @@
  * 用于支持邮箱验证码认证系统和自定义字段
  */
 
+import NextAuth from "next-auth";
+
 /**
  * 用户等级枚举
  */
@@ -22,19 +24,29 @@ export interface EmailCodeCredentials {
   purpose: 'register' | 'login' | 'update_email';
 }
 
-/**
- * 用户接口（与数据库兼容）
- */
-export interface User {
-  id: string;
-  email: string;
-  username?: string;
-  name?: string | null;
-  image?: string | null;
-  emailVerified?: Date | null;
-  tier: UserTier;
-  creditsUsed: number;
-  creditsReset?: Date | null;
-  createdAt?: Date;
-  updatedAt?: Date;
+declare module "next-auth" {
+  /**
+   * 扩展NextAuth会话中的用户对象
+   * 添加与wmc_users表兼容的字段
+   */
+  interface User {
+    id: string;
+    email: string;
+    username?: string;
+    name?: string | null;
+    image?: string | null;
+    emailVerified?: Date | null;
+    tier: UserTier;
+    creditsUsed: number;
+    creditsReset?: Date | null;
+    createdAt?: Date;
+    updatedAt?: Date;
+
+    // 扩展字段（来自wmc_users表，可选，可空）
+    nickname?: string | null;
+    avatarUrl?: string | null;
+  }
 }
+
+// 重新导出User类型，使其在模块外部也可用
+export type User = import("next-auth").User;

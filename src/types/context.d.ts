@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { User } from "./user";
+import { User } from "./next-auth";
 
 export interface ContextValue {
   theme: string;

@@ -1,7 +1,7 @@
 import { CreditsAmount, CreditsTransType } from "./credit";
 import { findUserByEmail, findUserByUuid, insertUser } from "@/models/user";
 
-import { User } from "@/types/user";
+import type { User } from "@/types/next-auth";
 import { createClient } from "@/lib/supabase-server";
 import { getOneYearLaterTimestr } from "@/lib/time";
 import { headers } from "next/headers";
