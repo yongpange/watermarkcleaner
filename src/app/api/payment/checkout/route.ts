@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { initPaymentManager, getPaymentConfigs } from '@/lib/payment/service';
 import { createOrder, isOrderPaid } from '@/lib/models/order';
 import type { PaymentOrder } from '@/extensions/payment/types';
+import type { Order } from '@/lib/models/order';
+import { PaymentStatus } from '@/extensions/payment/types';
 import { auth } from '@/auth';
 import { createClient } from '@/lib/supabase-server';
 
@@ -90,33 +92,53 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const paymentConfigs = await getPaymentConfigs();
 
     // Initialize payment manager
-    const paymentManager = initPaymentManager(payment_provider, paymentConfigs);
+    const paymentManager = await initPaymentManager(payment_provider, paymentConfigs);
 
-    // Create order
-    const orderData: PaymentOrder = {
+    // Create order data matching the Order interface
+    const orderData: Omit<Order, 'id' | 'order_no' | 'created_at' | 'updated_at'> = {
       user_id: user_id,
       user_email: user_email,
-      product_id,
+      product_id: product_id,
       product_name: finalProductName,
-      product_description,
+      description: product_description,
       amount: finalAmount,
       currency,
-      payment_type,
-      payment_interval,
-      payment_provider,
-      success_url,
-      cancel_url,
-      metadata,
+      payment_provider: payment_provider,
+      payment_type: payment_type,
+      payment_interval: payment_interval,
+      checkout_info: JSON.stringify({
+        product_id,
+        product_name: finalProductName,
+        success_url,
+        cancel_url,
+        metadata,
+      }),
+      status: PaymentStatus.PENDING,
     };
 
     const order = await createOrder(orderData);
 
-    // Create payment session
-    const paymentResponse = await paymentManager.createCheckoutSession({
-      order,
-      success_url,
-      cancel_url,
-    });
+    // Create payment using the provider - convert Order to PaymentOrder
+    const paymentOrder: PaymentOrder = {
+      orderNo: order.order_no,
+      userId: order.user_id,
+      userEmail: order.user_email || '',
+      productId: order.product_id || '',
+      productName: order.product_name || '',
+      description: order.description || '',
+      amount: order.amount,
+      currency: order.currency,
+      paymentProvider: order.payment_provider,
+      paymentType: order.payment_type as any,
+      paymentInterval: order.payment_interval as any,
+      successUrl: success_url,
+      cancelUrl: cancel_url,
+      metadata: metadata,
+    };
+
+    // Create payment session using the appropriate provider
+    const provider = paymentManager.getProvider(payment_provider);
+    const paymentResponse = await provider.createPayment(paymentOrder);
 
     return NextResponse.json({
       success: true,

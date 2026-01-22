@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createAdminClient } from '@/lib/supabase-admin';
 import { initPaymentManager } from '@/lib/payment/service';
 import {
   findOrderByOrderNo,
@@ -14,7 +14,7 @@ import {
   handleSubscriptionUpdated,
   handleSubscriptionCanceled,
 } from '@/lib/payment/service';
-import type { PaymentEventType } from '@/extensions/payment/types';
+import { PaymentEventType } from '@/extensions/payment/types';
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   // Extract provider from the URL path

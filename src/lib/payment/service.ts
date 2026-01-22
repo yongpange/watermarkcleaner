@@ -26,13 +26,21 @@ import type { Subscription } from '@/lib/models/subscription';
 
 /**
  * Initialize and configure the payment manager
+ * @param providerName - Optional specific provider to use as default
+ * @param customConfigs - Optional custom payment configurations
  */
-export async function initPaymentManager(): Promise<PaymentManager> {
-  // Get configuration from environment or database
-  const configs = getPaymentConfigs();
+export async function initPaymentManager(
+  providerName?: string,
+  customConfigs?: ReturnType<typeof getPaymentConfigs>
+): Promise<PaymentManager> {
+  // Get configuration from parameter or environment/database
+  const configs = customConfigs || getPaymentConfigs();
+
+  // Use providerName if provided, otherwise use config's defaultProvider
+  const defaultProvider = providerName || configs.defaultProvider;
 
   const manager = new PaymentManager({
-    defaultProvider: configs.defaultProvider,
+    defaultProvider: defaultProvider,
   });
 
   // Add Creem provider
@@ -43,7 +51,7 @@ export async function initPaymentManager(): Promise<PaymentManager> {
       environment: configs.creem.environment,
     });
 
-    manager.addProvider(creemProvider, configs.defaultProvider === 'creem');
+    manager.addProvider(creemProvider, defaultProvider === 'creem');
   }
 
   // Add Stripe provider (future)
