@@ -79,7 +79,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     image: effectiveUser.image,
 
     // 扩展字段（可选，可空）
-    nickname: effectiveUser.nickname || null,
+    nickname: effectiveUser.nickname ?? null,
     avatarUrl: effectiveUser.avatarUrl || effectiveUser.image || null,
 
     // 时间戳

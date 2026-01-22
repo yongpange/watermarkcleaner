@@ -290,8 +290,8 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
             imageUrl={imagePreviewUrl!}
             file={imageFile}
             metadata={{
-              width: imageMetadata?.width || 0,
-              height: imageMetadata?.height || 0,
+              width: imageMetadata?.width ?? 0,
+              height: imageMetadata?.height ?? 0,
               size: `${(imageFile.size / 1024 / 1024).toFixed(2)} MB`,
               type: imageFile.type,
             }}

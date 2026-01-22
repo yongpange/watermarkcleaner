@@ -283,7 +283,7 @@ export default function Header({ header }: { header: HeaderType }) {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="gap-2 px-2">
                     <Avatar className="w-8 h-8">
-                      <AvatarImage src={session.user.image || undefined} />
+                      <AvatarImage src={session.user.image ?? undefined} />
                       <AvatarFallback>
                         {userName?.[0]?.toUpperCase() || 'U'}
                       </AvatarFallback>
@@ -444,7 +444,7 @@ export default function Header({ header }: { header: HeaderType }) {
                     <div className="mb-4 space-y-3">
                       <div className="flex items-center gap-3 px-2">
                         <Avatar className="w-10 h-10">
-                          <AvatarImage src={session.user.image || undefined} />
+                          <AvatarImage src={session.user.image ?? undefined} />
                           <AvatarFallback>
                             {userName?.[0]?.toUpperCase() || 'U'}
                           </AvatarFallback>

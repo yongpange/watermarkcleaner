@@ -231,7 +231,7 @@ export async function POST(request: NextRequest) {
     });
 
     // 7. 构建请求参数
-    const prompt = buildPrompt(mode, customPrompt || undefined);
+    const prompt = buildPrompt(mode, customPrompt ?? undefined);
     const guidanceScale = getGuidanceScale(mode);
 
     console.log("Processing with params:", {

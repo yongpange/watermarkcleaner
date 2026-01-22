@@ -19,7 +19,7 @@ export async function insertUser(
     return undefined;
   }
 
-  return user || undefined;
+  return user ?? undefined;
 }
 
 export async function findUserByEmail(
@@ -39,7 +39,7 @@ export async function findUserByEmail(
     return undefined;
   }
 
-  return user || undefined;
+  return user ?? undefined;
 }
 
 export async function findUserByUuid(
@@ -59,7 +59,7 @@ export async function findUserByUuid(
     return undefined;
   }
 
-  return user || undefined;
+  return user ?? undefined;
 }
 
 export async function getUsers(

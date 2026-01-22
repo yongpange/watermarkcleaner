@@ -49,7 +49,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   }, [setTheme, theme]);
 
   return (
-    <NextThemesProvider forcedTheme={theme || undefined} {...props}>
+    <NextThemesProvider forcedTheme={theme ?? undefined} {...props}>
       {children}
 
       <Toaster position="top-center" richColors />
