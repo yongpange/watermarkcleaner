@@ -52,7 +52,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       userId: wmcAccount.user_id,
       type: wmcAccount.type,
       provider: wmcAccount.provider,
-      providerAccountId: wmcAccount.provider_account_id,
+      providerAccountId: wmcAccount.provideraccountid,
       refresh_token: wmcAccount.refresh_token,
       access_token: wmcAccount.access_token,
       expires_at: wmcAccount.expires_at,
@@ -134,7 +134,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
         .from('wmc_accounts')
         .select('*')
         .eq('provider', providerAccountId.provider)
-        .eq('provider_account_id', providerAccountId.providerAccountId)
+        .eq('provideraccountid', providerAccountId.providerAccountId)
         .single();
 
       if (accountError || !account) {
@@ -210,10 +210,10 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
 
       const accountData = {
         id: crypto.randomUUID(),
-        user_id: data.userId,
+        userid: data.userId,
         type: data.type,
         provider: data.provider,
-        provider_account_id: data.providerAccountId,
+        provideraccountid: data.providerAccountId,
         refresh_token: data.refresh_token,
         access_token: data.access_token,
         expires_at: data.expires_at,
@@ -243,7 +243,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
         .from('wmc_accounts')
         .delete()
         .eq('provider', providerAccountId.provider)
-        .eq('provider_account_id', providerAccountId.providerAccountId);
+        .eq('provideraccountid', providerAccountId.providerAccountId);
 
       if (error) {
         console.error('[CustomAdapter] Error unlinking account:', error);
