@@ -38,6 +38,8 @@ export const authConfig: NextAuthConfig = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // 允许自动链接已存在的同邮箱账户（解决 OAuthAccountNotLinked 错误）
+      allowDangerousEmailAccountLinking: true,
       // 修复：移除 prompt 参数，添加 hd 参数来解决账户确认循环问题
       authorization: {
         params: {
