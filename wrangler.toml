@@ -1,0 +1,11 @@
+name = "watermarkcleaner"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# Bindings for Client-side/Server-side variables
+# Note: Sensitive secrets should be added via Cloudflare Dashboard Settings -> Environment Variables
+
+[vars]
+# Public variables can be safe here, but usually better to keep all in Dashboard or .env.local for local dev
+# NEXT_PUBLIC_SUPABASE_URL = "..." 

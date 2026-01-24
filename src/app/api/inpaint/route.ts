@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import sharp from "sharp";
 
 // Fal.ai API configuration - 使用 inpaint 模型
 const FAL_API_URL = "https://queue.fal.run/fal-ai/inpaint";
 const FAL_API_KEY = process.env.FAL_AI_API_KEY;
+
+export const runtime = 'edge'; // Explicitly set Edge Runtime
 
 // Maximum file size: 20MB
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
@@ -11,7 +12,16 @@ const MAX_FILE_SIZE = 20 * 1024 * 1024;
 // Helper function to convert File/Blob to base64 data URL
 async function fileToBase64(file: File | Blob): Promise<string> {
   const buffer = await file.arrayBuffer();
-  const base64 = Buffer.from(buffer).toString("base64");
+  // Edge runtime supports basic Buffer via polyfill or native APIs in newer environments,
+  // but standard 'buffer' module might be limited.
+  // Using standard ArrayBuffer to Base64 conversion usually works in Edge.
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  const base64 = btoa(binary);
   const mimeType = file.type || "image/png";
   return `data:${mimeType};base64,${base64}`;
 }
@@ -78,8 +88,8 @@ export async function POST(request: NextRequest) {
     const image = formData.get("image") as File | null;
     const mask = formData.get("mask") as File | null;
     const prompt = (formData.get("prompt") as string) || "Remove the watermark and restore the original image seamlessly";
-    const originalWidth = parseInt(formData.get("originalWidth")?.toString() || "1024");
-    const originalHeight = parseInt(formData.get("originalHeight")?.toString() || "1024");
+    // const originalWidth = parseInt(formData.get("originalWidth")?.toString() || "1024");
+    // const originalHeight = parseInt(formData.get("originalHeight")?.toString() || "1024");
 
     // Validate inputs
     if (!image || !mask) {
@@ -128,80 +138,50 @@ export async function POST(request: NextRequest) {
     const data = await response.json();
     console.log("Fal.ai API response:", JSON.stringify(data, null, 2));
 
+    let imageUrl: string | undefined;
+
     // 检查是否为队列响应
     if ("request_id" in data) {
       // 轮询获取结果
       const result = await pollForResult(data.request_id);
       console.log("Fal.ai final result:", JSON.stringify(result, null, 2));
-
-      const imageUrl = result.image?.url || result.images?.[0]?.url;
-
-      if (!imageUrl) {
-        return NextResponse.json(
-          { error: result.error || "No image returned from API", debug: result },
-          { status: 500 }
-        );
-      }
-
-      // Download generated image and resize to original dimensions
-      try {
-        const generatedImage = await fetch(imageUrl);
-        const generatedBuffer = await generatedImage.arrayBuffer();
-
-        // Resize to original dimensions using sharp
-        const resizedBuffer = await sharp(generatedBuffer)
-          .resize(originalWidth, originalHeight, {
-            fit: 'fill',
-            withoutEnlargement: false
-          })
-          .png()
-          .toBuffer();
-
-        // Convert to base64 for direct serving
-        const base64Image = resizedBuffer.toString('base64');
-        const sizedImageUrl = `data:image/png;base64,${base64Image}`;
-
-        return NextResponse.json({ success: true, imageUrl: sizedImageUrl });
-      } catch (resizeError) {
-        console.error("Resize error:", resizeError);
-        // If resizing fails, return original image
-        return NextResponse.json({ success: true, imageUrl });
-      }
+      imageUrl = result.image?.url || result.images?.[0]?.url;
     } else {
       // 直接响应
-      const imageUrl = data.image?.url || data.images?.[0]?.url;
+      imageUrl = data.image?.url || data.images?.[0]?.url;
+    }
 
-      if (!imageUrl) {
-        return NextResponse.json(
-          { error: data.error || "No image returned from API", debug: data },
-          { status: 500 }
-        );
-      }
+    if (!imageUrl) {
+      return NextResponse.json(
+        { error: "No image returned from API", debug: data },
+        { status: 500 }
+      );
+    }
 
-      // Download and resize generated image
-      try {
+    // 直接返回图片 URL (Cloudflare Pages 边缘函数无需下载再返回，除非为了跨域或缓存)
+    // 或者，如果前端需要 Base64，我们可以 fetch 并转 Base64，但不再 resize。
+    // 为了保持接口兼容性（前端可能期望 Base64），我们 fetching 并返回 Base64。
+
+    try {
         const generatedImage = await fetch(imageUrl);
         const generatedBuffer = await generatedImage.arrayBuffer();
-
-        // Resize to original dimensions
-        const resizedBuffer = await sharp(generatedBuffer)
-          .resize(originalWidth, originalHeight, {
-            fit: 'fill',
-            withoutEnlargement: false
-          })
-          .png()
-          .toBuffer();
-
-        // Convert to base64
-        const base64Image = resizedBuffer.toString('base64');
+        
+        let binary = '';
+        const bytes = new Uint8Array(generatedBuffer);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        const base64Image = btoa(binary);
         const sizedImageUrl = `data:image/png;base64,${base64Image}`;
 
         return NextResponse.json({ success: true, imageUrl: sizedImageUrl });
-      } catch (resizeError) {
-        console.error("Resize error:", resizeError);
-        return NextResponse.json({ success: true, imageUrl });
-      }
+    } catch (fetchError) {
+        console.error("Fetch image error:", fetchError);
+        // Fallback to URL if fetch fails
+        return NextResponse.json({ success: true, imageUrl: imageUrl });
     }
+
   } catch (error) {
     console.error("Inpaint API error:", error);
     return NextResponse.json(
@@ -210,4 +190,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 

@@ -6,7 +6,7 @@
 
 **✅ 最新功能**
 
-- **CREEM支付系统** (2026-01-18): 完整迁移支付架构，支持 Creem/Stripe/PayPal
+- **NextAuth 完整迁移** (2026-01-24): 从 Supabase Auth 迁移到 NextAuth，修复 Google OAuth 登录，清理残留外键约束
 - **统一额度系统** (2026-01-09): 所有用户（登录/未登录）统一为 **3次额度（终身）**
 - **Google OAuth** (2026-01-08): 完整 OAuth 2.0 流程，自动登录并升级用户等级
 - **博客系统**: 基于文件系统的 MDX 内容管理，实时更新无需重新构建
@@ -112,15 +112,22 @@ content/blog/post-slug/
 
 ### 3.3 用户认证
 
+**认证架构** (2026-01-24 迁移完成):
+- **已从 Supabase Auth 完全迁移到 NextAuth.js v5**
+- 使用 **CustomSupabaseAdapter** (`src/lib/auth/custom-supabase-adapter.ts`) 直接操作 `wmc_*` 表
+- 所有外键约束已从 `auth.users` 迁移到 `public.wmc_users`
+
 **认证方式**:
 - **Google OAuth**: 一键登录，自动获得 `verified` 等级
+  - 启用 `allowDangerousEmailAccountLinking: true` 支持账户自动链接
 - **邮箱验证码**: 无密码登录，6位数字，5分钟有效期，IP 速率限制
 - **邮箱链接**: 传统 Magic Link 验证
 
-**NextAuth.js v5**:
+**NextAuth.js v5 配置** (`src/lib/auth.config.ts`):
+- 使用 JWT 策略 (`session.strategy: 'jwt'`)
+- CustomSupabaseAdapter 直接操作 `wmc_users`, `wmc_accounts`, `wmc_sessions` 表
 - 从 `getServerSession()` 迁移到 `auth()` API
 - 完整 TypeScript 类型安全
-- 自动用户信息同步
 
 **用户体系**:
 ```typescript
@@ -219,14 +226,47 @@ GET  /api/admin/cleanup?days=3 # 手动触发清理
 
 ### 核心表结构
 
+**⚠️ 重要：列名命名规范**
+- Supabase 自动将列名转为**全小写**（如 `userId` → `userid`，`providerAccountId` → `provideraccountid`）
+- 在代码中使用 `userid`, `provideraccountid`, `sessiontoken`, `emailverified` 等全小写形式
+- 外键约束指向 `public.wmc_users(id)`，**不是** `auth.users`
+
 ```sql
 -- 用户表
 CREATE TABLE public.wmc_users (
-  id TEXT PRIMARY KEY,
+  id TEXT PRIMARY KEY,           -- NextAuth 生成的 UUID 字符串
   email TEXT UNIQUE NOT NULL,
   name TEXT,
   image TEXT,
+  emailverified TIMESTAMPTZ,     -- 注意：全小写
   tier TEXT DEFAULT 'unverified',
+  creditsused INTEGER DEFAULT 0, -- 注意：全小写
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- OAuth 账户关联表
+CREATE TABLE public.wmc_accounts (
+  id TEXT PRIMARY KEY,
+  userid TEXT REFERENCES wmc_users(id) ON DELETE CASCADE,  -- 全小写
+  type TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  provideraccountid TEXT NOT NULL,  -- 全小写
+  refresh_token TEXT,
+  access_token TEXT,
+  expires_at BIGINT,
+  token_type TEXT,
+  scope TEXT,
+  id_token TEXT,
+  session_state TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 会话表
+CREATE TABLE public.wmc_sessions (
+  id TEXT PRIMARY KEY,
+  sessiontoken TEXT UNIQUE NOT NULL,  -- 全小写
+  userid TEXT REFERENCES wmc_users(id) ON DELETE CASCADE,  -- 全小写
+  expires TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -255,7 +295,7 @@ CREATE TABLE public.wmc_order (
 -- 订阅管理
 CREATE TABLE public.wmc_subscription (
   id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id TEXT REFERENCES wmc_users(id),
+  user_id TEXT REFERENCES wmc_users(id),  -- 外键指向 wmc_users
   product_id TEXT NOT NULL,
   status TEXT NOT NULL,
   interval TEXT NOT NULL,
@@ -267,7 +307,7 @@ CREATE TABLE public.wmc_subscription (
 -- 信用额度（Pro用户）
 CREATE TABLE public.wmc_credit (
   id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id TEXT REFERENCES wmc_users(id),
+  user_id TEXT REFERENCES wmc_users(id),  -- 外键指向 wmc_users
   transaction_type TEXT NOT NULL,  -- grant/consume
   credits INTEGER NOT NULL,
   expires_at TIMESTAMPTZ,
@@ -382,6 +422,6 @@ npm run lint         # 代码检查
 
 ---
 
-**文档版本**: 2.1 精简版
-**最后更新**: 2026-01-18
+**文档版本**: 2.2
+**最后更新**: 2026-01-24
 **维护者**: Claude Code AI
