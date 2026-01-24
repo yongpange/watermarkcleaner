@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/database-merged'
+import type { Database } from '@/types/database.types'
 
 /**
  * 创建管理员 Supabase 客户端（使用 Service Role Key）

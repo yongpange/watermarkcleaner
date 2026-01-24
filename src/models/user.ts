@@ -1,8 +1,8 @@
-import type { DatabaseWithWmc } from "@/types/database-wmc.types";
+import type { Database } from "@/types/database.types";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-type User = DatabaseWithWmc["public"]["Tables"]["wmc_users"]["Row"];
-type UserInsert = DatabaseWithWmc["public"]["Tables"]["wmc_users"]["Insert"];
+type User = Database["public"]["Tables"]["wmc_users"]["Row"];
+type UserInsert = Database["public"]["Tables"]["wmc_users"]["Insert"];
 
 export async function insertUser(
   supabase: SupabaseClient,

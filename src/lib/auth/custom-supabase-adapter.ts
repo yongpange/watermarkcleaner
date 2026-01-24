@@ -1,5 +1,5 @@
-import { Adapter } from '@auth/core/adapters';
-import { SupabaseAdapter, type SupabaseAdapterOptions } from '@auth/supabase-adapter';
+import type { Adapter } from 'next-auth/adapters';
+import { type SupabaseAdapterOptions } from '@auth/supabase-adapter';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { createHash } from 'crypto';
 
@@ -35,8 +35,11 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       id: wmcUser.id,
       name: wmcUser.name,
       email: wmcUser.email,
-      emailVerified: wmcUser.email_verified ? new Date(wmcUser.email_verified) : null,
+      emailVerified: wmcUser.emailverified ? new Date(wmcUser.emailverified) : null,
       image: wmcUser.image,
+      // Extended fields required by our custom User type
+      tier: wmcUser.tier || 'unverified',
+      creditsUsed: wmcUser.creditsused || 0,
     };
   }
 
@@ -60,7 +63,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
     };
   }
 
-  const adapter: Adapter = {
+  const adapter = {
     // User operations
     createUser: async (data) => {
       const supabase = getAdminClient();
@@ -69,7 +72,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
         id: crypto.randomUUID(),
         name: data.name,
         email: data.email,
-        email_verified: data.emailVerified?.toISOString(),
+        emailverified: data.emailVerified?.toISOString(),
         image: data.image,
         tier: 'unverified', // Default tier for new users
         creditsused: 0,
@@ -161,7 +164,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
         ...(data.name && { name: data.name }),
         ...(data.email && { email: data.email }),
         ...(data.emailVerified !== undefined && {
-          email_verified: data.emailVerified?.toISOString(),
+          emailverified: data.emailVerified?.toISOString(),
         }),
         ...(data.image && { image: data.image }),
         updated_at: new Date().toISOString(),
@@ -420,5 +423,5 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
     },
   };
 
-  return adapter;
+  return adapter as Adapter;
 }

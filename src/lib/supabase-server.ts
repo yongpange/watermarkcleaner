@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import type { Database } from '@/types/database-merged'
+import type { Database } from '@/types/database.types'
 
 /**
  * 创建服务端 Supabase 客户端（支持 SSR）

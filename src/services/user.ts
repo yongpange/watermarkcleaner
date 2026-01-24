@@ -7,9 +7,9 @@ import { getOneYearLaterTimestr } from "@/lib/time";
 import { headers } from "next/headers";
 import { increaseCredits } from "./credit";
 import { getUuid } from "@/lib/hash";
-import type { DatabaseWithWmc } from "@/types/database-wmc.types";
+import type { Database } from "@/types/database.types";
 
-type UserInsert = DatabaseWithWmc["public"]["Tables"]["wmc_users"]["Insert"];
+type UserInsert = Database["public"]["Tables"]["wmc_users"]["Insert"];
 
 // save user to database, if user not exist, create a new user
 export async function saveUser(user: User) {
@@ -23,8 +23,8 @@ export async function saveUser(user: User) {
 
     if (!existUser) {
       // user not exist, create a new user
-      if (!user.uuid) {
-        user.uuid = getUuid();
+      if (!user.id) {
+        user.id = getUuid();
       }
 
       console.log("user to be inserted:", user);
@@ -33,7 +33,7 @@ export async function saveUser(user: User) {
 
       // increase credits for new user, expire in one year
       await increaseCredits({
-        user_uuid: user.uuid,
+        user_uuid: user.id,
         trans_type: CreditsTransType.NewUser,
         credits: CreditsAmount.NewUserGet,
         expired_at: getOneYearLaterTimestr(),

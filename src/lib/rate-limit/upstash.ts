@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
 import { Ratelimit } from "@upstash/ratelimit";
 import { getTotalProcessedSize } from "./index"; // Keep existing functions
-import { UserTier } from "../credits/check";
+import { UserTier } from "../credits/config";
 
 // Initialize Upstash Redis
 const redis = Redis.fromEnv();

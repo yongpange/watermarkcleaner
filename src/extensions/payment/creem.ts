@@ -3,8 +3,14 @@
  * Documentation: https://docs.creem.io
  */
 
-import { converBigIntToNumber } from '@/lib/utils';
 import crypto from 'crypto';
+
+import {
+  PaymentStatus,
+  PaymentInterval,
+  PaymentEventType,
+  SubscriptionStatus,
+} from './types';
 
 import type {
   PaymentProvider,
@@ -17,8 +23,6 @@ import type {
   BillingResult,
   SubscriptionInfo,
   PaymentInfo,
-  PaymentEventType,
-  SubscriptionStatus,
   SubscriptionCycleType,
 } from './types';
 
@@ -49,6 +53,7 @@ interface CreemCheckoutData {
     current_period_start: number;
     current_period_end: number;
   };
+  metadata?: Record<string, any>;
 }
 
 interface CreemSubscription {
@@ -315,7 +320,12 @@ export class CreemProvider implements PaymentProvider {
         const checkout: CreemCheckoutData = data;
         const subscriptionInfo: SubscriptionInfo | undefined =
           checkout.subscription && checkout.subscriptionId
-            ? this.buildSubscriptionInfo(checkout.subscription)
+            ? {
+                subscriptionId: checkout.subscriptionId,
+                status: this.mapSubscriptionStatus(checkout.subscription.status),
+                currentPeriodStart: new Date(checkout.subscription.current_period_start * 1000),
+                currentPeriodEnd: new Date(checkout.subscription.current_period_end * 1000),
+              }
             : undefined;
 
         paymentEvent = {
@@ -385,7 +395,7 @@ export class CreemProvider implements PaymentProvider {
           raw: eventData,
           paymentSession: {
             id: subscription.id,
-            status: PaymentStatus.SUCCESS,
+            status: PaymentStatus.PAID,
             subscriptionInfo: this.buildSubscriptionInfo(subscription),
             subscriptionId: subscription.id,
           },
@@ -395,7 +405,7 @@ export class CreemProvider implements PaymentProvider {
       else if (eventType === 'subscription.canceled') {
         const subscription: CreemSubscription = data;
 
-        eventData = {
+        paymentEvent = {
           eventType: PaymentEventType.SUBSCRIBE_CANCELED,
           raw: eventData,
           paymentSession: {

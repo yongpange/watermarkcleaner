@@ -183,11 +183,11 @@ export const authConfig: NextAuthConfig = {
           await supabase
             .from('wmc_users')
             .update({
-              email_verified: new Date().toISOString()
+              emailverified: new Date().toISOString()
             })
             .eq('email', user.email!);
 
-          console.log('[Google] User marked as email_verified in wmc_users');
+          console.log('[Google] User marked as emailverified in wmc_users');
         } catch (error) {
           console.error('[Google] Error updating verification status:', error);
         }

@@ -1,0 +1,114 @@
+﻿
+> watermarkcleaner@1.0.0 build
+> cross-env NODE_NO_WARNINGS=1 next build
+
+   鈻?Next.js 15.3.8
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ 鉁?Compiled successfully in 9.0s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+[Auth Debug] Starting NextAuth v5...
+[Auth Debug] NODE_ENV: production
+[Auth Debug] NEXTAUTH_URL: http://localhost:3000
+[Auth Debug] GOOGLE_CLIENT_ID: 1043261993242-8o2tlo...
+[Auth Debug] GOOGLE_CLIENT_SECRET: Set
+[Auth Debug] AUTH_SECRET: Set
+[Auth Debug] SUPABASE_SERVICE_ROLE_KEY: Set
+[Auth Debug] NextAuth initialized successfully
+[Auth Debug] Starting NextAuth v5...
+[Auth Debug] NODE_ENV: production
+[Auth Debug] NEXTAUTH_URL: http://localhost:3000
+[Auth Debug] GOOGLE_CLIENT_ID: 1043261993242-8o2tlo...
+[Auth Debug] GOOGLE_CLIENT_SECRET: Set
+[Auth Debug] AUTH_SECRET: Set
+[Auth Debug] SUPABASE_SERVICE_ROLE_KEY: Set
+[Auth Debug] NextAuth initialized successfully
+[Auth Debug] Starting NextAuth v5...
+[Auth Debug] NODE_ENV: production
+[Auth Debug] NEXTAUTH_URL: http://localhost:3000
+[Auth Debug] GOOGLE_CLIENT_ID: 1043261993242-8o2tlo...
+[Auth Debug] GOOGLE_CLIENT_SECRET: Set
+[Auth Debug] AUTH_SECRET: Set
+[Auth Debug] SUPABASE_SERVICE_ROLE_KEY: Set
+[Auth Debug] NextAuth initialized successfully
+[Auth Debug] Starting NextAuth v5...
+[Auth Debug] NODE_ENV: production
+[Auth Debug] NEXTAUTH_URL: http://localhost:3000
+[Auth Debug] GOOGLE_CLIENT_ID: 1043261993242-8o2tlo...
+[Auth Debug] GOOGLE_CLIENT_SECRET: Set
+[Auth Debug] AUTH_SECRET: Set
+[Auth Debug] SUPABASE_SERVICE_ROLE_KEY: Set
+[Auth Debug] NextAuth initialized successfully
+[Auth Debug] Starting NextAuth v5...
+[Auth Debug] NODE_ENV: production
+[Auth Debug] NEXTAUTH_URL: http://localhost:3000
+[Auth Debug] GOOGLE_CLIENT_ID: 1043261993242-8o2tlo...
+[Auth Debug] GOOGLE_CLIENT_SECRET: Set
+[Auth Debug] AUTH_SECRET: Set
+[Auth Debug] SUPABASE_SERVICE_ROLE_KEY: Set
+[Auth Debug] NextAuth initialized successfully
+   Generating static pages (0/49) ...
+   Generating static pages (12/49) 
+   Generating static pages (24/49) 
+   Generating static pages (36/49) 
+[Auth Debug] Starting NextAuth v5...
+[Auth Debug] NODE_ENV: production
+[Auth Debug] NEXTAUTH_URL: http://localhost:3000
+[Auth Debug] GOOGLE_CLIENT_ID: 1043261993242-8o2tlo...
+[Auth Debug] GOOGLE_CLIENT_SECRET: Set
+[Auth Debug] AUTH_SECRET: Set
+[Auth Debug] SUPABASE_SERVICE_ROLE_KEY: Set
+[Auth Debug] NextAuth initialized successfully
+ 鉁?Generating static pages (49/49)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                              Size  First Load JS  Revalidate  Expire
+鈹?鈼?/_not-found                                         990 B         103 kB
+鈹?茠 /[locale]                                         24.3 kB         596 kB
+鈹?茠 /[locale]/admin                                    109 kB         262 kB
+鈹?茠 /[locale]/admin/users                             3.99 kB         602 kB
+鈹?茠 /[locale]/blog                                    6.52 kB         144 kB
+鈹?鈼?/[locale]/blog/[slug]                             6.83 kB         144 kB
+鈹?  鈹?/en/blog/automatic-vs-manual-watermark-removal
+鈹?  鈹?/zh/blog/automatic-vs-manual-watermark-removal
+鈹?  鈹?/es/blog/automatic-vs-manual-watermark-removal
+鈹?  鈹?[+25 more paths]
+鈹?茠 /[locale]/convert                                 11.3 kB         614 kB
+鈹?茠 /[locale]/pricing                                 10.1 kB         566 kB
+鈹?茠 /[locale]/showcase                                  189 B         111 kB
+鈹?茠 /api/admin/cleanup                                  199 B         102 kB
+鈹?茠 /api/auth/[...nextauth]                             199 B         102 kB
+鈹?茠 /api/auth/check-user                                199 B         102 kB
+鈹?茠 /api/auth/send-code                                 199 B         102 kB
+鈹?茠 /api/auth/verify-code                               199 B         102 kB
+鈹?茠 /api/credits/check                                  199 B         102 kB
+鈹?茠 /api/credits/check-ip                               199 B         102 kB
+鈹?茠 /api/get-user-info                                  199 B         102 kB
+鈹?茠 /api/inpaint                                        199 B         102 kB
+鈹?茠 /api/mock-seededit                                  199 B         102 kB
+鈹?茠 /api/payment/checkout                               199 B         102 kB
+鈹?茠 /api/payment/notify/[provider]                      199 B         102 kB
+鈹?茠 /api/ping                                           199 B         102 kB
+鈹?茠 /api/record-processing                              199 B         102 kB
+鈹?茠 /api/seededit                                       199 B         102 kB
+鈹?茠 /api/upload                                         199 B         102 kB
+鈹?茠 /privacy-policy                                     199 B         102 kB
+鈹?鈼?/robots.txt                                         199 B         102 kB
+鈹?鈼?/sitemap.xml                                        199 B         102 kB          1h      1y
+鈹?茠 /terms-of-service                                   199 B         102 kB
++ First Load JS shared by all                          102 kB
+  鈹?chunks/1684-c586cb301e86dc0d.js                   46.6 kB
+  鈹?chunks/4bd1b696-da08ce139a122eee.js               53.2 kB
+  鈹?other shared chunks (total)                       2.05 kB
+
+
+茠 Middleware                                          86.5 kB
+
+鈼? (Static)   prerendered as static content
+鈼? (SSG)      prerendered as static HTML (uses generateStaticParams)
+茠  (Dynamic)  server-rendered on demand
+

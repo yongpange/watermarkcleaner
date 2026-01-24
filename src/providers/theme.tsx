@@ -11,7 +11,7 @@ import { useAppContext } from "@/contexts/app";
 import { useEffect } from "react";
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  const { theme, setTheme } = useAppContext();
+  const { theme, setTheme, showSignModal, setShowSignModal } = useAppContext();
 
   useEffect(() => {
     // Only run initialization if theme is not already set
@@ -53,7 +53,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       {children}
 
       <Toaster position="top-center" richColors />
-      <AuthModal />
+      <AuthModal isOpen={showSignModal} onClose={() => setShowSignModal(false)} />
       <Analytics />
     </NextThemesProvider>
   );
