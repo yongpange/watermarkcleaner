@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ConvertPageClient } from "./convert-page-client";

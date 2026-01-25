@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import CTA from "@/components/blocks/cta";
 import FAQ from "@/components/blocks/faq";
 import Hero from "@/components/blocks/hero";

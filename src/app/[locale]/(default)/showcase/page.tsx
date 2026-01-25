@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Showcase from "@/components/blocks/showcase";
 import { getShowcasePage } from "@/services/page";
 

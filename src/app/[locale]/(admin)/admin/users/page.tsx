@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { TableColumn } from "@/types/blocks/table";
 import TableSlot from "@/components/dashboard/slots/table";
 import { Table as TableSlotType } from "@/types/slots/table";

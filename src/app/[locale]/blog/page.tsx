@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getAllPosts, type LocalizedPostSummary } from "@/lib/blog";

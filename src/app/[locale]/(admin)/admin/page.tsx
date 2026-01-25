@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import DataCards from "@/components/blocks/data-cards";
 import DataCharts from "@/components/blocks/data-charts";
 import Header from "@/components/dashboard/header";

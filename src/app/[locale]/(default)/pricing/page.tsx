@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Pricing from "@/components/blocks/pricing";
 import { getPricingPage } from "@/services/page";
 
