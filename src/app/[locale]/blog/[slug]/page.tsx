@@ -1,6 +1,7 @@
-// NOTE: Blog posts are statically generated at build time (SSG)
-// Cannot use Edge runtime because blog loader uses Node.js fs/path modules
-
+// Blog posts are fully static - pre-rendered at build time
+// Using force-static to ensure no runtime component is needed
+export const dynamic = 'force-static';
+export const dynamicParams = false;
 import { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
