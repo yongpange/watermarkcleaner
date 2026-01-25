@@ -32,8 +32,9 @@ function cleanupExpiredEntries() {
   }
 }
 
-// 启动定时清理（每小时清理一次）
-setInterval(cleanupExpiredEntries, CONFIG.CLEANUP_INTERVAL_MS);
+// Note: setInterval is not supported at module top-level in Edge Runtime
+// Cleanup is now done lazily during checkRateLimit instead
+// setInterval(cleanupExpiredEntries, CONFIG.CLEANUP_INTERVAL_MS);
 
 /**
  * 获取客户端IP地址

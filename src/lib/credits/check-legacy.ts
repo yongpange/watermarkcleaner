@@ -151,7 +151,7 @@ export async function checkUserCredits(
     const tierConfig = USER_TIER_CONFIG[tier];
 
     // IMPORTANT: Hash the IP before querying database
-    const hashedIdentifier = hashIPAddress(identifier);
+    const hashedIdentifier = await hashIPAddress(identifier);
 
     console.log('[Credits Check] ===== IP-based User Check Started =====');
     console.log('[Credits Check] Original IP:', identifier);
