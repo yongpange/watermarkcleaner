@@ -1,11 +1,16 @@
+
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
+import { createAdminClient } from '@/lib/supabase-admin';
 import { initPaymentManager, getPaymentConfigs } from '@/lib/payment/service';
 import { createOrder, isOrderPaid } from '@/lib/models/order';
 import type { PaymentOrder } from '@/extensions/payment/types';
 import type { Order } from '@/lib/models/order';
 import { PaymentStatus } from '@/extensions/payment/types';
 import { auth } from '@/auth';
-import { createClient } from '@/lib/supabase-server';
 
 // ==========================================================================
 // POST /api/payment/checkout
