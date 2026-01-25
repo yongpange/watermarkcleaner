@@ -1,7 +1,7 @@
-// Blog posts are fully static - pre-rendered at build time
-// Using force-static to ensure no runtime component is needed
-export const dynamic = 'force-static';
-export const dynamicParams = false;
+// Blog posts use pre-compiled data, compatible with Edge Runtime
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -15,17 +15,8 @@ import RelatedPosts from "@/components/blocks/blog/related-posts";
 import ShareButtons from "@/components/blocks/blog/share-buttons";
 import BlogJsonLd, { BreadcrumbJsonLd } from "@/components/blocks/blog/blog-jsonld";
 import MDXRenderer from "@/components/markdown/mdx-renderer";
-import { getPostBySlug, getAllPostSlugs, getAllPosts, type Locale } from "@/lib/blog";
-import { locales } from "@/i18n/locale";
+import { getPostBySlug, getAllPosts, type Locale } from "@/lib/blog";
 import { ReadingProgress, BackToTop, SmoothScroll, CopyCodeButton } from "./client-features";
-
-// Generate static params for all blog posts at build time
-export async function generateStaticParams() {
-  const slugs = await getAllPostSlugs();
-  return slugs.flatMap((slug) =>
-    locales.map((locale) => ({ slug, locale }))
-  );
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string } > }): Promise<Metadata> {
   const { slug } = await params;

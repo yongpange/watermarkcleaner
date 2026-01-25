@@ -1,7 +1,6 @@
-// Blog pages are fully static - pre-rendered at build time
-// Using force-static to ensure no runtime component is needed
-export const dynamic = 'force-static';
-export const dynamicParams = false;
+// Blog pages use pre-compiled data, compatible with Edge Runtime
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
 import { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
