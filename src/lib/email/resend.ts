@@ -1,6 +1,9 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Use a placeholder during build if env var is missing.
+// Cloudflare Pages build environment often doesn't have access to secrets, causing the build to fail
+// if we strictly require the key at the module level.
+const resend = new Resend(process.env.RESEND_API_KEY || 're_build_placeholder');
 
 export interface SendVerificationEmailParams {
   toEmail: string;
