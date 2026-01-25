@@ -3,18 +3,26 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-// Test 1: Add auth import
+// Test 2: Add auth + rate-limit imports
 import { auth } from "@/auth";
+import { rateLimitMiddleware } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
   try {
+    // Test rate limit
+    const rateLimitResult = await rateLimitMiddleware(request, {
+      limit: 10,
+      windowMs: 3600000,
+    });
+    
     // Test auth
     const session = await auth();
     
     return NextResponse.json({
       success: true,
-      message: "Test 1: auth import works!",
+      message: "Test 2: auth + rate-limit imports work!",
       hasSession: !!session,
+      rateLimit: rateLimitResult.remaining,
       timestamp: new Date().toISOString(),
     });
   } catch (error: any) {
@@ -29,7 +37,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   return NextResponse.json({
     success: true,
-    message: "Test 1: seededit with auth import",
+    message: "Test 2: seededit with auth + rate-limit imports",
     timestamp: new Date().toISOString(),
   });
 }
