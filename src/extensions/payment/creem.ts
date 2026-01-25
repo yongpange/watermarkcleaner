@@ -3,7 +3,8 @@
  * Documentation: https://docs.creem.io
  */
 
-import crypto from 'crypto';
+// Removed Node.js crypto import to be Edge compatible
+// import crypto from 'crypto';
 
 import {
   PaymentStatus,
@@ -495,11 +496,29 @@ export class CreemProvider implements PaymentProvider {
   /**
    * Generate HMAC-SHA256 signature for webhook verification
    */
+  /**
+   * Generate HMAC-SHA256 signature for webhook verification
+   */
   private async generateSignature(
     payload: string,
     secret: string
   ): Promise<string> {
-    return crypto.createHmac('sha256', secret).update(payload).digest('hex');
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(secret);
+    const msgData = encoder.encode(payload);
+
+    const key = await crypto.subtle.importKey(
+      'raw',
+      keyData,
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
+
+    const signature = await crypto.subtle.sign('HMAC', key, msgData);
+    return Array.from(new Uint8Array(signature))
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
   }
 
   /**

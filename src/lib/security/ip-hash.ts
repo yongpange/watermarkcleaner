@@ -1,4 +1,5 @@
-import crypto from 'crypto';
+// Removed Node.js crypto import to be Edge compatible
+// import crypto from 'crypto';
 
 /**
  * IP哈希处理工具
@@ -8,29 +9,30 @@ import crypto from 'crypto';
 // 从环境变量获取盐值（如果不存在则生成随机盐值，但记录警告）
 let IP_HASH_SALT = process.env.IP_HASH_SALT as string;
 
+// Helper to convert hex to buffer
+function hexToBuf(hex: string): Uint8Array {
+  const bytes = new Uint8Array(Math.ceil(hex.length / 2));
+  for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+  return bytes;
+}
+
+// Helper to convert buffer to hex
+function bufToHex(buf: Uint8Array | ArrayBuffer): string {
+  const bytes = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
+  return Array.from(bytes)
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 if (!IP_HASH_SALT) {
   console.warn('⚠️  WARNING: IP_HASH_SALT not found in environment variables!');
-  console.warn('   This will cause inconsistent IP hashing across server restarts.');
-  console.warn('   Generate a stable salt with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"');
-
-  // 仅在首次未设置时生成，存储在模块变量中（不会随热重载改变）
-  const generatedSalt = crypto.randomBytes(32).toString('hex');
+  // Generate random salt using Web Crypto
+  const randomValues = new Uint8Array(32);
+  crypto.getRandomValues(randomValues);
+  const generatedSalt = bufToHex(randomValues);
+  
   console.warn(`   Generated temporary salt: ${generatedSalt.substring(0, 20)}...`);
-  console.warn('   Add this to your .env.local file to make it persistent.');
-
   IP_HASH_SALT = generatedSalt;
-} else {
-  // 验证盐值格式
-  if (!/^[a-f0-9]{64}$/.test(IP_HASH_SALT)) {
-    console.warn('⚠️  WARNING: IP_HASH_SALT should be a 64-character hex string (32 bytes)');
-    console.warn(`   Current value: ${IP_HASH_SALT} (length: ${IP_HASH_SALT.length})`);
-    console.warn('   Expected format: 1f8b83c74037ae6b2d473c1f2ffd4d070a0f335431c938216a71fec88e68dcd3');
-  }
-
-  // 盐值已设置，记录调试信息（开发环境）
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`🔑 IP_HASH_SALT loaded: ${IP_HASH_SALT.substring(0, 10)}...`);
-  }
 }
 
 // 缓存哈希实例以提高性能
@@ -42,7 +44,7 @@ const CACHE_MAX_SIZE = 10000;
  * @param ip - 原始IP地址
  * @returns 哈希后的IP标识符
  */
-export function hashIPAddress(ip: string): string {
+export async function hashIPAddress(ip: string): Promise<string> {
   if (!ip || ip === 'unknown-ip') {
     return 'unknown';
   }
@@ -52,14 +54,24 @@ export function hashIPAddress(ip: string): string {
     return hashCache.get(ip)!;
   }
 
-  // 创建SHA-256哈希
-  const hash = crypto.createHmac('sha256', IP_HASH_SALT);
-  hash.update(ip);
-  const hashedIP = hash.digest('hex');
+  // 使用 Web Crypto API 进行 HMAC-SHA256
+  const encoder = new TextEncoder();
+  const keyData = encoder.encode(IP_HASH_SALT);
+  const data = encoder.encode(ip);
+
+  const key = await crypto.subtle.importKey(
+    'raw',
+    keyData,
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+
+  const signature = await crypto.subtle.sign('HMAC', key, data);
+  const hashedIP = bufToHex(signature);
 
   // 存储到缓存（LRU策略）
   if (hashCache.size >= CACHE_MAX_SIZE) {
-    // 删除最老的条目
     const iterator = hashCache.keys();
     const firstKey = iterator.next().value;
     if (firstKey) {

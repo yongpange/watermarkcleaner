@@ -1,7 +1,15 @@
 import type { Adapter } from 'next-auth/adapters';
 import { type SupabaseAdapterOptions } from '@auth/supabase-adapter';
 import { createAdminClient } from '@/lib/supabase-admin';
-import { createHash } from 'crypto';
+
+// Helper for SHA-256 hashing (Web Crypto API)
+async function sha256(message: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
 
 /**
  * Custom Supabase Adapter that uses existing public.wmc_* tables
@@ -369,7 +377,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       const supabase = getAdminClient();
 
       // Hash the token for secure storage (SHA256)
-      const hashedToken = createHash('sha256').update(data.token).digest('hex');
+      const hashedToken = await sha256(data.token);
       const expires = data.expires.toISOString();
 
       const verificationData = {
@@ -396,7 +404,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       const supabase = getAdminClient();
 
       // Hash the provided token to match stored hash
-      const hashedToken = createHash('sha256').update(params.token).digest('hex');
+      const hashedToken = await sha256(params.token);
 
       // Find the verification token matching both identifier and hashed token
       const { data: token, error } = await supabase
