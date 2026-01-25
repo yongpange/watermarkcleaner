@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendVerificationEmail } from '@/lib/email/resend';
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 import { generateVerificationCode, storeVerificationCode, isValidEmail } from '@/lib/auth/verification';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { getClientIp } from '@/lib/ip';
