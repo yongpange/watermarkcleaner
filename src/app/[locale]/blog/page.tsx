@@ -1,4 +1,5 @@
-export const runtime = 'edge';
+// NOTE: Blog pages are statically generated at build time (SSG)
+// Cannot use Edge runtime because blog loader uses Node.js fs/path modules
 
 import { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";

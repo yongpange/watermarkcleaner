@@ -1,4 +1,5 @@
-export const runtime = 'edge';
+// NOTE: Blog posts are statically generated at build time (SSG)
+// Cannot use Edge runtime because blog loader uses Node.js fs/path modules
 
 import { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
@@ -13,11 +14,17 @@ import RelatedPosts from "@/components/blocks/blog/related-posts";
 import ShareButtons from "@/components/blocks/blog/share-buttons";
 import BlogJsonLd, { BreadcrumbJsonLd } from "@/components/blocks/blog/blog-jsonld";
 import MDXRenderer from "@/components/markdown/mdx-renderer";
-import { getPostBySlug, getAllPosts, type Locale } from "@/lib/blog";
+import { getPostBySlug, getAllPostSlugs, getAllPosts, type Locale } from "@/lib/blog";
+import { locales } from "@/i18n/locale";
 import { ReadingProgress, BackToTop, SmoothScroll, CopyCodeButton } from "./client-features";
 
-// NOTE: generateStaticParams removed for Edge runtime compatibility with Cloudflare Pages
-// Blog posts are now rendered dynamically on each request
+// Generate static params for all blog posts at build time
+export async function generateStaticParams() {
+  const slugs = await getAllPostSlugs();
+  return slugs.flatMap((slug) =>
+    locales.map((locale) => ({ slug, locale }))
+  );
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string } > }): Promise<Metadata> {
   const { slug } = await params;
