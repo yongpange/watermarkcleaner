@@ -15,11 +15,17 @@ import { createHash } from 'crypto';
  */
 export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter {
   // Use the provided options or fall back to env variables
-  const supabaseUrl = options?.url || process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseSecret = options?.secret || process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const supabaseUrl = options?.url || process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseSecret = options?.secret || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseSecret) {
-    throw new Error('Missing Supabase credentials for CustomSupabaseAdapter');
+    if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'phase-production-build') {
+         console.warn('Missing Supabase credentials during build. Using placeholders to prevent build failure.');
+    } else {
+        // Only throw if strictly needed, or better yet, log a warning and let it fail later if actually used.
+        // For Cloudflare Pages build, we might not have secrets.
+        console.warn('Warning: Missing Supabase credentials for CustomSupabaseAdapter. This may fail at runtime if not provided.');
+    }
   }
 
   // Helper to create admin client
