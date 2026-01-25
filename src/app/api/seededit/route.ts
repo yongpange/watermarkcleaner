@@ -3,10 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-import { auth } from "@/auth";
+import { verifySession } from "@/lib/auth-edge";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
 import { checkUserCredits, USER_TIER_CONFIG } from "@/lib/credits/check-legacy";
 import { CreditTransactionScene } from '@/extensions/payment/types';
+import { createAdminClient } from "@/lib/supabase-admin";
+import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
+import { consumeCredits } from '@/lib/models/credit';
 
 // 字节跳动方舟API配置
 const ARK_API_URL = process.env.ARK_API_URL || "https://ark.cn-beijing.volces.com/api/v3/images/generations";
@@ -334,9 +337,6 @@ export async function POST(request: NextRequest) {
 
     // 第一步：优先写入 wmc_processing_history（lifetime 计数的唯一依据）
     try {
-      const { createAdminClient } = await import("@/lib/supabase-admin");
-      const { getClientIP, hashIPAddress } = await import("@/lib/security/ip-hash");
-
       const adminClient = createAdminClient();
       const clientIP = getClientIP(request);
       const ipToHash = clientIP || 'unknown-ip';
@@ -382,7 +382,6 @@ export async function POST(request: NextRequest) {
     if (isAuthenticated && userId) {
       try {
         console.log(`[SeedEdit API] Attempting to consume credits from wmc_credit table for user: ${userId}`);
-        const { consumeCredits } = await import('@/lib/models/credit');
         await consumeCredits({
           userId: userId,
           amount: 1,
@@ -440,9 +439,6 @@ export async function POST(request: NextRequest) {
       if (formData) {
         const image = formData.get("image") as File | null;
         if (image) {
-          const { createAdminClient } = await import("@/lib/supabase-admin");
-          const { getClientIP, hashIPAddress } = await import("@/lib/security/ip-hash");
-
           const adminClient = createAdminClient();
           const clientIP = getClientIP(request);
           const hashedIP = await hashIPAddress(clientIP);
