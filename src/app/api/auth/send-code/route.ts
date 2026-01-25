@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
   try {
     // 获取客户端IP地址
     const ip = await getClientIp();
-    const ipHash = Buffer.from(ip).toString('base64'); // 简单的IP哈希
+    const ipHash = btoa(ip); // Edge Runtime compatible IP hash
 
     console.log('[SendCode] Request from IP:', ip, 'Hash:', ipHash);
 
@@ -214,7 +214,7 @@ export async function POST(req: NextRequest) {
 export async function GET(_req: NextRequest) {
   try {
     const ip = await getClientIp();
-    const ipHash = Buffer.from(ip).toString('base64');
+    const ipHash = btoa(ip); // Edge Runtime compatible
     const rateLimitKey = `send-code:${ipHash}`;
 
     const rateLimitResult = await checkRateLimit(

@@ -41,7 +41,7 @@ export class Storage {
     onProgress,
     disposition = "inline",
   }: {
-    body: Buffer;
+    body: Buffer | Uint8Array; // Edge Runtime compatible
     key: string;
     contentType?: string;
     bucket?: string;

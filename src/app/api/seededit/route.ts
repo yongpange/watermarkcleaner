@@ -74,11 +74,17 @@ interface ArkApiResponse {
 }
 
 /**
- * 将File/Blob转换为base64 data URL
+ * 将File/Blob转换为base64 data URL (Edge Runtime compatible)
  */
 async function fileToDataUrl(file: File | Blob): Promise<string> {
   const buffer = await file.arrayBuffer();
-  const base64 = Buffer.from(buffer).toString("base64");
+  const bytes = new Uint8Array(buffer);
+  // Edge Runtime compatible base64 encoding
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  const base64 = btoa(binary);
   const mimeType = file.type || "image/jpeg";
   return `data:${mimeType};base64,${base64}`;
 }

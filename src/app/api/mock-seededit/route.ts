@@ -153,7 +153,8 @@ export async function POST(req: NextRequest) {
     await new Promise(resolve => setTimeout(resolve, delay));
 
     // 读取图片信息
-    const buffer = Buffer.from(await image.arrayBuffer());
+    const arrayBuffer = await image.arrayBuffer();
+    const buffer = new Uint8Array(arrayBuffer); // Edge Runtime compatible
     const originalSize = buffer.length;
     const originalType = image.type;
 
@@ -274,11 +275,14 @@ export async function GET(req: NextRequest) {
 
     console.log(`[Mock API] Fetching result: ${id}`);
 
-    // 返回一个 1x1 的透明 PNG（最小化数据传输）
-    const transparentPixel = Buffer.from(
-      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
-      'base64'
-    );
+    // 1x1 transparent PNG as base64
+    const base64Png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
+    const binaryString = atob(base64Png);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    const transparentPixel = bytes; // Edge Runtime compatible
 
     return new NextResponse(transparentPixel, {
       headers: {

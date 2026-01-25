@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     const key = `uploads/${filename}`;
 
     // 保存文件到 Cloudflare R2（通过 S3 兼容接口）
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const buffer = new Uint8Array(await file.arrayBuffer()); // Edge Runtime compatible
     const storage = newStorage();
 
     let uploadResult;
