@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { createAdminClient } from "@/lib/supabase-admin";
 import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
 
@@ -49,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     // 3. 获取客户端IP并哈希处理
     const clientIP = getClientIP(request);
-    const hashedIP = hashIPAddress(clientIP);
+    const hashedIP = await hashIPAddress(clientIP);
 
     // 调试日志
     console.log("IP Processing Debug:", {

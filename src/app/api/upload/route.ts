@@ -1,5 +1,9 @@
 // 文件上传API路由
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { newStorage } from '@/lib/storage';
 
 // 文件类型验证配置

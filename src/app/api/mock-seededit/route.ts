@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { v4 as uuidv4 } from 'uuid';
 import { auth } from '@/auth';
 import { checkUserCredits, USER_TIER_CONFIG } from '@/lib/credits/check-legacy';
@@ -173,7 +177,7 @@ export async function POST(req: NextRequest) {
       const adminClient = createAdminClient();
       const clientIP = getClientIP(req);
       const ipToHash = clientIP || 'unknown-ip';
-      const hashedIP = hashIPAddress(ipToHash);
+      const hashedIP = await hashIPAddress(ipToHash);
 
       console.log('[Mock API] IP Information:');
       console.log('  - Raw IP:', clientIP);

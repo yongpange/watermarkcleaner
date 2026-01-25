@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { checkUserCredits } from "@/lib/credits/check-legacy";
 import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
 
@@ -17,7 +21,7 @@ export async function GET(request: NextRequest) {
     console.log(`[Credits API] Request headers:`, Object.fromEntries(request.headers.entries()));
     console.log(`[Credits API] IP Hash Salt: "${process.env.IP_HASH_SALT?.substring(0, 10)}..."`);
 
-    const hashedIP = hashIPAddress(ip);
+    const hashedIP = await hashIPAddress(ip);
 
     console.log(`[Credits API] Hashed IP: "${hashedIP}"`);
     console.log(`[Credits API] Hashed IP (first 10 chars): "${hashedIP.substring(0, 10)}..."`);

@@ -1,5 +1,8 @@
 import { respData, respErr } from "@/lib/resp";
 
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { getUserUuid } from "@/services/user";
 
 export async function POST(req: Request) {

@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { auth } from "@/auth";
 import { checkCredits } from "@/lib/credits/check-legacy";
 

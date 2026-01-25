@@ -1,4 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 import { auth } from "@/auth";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
 import { checkUserCredits, USER_TIER_CONFIG } from "@/lib/credits/check-legacy";
@@ -330,7 +334,7 @@ export async function POST(request: NextRequest) {
       const adminClient = createAdminClient();
       const clientIP = getClientIP(request);
       const ipToHash = clientIP || 'unknown-ip';
-      const hashedIP = hashIPAddress(ipToHash);
+      const hashedIP = await hashIPAddress(ipToHash);
 
       console.log('[SeedEdit API] IP Information:');
       console.log('  - Raw IP:', clientIP);
@@ -435,7 +439,7 @@ export async function POST(request: NextRequest) {
 
           const adminClient = createAdminClient();
           const clientIP = getClientIP(request);
-          const hashedIP = hashIPAddress(clientIP);
+          const hashedIP = await hashIPAddress(clientIP);
 
           await (adminClient as any).from("wmc_processing_history").insert({
             user_id: isAuthenticated && userId ? userId : null,

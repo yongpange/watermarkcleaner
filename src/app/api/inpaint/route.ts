@@ -5,6 +5,7 @@ const FAL_API_URL = "https://queue.fal.run/fal-ai/inpaint";
 const FAL_API_KEY = process.env.FAL_AI_API_KEY;
 
 export const runtime = 'edge'; // Explicitly set Edge Runtime
+export const dynamic = 'force-dynamic';
 
 // Maximum file size: 20MB
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
