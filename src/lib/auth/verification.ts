@@ -1,4 +1,4 @@
-import { randomInt, randomBytes } from 'crypto';
+// Removed Node.js crypto import to be Edge compatible
 import { createAdminClient } from '@/lib/supabase-admin';
 
 // ============================================================================
@@ -26,11 +26,13 @@ export const RATE_LIMIT_PER_HOUR = 5;
  * @returns 6位数字字符串
  */
 export function generateVerificationCode(): string {
-  const min = 10 ** (VERIFICATION_CODE_LENGTH - 1); // 100000
-  const max = 10 ** VERIFICATION_CODE_LENGTH - 1;   // 999999
-
-  const code = randomInt(min, max + 1);
-  return code.toString();
+  const min = 100000;
+  // Ensure we use the global crypto object which is available in Edge Runtime
+  const array = new Uint32Array(1);
+  crypto.getRandomValues(array);
+  // Modulo bias is negligible for this use case
+  const num = (array[0] % 900000) + 100000;
+  return num.toString();
 }
 
 /**
@@ -38,8 +40,17 @@ export function generateVerificationCode(): string {
  * @returns 6位数字字符串
  */
 export function generateSecureVerificationCode(): string {
-  const buffer = randomBytes(3); // 3 bytes = 24 bits
-  const codeNum = buffer.readUIntBE(0, 3) % (10 ** VERIFICATION_CODE_LENGTH);
+  // Use Web Crypto API instead of Node.js randomBytes
+  const buffer = new Uint8Array(3);
+  crypto.getRandomValues(buffer);
+  
+  // Convert 3 bytes to integer
+  let codeNum = 0;
+  for (let i = 0; i < 3; i++) {
+    codeNum = (codeNum << 8) | buffer[i];
+  }
+  
+  codeNum = codeNum % (10 ** VERIFICATION_CODE_LENGTH);
   return codeNum.toString().padStart(VERIFICATION_CODE_LENGTH, '0');
 }
 
@@ -325,14 +336,15 @@ export async function cleanupExpiredVerificationCodes(): Promise<number> {
  */
 export function generateRandomString(length: number): string {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const result = [];
-
+  let result = '';
+  const randomValues = new Uint32Array(length);
+  crypto.getRandomValues(randomValues);
+  
   for (let i = 0; i < length; i++) {
-    const randomIndex = randomInt(0, chars.length);
-    result.push(chars[randomIndex]);
+    result += chars[randomValues[i] % chars.length];
   }
 
-  return result.join('');
+  return result;
 }
 
 /**
