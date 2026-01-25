@@ -1,4 +1,5 @@
-import 'server-only'; // 🚨 禁止在客户端导入 - 包含 Service Role Key
+// Note: server-only import removed for Edge Runtime compatibility
+// This module should only be used on the server side
 
 import { createClient } from '@/lib/supabase-server';
 import { createAdminClient } from '@/lib/supabase-admin';
