@@ -126,6 +126,7 @@ export const authConfig: NextAuthConfig = {
                 email: createdUser.email,
                 username: createdUser.username || usernameBase,
                 tier: createdUser.tier,
+                creditsUsed: 0,
               };
             }
 
