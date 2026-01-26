@@ -14,10 +14,11 @@ import type { Database } from '@/types/database.types'
  */
 export function createAdminClient() {
   // 🛡️ 运行时安全检查 - 防止在浏览器中调用
-  if (typeof window !== 'undefined') {
+  // Note: specific verification for browser environment (document exists)
+  // because 'window' might be defined in some Edge runtimes (e.g. Cloudflare Workers)
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     console.error('🚨 SECURITY ERROR: createAdminClient() called in browser!')
     console.error('This would expose the Service Role Key to the client.')
-    console.error('Call stack:', new Error().stack)
     throw new Error(
       'Admin client can only be used on the server. ' +
       'Check that this code is not imported into a client component.'
@@ -28,6 +29,12 @@ export function createAdminClient() {
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
   if (!supabaseUrl || !serviceRoleKey) {
+    // Log specifics to help debug in Cloudflare logs
+    console.error('[createAdminClient] Missing env vars:', {
+      hasUrl: !!supabaseUrl,
+      hasKey: !!serviceRoleKey,
+      nodeEnv: process.env.NODE_ENV
+    });
     throw new Error('Missing Supabase admin credentials: NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY')
   }
 
