@@ -3,103 +3,78 @@
     "name": "pricing",
     "label": "Цены",
     "title": "Цены",
-    "description": "Получите все функции, быстро создайте свои AI SaaS стартапы.",
+    "description": "",
     "groups": [],
     "items": [
       {
-        "title": "Стартер",
-        "description": "Начните с вашего первого SaaS стартапа.",
+        "title": "Бесплатно",
+        "description": "",
+        "price": "$0",
+        "unit": "USD",
+        "interval": "разово",
+        "product_id": "free-plan",
+        "credits": 3,
         "features_title": "Включает",
         "features": [
-          "100 кредитов, действительны 1 месяц",
-          "NextJS шаблон",
-          "SEO-дружественная структура",
-          "Оплата через Stripe",
-          "Хранение данных с Supabase",
-          "Google OAuth и вход одним касанием",
-          "поддержка i18n"
+          "3 Кредита",
+          "Ограниченное использование",
+          "Базовая поддержка"
         ],
-        "interval": "один раз",
-        "amount": 9900,
-        "cn_amount": 69900,
-        "currency": "USD",
-        "price": "$99",
-        "original_price": "$199",
-        "unit": "USD",
-        "is_featured": false,
-        "tip": "Плати один раз. Создавай неограниченные проекты!",
         "button": {
           "title": "Начать",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "starter",
-        "credits": 100,
-        "valid_months": 1
+        "tip": "",
+        "group": "monthly"
       },
+
       {
-        "title": "Стандарт",
-        "description": "Быстро запускайте ваши SaaS стартапы.",
+        "title": "Базовый",
+        "description": "",
         "label": "Популярный",
-        "features_title": "Все из Стартера, плюс",
-        "features": [
-          "200 кредитов, действительны 3 месяца",
-          "Развертывание с Vercel или Cloudflare",
-          "Генерация Конфиденциальности и Условий",
-          "Интеграция с Google Analytics",
-          "Интеграция с Google Search Console",
-          "Discord сообщество",
-          "Техническая поддержка для вашего первого запуска",
-          "Обновления пожизненно"
-        ],
-        "interval": "один раз",
-        "amount": 19900,
-        "cn_amount": 139900,
+        "price": "$9.99",
+        "unit": "/мес",
+        "interval": "месяц",
+        "product_id": "pro-monthly",
+        "amount": 999,
         "currency": "USD",
-        "price": "$199",
-        "original_price": "$299",
-        "unit": "USD",
-        "is_featured": true,
-        "tip": "Плати один раз. Создавай неограниченные проекты!",
+        "credits": 200,
+        "features_title": "Включает",
+        "features": [
+          "200 Кредитов/мес",
+          "$0.05/кредит",
+          "200 изображений/мес"
+        ],
         "button": {
           "title": "Начать",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "standard",
-        "credits": 200,
-        "valid_months": 3
+        "tip": "",
+        "group": "monthly",
+        "is_featured": true
       },
       {
-        "title": "Премиум",
-        "description": "Запускайте любые AI SaaS стартапы.",
-        "features_title": "Все из Стандарта, плюс",
-        "features": [
-          "300 кредитов, действительны 1 год",
-          "Бизнес-функции с AI",
-          "Центр пользователя",
-          "Кредитная система",
-          "Продажи API для вашего SaaS",
-          "Система администрирования",
-          "Приоритетная техническая поддержка"
-        ],
-        "interval": "один раз",
-        "amount": 29900,
-        "cn_amount": 199900,
+        "title": "Про",
+        "description": "",
+        "price": "$14.99",
+        "unit": "/мес",
+        "interval": "месяц",
+        "product_id": "business-monthly",
+        "amount": 1499,
         "currency": "USD",
-        "price": "$299",
-        "original_price": "$399",
-        "unit": "USD",
-        "is_featured": false,
-        "tip": "Плати один раз. Создавай неограниченные проекты!",
+        "credits": 500,
+        "features_title": "Включает",
+        "features": [
+          "500 Кредитов/мес",
+          "$0.03/кредит",
+          "500 изображений/мес"
+        ],
         "button": {
           "title": "Начать",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "premium",
-        "credits": 300,
-        "valid_months": 12
+        "tip": "",
+        "group": "monthly"
       }
     ]
   }

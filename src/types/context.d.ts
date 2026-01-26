@@ -10,4 +10,5 @@ export interface ContextValue {
   setUser: (user: User | null) => void;
   showFeedback: boolean;
   setShowFeedback: (show: boolean) => void;
+  refreshCredits: () => void;
 }

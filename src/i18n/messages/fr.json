@@ -13,6 +13,12 @@
     "user_center": "Centre Utilisateur",
     "admin_system": "Système d'Administration"
   },
+  "header": {
+    "my_credits": "Mes Crédits",
+    "upgrade_pro": "Passer à Pro",
+    "sign_in": "Se connecter",
+    "sign_out": "Se déconnecter"
+  },
   "sign_modal": {
     "sign_in_title": "Se Connecter",
     "sign_in_description": "Connectez-vous à votre compte",

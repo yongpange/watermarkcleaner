@@ -12,37 +12,30 @@
     },
     "nav": {
       "items": [
+
+
         {
-          "title": "المميزات",
+          "title": "الميزات",
           "url": "/#feature",
-          "icon": "RiSparkling2Line"
-        },
-        {
-          "title": "المقارنة",
-          "url": "/#benefit",
-          "icon": "RiCheckDoubleLine"
+          "icon": "RiAppsLine",
+          "children": [
+            {
+              "title": "توضيح الصورة",
+              "url": "/unblur",
+              "description": "اجعل الصور المضببة واضحة بالذكاء الاصطناعي",
+              "icon": "RiDropLine"
+            }
+          ]
         },
         {
           "title": "المدونة",
           "url": "/blog",
           "icon": "RiBook2Line"
-        },
-        {
-          "title": "الأسئلة الشائعة",
-          "url": "/#faq",
-          "icon": "RiQuestionLine"
         }
+
       ]
     },
-    "buttons": [
-      {
-        "title": "ابدأ مجاناً",
-        "url": "/convert",
-        "target": "_self",
-        "variant": "default",
-        "icon": "RiArrowRightLine"
-      }
-    ],
+    "buttons": [],
     "show_sign": true,
     "show_theme": true,
     "show_locale": true
@@ -344,6 +337,11 @@
             {
               "title": "المميزات",
               "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "توضيح الصورة",
+              "url": "/unblur",
               "target": "_self"
             },
             {

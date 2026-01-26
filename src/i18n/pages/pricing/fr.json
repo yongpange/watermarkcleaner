@@ -3,103 +3,78 @@
     "name": "pricing",
     "label": "Tarifs",
     "title": "Tarifs",
-    "description": "Obtenez toutes les fonctionnalités, construisez rapidement vos startups SaaS IA.",
+    "description": "",
     "groups": [],
     "items": [
       {
-        "title": "Débutant",
-        "description": "Commencez avec votre première startup SaaS.",
-        "features_title": "Inclut",
-        "features": [
-          "100 crédits, valables 1 mois",
-          "Modèle NextJS",
-          "Structure SEO-friendly",
-          "Paiement avec Stripe",
-          "Stockage de données avec Supabase",
-          "Google OAuth et connexion en un clic",
-          "Support i18n"
-        ],
-        "interval": "une fois",
-        "amount": 9900,
-        "cn_amount": 69900,
-        "currency": "USD",
-        "price": "$99",
-        "original_price": "$199",
+        "title": "Gratuit",
+        "description": "",
+        "price": "$0",
         "unit": "USD",
-        "is_featured": false,
-        "tip": "Payez une fois. Construisez des projets illimités!",
+        "interval": "une fois",
+        "product_id": "free-plan",
+        "credits": 3,
+        "features_title": "Inclus",
+        "features": [
+          "3 Crédits",
+          "Usage limité",
+          "Support basique"
+        ],
         "button": {
           "title": "Commencer",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "starter",
-        "credits": 100,
-        "valid_months": 1
+        "tip": "",
+        "group": "monthly"
       },
+
       {
-        "title": "Standard",
-        "description": "Lancez rapidement vos startups SaaS.",
+        "title": "Basique",
+        "description": "",
         "label": "Populaire",
-        "features_title": "Tout dans Débutant, plus",
-        "features": [
-          "200 crédits, valables 3 mois",
-          "Déploiement avec Vercel ou Cloudflare",
-          "Génération de Confidentialité et Conditions",
-          "Intégration Google Analytics",
-          "Intégration Google Search Console",
-          "Communauté Discord",
-          "Support technique pour votre premier lancement",
-          "Mises à jour à vie"
-        ],
-        "interval": "une fois",
-        "amount": 19900,
-        "cn_amount": 139900,
+        "price": "$9.99",
+        "unit": "/mois",
+        "interval": "mois",
+        "product_id": "pro-monthly",
+        "amount": 999,
         "currency": "USD",
-        "price": "$199",
-        "original_price": "$299",
-        "unit": "USD",
-        "is_featured": true,
-        "tip": "Payez une fois. Construisez des projets illimités!",
+        "credits": 200,
+        "features_title": "Inclus",
+        "features": [
+          "200 Crédits/mois",
+          "$0.05/crédit",
+          "200 images/mois"
+        ],
         "button": {
           "title": "Commencer",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "standard",
-        "credits": 200,
-        "valid_months": 3
+        "tip": "",
+        "group": "monthly",
+        "is_featured": true
       },
       {
-        "title": "Premium",
-        "description": "Lancez n'importe quelle startup SaaS IA.",
-        "features_title": "Tout dans Standard, plus",
-        "features": [
-          "300 crédits, valables 1 an",
-          "Fonctions Business avec IA",
-          "Centre Utilisateur",
-          "Système de Crédits",
-          "Ventes API pour votre SaaS",
-          "Système d'Administration",
-          "Support Technique Prioritaire"
-        ],
-        "interval": "une fois",
-        "amount": 29900,
-        "cn_amount": 199900,
+        "title": "Pro",
+        "description": "",
+        "price": "$14.99",
+        "unit": "/mois",
+        "interval": "mois",
+        "product_id": "business-monthly",
+        "amount": 1499,
         "currency": "USD",
-        "price": "$299",
-        "original_price": "$399",
-        "unit": "USD",
-        "is_featured": false,
-        "tip": "Payez une fois. Construisez des projets illimités!",
+        "credits": 500,
+        "features_title": "Inclus",
+        "features": [
+          "500 Crédits/mois",
+          "$0.03/crédit",
+          "500 images/mois"
+        ],
         "button": {
           "title": "Commencer",
-          "url": "/#pricing",
-          "icon": "RiFlashlightFill"
+          "url": "#pricing"
         },
-        "product_id": "premium",
-        "credits": 300,
-        "valid_months": 12
+        "tip": "",
+        "group": "monthly"
       }
     ]
   }

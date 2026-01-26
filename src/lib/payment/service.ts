@@ -3,19 +3,21 @@
  * Centralized payment business logic
  */
 
-import { supabase } from '@/lib/supabase-client';
-import { PaymentManager, createPaymentManager } from '@/extensions/payment';
+// import { supabase } from '@/lib/supabase-client';
+import { PaymentManager } from '@/extensions/payment';
 import { CreemProvider } from '@/extensions/payment/creem';
-import { grantCredits, getCreditBalance } from '@/lib/models/credit';
+import { grantCredits } from '@/lib/models/credit';
 import { createOrder, updateOrderByOrderNo } from '@/lib/models/order';
-import { createSubscription, updateSubscriptionBySubscriptionNo } from '@/lib/models/subscription';
-import type {
-  PaymentOrder,
-  PaymentSession,
-  SubscriptionInfo,
-  PaymentEventType,
+import { createSubscription, updateSubscriptionBySubscriptionNo, findSubscriptionByProviderSubscriptionId } from '@/lib/models/subscription';
+import {
+  // type PaymentOrder,
+  type PaymentSession,
+  type SubscriptionInfo,
+  // type PaymentEventType,
   PaymentStatus,
   SubscriptionStatus,
+  PaymentType,
+  CreditTransactionScene,
 } from '@/extensions/payment/types';
 import type { Order } from '@/lib/models/order';
 import type { Subscription } from '@/lib/models/subscription';
@@ -122,19 +124,19 @@ export async function handleCheckoutSuccess({
     // Update order status
     const orderUpdates: Partial<Order> = {
       status: 'paid' as PaymentStatus,
-      paymentResult: JSON.stringify({
+      payment_result: JSON.stringify({
         paymentId: session.paymentInfo?.paymentId,
         transactionId: session.paymentInfo?.transactionId,
         paidAt: session.paymentInfo?.paidAt,
         ...session.paymentInfo,
       }),
-      transactionId: session.paymentInfo?.transactionId,
-      paidAt: session.paymentInfo?.paidAt?.toISOString(),
+      transaction_id: session.paymentInfo?.transactionId,
+      paid_at: session.paymentInfo?.paidAt?.toISOString(),
     };
 
     if (session.subscriptionId && session.subscriptionInfo) {
-        orderUpdates.subscriptionId = session.subscriptionId;
-        orderUpdates.subscriptionResult = JSON.stringify(session.subscriptionInfo);
+        orderUpdates.subscription_id = session.subscriptionId;
+        orderUpdates.subscription_result = JSON.stringify(session.subscriptionInfo);
     }
 
     await updateOrderByOrderNo(orderNo, orderUpdates);
@@ -156,7 +158,7 @@ export async function handleCheckoutSuccess({
         credits: order.credits_amount,
         orderNo,
         subscriptionNo: session.subscriptionInfo?.subscriptionId,
-        validDays: order.credits_valid_days,
+        validDays: order.credits_valid_days || undefined,
         isSubscription: order.payment_type === 'subscription',
         subscriptionInfo: session.subscriptionInfo,
       });
@@ -190,12 +192,12 @@ export async function handleSubscriptionCreation({
     // Update existing subscription
     const updates: Partial<Subscription> = {
       status: subscriptionInfo.status as SubscriptionStatus,
-      currentPeriodStart: subscriptionInfo.currentPeriodStart?.toISOString() || null,
-      currentPeriodEnd: subscriptionInfo.currentPeriodEnd?.toISOString() || null,
+      current_period_start: subscriptionInfo.currentPeriodStart?.toISOString() || null,
+      current_period_end: subscriptionInfo.currentPeriodEnd?.toISOString() || null,
     };
 
     if (subscriptionInfo.canceledAt) {
-      updates.canceledAt = subscriptionInfo.canceledAt.toISOString();
+      updates.canceled_at = subscriptionInfo.canceledAt.toISOString();
     }
 
     await updateSubscriptionBySubscriptionNo(
@@ -236,19 +238,19 @@ export async function handleSubscriptionCreation({
  */
 export async function handleSubscriptionRenewal({
   subscription,
-  session,
+  session: _session,
 }: {
   subscription: Subscription;
   session: PaymentSession;
 }): Promise<void> {
   // Create a new order for the renewal payment
-  const renewalOrder = {
+  const renewalOrder: Omit<Order, 'id' | 'order_no' | 'created_at' | 'updated_at'> = {
     user_id: subscription.user_id,
-    user_email: subscription.user_email,
-    status: 'paid' as PaymentStatus,
+    user_email: subscription.user_email || undefined,
+    status: PaymentStatus.PAID,
     amount: subscription.amount || 0,
     currency: subscription.currency || 'usd',
-    payment_type: 'subscription' as const,
+    payment_type: PaymentType.SUBSCRIPTION,
     payment_interval: subscription.interval as any,
     payment_provider: subscription.payment_provider,
     product_id: subscription.product_id,
@@ -256,6 +258,7 @@ export async function handleSubscriptionRenewal({
     plan_name: subscription.plan_name,
     credits_amount: subscription.credits_amount,
     credits_valid_days: subscription.credits_valid_days,
+    checkout_info: '{}', // Required by createOrder but not used for renewal
   };
 
   const order = await createOrder(renewalOrder);
@@ -268,7 +271,7 @@ export async function handleSubscriptionRenewal({
       userId: subscription.user_id,
       credits: subscription.credits_amount,
       subscriptionNo: subscription.subscription_no,
-      validDays: subscription.credits_valid_days,
+      validDays: subscription.credits_valid_days || undefined,
       isSubscription: true,
       isRenewal: true,
     });
@@ -326,7 +329,7 @@ export async function handleSubscriptionCanceled({
   const cancelAt = session.subscriptionInfo.canceledAt || new Date();
 
   await updateSubscriptionBySubscriptionNo(subscription.subscription_no, {
-    status: 'canceled',
+    status: SubscriptionStatus.CANCELED,
     canceled_at: cancelAt.toISOString(),
     canceled_end_at: session.subscriptionInfo.currentPeriodEnd?.toISOString() || null,
     canceled_reason: session.subscriptionInfo.cancelReason || 'Customer canceled',
@@ -381,7 +384,11 @@ export async function handleCreditGrant({
       orderNo,
       subscriptionNo,
       expiresAt,
-      scene: isRenewal ? 'renewal' : isSubscription ? 'subscription' : 'payment',
+      scene: isRenewal
+        ? CreditTransactionScene.RENEWAL
+        : isSubscription
+        ? CreditTransactionScene.SUBSCRIPTION
+        : CreditTransactionScene.PAYMENT,
       description: isRenewal
         ? 'Subscription renewal credits'
         : isSubscription
@@ -396,7 +403,7 @@ export async function handleCreditGrant({
   }
 }
 
-export default {
+const paymentService = {
   initPaymentManager,
   getPaymentConfigs,
   handleCheckoutSuccess,
@@ -406,3 +413,5 @@ export default {
   handleSubscriptionCanceled,
   handleCreditGrant,
 };
+
+export default paymentService;

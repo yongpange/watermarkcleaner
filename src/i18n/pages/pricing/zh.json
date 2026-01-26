@@ -3,25 +3,12 @@
     "name": "pricing",
     "label": "定价",
     "title": "定价",
-    "description": "获取所有功能，快速启动您的 AI SaaS 创业项目。",
-    "groups": [
-      {
-        "name": "free",
-        "title": "免费"
-      },
-      {
-        "name": "monthly",
-        "title": "月度"
-      },
-      {
-        "name": "yearly",
-        "title": "年度"
-      }
-    ],
+    "description": "",
+    "groups": [],
     "items": [
       {
         "title": "免费",
-        "description": "使用基础功能入门。",
+        "description": "",
         "price": "$0",
         "unit": "USD",
         "interval": "one-time",
@@ -29,44 +16,22 @@
         "credits": 3,
         "features_title": "包含",
         "features": [
-          "3 积分 (终身免费)",
+          "3 积分",
           "有限使用",
-          "无水印去除",
+
           "基础支持"
         ],
         "button": {
           "title": "开始使用",
           "url": "#pricing"
         },
-        "tip": "免费试用。开始您的第一个项目！",
-        "group": "free"
-      },
-      {
-        "title": "基础版",
-        "description": "快速开始构建",
-        "price": "$6.99",
-        "unit": "/月",
-        "interval": "month",
-        "product_id": "basic-monthly",
-        "amount": 699,
-        "currency": "USD",
-        "credits": 100,
-        "features_title": "包含",
-        "features": [
-          "100 积分/月",
-          "$0.07/积分",
-          "100 张图片/月"
-        ],
-        "button": {
-          "title": "开始使用",
-          "url": "#pricing"
-        },
-        "tip": "一次付费，无限项目！",
+        "tip": "",
         "group": "monthly"
       },
+
       {
-        "title": "专业版",
-        "description": "使用更多积分更快构建",
+        "title": "基础版",
+        "description": "",
         "label": "热门",
         "price": "$9.99",
         "unit": "/月",
@@ -85,13 +50,13 @@
           "title": "开始使用",
           "url": "#pricing"
         },
-        "tip": "一次付费，无限项目！",
+        "tip": "",
         "group": "monthly",
         "is_featured": true
       },
       {
-        "title": "商业版",
-        "description": "扩展您的 AI SaaS 创业",
+        "title": "专业版",
+        "description": "",
         "price": "$14.99",
         "unit": "/月",
         "interval": "month",
@@ -109,56 +74,8 @@
           "title": "开始使用",
           "url": "#pricing"
         },
-        "tip": "一次付费，无限项目！",
+        "tip": "",
         "group": "monthly"
-      },
-      {
-        "title": "年度基础版",
-        "description": "节省 50% — 相当于 $3.75/月",
-        "label": "节省 50%",
-        "price": "$44.99",
-        "unit": "/年",
-        "interval": "year",
-        "product_id": "basic-yearly",
-        "amount": 4499,
-        "currency": "USD",
-        "credits": 1200,
-        "features_title": "包含",
-        "features": [
-          "1200 积分/年 (100/月)",
-          "$0.04/积分",
-          "1200 张图片/年"
-        ],
-        "button": {
-          "title": "开始使用",
-          "url": "#pricing"
-        },
-        "tip": "一次付费，无限项目！",
-        "group": "yearly"
-      },
-      {
-        "title": "年度专业版",
-        "description": "节省 50% — 相当于 $5.83/月",
-        "label": "节省 50%",
-        "price": "$69.99",
-        "unit": "/年",
-        "interval": "year",
-        "product_id": "pro-yearly",
-        "amount": 6999,
-        "currency": "USD",
-        "credits": 2400,
-        "features_title": "包含",
-        "features": [
-          "2400 积分/年",
-          "$0.03/积分",
-          "2400 张图片/年"
-        ],
-        "button": {
-          "title": "开始使用",
-          "url": "#pricing"
-        },
-        "tip": "一次付费，无限项目！",
-        "group": "yearly"
       }
     ]
   }

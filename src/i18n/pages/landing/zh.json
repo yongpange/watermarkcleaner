@@ -13,6 +13,19 @@
     "nav": {
       "items": [
         {
+          "title": "功能",
+          "url": "/#feature",
+          "icon": "RiAppsLine",
+          "children": [
+            {
+              "title": "图片变清晰",
+              "url": "/unblur",
+              "description": "使用 AI 智能修复模糊照片",
+              "icon": "RiDropLine"
+            }
+          ]
+        },
+        {
           "title": "博客",
           "url": "/blog",
           "icon": "RiArticleLine",
@@ -33,23 +46,11 @@
               "description": "了解法律注意事项"
             }
           ]
-        },
-        {
-          "title": "常见问题",
-          "url": "/#faq",
-          "icon": "RiQuestionLine"
         }
+
       ]
     },
-    "buttons": [
-      {
-        "title": "免费试用",
-        "url": "/convert",
-        "target": "_self",
-        "variant": "default",
-        "icon": "RiArrowRightLine"
-      }
-    ],
+    "buttons": [],
     "show_sign": true,
     "show_theme": true,
     "show_locale": true
@@ -385,6 +386,11 @@
             {
               "title": "去除水印",
               "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "图片变清晰",
+              "url": "/unblur",
               "target": "_self"
             },
             {

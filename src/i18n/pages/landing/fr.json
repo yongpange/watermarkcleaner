@@ -12,37 +12,30 @@
     },
     "nav": {
       "items": [
+
+
         {
           "title": "Fonctionnalités",
           "url": "/#feature",
-          "icon": "RiSparkling2Line"
-        },
-        {
-          "title": "Comparaison",
-          "url": "/#benefit",
-          "icon": "RiCheckDoubleLine"
+          "icon": "RiAppsLine",
+          "children": [
+            {
+              "title": "Déflouter Image",
+              "url": "/unblur",
+              "description": "Rendre les photos floues nettes avec l'IA",
+              "icon": "RiDropLine"
+            }
+          ]
         },
         {
           "title": "Blog",
           "url": "/blog",
           "icon": "RiBook2Line"
-        },
-        {
-          "title": "FAQ",
-          "url": "/#faq",
-          "icon": "RiQuestionLine"
         }
+
       ]
     },
-    "buttons": [
-      {
-        "title": "Commencer gratuitement",
-        "url": "/convert",
-        "target": "_self",
-        "variant": "default",
-        "icon": "RiArrowRightLine"
-      }
-    ],
+    "buttons": [],
     "show_sign": true,
     "show_theme": true,
     "show_locale": true
@@ -345,6 +338,11 @@
             {
               "title": "Fonctionnalités",
               "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "Déflouter Image",
+              "url": "/unblur",
               "target": "_self"
             },
             {

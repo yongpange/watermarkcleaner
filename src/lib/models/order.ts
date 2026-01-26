@@ -25,7 +25,7 @@ export interface Order {
   payment_interval?: string | null;
   payment_provider: string;
   payment_session_id?: string | null;
-  payment_type?: string | null;
+
   checkout_info: string;
   checkout_result?: string | null;
   payment_result?: string | null;
@@ -60,10 +60,10 @@ export interface Order {
  * Create a new order
  */
 export async function createOrder(newOrder: Omit<Order, 'id' | 'order_no' | 'created_at' | 'updated_at'>): Promise<Order> {
-  const orderNo = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+  const orderNo = `ORD-${generateSnowId()}`;
 
   const { data, error } = await supabase
-    .from('wmc_order')
+    .from('wmc_order' as any)
     .insert([{
       ...newOrder,
       order_no: orderNo,
@@ -77,7 +77,7 @@ export async function createOrder(newOrder: Omit<Order, 'id' | 'order_no' | 'cre
     throw new Error(`Failed to create order: ${error.message}`);
   }
 
-  return data as Order;
+  return data as unknown as Order;
 }
 
 /**
@@ -85,7 +85,7 @@ export async function createOrder(newOrder: Omit<Order, 'id' | 'order_no' | 'cre
  */
 export async function findOrderByOrderNo(orderNo: string): Promise<Order | null> {
   const { data, error } = await supabase
-    .from('wmc_order')
+    .from('wmc_order' as any)
     .select('*')
     .eq('order_no', orderNo)
     .is('deleted_at', null)
@@ -95,7 +95,7 @@ export async function findOrderByOrderNo(orderNo: string): Promise<Order | null>
     throw new Error(`Failed to find order: ${error.message}`);
   }
 
-  return data as Order | null;
+  return data as unknown as Order | null;
 }
 
 /**
@@ -113,7 +113,7 @@ export async function findOrderByTransactionId({
   }
 
   const { data, error } = await supabase
-    .from('wmc_order')
+    .from('wmc_order' as any)
     .select('*')
     .eq('transaction_id', transactionId)
     .eq('payment_provider', paymentProvider)
@@ -124,7 +124,7 @@ export async function findOrderByTransactionId({
     throw new Error(`Failed to find order by transaction: ${error.message}`);
   }
 
-  return data as Order | null;
+  return data as unknown as Order | null;
 }
 
 /**
@@ -135,7 +135,7 @@ export async function updateOrderByOrderNo(
   updates: Partial<Omit<Order, 'id' | 'order_no' | 'created_at'>>
 ): Promise<Order> {
   const { data, error } = await supabase
-    .from('wmc_order')
+    .from('wmc_order' as any)
     .update({
       ...updates,
       updated_at: new Date().toISOString(),
@@ -148,7 +148,7 @@ export async function updateOrderByOrderNo(
     throw new Error(`Failed to update order: ${error.message}`);
   }
 
-  return data as Order;
+  return data as unknown as Order;
 }
 
 /**
@@ -159,7 +159,7 @@ export async function updateOrderInTransaction(
   updates: Partial<Omit<Order, 'id' | 'order_no' | 'created_at'>>
 ): Promise<Order> {
   // Use Supabase RPC for transaction-like behavior
-  const { data, error } = await supabase.rpc('update_order', {
+  const { data, error } = await supabase.rpc('update_order' as any, {
     p_order_no: orderNo,
     p_updates: {
       ...updates,
@@ -171,7 +171,7 @@ export async function updateOrderInTransaction(
     throw new Error(`Failed to update order in transaction: ${error.message}`);
   }
 
-  return data as Order;
+  return data as unknown as Order;
 }
 
 /**
@@ -191,7 +191,7 @@ export async function getOrdersByUserId({
   offset?: number;
 }): Promise<Order[]> {
   let query = supabase
-    .from('wmc_order')
+    .from('wmc_order' as any)
     .select('*')
     .eq('user_id', userId)
     .is('deleted_at', null)
@@ -212,7 +212,7 @@ export async function getOrdersByUserId({
     throw new Error(`Failed to get orders: ${error.message}`);
   }
 
-  return (data as Order[]) || [];
+  return (data as unknown as Order[]) || [];
 }
 
 /**
@@ -224,7 +224,7 @@ export async function getOrderStats(userId: string): Promise<{
   failedOrders: number;
   totalAmount: number;
 }> {
-  const { data, error } = await supabase.rpc('get_order_stats', { user_id: userId });
+  const { data, error } = await supabase.rpc('get_order_stats' as any, { p_user_id: userId });
 
   if (error) {
     throw new Error(`Failed to get order stats: ${error.message}`);
@@ -243,7 +243,7 @@ export async function getOrderStats(userId: string): Promise<{
  */
 export async function deleteOrder(orderNo: string): Promise<void> {
   const { error } = await supabase
-    .from('wmc_order')
+    .from('wmc_order' as any)
     .update({
       deleted_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
@@ -266,7 +266,7 @@ export async function isOrderPaid(orderNo: string): Promise<boolean> {
 /**
  * Generate unique order number
  */
-function generateOrderNo(): string {
+function _generateOrderNo(): string {
   const timestamp = Date.now().toString();
   const random = Math.random().toString(36).substring(2, 8).toUpperCase();
   return `ORD-${timestamp}-${random}`;
@@ -281,7 +281,7 @@ function generateOrderNo(): string {
  */
 export async function createOrderDatabaseFunctions(): Promise<void> {
   // update_order function
-  const { error: error1 } = await supabase.rpc('exec_sql', {
+  const { error: error1 } = await supabase.rpc('exec_sql' as any, {
     sql: `
       CREATE OR REPLACE FUNCTION update_order(p_order_no TEXT, p_updates JSONB)
       RETURNS wmc_order AS $$
@@ -315,7 +315,7 @@ export async function createOrderDatabaseFunctions(): Promise<void> {
   }
 
   // get_order_stats function
-  const { error: error2 } = await supabase.rpc('exec_sql', {
+  const { error: error2 } = await supabase.rpc('exec_sql' as any, {
     sql: `
       CREATE OR REPLACE FUNCTION get_order_stats(p_user_id TEXT)
       RETURNS JSONB AS $$
@@ -344,7 +344,7 @@ export async function createOrderDatabaseFunctions(): Promise<void> {
   }
 }
 
-export default {
+const orderModel = {
   createOrder,
   findOrderByOrderNo,
   findOrderByTransactionId,
@@ -356,3 +356,5 @@ export default {
   isOrderPaid,
   createOrderDatabaseFunctions,
 };
+
+export default orderModel;

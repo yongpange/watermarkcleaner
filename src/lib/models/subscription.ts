@@ -4,6 +4,7 @@
  */
 
 import { supabase } from '@/lib/supabase-client';
+import { generateSnowId } from '@/lib/utils';
 import type { SubscriptionStatus } from '@/extensions/payment/types';
 
 // ==========================================================================
@@ -54,10 +55,10 @@ export interface Subscription {
 export async function createSubscription(
   newSubscription: Omit<Subscription, 'id' | 'subscription_no' | 'created_at' | 'updated_at'>
 ): Promise<Subscription> {
-  const subscriptionNo = `SUB-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+  const subscriptionNo = `SUB-${generateSnowId()}`;
 
   const { data, error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .insert([{
       ...newSubscription,
       subscription_no: subscriptionNo,
@@ -71,7 +72,7 @@ export async function createSubscription(
     throw new Error(`Failed to create subscription: ${error.message}`);
   }
 
-  return data as Subscription;
+  return data as unknown as Subscription;
 }
 
 /**
@@ -79,7 +80,7 @@ export async function createSubscription(
  */
 export async function findSubscriptionById(id: string): Promise<Subscription | null> {
   const { data, error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*')
     .eq('id', id)
     .is('deleted_at', null)
@@ -89,7 +90,7 @@ export async function findSubscriptionById(id: string): Promise<Subscription | n
     throw new Error(`Failed to find subscription: ${error.message}`);
   }
 
-  return data as Subscription | null;
+  return data as unknown as Subscription | null;
 }
 
 /**
@@ -99,7 +100,7 @@ export async function findSubscriptionBySubscriptionNo(
   subscriptionNo: string
 ): Promise<Subscription | null> {
   const { data, error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*')
     .eq('subscription_no', subscriptionNo)
     .is('deleted_at', null)
@@ -109,7 +110,7 @@ export async function findSubscriptionBySubscriptionNo(
     throw new Error(`Failed to find subscription: ${error.message}`);
   }
 
-  return data as Subscription | null;
+  return data as unknown as Subscription | null;
 }
 
 /**
@@ -123,7 +124,7 @@ export async function findSubscriptionByProviderSubscriptionId({
   subscriptionId: string;
 }): Promise<Subscription | null> {
   const { data, error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*')
     .eq('subscription_id', subscriptionId)
     .eq('payment_provider', provider)
@@ -134,7 +135,7 @@ export async function findSubscriptionByProviderSubscriptionId({
     throw new Error(`Failed to find subscription: ${error.message}`);
   }
 
-  return data as Subscription | null;
+  return data as unknown as Subscription | null;
 }
 
 /**
@@ -145,7 +146,7 @@ export async function updateSubscriptionBySubscriptionNo(
   updates: Partial<Omit<Subscription, 'id' | 'subscription_no' | 'created_at'>>
 ): Promise<Subscription> {
   const { data, error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .update({
       ...updates,
       updated_at: new Date().toISOString(),
@@ -158,7 +159,7 @@ export async function updateSubscriptionBySubscriptionNo(
     throw new Error(`Failed to update subscription: ${error.message}`);
   }
 
-  return data as Subscription;
+  return data as unknown as Subscription;
 }
 
 /**
@@ -168,7 +169,7 @@ export async function updateSubscriptionInTransaction(
   subscriptionNo: string,
   updates: Partial<Omit<Subscription, 'id' | 'subscription_no' | 'created_at'>>
 ): Promise<Subscription> {
-  const { data, error } = await supabase.rpc('update_subscription', {
+  const { data, error } = await supabase.rpc('update_subscription' as any, {
     p_subscription_no: subscriptionNo,
     p_updates: {
       ...updates,
@@ -180,7 +181,7 @@ export async function updateSubscriptionInTransaction(
     throw new Error(`Failed to update subscription in transaction: ${error.message}`);
   }
 
-  return data as Subscription;
+  return data as unknown as Subscription;
 }
 
 /**
@@ -198,7 +199,7 @@ export async function getSubscriptionsByUserId({
   offset?: number;
 }): Promise<Subscription[]> {
   let query = supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*')
     .eq('user_id', userId)
     .is('deleted_at', null)
@@ -215,7 +216,7 @@ export async function getSubscriptionsByUserId({
     throw new Error(`Failed to get subscriptions: ${error.message}`);
   }
 
-  return (data as Subscription[]) || [];
+  return (data as unknown as Subscription[]) || [];
 }
 
 /**
@@ -223,7 +224,7 @@ export async function getSubscriptionsByUserId({
  */
 export async function getActiveSubscriptions(userId: string): Promise<Subscription[]> {
   const { data, error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*')
     .eq('user_id', userId)
     .eq('status', 'active')
@@ -234,7 +235,7 @@ export async function getActiveSubscriptions(userId: string): Promise<Subscripti
     throw new Error(`Failed to get active subscriptions: ${error.message}`);
   }
 
-  return (data as Subscription[]) || [];
+  return (data as unknown as Subscription[]) || [];
 }
 
 /**
@@ -245,7 +246,7 @@ export async function getSubscriptionStats(userId: string): Promise<{
   canceledCount: number;
   totalAmount: number;
 }> {
-  const { data, error } = await supabase.rpc('get_subscription_stats', { user_id: userId });
+  const { data, error } = await supabase.rpc('get_subscription_stats' as any, { p_user_id: userId });
 
   if (error) {
     throw new Error(`Failed to get subscription stats: ${error.message}`);
@@ -268,7 +269,7 @@ export async function cancelSubscription(
   const now = new Date();
 
   const { error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .update({
       status: 'canceled',
       canceled_at: now.toISOString(),
@@ -350,7 +351,7 @@ export function hasGracePeriod(subscription: Subscription): boolean {
 /**
  * Generate unique subscription number
  */
-function generateSubscriptionNo(): string {
+function _generateSubscriptionNo(): string {
   const timestamp = Date.now().toString();
   const random = Math.random().toString(36).substring(2, 6).toUpperCase();
   return `SUB-${timestamp}-${random}`;
@@ -365,7 +366,7 @@ function generateSubscriptionNo(): string {
  */
 export async function createSubscriptionDatabaseFunctions(): Promise<void> {
   // update_subscription function
-  const { error: error1 } = await supabase.rpc('exec_sql', {
+  const { error: error1 } = await supabase.rpc('exec_sql' as any, {
     sql: `
       CREATE OR REPLACE FUNCTION update_subscription(p_subscription_no TEXT, p_updates JSONB)
       RETURNS wmc_subscription AS $$
@@ -398,7 +399,7 @@ export async function createSubscriptionDatabaseFunctions(): Promise<void> {
   }
 
   // get_subscription_stats function
-  const { error: error2 } = await supabase.rpc('exec_sql', {
+  const { error: error2 } = await supabase.rpc('exec_sql' as any, {
     sql: `
       CREATE OR REPLACE FUNCTION get_subscription_stats(p_user_id TEXT)
       RETURNS JSONB AS $$
@@ -426,7 +427,7 @@ export async function createSubscriptionDatabaseFunctions(): Promise<void> {
   }
 }
 
-export default {
+const subscriptionModel = {
   createSubscription,
   findSubscriptionById,
   findSubscriptionBySubscriptionNo,
@@ -441,3 +442,5 @@ export default {
   isSubscriptionActive,
   createSubscriptionDatabaseFunctions,
 };
+
+export default subscriptionModel;

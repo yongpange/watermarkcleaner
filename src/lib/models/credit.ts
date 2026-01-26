@@ -4,8 +4,8 @@
  */
 
 import { supabase } from '@/lib/supabase-client';
-import type {
-  CreditTransactionType,
+import {
+  type CreditTransactionType,
   CreditTransactionScene,
 } from '@/extensions/payment/types';
 
@@ -409,7 +409,7 @@ export async function migrateFreeUserHistory(
   await grantCredits({
     userId,
     credits: creditsToGrant,
-    scene: 'migration',
+    scene: CreditTransactionScene.MIGRATION,
     description: 'Migration from free to pro',
   });
 
@@ -418,7 +418,7 @@ export async function migrateFreeUserHistory(
     await consumeCredits({
       userId,
       amount: consumedCount,
-      scene: 'migration',
+      scene: CreditTransactionScene.MIGRATION,
       metadata: {
         migratedFromFree: true,
         description: `Migrated ${consumedCount} historical processing records`,
@@ -451,7 +451,7 @@ export async function migrateFreeUserHistory(
  */
 export async function createCreditDatabaseFunctions(): Promise<void> {
   // get_credit_balance function
-  const { error: error1 } = await supabase.rpc('exec_sql', {
+  const { error: error1 } = await supabase.rpc('exec_sql' as any, {
     sql: `
       CREATE OR REPLACE FUNCTION get_credit_balance(p_user_id TEXT)
       RETURNS INTEGER AS $$
@@ -478,7 +478,7 @@ export async function createCreditDatabaseFunctions(): Promise<void> {
   }
 
   // expire_credits function
-  const { error: error2 } = await supabase.rpc('exec_sql', {
+  const { error: error2 } = await supabase.rpc('exec_sql' as any, {
     sql: `
       CREATE OR REPLACE FUNCTION expire_credits()
       RETURNS INTEGER AS $$
@@ -542,7 +542,7 @@ export function invalidateCreditBalanceCache(userId: string): void {
   creditBalanceCache.delete(userId);
 }
 
-export default {
+const creditModel = {
   grantCredits,
   consumeCredits,
   getCreditBalance,
@@ -557,3 +557,5 @@ export default {
   getCreditBalanceCached,
   invalidateCreditBalanceCache,
 };
+
+export default creditModel;

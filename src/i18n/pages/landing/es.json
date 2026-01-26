@@ -12,37 +12,30 @@
     },
     "nav": {
       "items": [
+
+
         {
           "title": "Características",
           "url": "/#feature",
-          "icon": "RiSparkling2Line"
-        },
-        {
-          "title": "Comparación",
-          "url": "/#benefit",
-          "icon": "RiCheckDoubleLine"
+          "icon": "RiAppsLine",
+          "children": [
+            {
+              "title": "Desenfocar Imagen",
+              "url": "/unblur",
+              "description": "Hacer fotos borrosas claras con IA",
+              "icon": "RiDropLine"
+            }
+          ]
         },
         {
           "title": "Blog",
           "url": "/blog",
           "icon": "RiBook2Line"
-        },
-        {
-          "title": "FAQ",
-          "url": "/#faq",
-          "icon": "RiQuestionLine"
         }
+
       ]
     },
-    "buttons": [
-      {
-        "title": "Comenzar gratis",
-        "url": "/convert",
-        "target": "_self",
-        "variant": "default",
-        "icon": "RiArrowRightLine"
-      }
-    ],
+    "buttons": [],
     "show_sign": true,
     "show_theme": true,
     "show_locale": true
@@ -345,6 +338,11 @@
             {
               "title": "Características",
               "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "Desenfocar Imagen",
+              "url": "/unblur",
               "target": "_self"
             },
             {

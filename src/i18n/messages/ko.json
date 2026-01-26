@@ -13,6 +13,12 @@
     "user_center": "사용자 센터",
     "admin_system": "관리 시스템"
   },
+  "header": {
+    "my_credits": "내 크레딧",
+    "upgrade_pro": "프로로 업그레이드",
+    "sign_in": "로그인",
+    "sign_out": "로그아웃"
+  },
   "sign_modal": {
     "sign_in_title": "로그인",
     "sign_in_description": "계정에 로그인하세요",

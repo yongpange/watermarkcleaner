@@ -3,10 +3,11 @@
  * Automatically assigns free-plan (3 credits) to users
  */
 
-import { createClient } from '@/lib/supabase-server';
+// import { createClient } from '@/lib/supabase-server';
 import { createAdminClient } from '@/lib/supabase-admin';
-import { grantCredits } from '@/lib/models/credit';
+import { grantCredits, getCreditBalance } from '@/lib/models/credit';
 import type { Subscription } from '@/lib/models/subscription';
+import { hashIPAddress } from '@/lib/security/ip-hash';
 
 // ==========================================================================
 // Main Functions
@@ -27,7 +28,7 @@ export async function grantFreePlan(userId: string): Promise<Subscription> {
   try {
     // 1. Check if user already has free-plan
     const { data: existing, error: checkError } = await supabase
-      .from('wmc_subscription')
+      .from('wmc_subscription' as any)
       .select('*')
       .eq('user_id', userId)
       .eq('product_id', 'free-plan')
@@ -37,8 +38,9 @@ export async function grantFreePlan(userId: string): Promise<Subscription> {
       .single();
 
     if (existing) {
-      console.log(`[FreePlan] User ${userId} already has free-plan subscription: ${existing.id}`);
-      return existing as Subscription;
+      const sub = existing as unknown as Subscription;
+      console.log(`[FreePlan] User ${userId} already has free-plan subscription: ${sub.id}`);
+      return sub;
     }
 
     if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows
@@ -66,7 +68,7 @@ export async function grantFreePlan(userId: string): Promise<Subscription> {
     };
 
     const { data: subscription, error: subError } = await supabase
-      .from('wmc_subscription')
+      .from('wmc_subscription' as any)
       .insert([subscriptionData])
       .select()
       .single();
@@ -75,13 +77,14 @@ export async function grantFreePlan(userId: string): Promise<Subscription> {
       throw new Error(`Failed to create free-plan subscription: ${subError.message}`);
     }
 
-    console.log(`[FreePlan] Created subscription: ${subscription.id}`);
+    const newSub = subscription as unknown as Subscription;
+    console.log(`[FreePlan] Created subscription: ${newSub.id}`);
 
     // 3. Grant 3 credits
     const credit = await grantCredits({
       userId,
       credits: 3,
-      scene: 'signup',
+      scene: 'signup' as any, // Cast to any or add to enum
       description: 'Free plan welcome credits (3 credits, lifetime)',
     });
 
@@ -90,14 +93,14 @@ export async function grantFreePlan(userId: string): Promise<Subscription> {
     // 4. Update subscription with subscription_no if available
     if (credit.subscription_no) {
       await supabase
-        .from('wmc_subscription')
+        .from('wmc_subscription' as any)
         .update({ subscription_no: credit.subscription_no })
-        .eq('id', subscription.id);
+        .eq('id', newSub.id);
     }
 
     console.log(`[FreePlan] Successfully granted free-plan to user ${userId}`);
 
-    return subscription as Subscription;
+    return newSub;
 
   } catch (error) {
     console.error(`[FreePlan] Failed to grant free-plan to user ${userId}:`, error);
@@ -117,7 +120,7 @@ export async function ensureUserHasSubscription(userId: string): Promise<Subscri
 
   // 1. Check for any active subscription
   const { data: subscription, error } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*')
     .eq('user_id', userId)
     .eq('status', 'active')
@@ -132,8 +135,9 @@ export async function ensureUserHasSubscription(userId: string): Promise<Subscri
 
   // 2. If subscription exists, return it
   if (subscription) {
-    console.log(`[Subscription] User ${userId} has active subscription: ${subscription.product_id}`);
-    return subscription as Subscription;
+    const sub = subscription as unknown as Subscription;
+    console.log(`[Subscription] User ${userId} has active subscription: ${sub.product_id}`);
+    return sub;
   }
 
   // 3. No subscription found, grant free-plan
@@ -157,7 +161,7 @@ export async function canUserProcess(
   if (!userId && ip) {
     const ipHash = hashIPAddress(ip);
     const { count } = await createAdminClient()
-      .from('wmc_processing_history')
+      .from('wmc_processing_history' as any)
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', ipHash)
       .eq('success', true);
@@ -208,9 +212,9 @@ export async function initializeUser(userId: string, userEmail?: string): Promis
     // 2. If user email is provided and subscription is free-plan, update email
     if (userEmail && subscription.product_id === 'free-plan') {
       await createAdminClient()
-        .from('wmc_subscription')
+        .from('wmc_subscription' as any)
         .update({ user_email: userEmail })
-        .eq('id', subscription.id);
+        .eq('id', (subscription as unknown as Subscription).id);
     }
 
     console.log(`[UserInit] User ${userId} initialized successfully`);
@@ -232,7 +236,7 @@ export async function initializeUser(userId: string, userEmail?: string): Promis
 export async function handleUserSignup({
   userId,
   email,
-  name,
+  name: _name,
 }: {
   userId: string;
   email: string;
@@ -269,20 +273,20 @@ export async function getFreePlanStats(): Promise<{
 
   // Total users with free-plan
   const { count: totalUsers } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*', { count: 'exact', head: true })
     .eq('product_id', 'free-plan');
 
   // Active free-plan users (with remaining credits)
   const { count: activeUsers } = await supabase
-    .from('wmc_credit')
+    .from('wmc_credit' as any)
     .select('*', { count: 'exact', head: true })
     .eq('subscription_no', 'free-plan') // or check by join
     .gt('credits', 0);
 
   // Users who upgraded from free-plan
   const { count: upgradedUsers } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*', { count: 'exact', head: true })
     .neq('product_id', 'free-plan')
     .not('user_id', 'in', '(SELECT user_id FROM wmc_subscription WHERE product_id = "free-plan")');
@@ -296,7 +300,7 @@ export async function getFreePlanStats(): Promise<{
   };
 }
 
-export default {
+const grantService = {
   grantFreePlan,
   ensureUserHasSubscription,
   canUserProcess,
@@ -305,3 +309,5 @@ export default {
   handleUserLogin,
   getFreePlanStats,
 };
+
+export default grantService;

@@ -13,6 +13,12 @@
     "user_center": "مركز المستخدم",
     "admin_system": "نظام الإدارة"
   },
+  "header": {
+    "my_credits": "أرصدتي",
+    "upgrade_pro": "الترقية إلى Pro",
+    "sign_in": "تسجيل الدخول",
+    "sign_out": "تسجيل الخروج"
+  },
   "sign_modal": {
     "sign_in_title": "تسجيل الدخول",
     "sign_in_description": "سجل الدخول إلى حسابك",

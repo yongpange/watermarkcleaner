@@ -13,6 +13,19 @@
     "nav": {
       "items": [
         {
+          "title": "Features",
+          "url": "/#feature",
+          "icon": "RiAppsLine",
+          "children": [
+            {
+              "title": "Unblur Image",
+              "url": "/unblur",
+              "description": "Make blurry photos clear with AI",
+              "icon": "RiDropLine"
+            }
+          ]
+        },
+        {
           "title": "Blog",
           "url": "/blog",
           "icon": "RiArticleLine",
@@ -33,23 +46,11 @@
               "description": "Understand the legal considerations"
             }
           ]
-        },
-        {
-          "title": "FAQ",
-          "url": "/#faq",
-          "icon": "RiQuestionLine"
         }
+
       ]
     },
-    "buttons": [
-      {
-        "title": "Try Free",
-        "url": "/convert",
-        "target": "_self",
-        "variant": "default",
-        "icon": "RiArrowRightLine"
-      }
-    ],
+    "buttons": [],
     "show_sign": true,
     "show_theme": true,
     "show_locale": true
@@ -57,9 +58,9 @@
   "hero": {
     "title": "Remove Watermarks from Photos Instantly with AI",
     "highlight_text": "Remove Watermarks",
-    "description": "WatermarkCleaner uses advanced AI to remove watermarks, logos, text, and unwanted objects from your photos in seconds. Free, fast, and no sign-up required.",
+    "description": "WatermarkCleaner uses advanced AI to remove watermarks, logos, text, and unwanted objects from your photos in seconds.",
     "announcement": {
-      "label": "Free",
+      "label": "AI",
       "title": "✨ AI-Powered Watermark Removal",
       "url": "/#feature"
     },
@@ -146,7 +147,7 @@
     "items": [
       {
         "title": "Upload Your Image",
-        "description": "Drag and drop your image or click to upload. We support JPG, PNG, WebP, and BMP formats up to 20MB.",
+        "description": "Drag and drop your image or click to upload. We support JPG, PNG, WebP, and BMP formats up to 10MB.",
         "image": {
           "src": "/imgs/features/step1.webp"
         }
@@ -317,7 +318,7 @@
       },
       {
         "title": "What image formats are supported?",
-        "description": "WatermarkCleaner supports all major image formats including JPG, JPEG, PNG, WebP, and BMP. You can upload images up to 20MB in size. The output format matches your input, or you can choose to convert between formats."
+        "description": "WatermarkCleaner supports all major image formats including JPG, JPEG, PNG, WebP, and BMP. You can upload images up to 10MB in size. The output format matches your input, or you can choose to convert between formats."
       },
       {
         "title": "Will removing watermarks lower image quality?",
@@ -384,6 +385,11 @@
             {
               "title": "Remove Watermark",
               "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Unblur Image",
+              "url": "/unblur",
               "target": "_self"
             },
             {

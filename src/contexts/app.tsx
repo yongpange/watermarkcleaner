@@ -98,6 +98,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         setUser,
         showFeedback,
         setShowFeedback,
+        refreshCredits: fetchUserInfo,
       }}
     >
       {children}

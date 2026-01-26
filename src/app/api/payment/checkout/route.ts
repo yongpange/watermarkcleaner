@@ -71,11 +71,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const user = { email: user_email, id: user_id };
 
     // Initialize Supabase client for database operations
-    const adminSupabase = await createClient();
+    const adminSupabase = await createAdminClient();
 
     // Check if user already has an active subscription for this product
     const { data: existingOrder } = await adminSupabase
-      .from('wmc_order')
+      .from('wmc_order' as any)
       .select('*')
       .eq('user_id', user_id)
       .eq('product_id', product_id)

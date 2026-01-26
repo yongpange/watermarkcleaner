@@ -171,7 +171,7 @@
     "dropzone": {
       "idle": "Drag files here or click to select",
       "dragover": "Drop files to start conversion",
-      "supported": "Supported: PDF, DOCX, TXT, MD (Max 20MB)",
+      "supported": "Supported: PDF, DOCX, TXT, MD (Max 10MB)",
       "click_to_select": "Click to select files",
       "upload_image_file": "Upload Image File",
       "drag_or_click": "Drag file here or click to select",
@@ -254,7 +254,7 @@
       "image_load_success": "Image loaded successfully!",
       "drag_image_here": "Drop your image here",
       "click_or_drag": "Click or drag image here",
-      "supports_jpeg_png_webp": "Supports JPEG, PNG, WebP (Max 20MB)",
+      "supports_jpeg_png_webp": "Supports JPEG, PNG, WebP (Max 10MB)",
       "upload_image": "Upload Image"
     },
     "processing": {
@@ -301,6 +301,49 @@
       "wait_for_reset": "Check back later for more credits",
       "upgrade_to_pro_button": "💎 Upgrade to Pro",
       "try_again_later": "Try again later"
+    }
+  },
+  "unblur": {
+    "metadata": {
+      "title": "Unblur Image Online - Make Blurry Photos Clear with AI",
+      "description": "Fix blurry photos instantly! Our AI tool sharpens faces, text, and entire images. Upload & unblur in seconds.",
+      "keywords": "unblur image, make blurry photo clear, sharpen blurred image, fix blurry photo, AI unblur tool"
+    },
+    "title": "Unblur Image Online – AI Tool to Make Blurry Photos Clear",
+    "description": "Instantly unblur photos and enhance details to make your images sharp and clear",
+    "process_success": "Success! Image unblurred",
+    "features": {
+      "f1_title": "AI-Powered Face Unblurring: Make Blurry Faces Clear and Sharp",
+      "f1_desc": "Restore Facial Details in Out-of-Focus or Motion-Blurred Photos",
+      "f1_alt_before": "Before: blurry face with motion blur",
+      "f1_alt_after": "After: clear face restored by AI unblur tool",
+      "f2_title": "Unblur Text in Images: Turn Blurry Documents into Readable Content",
+      "f2_desc": "Sharpen Blurry Screenshots, Receipts, and Scanned Pages with AI",
+      "f2_alt_before": "Before: illegible blurry handwritten text",
+      "f2_alt_after": "After: sharp readable text enhanced by AI",
+      "f3_title": "Enhance Entire Photo Clarity: From Blurry to Crisp in Seconds",
+      "f3_desc": "AI Image Sharpening for Landscapes, Objects, and Low-Light Photos",
+      "f3_alt_before": "Before: blurry beach landscape photo",
+      "f3_alt_after": "After: crisp high-resolution beach photo fixed by AI"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Can AI really unblur a photo?",
+      "a1": "Yes! Modern AI models can reconstruct lost details in blurry images caused by motion, focus issues, or low resolution. Our tool uses deep learning to intelligently restore clarity.",
+      "q2": "Is this tool free to use?",
+      "a2": "Yes, you can unblur images online for free with no registration required. Just upload your photo and get results instantly.",
+      "q3": "How do I unblur an image online?",
+      "a3": "Simply upload your blurry image using the button above. Our AI processes it in seconds and returns a sharper, clearer version—no software download needed.",
+      "q4": "Can it fix blurry faces in photos?",
+      "a4": "Absolutely. Our AI is optimized to detect and enhance facial features in out-of-focus or motion-blurred portraits, making eyes, skin, and expressions clearer.",
+      "q5": "Does it work on text or documents?",
+      "a5": "Yes! It can sharpen blurry text in screenshots, receipts, scanned PDFs, and ID cards, making the content readable again.",
+      "q6": "What types of blur can this tool fix?",
+      "a6": "It handles motion blur, camera shake, out-of-focus blur, and low-resolution softness. However, extreme blur with no recoverable detail may have limited improvement.",
+      "q7": "Is my uploaded image safe?",
+      "a7": "Yes. All images are processed securely and automatically deleted from our servers within minutes. We don’t store or share your files.",
+      "q8": "Can I use this on mobile phones?",
+      "a8": "Yes! The tool works on any device—iPhone, Android, tablet, or desktop. No app install required; just open the website in your browser."
     }
   },
   "workspace": {

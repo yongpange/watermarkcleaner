@@ -10,11 +10,12 @@
 let IP_HASH_SALT = process.env.IP_HASH_SALT as string;
 
 // Helper to convert hex to buffer
-function hexToBuf(hex: string): Uint8Array {
-  const bytes = new Uint8Array(Math.ceil(hex.length / 2));
-  for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
-  return bytes;
-}
+// Helper to convert hex to buffer (unused)
+// function _hexToBuf(hex: string): Uint8Array {
+//   const bytes = new Uint8Array(Math.ceil(hex.length / 2));
+//   for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+//   return bytes;
+// }
 
 // Helper to convert buffer to hex
 function bufToHex(buf: Uint8Array | ArrayBuffer): string {

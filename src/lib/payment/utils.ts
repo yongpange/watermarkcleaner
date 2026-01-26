@@ -2,7 +2,7 @@
  * Credit and Payment Utils for easy interaction with credit and payment systems.
  */
 
-import { initPaymentManager, handleCreditGrant } from '@/lib/payment/service';
+import { initPaymentManager as _initPaymentManager, handleCreditGrant } from '@/lib/payment/service';
 import { grantCredits, getCreditBalance, consumeCredits } from '@/lib/models/credit';
 import { updateOrderByOrderNo } from '@/lib/models/order';
 import type { PaymentStatus } from '@/extensions/payment/types';

@@ -12,37 +12,30 @@
     },
     "nav": {
       "items": [
+
+
         {
           "title": "기능",
           "url": "/#feature",
-          "icon": "RiSparkling2Line"
-        },
-        {
-          "title": "비교",
-          "url": "/#benefit",
-          "icon": "RiCheckDoubleLine"
+          "icon": "RiAppsLine",
+          "children": [
+            {
+              "title": "이미지 선명하게",
+              "url": "/unblur",
+              "description": "AI로 흐릿한 사진을 선명하게 만들기",
+              "icon": "RiDropLine"
+            }
+          ]
         },
         {
           "title": "블로그",
           "url": "/blog",
           "icon": "RiBook2Line"
-        },
-        {
-          "title": "자주 묻는 질문",
-          "url": "/#faq",
-          "icon": "RiQuestionLine"
         }
+
       ]
     },
-    "buttons": [
-      {
-        "title": "무료 시작",
-        "url": "/convert",
-        "target": "_self",
-        "variant": "default",
-        "icon": "RiArrowRightLine"
-      }
-    ],
+    "buttons": [],
     "show_sign": true,
     "show_theme": true,
     "show_locale": true
@@ -325,6 +318,11 @@
             {
               "title": "기능",
               "url": "/#feature",
+              "target": "_self"
+            },
+            {
+              "title": "이미지 선명하게",
+              "url": "/unblur",
               "target": "_self"
             },
             {

@@ -59,7 +59,7 @@ export class FileUploadService {
           try {
             const response = JSON.parse(xhr.responseText);
             resolve(response);
-          } catch (error) {
+          } catch (_error) {
             reject(new Error('解析响应失败'));
           }
         } else {

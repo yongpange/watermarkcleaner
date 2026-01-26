@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
 import { Ratelimit } from "@upstash/ratelimit";
-import { getTotalProcessedSize } from "./index"; // Keep existing functions
+import { getTotalProcessedSize as _getTotalProcessedSize } from "./index"; // Keep existing functions
 import { UserTier } from "../credits/config";
 
 // Initialize Upstash Redis
@@ -27,10 +27,11 @@ const proRatelimit = new Ratelimit({
 });
 
 // Monthly limit checker using Redis
-interface MonthlyLimitKey {
-  identifier: string;
-  tier: UserTier;
-}
+// MonthlyLimitKey interface removed (unused)
+// interface MonthlyLimitKey {
+//   identifier: string;
+//   tier: UserTier;
+// }
 
 /**
  * Distributed rate limiting middleware using Upstash Redis
@@ -115,7 +116,7 @@ export async function checkMonthlyLimitRedis(
   remaining: number;
 }> {
   const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+  const _startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
 
   // Key for monthly count
   const key = `processing:${identifier}:${now.getFullYear()}:${now.getMonth()}`;

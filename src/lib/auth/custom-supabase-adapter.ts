@@ -58,7 +58,8 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
   }
 
   // Helper to map account data format
-  function mapWmcAccountToAdapterAccount(wmcAccount: any) {
+  // Helper to map account data format (unused for now)
+  function _mapWmcAccountToAdapterAccount(wmcAccount: any) {
     if (!wmcAccount) return null;
 
     return {
@@ -79,7 +80,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
 
   const adapter = {
     // User operations
-    createUser: async (data) => {
+    createUser: async (data: any) => {
       const supabase = getAdminClient();
 
       const userData = {
@@ -109,7 +110,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return mapWmcUserToAdapterUser(user);
     },
 
-    getUser: async (id) => {
+    getUser: async (id: string) => {
       const supabase = getAdminClient();
       const { data: user, error } = await supabase
         .from('wmc_users')
@@ -125,7 +126,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return mapWmcUserToAdapterUser(user);
     },
 
-    getUserByEmail: async (email) => {
+    getUserByEmail: async (email: string) => {
       const supabase = getAdminClient();
       const { data: user, error } = await supabase
         .from('wmc_users')
@@ -140,7 +141,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return mapWmcUserToAdapterUser(user);
     },
 
-    getUserByAccount: async (providerAccountId) => {
+    getUserByAccount: async (providerAccountId: any) => {
       const supabase = getAdminClient();
 
       // First find the account
@@ -160,18 +161,18 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       const { data: user, error: userError } = await supabase
         .from('wmc_users')
         .select('*')
-        .eq('id', account.user_id)
+        .eq('id', account.userid)
         .single();
 
       if (userError || !user) {
-        console.log('[CustomAdapter] User not found for account:', account.user_id);
+        console.log('[CustomAdapter] User not found for account:', account.userid);
         return null;
       }
 
       return mapWmcUserToAdapterUser(user);
     },
 
-    updateUser: async ({ id, ...data }) => {
+    updateUser: async ({ id, ...data }: { id: string; [key: string]: any }) => {
       const supabase = getAdminClient();
 
       const updateData = {
@@ -200,12 +201,12 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return mapWmcUserToAdapterUser(user);
     },
 
-    deleteUser: async (userId) => {
+    deleteUser: async (userId: string) => {
       const supabase = getAdminClient();
 
       // Delete all related records first (accounts, sessions)
-      await supabase.from('wmc_accounts').delete().eq('user_id', userId);
-      await supabase.from('wmc_sessions').delete().eq('user_id', userId);
+      await supabase.from('wmc_accounts').delete().eq('userid', userId);
+      await supabase.from('wmc_sessions').delete().eq('userid', userId);
 
       // Delete the user
       const { error } = await supabase.from('wmc_users').delete().eq('id', userId);
@@ -219,7 +220,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
     },
 
     // Account operations
-    linkAccount: async (data) => {
+    linkAccount: async (data: any) => {
       const supabase = getAdminClient();
 
       const accountData = {
@@ -250,7 +251,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return data;
     },
 
-    unlinkAccount: async (providerAccountId) => {
+    unlinkAccount: async (providerAccountId: any) => {
       const supabase = getAdminClient();
 
       const { error } = await supabase
@@ -268,13 +269,13 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
     },
 
     // Session operations
-    createSession: async (data) => {
+    createSession: async (data: any) => {
       const supabase = getAdminClient();
 
       const sessionData = {
         id: crypto.randomUUID(),
-        session_token: data.sessionToken,
-        user_id: data.userId,
+        sessiontoken: data.sessionToken,
+        userid: data.userId,
         expires: data.expires.toISOString(),
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -291,14 +292,14 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return data;
     },
 
-    getSessionAndUser: async (sessionToken) => {
+    getSessionAndUser: async (sessionToken: string) => {
       const supabase = getAdminClient();
 
       // Get the session
       const { data: session, error: sessionError } = await supabase
         .from('wmc_sessions')
         .select('*')
-        .eq('session_token', sessionToken)
+        .eq('sessiontoken', sessionToken)
         .single();
 
       if (sessionError || !session) {
@@ -310,7 +311,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       const expires = new Date(session.expires);
       if (expires < new Date()) {
         console.log('[CustomAdapter] Session expired, deleting:', sessionToken.substring(0, 10) + '...');
-        await supabase.from('wmc_sessions').delete().eq('session_token', sessionToken);
+        await supabase.from('wmc_sessions').delete().eq('sessiontoken', sessionToken);
         return null;
       }
 
@@ -318,25 +319,25 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       const { data: user, error: userError } = await supabase
         .from('wmc_users')
         .select('*')
-        .eq('id', session.user_id)
+        .eq('id', session.userid)
         .single();
 
       if (userError || !user) {
-        console.log('[CustomAdapter] User not found for session:', session.user_id);
+        console.log('[CustomAdapter] User not found for session:', session.userid);
         return null;
       }
 
       return {
         session: {
-          sessionToken: session.session_token,
-          userId: session.user_id,
+          sessionToken: session.sessiontoken,
+          userId: session.userid,
           expires: new Date(session.expires),
         },
         user: mapWmcUserToAdapterUser(user),
       };
     },
 
-    updateSession: async (data) => {
+    updateSession: async (data: any) => {
       const supabase = getAdminClient();
 
       const { error } = await supabase
@@ -345,7 +346,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
           expires: data.expires.toISOString(),
           updated_at: new Date().toISOString(),
         })
-        .eq('session_token', data.sessionToken);
+        .eq('sessiontoken', data.sessionToken);
 
       if (error) {
         console.error('[CustomAdapter] Error updating session:', error);
@@ -356,13 +357,13 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return data;
     },
 
-    deleteSession: async (sessionToken) => {
+    deleteSession: async (sessionToken: string) => {
       const supabase = getAdminClient();
 
       const { error } = await supabase
         .from('wmc_sessions')
         .delete()
-        .eq('session_token', sessionToken);
+        .eq('sessiontoken', sessionToken);
 
       if (error) {
         console.error('[CustomAdapter] Error deleting session:', error);
@@ -373,7 +374,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
     },
 
     // Verification token operations
-    createVerificationToken: async (data) => {
+    createVerificationToken: async (data: any) => {
       const supabase = getAdminClient();
 
       // Hash the token for secure storage (SHA256)
@@ -400,7 +401,7 @@ export function CustomSupabaseAdapter(options?: SupabaseAdapterOptions): Adapter
       return data;
     },
 
-    useVerificationToken: async (params) => {
+    useVerificationToken: async (params: any) => {
       const supabase = getAdminClient();
 
       // Hash the provided token to match stored hash

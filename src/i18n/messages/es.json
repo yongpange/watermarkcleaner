@@ -13,6 +13,12 @@
     "user_center": "Centro de Usuario",
     "admin_system": "Sistema de Administración"
   },
+  "header": {
+    "my_credits": "Mis Créditos",
+    "upgrade_pro": "Mejorar a Pro",
+    "sign_in": "Iniciar Sesión",
+    "sign_out": "Cerrar Sesión"
+  },
   "sign_modal": {
     "sign_in_title": "Iniciar Sesión",
     "sign_in_description": "Inicia sesión en tu cuenta",

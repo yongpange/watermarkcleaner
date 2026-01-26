@@ -13,6 +13,12 @@
     "user_center": "Центр Пользователя",
     "admin_system": "Система Администрирования"
   },
+  "header": {
+    "my_credits": "Мои кредиты",
+    "upgrade_pro": "Обновить до Pro",
+    "sign_in": "Войти",
+    "sign_out": "Выйти"
+  },
   "sign_modal": {
     "sign_in_title": "Войти",
     "sign_in_description": "Войдите в свой аккаунт",

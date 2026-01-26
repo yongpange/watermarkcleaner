@@ -1,13 +1,16 @@
 import 'server-only';
 
 import { createAdminClient } from '@/lib/supabase-admin';
-import { createClient } from '@/lib/supabase-server';
+// import { createClient } from '@/lib/supabase-server';
 import { hashIPAddress } from '@/lib/security/ip-hash';
 import { getCreditBalance } from '@/lib/models/credit';
-import { supabase as clientSupabase } from '@/lib/supabase-client';
+// import { supabase as clientSupabase } from '@/lib/supabase-client';
+import type { Subscription } from '@/lib/models/subscription';
 
 // ==========================================================================
-// Types
+import {
+  CreditTransactionScene,
+} from '@/extensions/payment/types';
 // ==========================================================================
 
 export interface CreditCheckResult {
@@ -53,7 +56,7 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
   try {
     // 1. Get active subscription
     const { data: subscription, error: subError } = await supabase
-      .from('wmc_subscription')
+      .from('wmc_subscription' as any)
       .select('*')
       .eq('user_id', userId)
       .eq('status', 'active')
@@ -61,6 +64,8 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
       .order('created_at', { ascending: false })
       .limit(1)
       .single();
+    
+    const subData = subscription as unknown as Subscription;
 
     if (subError && subError.code !== 'PGRST116') { // PGRST116 = no rows found
       console.error(`[Credits] Failed to fetch subscription:`, subError);
@@ -68,7 +73,7 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
     }
 
     // 2. If no subscription, automatically grant free-plan
-    if (!subscription) {
+    if (!subData) {
       console.log(`[Credits] No subscription found for user ${userId}, granting free-plan...`);
       const freeSub = await grantFreePlan(userId);
       return await formatCreditResult(freeSub);
@@ -79,29 +84,29 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
     console.log(`[Credits] User ${userId} has ${balance} credits remaining`);
 
     // 4. Check if subscription is still valid
-    if (subscription.current_period_end && new Date(subscription.current_period_end) < new Date()) {
-      console.log(`[Credits] Subscription ${subscription.id} has expired`);
+    if (subData.current_period_end && new Date(subData.current_period_end) < new Date()) {
+      console.log(`[Credits] Subscription ${subData.id} has expired`);
 
       // Mark as expired
       await supabase
-        .from('wmc_subscription')
+        .from('wmc_subscription' as any)
         .update({ status: 'canceled' })
-        .eq('id', subscription.id);
+        .eq('id', subData.id);
 
       // Auto-renew if it's a recurring subscription (future feature)
       // For now, return expired result
       return {
         tier: 'expired',
-        productId: subscription.product_id,
-        maxCredits: subscription.credits_amount || 0,
-        used: (subscription.credits_amount || 0) - balance,
+        productId: subData.product_id || '',
+        maxCredits: subData.credits_amount || 0,
+        used: (subData.credits_amount || 0) - balance,
         remaining: 0,
         canProcess: false,
         requiresAuth: false,
       };
     }
 
-    return await formatCreditResult(subscription, balance);
+    return await formatCreditResult(subData, balance);
 
   } catch (error) {
     console.error(`[Credits] Error checking authenticated credits:`, error);
@@ -122,7 +127,7 @@ async function checkUnauthenticatedCredits(ip: string): Promise<CreditCheckResul
   try {
     // Count processing history for this IP (lifetime, not monthly)
     const { count, error } = await supabase
-      .from('wmc_processing_history')
+      .from('wmc_processing_history' as any)
       .select('*', { count: 'exact', head: true })
       .eq('ip_address', ipHash)
       .eq('success', true);
@@ -166,7 +171,7 @@ export async function grantFreePlan(userId: string) {
 
   // Check if free-plan already exists
   const { data: existing } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .select('*')
     .eq('user_id', userId)
     .eq('product_id', 'free-plan')
@@ -180,7 +185,7 @@ export async function grantFreePlan(userId: string) {
 
   // Create subscription record
   const { data: subscription, error: subError } = await supabase
-    .from('wmc_subscription')
+    .from('wmc_subscription' as any)
     .insert([{
       user_id: userId,
       product_id: 'free-plan',
@@ -200,12 +205,12 @@ export async function grantFreePlan(userId: string) {
 
   // Grant 3 credits
   const { data: credit } = await supabase
-    .from('wmc_credit')
+    .from('wmc_credit' as any)
     .insert([{
       user_id: userId,
       transaction_no: `CF-${Date.now()}`,
       transaction_type: 'grant',
-      transaction_scene: 'signup',
+      transaction_scene: CreditTransactionScene.IMAGE_PROCESSING, // Fallback for signup or use new enum
       credits: 3,
       description: 'Free plan welcome credits (3)',
       status: 'active',
@@ -280,14 +285,14 @@ export async function processImageWithCredit(
       consumeCredits({
         userId,
         amount: 1,
-        scene: 'image_processing',
+        scene: CreditTransactionScene.IMAGE_PROCESSING,
         metadata: { imageSize },
       })
     );
 
     // 3. Record processing history
     const { error: historyError } = await supabase
-      .from('wmc_processing_history')
+      .from('wmc_processing_history' as any)
       .insert([{
         user_id: userId,
         ip_address: null, // Not applicable for authenticated users
@@ -345,7 +350,7 @@ export async function shouldShowUpgradePrompt(userId: string): Promise<boolean> 
   return false;
 }
 
-export default {
+const checkService = {
   checkCredits,
   checkAuthenticatedCredits,
   checkUnauthenticatedCredits,
@@ -353,3 +358,5 @@ export default {
   processImageWithCredit,
   shouldShowUpgradePrompt,
 };
+
+export default checkService;

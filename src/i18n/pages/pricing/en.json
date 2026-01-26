@@ -3,25 +3,12 @@
     "name": "pricing",
     "label": "Pricing",
     "title": "Pricing",
-    "description": "Get all features, build your AI SaaS startups fast.",
-    "groups": [
-      {
-        "name": "free",
-        "title": "Free"
-      },
-      {
-        "name": "monthly",
-        "title": "Monthly"
-      },
-      {
-        "name": "yearly",
-        "title": "Yearly"
-      }
-    ],
+    "description": "",
+    "groups": [],
     "items": [
       {
         "title": "Free",
-        "description": "Get started with basic features.",
+        "description": "",
         "price": "$0",
         "unit": "USD",
         "interval": "one-time",
@@ -29,44 +16,22 @@
         "credits": 3,
         "features_title": "Includes",
         "features": [
-          "3 Credits (lifetime free)",
+          "3 Credits",
           "Limited usage",
-          "No watermark removal",
+
           "Basic support"
         ],
         "button": {
           "title": "Get Started",
           "url": "#pricing"
         },
-        "tip": "Try free. Build your first project!",
-        "group": "free"
-      },
-      {
-        "title": "Basic",
-        "description": "Start building fast",
-        "price": "$6.99",
-        "unit": "/month",
-        "interval": "month",
-        "product_id": "basic-monthly",
-        "amount": 699,
-        "currency": "USD",
-        "credits": 100,
-        "features_title": "Includes",
-        "features": [
-          "100 Credits/month",
-          "$0.07/credit",
-          "100 images/month"
-        ],
-        "button": {
-          "title": "Get Started",
-          "url": "#pricing"
-        },
-        "tip": "Pay once. Build unlimited projects!",
+        "tip": "",
         "group": "monthly"
       },
+
       {
-        "title": "Pro",
-        "description": "Build faster with more credits",
+        "title": "Basic",
+        "description": "",
         "label": "Popular",
         "price": "$9.99",
         "unit": "/month",
@@ -85,13 +50,13 @@
           "title": "Get Started",
           "url": "#pricing"
         },
-        "tip": "Pay once. Build unlimited projects!",
+        "tip": "",
         "group": "monthly",
         "is_featured": true
       },
       {
-        "title": "Business",
-        "description": "Scale your AI SaaS startup",
+        "title": "Pro",
+        "description": "",
         "price": "$14.99",
         "unit": "/month",
         "interval": "month",
@@ -109,56 +74,8 @@
           "title": "Get Started",
           "url": "#pricing"
         },
-        "tip": "Pay once. Build unlimited projects!",
+        "tip": "",
         "group": "monthly"
-      },
-      {
-        "title": "Yearly Basic",
-        "description": "Save 50% — $3.75/month",
-        "label": "Save 50%",
-        "price": "$44.99",
-        "unit": "/year",
-        "interval": "year",
-        "product_id": "basic-yearly",
-        "amount": 4499,
-        "currency": "USD",
-        "credits": 1200,
-        "features_title": "Includes",
-        "features": [
-          "1200 Credits/year (100/month)",
-          "$0.04/credit",
-          "1200 images/year"
-        ],
-        "button": {
-          "title": "Get Started",
-          "url": "#pricing"
-        },
-        "tip": "Pay once. Build unlimited projects!",
-        "group": "yearly"
-      },
-      {
-        "title": "Yearly Pro",
-        "description": "Save 50% — $5.83/month",
-        "label": "Save 50%",
-        "price": "$69.99",
-        "unit": "/year",
-        "interval": "year",
-        "product_id": "pro-yearly",
-        "amount": 6999,
-        "currency": "USD",
-        "credits": 2400,
-        "features_title": "Includes",
-        "features": [
-          "2400 Credits/year",
-          "$0.03/credit",
-          "2400 images/year"
-        ],
-        "button": {
-          "title": "Get Started",
-          "url": "#pricing"
-        },
-        "tip": "Pay once. Build unlimited projects!",
-        "group": "yearly"
       }
     ]
   }

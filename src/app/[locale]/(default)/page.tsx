@@ -3,7 +3,6 @@ export const runtime = 'edge';
 import CTA from "@/components/blocks/cta";
 import FAQ from "@/components/blocks/faq";
 import Hero from "@/components/blocks/hero";
-import Testimonial from "@/components/blocks/testimonial";
 import { getLandingPage } from "@/services/page";
 import { getTranslations } from "next-intl/server";
 import ComparisonShowcase from '@/components/blocks/comparison-showcase';
@@ -121,7 +120,6 @@ export default async function LandingPage({
         reversed={true}
       />
 
-      {page.testimonial && <Testimonial section={page.testimonial} />}
       {page.faq && <FAQ section={page.faq} />}
       {page.cta && <CTA section={page.cta} />}
     </>

@@ -23,7 +23,7 @@ const CONFIG = {
 /**
  * 清理过期的限流记录
  */
-function cleanupExpiredEntries() {
+function _cleanupExpiredEntries() {
   const now = Date.now();
   for (const [key, entry] of rateLimitStore.entries()) {
     if (now >= entry.resetTime) {
