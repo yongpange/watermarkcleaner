@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import UnblurClient from "./client";
 
+export const runtime = 'edge';
+
 export async function generateMetadata({
   params,
 }: {
