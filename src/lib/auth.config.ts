@@ -51,7 +51,7 @@ export const authConfig: NextAuthConfig = {
 
     // ==================== 邮箱验证码认证 ====================
     // 暂时注释掉 Credentials provider 来测试 Google OAuth
-    /* Credentials({
+    Credentials({
       id: 'email-code',
       name: 'Email Verification Code',
       credentials: {
@@ -152,7 +152,7 @@ export const authConfig: NextAuthConfig = {
           return null;
         }
       }
-    }), */
+    }),
   ],
 
   // 注意：NextAuth v5 使用内置页面，不需要自定义 pages 配置
