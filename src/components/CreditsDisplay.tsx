@@ -42,10 +42,12 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
 
       try {
         let response;
+        const fetchOptions = { cache: 'no-store' as RequestCache };
+        
         if (status === "authenticated" && session?.user) {
-          response = await fetch("/api/credits/check");
+          response = await fetch("/api/credits/check", fetchOptions);
         } else if (status === "unauthenticated") {
-          response = await fetch("/api/credits/check-ip");
+          response = await fetch("/api/credits/check-ip", fetchOptions);
         } else {
           return; // Loading or unknown state
         }
@@ -56,6 +58,7 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
           setCredits(data);
         } else if (response) {
           console.error("Failed to fetch credits:", response.status);
+          // If we have previous credits, don't clear them, just log
           if (!credits) setError(`API error: ${response.status}`);
         }
       } catch (error) {
@@ -76,6 +79,23 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
       <div className="w-full px-4 py-3 space-y-2 animate-pulse">
         <div className="h-4 bg-muted rounded w-2/3"></div>
         <div className="h-1 bg-muted rounded-full w-full"></div>
+      </div>
+    );
+  }
+
+  // Error State
+  if (error && !credits) {
+    return (
+      <div className="w-full px-4 py-3 border-t border-border/40 mt-auto bg-destructive/5">
+        <div className="text-xs text-destructive flex items-center gap-1">
+          <span>⚠️ Failed to load credits: {error}</span>
+          <button 
+             onClick={() => window.location.reload()} 
+             className="underline hover:text-destructive/80"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
