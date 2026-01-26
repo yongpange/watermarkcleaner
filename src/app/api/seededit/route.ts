@@ -57,7 +57,9 @@ interface ArkApiRequest {
   prompt: string;
   image: string; // base64 data URL
   response_format: "url";
-  size: "adaptive";
+  size?: string;
+  width?: number; // Added for Doubao Seedream 4.0 compatibility
+  height?: number; // Added for Doubao Seedream 4.0 compatibility
   seed?: number;
   guidance_scale: number;
   watermark: boolean;
@@ -119,16 +121,91 @@ function buildPrompt(mode: string = "auto", customPrompt?: string): string {
   return basePrompt;
 }
 
+/**
+ * Normalize image dimensions to meet API requirements
+ * - Minimum area: 1024x1024 (approx 1M pixels)
+ * - Maximum area: 4096*4096 (approx 16M pixels)
+ * - Snap to multiples of 64 (safer for SDXL-based models)
+ * - Preserve aspect ratio as closely as possible
+ */
+function normalizeSize(width: number, height: number): { width: number, height: number } {
+  const MIN_AREA = 1024 * 1024;
+  const MAX_AREA = 4096 * 4096; // Conservative max
+  const SNAP = 64;
+
+  let newWidth = width;
+  let newHeight = height;
+  let currentArea = newWidth * newHeight;
+
+  // 1. Scale Up if too small
+  if (currentArea < MIN_AREA) {
+    const scale = Math.sqrt(MIN_AREA / currentArea);
+    newWidth = Math.ceil(newWidth * scale);
+    newHeight = Math.ceil(newHeight * scale);
+  }
+
+  // 2. Scale Down if too large
+  currentArea = newWidth * newHeight;
+  if (currentArea > MAX_AREA) {
+    const scale = Math.sqrt(MAX_AREA / currentArea);
+    newWidth = Math.floor(newWidth * scale);
+    newHeight = Math.floor(newHeight * scale);
+  }
+
+  // 3. Snap to multiples of SNAP (32 or 64)
+  // Use round to get closest multiple
+  newWidth = Math.round(newWidth / SNAP) * SNAP;
+  newHeight = Math.round(newHeight / SNAP) * SNAP;
+
+  // Ensure non-zero
+  newWidth = Math.max(SNAP, newWidth);
+  newHeight = Math.max(SNAP, newHeight);
+
+  console.log(`[Resolution Normalize] Input: ${width}x${height} -> Output: ${newWidth}x${newHeight}`);
+  return { width: newWidth, height: newHeight };
+}
+
 export async function POST(request: NextRequest) {
+  // 格式化当前时间的辅助函数
+  const getTimestamp = () => new Date().toISOString();
+
+  // 添加 [SeedEdit API] 前缀的日志函数
+  const logInfo = (message: string, data?: any) => {
+    console.log(`[SeedEdit API] [${getTimestamp()}] ${message}`, data ? JSON.stringify(data, null, 2) : '');
+  };
+
+  const logError = (message: string, error?: any) => {
+    console.error(`[SeedEdit API] [${getTimestamp()}] ${message}`, error);
+  };
+
+  logInfo('========== NEW REQUEST STARTED ==========');
+  logInfo('Request headers:', Object.fromEntries(request.headers.entries()));
+  console.log('[DEBUG-URGENT] Raw Cookie Header:', request.headers.get('cookie'));
+
   // 0. 速率限制检查（IP限流）
+  logInfo('Step 0: Checking rate limit...', {
+    maxRequests: CONFIG.RATE_LIMIT.MAX_REQUESTS_PER_HOUR,
+    windowMs: CONFIG.WINDOW_MS
+  });
   const rateLimitResult = await rateLimitMiddleware(request, {
     limit: CONFIG.RATE_LIMIT.MAX_REQUESTS_PER_HOUR,
     windowMs: CONFIG.WINDOW_MS || 3600000,
   });
 
   if (!rateLimitResult.allowed && rateLimitResult.response) {
+    logInfo('Rate limit exceeded:', {
+      limit: rateLimitResult.limit,
+      remaining: rateLimitResult.remaining,
+      resetTime: new Date(rateLimitResult.resetTime).toISOString()
+    });
     return rateLimitResult.response;
   }
+
+  logInfo('Rate limit check passed:', {
+    limit: rateLimitResult.limit,
+    remaining: rateLimitResult.remaining,
+    resetTime: new Date(rateLimitResult.resetTime).toISOString()
+  });
 
   // 添加速率限制信息到响应头（如果请求成功）
   const rateLimitInfo = {
@@ -144,76 +221,70 @@ export async function POST(request: NextRequest) {
   let userId: string | undefined;
   let formData: FormData | null = null;
 
+  logInfo('Step 1: Authenticating user...');
   try {
-    session = await auth();
+    const verifyResult = await verifySession(request);
+    session = verifyResult.session;
+    logInfo('Session retrieved:', {
+      hasSession: !!session,
+      hasUser: !!session?.user,
+      userId: session?.user?.id,
+      userEmail: session?.user?.email
+    });
+
     // 收紧判定：必须有 user.id 才算 authenticated
     if (session?.user?.id) {
       isAuthenticated = true;
       userId = session.user.id;
-      // userId is guaranteed to be string here (checked in condition)
       userIdentifier = userId as string;
+      logInfo('User authenticated:', { userId: userIdentifier });
     } else {
-      // Use IP address for non-authenticated users
       userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
+      logInfo('Guest user detected:', { ipAddress: userIdentifier });
     }
   } catch (_error) {
-    // Fallback to IP if session check fails
+    logError('Session authentication failed:', _error);
     userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
   }
 
-  // 检查用户额度（月度限额）
+  // Get raw IP for credit check consistency
+  const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
+
+  // 2. 解析form data (Move up to allow access to image size for failure recording)
+  logInfo('Step 2: Parsing FormData...');
   try {
-    const credits = await checkUserCredits(userIdentifier, isAuthenticated, userId);
-
-    if (credits.remaining <= 0) {
-      const tierConfig = USER_TIER_CONFIG[credits.tier];
-      return NextResponse.json(
-        {
-          code: 'CREDIT_LIMIT_EXCEEDED',
-          error: "Credit limit exceeded",
-          details: `You have used ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} credits`,
-          tier: credits.tier,
-          used: credits.used,
-          limit: tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth,
-          upgradeUrl: credits.tier === "unverified" ? "/auth/signin" : "/pricing",
-        },
-        { status: 403 }
-      );
-    }
-  } catch (error) {
-    console.error("Failed to check credits:", error);
-    // Continue with request but log the error
-  }
-
-  // 1. 验证API密钥配置
-  if (!ARK_API_KEY) {
-    console.error("ARK_API_KEY is not configured");
-    return NextResponse.json(
-      {
-        error: "Server configuration error: ARK_API_KEY is not set",
-        details: "Please contact the administrator to configure the API key"
-      },
-      { status: 500 }
-    );
-  }
-
-  try {
-    // 2. 解析form data
     formData = await request.formData();
     const image = formData.get("image") as File | null;
     const mode = (formData.get("mode") as string) || "auto";
     const customPrompt = formData.get("prompt") as string | null;
+    // Get size from formData, default to 1024x1024 if invalid or missing
+    const targetSize = (formData.get("size") as string) || "1024x1024";
 
     // 3. 验证输入
     if (!image) {
+      logError('No image file in FormData');
       return NextResponse.json(
         { error: "Image file is required" },
         { status: 400 }
       );
     }
 
+    logInfo('FormData parsed successfully:', {
+      imageName: image.name,
+      imageSize: image.size,
+      imageType: image.type,
+      mode,
+      hasCustomPrompt: !!customPrompt
+    });
+
     // 4. 验证文件类型
+    logInfo('Step 3: Validating file type...', {
+      imageType: image.type,
+      supportedTypes: CONFIG.SUPPORTED_FORMATS
+    });
+
     if (!CONFIG.SUPPORTED_FORMATS.includes(image.type as any)) {
+      logError('Unsupported file type:', image.type);
       return NextResponse.json(
         {
           error: "Unsupported file format",
@@ -223,8 +294,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    logInfo('File type validation passed');
+
     // 5. 验证文件大小
+    logInfo('Step 4: Validating file size...', {
+      fileSize: image.size,
+      maxSize: CONFIG.MAX_FILE_SIZE,
+      maxSizeMB: CONFIG.MAX_FILE_SIZE / 1024 / 1024
+    });
+
     if (image.size > CONFIG.MAX_FILE_SIZE) {
+      logError('File too large:', {
+        size: image.size,
+        maxSize: CONFIG.MAX_FILE_SIZE
+      });
       return NextResponse.json(
         {
           error: "File too large",
@@ -234,29 +317,157 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    logInfo('File size validation passed');
+
+    // 检查用户额度（月度限额）
+    logInfo('Step 5: Checking user credits...', {
+      isAuthenticated,
+      userId,
+      identifier: userIdentifier
+    });
+
+    try {
+      const credits = await checkUserCredits(userIdentifier, isAuthenticated, userId, clientIp);
+      logInfo('Credit check result:', {
+        tier: credits.tier,
+        used: credits.used,
+        remaining: credits.remaining,
+        limit: credits.limit
+      });
+
+      if (credits.remaining <= 0) {
+        const tierConfig = USER_TIER_CONFIG[credits.tier];
+        logInfo('Credit limit exceeded, rejecting request');
+
+        // Record failed attempt
+        try {
+           const adminClient = createAdminClient();
+           const hashedIP = await hashIPAddress(clientIp);
+           
+           logInfo('Recording credit limit exceeded failure:', {
+             userId: isAuthenticated && userId ? userId : null,
+             ip: hashedIP,
+             imageSize: image.size
+           });
+
+           await (adminClient as any).from("wmc_processing_history").insert({
+             user_id: isAuthenticated && userId ? userId : null,
+             ip_address: hashedIP, // Always record IP
+             image_size: image.size,
+             success: false,
+             created_at: new Date().toISOString(),
+           });
+        } catch (recErr) {
+          logError('Failed to record credit limit exceeded failure', recErr);
+        }
+
+        return NextResponse.json(
+          {
+            code: 'CREDIT_LIMIT_EXCEEDED',
+            error: "Credit limit exceeded",
+            details: `You have used ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} credits`,
+            tier: credits.tier,
+            used: credits.used,
+            limit: tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth,
+            upgradeUrl: credits.tier === "unverified" ? "/auth/signin" : "/pricing",
+          },
+          { status: 403 }
+        );
+      }
+
+      logInfo('Credit check passed, proceeding with processing');
+    } catch (error) {
+      logError('Failed to check credits:', error);
+      logInfo('Continuing with request despite credit check error');
+    }
+
+    // 1. 验证API密钥配置
+    logInfo('Step 6: Checking API key configuration...', {
+      hasArkKey: !!ARK_API_KEY,
+      arkUrl: ARK_API_URL,
+      keyPrefix: ARK_API_KEY ? ARK_API_KEY.substring(0, 10) + '...' : 'NOT SET'
+    });
+
+    if (!ARK_API_KEY) {
+      logError('ARK_API_KEY is not configured');
+      return NextResponse.json(
+        {
+          error: "Server configuration error: ARK_API_KEY is not set",
+          details: "Please contact the administrator to configure the API key"
+        },
+        { status: 500 }
+      );
+    }
+
+    logInfo('API key validation passed');
+
     // 6. 转换图片为data URL
-    console.log("Converting image to data URL...");
+    logInfo('Step 7: Converting image to data URL...');
     const imageDataUrl = await fileToDataUrl(image);
-    console.log("Image converted", {
-      size: image.size,
-      type: image.type,
+    logInfo('Image converted to data URL:', {
+      originalSize: image.size,
+      mimeType: image.type,
       dataUrlLength: imageDataUrl.length
     });
 
     // 7. 构建请求参数
+    logInfo('Step 8: Building AI request parameters...');
     const prompt = buildPrompt(mode, customPrompt ?? undefined);
     const guidanceScale = getGuidanceScale(mode);
 
-    console.log("Processing with params:", {
+    // Calculate width and height from targetSize string (New logic for Doubao compatibility)
+    const [rawWidth, rawHeight] = targetSize.split('x').map(Number);
+    let desiredWidth = rawWidth || 1024;
+    let desiredHeight = rawHeight || 1024;
+
+    // Normalize size to be safe for API (multiples of 64, min area 1024x1024)
+    // This fixes issues where small non-standard inputs (e.g. 1000x660) get rejected or defaulted to 1:1
+    const { width, height } = normalizeSize(desiredWidth, desiredHeight);
+
+    logInfo('AI request parameters built:', {
       mode,
       guidanceScale,
       promptLength: prompt.length,
+      promptPreview: prompt.substring(0, 100) + (prompt.length > 100 ? '...' : ''),
+      targetSize,
+      rawInput: `${desiredWidth}x${desiredHeight}`,
+      normalizedOutput: `${width}x${height}`,
       hasCustomPrompt: !!customPrompt
     });
 
     // 8. 调用字节方舟API
-    console.log("Calling Ark API...");
     const startTime = Date.now();
+    logInfo('Step 9: Calling ByteDance Ark AI API...', {
+      apiUrl: ARK_API_URL,
+      model: 'doubao-seedream-4-0-250828',
+      timestamp: new Date(startTime).toISOString()
+    });
+
+    // Construct the request payload
+    // Use 'size' string format "WIDTHxHEIGHT" as this is the standard OpenAI-compatible format
+    // and likely what the API expects for custom resolutions.
+    const normalizedSizeStr = `${width}x${height}`;
+
+    const requestPayload: ArkApiRequest = {
+      model: "doubao-seedream-4-0-250828",
+      prompt: prompt,
+      image: imageDataUrl,
+      response_format: "url",
+      size: normalizedSizeStr, 
+      guidance_scale: guidanceScale,
+      seed: Math.floor(Math.random() * 1000000), // 随机种子
+      watermark: false, // 不添加API水印
+    };
+
+    logInfo('AI API request body prepared (preview):', {
+      model: requestPayload.model,
+      promptLength: prompt.length,
+      hasImage: !!imageDataUrl,
+      width,
+      height,
+      guidanceScale,
+      watermark: false
+    });
 
     const response = await fetch(ARK_API_URL, {
       method: "POST",
@@ -264,142 +475,164 @@ export async function POST(request: NextRequest) {
         "Authorization": `Bearer ${ARK_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: "doubao-seededit-3-0-i2i-250628",
-        prompt: prompt,
-        image: imageDataUrl,
-        response_format: "url",
-        size: "adaptive", // 保持原图尺寸
-        guidance_scale: guidanceScale,
-        seed: Math.floor(Math.random() * 1000000), // 随机种子
-        watermark: false, // 不添加API水印
-      } as ArkApiRequest),
-
+      body: JSON.stringify(requestPayload),
       // 设置超时（120秒）
       signal: AbortSignal.timeout(120000),
+    });
+
+    logInfo('AI API response received:', {
+      status: response.status,
+      statusText: response.statusText,
+      requestId: response.headers.get('x-request-id'),
+      ok: response.ok
     });
 
     // 9. 处理响应
     if (!response.ok) {
       const errorText = await response.text();
-      console.error("Ark API error:", {
+      logError('AI API error response:', {
         status: response.status,
         statusText: response.statusText,
-        error: errorText,
+        requestId: response.headers.get('x-request-id'),
+        errorBody: errorText,
+        rawResponse: response
       });
 
       // 根据状态码返回不同的错误信息
       if (response.status === 401) {
+        logError('AI API authentication failed - invalid API key');
         return NextResponse.json(
           { error: "Authentication failed. Invalid API key" },
           { status: 401 }
         );
       } else if (response.status === 429) {
+        logError('AI API rate limit exceeded');
         return NextResponse.json(
           { error: "Rate limit exceeded. Please try again later" },
           { status: 429 }
         );
       } else if (response.status >= 500) {
+        logError('AI API server error:', response.status);
         return NextResponse.json(
           { error: "AI processing service temporarily unavailable" },
           { status: 503 }
         );
       }
 
+      logError(`AI API error: ${response.statusText}`);
       return NextResponse.json(
-        { error: `API error: ${response.statusText}` },
+        { error: `API error: ${response.statusText}`, details: errorText },
         { status: response.status }
       );
     }
 
+    logInfo('AI API response OK, parsing JSON...');
     const data = (await response.json()) as ArkApiResponse;
     const processingTime = Date.now() - startTime;
 
-    console.log("Ark API call successful", {
+    logInfo('AI API response parsed:', {
       processingTime: `${processingTime}ms`,
       tokens: data.usage,
-      imageUrl: data.data[0]?.url,
+      hasImageUrl: !!data.data?.[0]?.url,
+      imageUrl: data.data?.[0]?.url,
+      model: data.model,
+      created: data.created,
+      fullResponse: data
     });
 
     // 10. 验证返回数据
     if (!data.data?.[0]?.url) {
-      console.error("No image URL in response:", data);
+      logError('AI API response is missing image URL:', data);
       return NextResponse.json(
         { error: "Invalid response from AI service: no image URL", details: data },
         { status: 500 }
       );
     }
 
-    // 11. ===== 关键修复：拆分逻辑，确保 wmc_processing_history 优先写入 =====
-    console.log('[SeedEdit API] ===== Processing Complete - Recording History =====');
-    console.log('[SeedEdit API] isAuthenticated:', isAuthenticated);
-    console.log('[SeedEdit API] userId:', userId || 'N/A (guest)');
+    logInfo('AI processing successful, preparing response');
 
     // 第一步：优先写入 wmc_processing_history（lifetime 计数的唯一依据）
+    logInfo('Step 10: Recording processing history (wmc_processing_history)...');
+
     try {
       const adminClient = createAdminClient();
       const clientIP = getClientIP(request);
       const ipToHash = clientIP || 'unknown-ip';
       const hashedIP = await hashIPAddress(ipToHash);
 
-      console.log('[SeedEdit API] IP Information:');
-      console.log('  - Raw IP:', clientIP);
-      console.log('  - Hash salt (first 10 chars):', process.env.IP_HASH_SALT?.substring(0, 10));
-      console.log('  - Hashed IP:', hashedIP);
-      console.log('  - Is authenticated:', isAuthenticated);
-      console.log('  - Will store IP hash:', !isAuthenticated);
+      logInfo('IP information:', {
+        rawIP: clientIP,
+        hashSalt: process.env.IP_HASH_SALT?.substring(0, 10) + '...',
+        hashedIP,
+        isAuthenticated,
+        willStoreIP: !isAuthenticated // This comment might be outdated if IP is always stored
+      });
 
       const recordData = {
         user_id: isAuthenticated && userId ? userId : null,
-        ip_address: isAuthenticated && userId ? null : hashedIP,
+        ip_address: hashedIP, // Always record IP address for credit tracking
         image_size: image.size,
         success: true,
         created_at: new Date().toISOString(),
       };
 
-      console.log('[SeedEdit API] Recording to wmc_processing_history:', recordData);
+      logInfo('Inserting processing history record:', recordData);
 
       const { error: recordError } = await (adminClient as any).from("wmc_processing_history").insert(recordData);
 
       if (recordError) {
-        console.error("[SeedEdit API] ❌ Failed to record processing history:", recordError);
-        // 这是关键错误，但不阻塞用户
+        logError('❌ Failed to record processing history:', recordError);
       } else {
-        console.log("[SeedEdit API] ✅ Processing history recorded successfully");
+        logInfo('✅ Processing history recorded successfully');
         if (!isAuthenticated) {
-          console.log("[SeedEdit API] Query this record with:");
-          console.log(`  SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}' ORDER BY created_at DESC LIMIT 5;`);
+          logInfo('Query IP records:', `SELECT * FROM wmc_processing_history WHERE ip_address = '${hashedIP}' ORDER BY created_at DESC LIMIT 5;`);
         } else {
-          console.log(`  SELECT * FROM wmc_processing_history WHERE user_id = '${userId}' ORDER BY created_at DESC LIMIT 5;`);
+          logInfo('Query user records:', `SELECT * FROM wmc_processing_history WHERE user_id = '${userId}' ORDER BY created_at DESC LIMIT 5;`);
         }
       }
     } catch (error) {
-      console.error("[SeedEdit API] ❌ Critical: Failed to record processing history:", error);
-      // 即使失败也继续，避免阻塞用户
+      logError('Critical: Failed to record processing history:', error);
     }
 
     // 第二步：尝试扣除新 credit 系统额度（单独 try/catch，失败不影响上面的 history 写入）
     if (isAuthenticated && userId) {
+      logInfo('Step 11: Consuming credits from wmc_credit table...', { userId });
       try {
-        console.log(`[SeedEdit API] Attempting to consume credits from wmc_credit table for user: ${userId}`);
         await consumeCredits({
           userId: userId,
           amount: 1,
           scene: CreditTransactionScene.IMAGE_PROCESSING,
           imageSize: image.size,
         });
-        console.log(`[SeedEdit API] ✅ Credit consumed successfully via consumeCredits()`);
+        logInfo('✅ Credit consumed successfully via consumeCredits()');
       } catch (creditError) {
-        console.error("[SeedEdit API] ⚠️ Failed to consume credits (wmc_credit), but processing history already recorded:", creditError);
-        // 不阻塞用户，因为 legacy 计数（wmc_processing_history）已经写入成功
+        logError('⚠️ Failed to consume credits (wmc_credit), but processing history already recorded:', creditError);
       }
     } else {
-      console.log('[SeedEdit API] Guest user - skipping wmc_credit deduction (using IP-based wmc_processing_history tracking)');
+      logInfo('Guest user - skipping wmc_credit deduction');
     }
 
-    console.log('[SeedEdit API] ===== Recording History Completed =====');
+    logInfo('========== REQUEST COMPLETED SUCCESSFULLY ==========');
 
-    // 12. 返回结果（包含速率限制信息）
+    // 返回结果（包含速率限制信息）
+    logInfo('Preparing final response:', {
+      success: true,
+      imageUrl: data.data[0].url,
+      processingTime,
+      tokensUsed: data.usage,
+      metadata: {
+        originalSize: image.size,
+        originalType: image.type,
+        originalName: image.name,
+        mode,
+      },
+      rateLimit: {
+        limit: rateLimitInfo.limit,
+        remaining: Math.max(0, rateLimitInfo.remaining - 1),
+        resetTime: rateLimitInfo.resetTime,
+      }
+    });
+
     return NextResponse.json(
       {
         success: true,
@@ -431,10 +664,10 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     // 13. 错误处理
-    console.error("Processing error:", error);
+    logError('========== REQUEST FAILED ==========', error);
 
     // 记录失败的请求（如果有图片信息）
-    // NOTE: use admin client + hashed IP (never store raw IP)
+    logInfo('Attempting to record failed processing history...');
     try {
       if (formData) {
         const image = formData.get("image") as File | null;
@@ -443,23 +676,37 @@ export async function POST(request: NextRequest) {
           const clientIP = getClientIP(request);
           const hashedIP = await hashIPAddress(clientIP);
 
+          logInfo('Recording failed processing:', {
+            userId: userId || null, // Use userId if it exists
+            ip: hashedIP,
+            imageSize: image.size,
+            isAuthenticated // Log this for debugging
+          });
+
           await (adminClient as any).from("wmc_processing_history").insert({
-            user_id: isAuthenticated && userId ? userId : null,
-            ip_address: isAuthenticated && userId ? null : hashedIP,
+            user_id: userId || null,
+            ip_address: hashedIP, // Always record IP even for failed requests
             image_size: image.size,
             success: false,
             created_at: new Date().toISOString(),
           });
-          console.log("[SeedEdit API] Failed processing recorded to wmc_processing_history");
+          logInfo('✅ Failed processing recorded to wmc_processing_history');
         }
       }
     } catch (recordError) {
-      console.error("[SeedEdit API] Failed to record failed processing:", recordError);
+      logError('Failed to record failed processing:', recordError);
     }
 
     // 处理超时错误
     if (error instanceof Error) {
+      logError('Error type:', {
+        errorName: error.name,
+        errorMessage: error.message,
+        errorStack: error.stack
+      });
+
       if (error.name === 'AbortError' || error.name === 'TimeoutError') {
+        logInfo('Request timeout detected, returning 504');
         return NextResponse.json(
           {
             error: "Request timeout",
@@ -469,12 +716,14 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      logInfo('Returning 500 error:', error.message);
       return NextResponse.json(
         { error: error.message },
         { status: 500 }
       );
     }
 
+    logInfo('Unknown error type, returning 500');
     return NextResponse.json(
       { error: "An unknown error occurred during processing" },
       { status: 500 }

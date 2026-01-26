@@ -224,6 +224,7 @@
     },
     "credits": {
       "loading": "加载额度中...",
+      "credits": "额度",
       "free_trial": "免费试用",
       "verified_user": "已验证用户",
       "pro_user": "专业版用户",
@@ -232,6 +233,8 @@
       "lifetime_usage": "已使用: {used} / {limit} (终身)",
       "remaining": "剩余: {remaining}",
       "upgrade_pro": "💎 升级专业版获得无限额度 →",
+      "sign_in_to_continue": "登录以继续",
+      "upgrade_pro_button": "升级",
       "trial_activated": "试用已激活"
     },
     "image": {
@@ -271,9 +274,12 @@
       "ai_optimization": "留空将使用默认的AI优化指令",
       "ai_recognition": "正在使用AI智能识别并移除水印，请稍候...",
       "processing_time_info": "处理时间取决于图片大小，一般在30秒到2分钟之间",
-      "processing_failed": "处理失败"
+      "processing_failed": "处理失败",
+      "ratio_square": "1:1 方形",
+      "ratio_default": "默认"
     },
     "watermark_removal": {
+      "image_ratio": "图片比例",
       "watermark_removed_successfully": "去水印成功！",
       "start_watermark_removal": "开始去水印",
       "processing": "处理中...",

@@ -224,6 +224,7 @@
     },
     "credits": {
       "loading": "Loading credits...",
+      "credits": "Credits",
       "free_trial": "Free Trial",
       "verified_user": "Verified User",
       "pro_user": "Pro User",
@@ -232,6 +233,8 @@
       "lifetime_usage": "Used: {used} / {limit} (lifetime)",
       "remaining": "Remaining: {remaining} images",
       "upgrade_pro": "💎 Upgrade to Pro for unlimited credits →",
+      "sign_in_to_continue": "Sign in to continue",
+      "upgrade_pro_button": "Upgrade",
       "trial_activated": "Trial Activated"
     },
     "image": {
@@ -271,9 +274,12 @@
       "ai_optimization": "Default AI optimization will be used if empty",
       "ai_recognition": "Using AI to intelligently recognize and remove watermark, please wait...",
       "processing_time_info": "Processing time depends on image size, usually between 30 seconds to 2 minutes",
-      "processing_failed": "Processing Failed"
+      "processing_failed": "Processing Failed",
+      "ratio_square": "1:1 Square",
+      "ratio_default": "Default"
     },
     "watermark_removal": {
+      "image_ratio": "Aspect Ratio",
       "watermark_removed_successfully": "Watermark Removed Successfully!",
       "start_watermark_removal": "Remove Watermark",
       "processing": "Processing...",

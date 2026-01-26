@@ -31,193 +31,109 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
   const [error, setError] = useState<string | null>(null);
   const t = useTranslations("convert.credits");
 
-  // Fetch credits info for both authenticated and unauthenticated users
+  // Fetch credits info
   useEffect(() => {
-    console.log('[CreditsDisplay] :::: useEffect TRIGGERED ::::');
-    console.log('[CreditsDisplay] Dependencies - Status:', status);
-    console.log('[CreditsDisplay] Dependencies - Session:', !!session);
-    console.log('[CreditsDisplay] Dependencies - RefreshKey:', refreshKey);
-
     async function fetchCredits() {
-      console.log('[CreditsDisplay] >>>>> Starting fetchCredits <<<<<');
-      setLoading(true);
+      // Silent refresh: Only show loading spinner if we don't have data yet
+      if (!credits) {
+        setLoading(true);
+      }
       setError(null);
 
       try {
-        // FIXED: Fetch fresh data on every trigger
+        let response;
         if (status === "authenticated" && session?.user) {
-          console.log('[CreditsDisplay] Mode: AUTHENTICATED USER');
-          const response = await fetch("/api/credits/check");
-          console.log('[CreditsDisplay] Response status:', response.status);
-
-          if (response.ok) {
-            const data = await response.json();
-            console.log('[CreditsDisplay] SUCCESS - Got data:', data);
-            setCredits(data);
-          } else {
-            console.error('[CreditsDisplay] FAILED - Status:', response.status);
-            setError(`API error: ${response.status}`);
-            setCredits(null);
-          }
+          response = await fetch("/api/credits/check");
         } else if (status === "unauthenticated") {
-          console.log('[CreditsDisplay] Mode: UNAUTHENTICATED USER (IP-based)');
-          console.log('[CreditsDisplay] Calling /api/credits/check-ip...');
-
-          const response = await fetch("/api/credits/check-ip");
-          console.log('[CreditsDisplay] Response status:', response.status);
-          console.log('[CreditsDisplay] Response headers:', Object.fromEntries(response.headers.entries()));
-
-          if (response.ok) {
-            const data = await response.json();
-            console.log('[CreditsDisplay] SUCCESS - Got data:', data);
-            setCredits(data);
-          } else {
-            console.error('[CreditsDisplay] FAILED - Status:', response.status);
-            console.error('[CreditsDisplay] FAILED - Text:', await response.text());
-            setError(`API error: ${response.status}`);
-            setCredits(null);
-          }
-        } else if (status === "loading") {
-          console.log('[CreditsDisplay] Mode: LOADING (keep existing credits)');
-          // don't set credits, keep as is
+          response = await fetch("/api/credits/check-ip");
         } else {
-          console.warn('[CreditsDisplay] Unknown status:', status);
+          return; // Loading or unknown state
+        }
+
+        if (response && response.ok) {
+          const data = await response.json();
+          // Update data silently
+          setCredits(data);
+        } else if (response) {
+          console.error("Failed to fetch credits:", response.status);
+          if (!credits) setError(`API error: ${response.status}`);
         }
       } catch (error) {
-        console.error('[CreditsDisplay] EXCEPTION:', error);
-        setError(error instanceof Error ? error.message : 'Unknown error');
-        setCredits(null);
+        console.error("Error fetching credits:", error);
+        if (!credits) setError(error instanceof Error ? error.message : 'Unknown error');
       } finally {
-        console.log('[CreditsDisplay] >>>>> fetchCredits COMPLETED <<<<<<');
         setLoading(false);
       }
     }
 
     fetchCredits();
-  }, [session, status, refreshKey]);  // Triggers on auth state change or refreshKey change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, status, refreshKey]); // Keep dependencies but ensure fetch logic handles silent updates
 
-  console.log('[CreditsDisplay] Render check - Final states:', {
-    loading,
-    credits: !!credits,
-    error: !!error
-  });
-
-  // Show loading state
-
-  // Show loading state
-  if (loading) {
+  // Minimalist Loading State (Skeleton)
+  if (loading && !credits) {
     return (
-      <div className="flex items-center gap-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        <span className="text-sm text-gray-500 dark:text-gray-400">{t("loading")}</span>
+      <div className="w-full px-4 py-3 space-y-2 animate-pulse">
+        <div className="h-4 bg-muted rounded w-2/3"></div>
+        <div className="h-1 bg-muted rounded-full w-full"></div>
       </div>
     );
   }
 
-  // Don't show if credits haven't loaded yet
-  if (!credits) {
-    return null;
-  }
+  if (!credits) return null;
 
-  // For unauthenticated users, show simplified version
-  if (status === "unauthenticated") {
-    return (
-      <div className="w-full p-3 bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800/50 rounded-lg border border-violet-200 dark:border-violet-800">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-violet-600 animate-pulse" />
-            <span className="text-sm font-medium text-violet-900 dark:text-violet-100">
-              {t("free_trial")}
-            </span>
-          </div>
-        </div>
-
-        <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-2">
-          <div
-            className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 transition-all duration-300"
-            style={{ width: `${(credits.used / credits.limit) * 100}%` }}
-          />
-        </div>
-
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-600 dark:text-gray-400">
-            {t("lifetime_usage", { used: credits.used, limit: credits.limit })}
-          </span>
-          <span className="font-medium text-violet-900 dark:text-violet-100">
-            {t("remaining", { remaining: credits.remaining })}
-          </span>
-        </div>
-
-        <div className="mt-3 pt-2 border-t border-violet-200 dark:border-violet-800">
-          <button
-            onClick={onVerifyEmail}
-            className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block text-left cursor-pointer"
-          >
-            🔐 Sign in to continue
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const tierNames = {
-    unverified: t("free_trial"),
-    verified: t("verified_user"),
-    pro: t("pro_user"),
-  };
-
-  const isUnlimited = credits.limit === Infinity;
+  const isUnlimited = credits.limit === Infinity || credits.tier === 'pro';
+  const percentage = isUnlimited ? 100 : Math.min((credits.used / credits.limit) * 100, 100);
 
   return (
-    <div className="w-full p-3 bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800/50 rounded-lg border border-violet-200 dark:border-violet-800">
-      {/* Tier Display */}
+    <div className="w-full px-4 py-3 border-t border-border/40 mt-auto bg-background/50 backdrop-blur-sm">
       <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <span className="inline-block w-2 h-2 rounded-full bg-violet-600 animate-pulse" />
-          <span className="text-sm font-medium text-violet-900 dark:text-violet-100">
-            {tierNames[credits.tier]}
-          </span>
+        <div className="flex items-center gap-2 text-sm font-medium text-foreground/80">
+          <Loader2 className={`w-3.5 h-3.5 ${loading ? "animate-spin" : "hidden"}`} /> 
+          {!loading && (
+             credits.tier === 'pro' ? (
+                <span className="text-primary flex items-center gap-1">
+                   ✨ {t("pro_user")}
+                </span>
+             ) : (
+                <span>{credits.used} / {credits.limit} {t("credits")}</span>
+             )
+          )}
         </div>
+        
+        {/* Upgrade Link for non-pro */}
+        {credits.tier !== 'pro' && (
+          <Link 
+            href="/pricing"
+            className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            {t("upgrade_pro_button").replace("💎 ", "")} {/* Remove emoji for minimalist look */}
+          </Link>
+        )}
       </div>
 
-      {/* Credits Usage Bar */}
-      {!isUnlimited && (
-        <>
-          <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-2">
-            <div
-              className="h-full bg-gradient-to-r from-violet-600 to-indigo-600 transition-all duration-300"
-              style={{ width: `${(credits.used / credits.limit) * 100}%` }}
-            />
-          </div>
-
-          {/* Usage Stats */}
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600 dark:text-gray-400">
-              {t("monthly_usage", { used: credits.used, limit: credits.limit })}
-            </span>
-            <span className="font-medium text-violet-900 dark:text-violet-100">
-              {t("remaining", { remaining: credits.remaining })}
-            </span>
-          </div>
-        </>
-      )}
-
-      {isUnlimited && (
-        <div className="text-sm text-violet-900 dark:text-violet-100">
-          {t("unlimited")}
+      {/* Minimalist Progress Bar */}
+      {!isUnlimited ? (
+        <div className="h-1 w-full bg-muted/50 rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-primary/80 rounded-full transition-all duration-500 ease-out"
+            style={{ width: `${percentage}%` }}
+          />
         </div>
+      ) : (
+         <div className="text-xs text-muted-foreground mt-1">
+            {t("unlimited")}
+         </div>
       )}
-
-      {/* Upgrade Prompt */}
-      {credits.remaining <= 5 && credits.tier !== "pro" && (
-        <div className="mt-3 pt-2 border-t border-violet-200 dark:border-violet-800">
-          <Link
-            href="/pricing"
-            className="text-sm font-medium text-violet-600 dark:text-violet-400 hover:underline block"
+      
+      {/* Login Prompt for Guest */}
+      {status === "unauthenticated" && onVerifyEmail && (
+          <button
+             onClick={onVerifyEmail}
+             className="text-xs text-muted-foreground hover:text-primary mt-2 flex items-center gap-1 transition-colors"
           >
-            {t("upgrade_pro")}
-          </Link>
-        </div>
+             {t("sign_in_to_continue")} &rarr;
+          </button>
       )}
     </div>
   );

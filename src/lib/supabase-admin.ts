@@ -36,5 +36,15 @@ export function createAdminClient() {
       autoRefreshToken: false,
       persistSession: false,
     },
+    // 强制禁用所有请求的缓存，确保数据实时性
+    global: {
+      fetch: (url, options) => {
+        return fetch(url, {
+          ...options,
+          cache: 'no-store',
+          next: { revalidate: 0 } // Next.js specific
+        })
+      },
+    },
   })
 }

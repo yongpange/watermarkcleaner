@@ -1,10 +1,5 @@
 import { NextRequest } from 'next/server';
-import { jwtVerify, createLocalJWKSet } from 'jose';
-
-/**
- * Edge Runtime 兼容的会话验证
- * 直接使用 JWT 验证，不依赖 NextAuth 初始化
- */
+import { jwtVerify, jwtDecrypt } from 'jose';
 
 const AUTH_SECRET = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
 
@@ -23,9 +18,16 @@ function getToken(req: NextRequest): string | null {
 
   const cookie = req.headers.get('cookie');
   if (cookie) {
-    const sessionTokenMatch = cookie.match(/authjs\.session-token=([^;]+)/);
-    if (sessionTokenMatch) {
-      return decodeURIComponent(sessionTokenMatch[1]);
+    // try matching secure cookie first, then non-secure
+    // authjs v5 uses authjs.session-token, next-auth v4 uses next-auth.session-token
+    // we should try to match all possible variants
+    const match = cookie.match(/(?:__Secure-)?(?:authjs|next-auth)\.session-token=([^;]+)/);
+    
+    if (match) {
+      console.log('[AuthEdge] Token found in cookie');
+      return decodeURIComponent(match[1]);
+    } else {
+      console.log('[AuthEdge] No session token found in cookie string');
     }
   }
 
@@ -38,27 +40,52 @@ function getToken(req: NextRequest): string | null {
  */
 export async function verifySession(req: NextRequest) {
   if (!AUTH_SECRET) {
+    console.error('[AuthEdge] Missing AUTH_SECRET');
     return { session: null, userId: null, isAuthenticated: false };
   }
+
+  // Debug: Log all cookie names to see what we actually received
+  const cookieString = req.headers.get('cookie') || '';
+  const cookieNames = cookieString.split(';').map(c => c.split('=')[0].trim());
+  console.log('[AuthEdge] Received cookies:', cookieNames);
 
   const token = getToken(req);
 
   if (!token) {
+    console.log('[AuthEdge] No token extraction successful');
     return { session: null, userId: null, isAuthenticated: false };
   }
 
   try {
-    // JWT 验证（使用 jose 库，Edge Runtime 兼容）
     const secret = new TextEncoder().encode(AUTH_SECRET);
-    const { payload } = await jwtVerify(token, secret, {
-      algorithms: ['HS256'],
-    });
+    let payload: any;
+    
+    // 尝试1: JWE Decryption (NextAuth v5 default)
+    try {
+      // console.log('[AuthEdge] Attempting JWE decryption...');
+      const { payload: decrypted } = await jwtDecrypt(token, secret, {
+         clockTolerance: 15,
+      });
+      payload = decrypted;
+      console.log('[AuthEdge] JWE Decryption success.');
+    } catch (jweError) {
+      // console.log('[AuthEdge] JWE failed, trying JWS verify...', (jweError as Error).message);
+      // 尝试2: JWS Verification (Legacy or configured for signing only)
+      const { payload: verified } = await jwtVerify(token, secret, {
+         algorithms: ['HS256', 'RS256'],
+         clockTolerance: 15,
+      });
+      payload = verified;
+      console.log('[AuthEdge] JWS Verification success.');
+    }
 
-    if (!payload.sub) {
+    if (!payload || !payload.sub) {
+      console.error('[AuthEdge] Token valid but missing "sub" in payload:', payload ? Object.keys(payload) : 'null');
       throw new Error('Invalid token: missing sub');
     }
 
     const userId = payload.sub as string;
+    console.log('[AuthEdge] Verification success. UserID:', userId);
 
     return {
       session: {
@@ -73,7 +100,10 @@ export async function verifySession(req: NextRequest) {
       isAuthenticated: true,
     };
   } catch (error) {
-    console.error('Session verification failed:', error);
+    console.error('[AuthEdge] Session verification failed:', error);
+    if (error instanceof Error) {
+       console.error('[AuthEdge] Error message:', error.message);
+    }
     return { session: null, userId: null, isAuthenticated: false };
   }
 }

@@ -9,16 +9,19 @@ import { USER_TIER_CONFIG, type UserTier, type UserTierConfig } from '@/lib/cred
 // Re-export types and config for backward compatibility
 export { UserTier, UserTierConfig, USER_TIER_CONFIG };
 
+// Helper function for timestamp
+const getTimestamp = () => new Date().toISOString();
+
 /**
  * Check user's available credits (All users have 3 credits, based on processing history)
  * @param userId - The user's ID from the database
  * @returns Object containing tier info, usage stats, and remaining credits
  */
-export async function checkCredits(userId: string) {
+export async function checkCredits(userId: string, currentIp?: string) {
   // Use admin client to bypass RLS for accurate counting
   const supabase = createAdminClient();
 
-  console.log(`[Credits] Checking credits for user: ${userId}`);
+  console.log(`[Credits] [${getTimestamp()}] Checking credits for user: ${userId}`);
 
   // Get user data from database to determine tier
   const { data: user, error: userError } = await (supabase as any)
@@ -28,27 +31,95 @@ export async function checkCredits(userId: string) {
     .single();
 
   if (userError || !user) {
-    console.error(`[Credits] Failed to fetch user:`, userError);
+    console.error(`[Credits] [${getTimestamp()}] Failed to fetch user:`, userError);
     throw new Error('User not found');
   }
 
-  // Count lifetime processing history for this user (not monthly)
-  const { count, error: countError } = await (supabase as any)
+  console.log(`[Credits] [${getTimestamp()}] User fetched:`, { userId, tier: user.tier });
+
+  // 1. 获取该用户所有处理记录中的 IP 地址
+  // This finds IPs that were explicitly linked to this user in the past
+  console.log(`[Credits] [${getTimestamp()}] Fetching user's IP addresses from processing history...`);
+  const { data: userRecords, error: fetchError } = await (supabase as any)
     .from('wmc_processing_history')
-    .select('*', { count: 'exact', head: true })
+    .select('ip_address')
     .eq('user_id', userId)
     .eq('success', true);
 
-  if (countError) {
-    console.error(`[Credits] Failed to count processing history:`, countError);
+  if (fetchError) {
+    console.error(`[Credits] [${getTimestamp()}] Failed to fetch user records:`, fetchError);
     throw new Error('Failed to check credits');
   }
 
-  const used = count ?? 0;
+  // 2. Collect all IPs to check: historical IPs + current IP
+  const ipsToCheck = new Set<string>();
+  
+  // Add historical IPs
+  userRecords?.forEach((r: any) => {
+    if (r.ip_address) ipsToCheck.add(r.ip_address);
+  });
+
+  // Add current IP if provided (CRITICAL: linking current session to past anonymous usage)
+  if (currentIp) {
+    const hashedCurrentIp = await hashIPAddress(currentIp);
+    ipsToCheck.add(hashedCurrentIp);
+    console.log(`[Credits] [${getTimestamp()}] Added current IP to check list:`, { raw: currentIp, hashed: hashedCurrentIp });
+  }
+
+  const userIPs = Array.from(ipsToCheck);
+  console.log(`[Credits] [${getTimestamp()}] Total unique IPs to check:`, { count: userIPs.length, ips: userIPs });
+
+  // 3. 构建查询条件
+  // Logic: user_id = userId OR ip_address IN (userIPs)
+  
+  let count = 0;
+  
+  if (userIPs.length > 0) {
+    // Complex query: user_id OR ip_address
+    const ipConditions = userIPs.map(ip => `ip_address.eq.${ip}`).join(',');
+    const orCondition = `user_id.eq.${userId},${ipConditions}`;
+    
+    console.log(`[Credits] [${getTimestamp()}] Querying with OR condition (User + IPs)`);
+    
+    const { count: totalData, error: countError } = await (supabase as any)
+      .from('wmc_processing_history')
+      .select('*', { count: 'exact', head: true })
+      .or(orCondition)
+      .eq('success', true);
+
+      if (countError) {
+        console.error(`[Credits] [${getTimestamp()}] Failed to count processing history:`, countError);
+        throw new Error('Failed to check credits');
+      }
+      count = totalData ?? 0;
+  } else {
+    // Fallback: Simple query by user_id only (if no IPs found/provided)
+    console.log(`[Credits] [${getTimestamp()}] Querying by user_id only (No IPs available)`);
+    
+    const { count: totalData, error: countError } = await (supabase as any)
+      .from('wmc_processing_history')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('success', true);
+
+      if (countError) {
+        console.error(`[Credits] [${getTimestamp()}] Failed to count processing history:`, countError);
+        throw new Error('Failed to check credits');
+      }
+      count = totalData ?? 0;
+  }
+
+  const used = count;
   const tier: UserTier = (user.tier as UserTier) || 'unverified';
   const tierConfig = USER_TIER_CONFIG[tier];
 
-  console.log(`[Credits] User ${userId} has used ${used} credits, limit: ${tierConfig.maxPerMonth}`);
+  console.log(`[Credits] [${getTimestamp()}] Credit check complete:`, {
+    userId,
+    tier,
+    used,
+    limit: tierConfig.maxPerMonth,
+    remaining: Math.max(0, tierConfig.maxPerMonth - used)
+  });
 
   return {
     tier,
@@ -65,8 +136,8 @@ export async function checkCredits(userId: string) {
 export async function deductCredits(userId: string) {
   // Use admin client to bypass RLS for credit updates
   const supabase = createAdminClient();
-  
-  console.log(`[Credits] Deducting credit for user: ${userId}`);
+
+  console.log(`[Credits] [${getTimestamp()}] Deducting credit for user: ${userId}`);
 
   // First get the current user to get current creditsused
   const { data: user, error: fetchError } = await (supabase as any)
@@ -76,14 +147,14 @@ export async function deductCredits(userId: string) {
     .single();
 
   if (fetchError || !user) {
-    console.error(`[Credits] Failed to fetch user for deduction:`, fetchError);
+    console.error(`[Credits] [${getTimestamp()}] Failed to fetch user for deduction:`, fetchError);
     throw new Error('User not found');
   }
-  
+
   const currentUsed = (user.creditsused || 0);
   const newUsed = currentUsed + 1;
-  
-  console.log(`[Credits] Current usage: ${currentUsed}, New usage: ${newUsed}`);
+
+  console.log(`[Credits] [${getTimestamp()}] Current usage: ${currentUsed}, New usage: ${newUsed}`);
 
   // Update with incremented value
   const { error } = await (supabase as any)
@@ -94,11 +165,11 @@ export async function deductCredits(userId: string) {
     .eq('id', userId);
 
   if (error) {
-    console.error(`[Credits] Failed to update creditsused in DB:`, error);
+    console.error(`[Credits] [${getTimestamp()}] Failed to update creditsused in DB:`, error);
     throw new Error(`Failed to deduct credits: ${error.message}`);
   }
-  
-  console.log(`[Credits] Deduct success. User ${userId} now has ${newUsed} used credits.`);
+
+  console.log(`[Credits] [${getTimestamp()}] Deduct success. User ${userId} now has ${newUsed} used credits.`);
 }
 
 /**
@@ -141,23 +212,41 @@ export async function recordProcessingHistory({
 export async function checkUserCredits(
   identifier: string,
   isAuthenticated: boolean,
-  userId?: string
+  userId?: string,
+  currentIp?: string
 ) {
+  console.log(`[Credits] [${getTimestamp()}] ===== USER CREDIT CHECK STARTED =====`);
+  console.log(`[Credits] [${getTimestamp()}] Input:`, { identifier, isAuthenticated, userId, currentIp: currentIp ? '***' : 'undefined' });
+
   if (isAuthenticated && userId) {
-    // For authenticated users, use legacy check (wmc_processing_history)
-    return checkCredits(userId);
+    console.log(`[Credits] [${getTimestamp()}] Authenticated user, using checkCredits() with IP linking...`);
+    // For authenticated users, use legacy check (wmc_processing_history) includes IP linking
+    return checkCredits(userId, currentIp);
   } else {
+    console.log(`[Credits] [${getTimestamp()}] IP-based user, checking lifetime usage (3 trials)`);
     // For IP-based users: 3 trials TOTAL (lifetime, not monthly)
     const tier: UserTier = 'unverified';
     const tierConfig = USER_TIER_CONFIG[tier];
 
+    console.log(`[Credits] [${getTimestamp()}] Hashing IP address...`);
     // IMPORTANT: Hash the IP before querying database
-    const hashedIdentifier = await hashIPAddress(identifier);
+    const ipToCheck = currentIp || identifier; // Use currentIp if passed, otherwise identifier
+    const hashedIdentifier = await hashIPAddress(ipToCheck);
 
-    console.log('[Credits Check] ===== IP-based User Check Started =====');
-    console.log('[Credits Check] Original IP:', identifier);
-    console.log('[Credits Check] Hashed IP:', hashedIdentifier);
-    console.log('[Credits Check] Counting LIFETIME usage (3 trials total)');
+    console.log(`[Credits] [${getTimestamp()}] IP hash complete:`, {
+      originalIP: ipToCheck ? ipToCheck.substring(0, 10) + '...' : 'N/A',
+      hashed: hashedIdentifier.substring(0, 20) + '...'
+    });
+
+    console.log(`[Credits] [${getTimestamp()}] Querying wmc_processing_history...`);
+    console.log(`[Credits] [${getTimestamp()}] Supabase query:`, {
+      table: 'wmc_processing_history',
+      conditions: {
+        ip_address: hashedIdentifier,
+        success: true
+      },
+      count: 'exact'
+    });
 
     // Use admin client for IP-based queries to bypass RLS
     const supabase = createAdminClient();
@@ -169,23 +258,28 @@ export async function checkUserCredits(
       .eq('success', true);
 
     if (error) {
-      console.error('[Credits Check] Supabase query error:', error);
+      console.error(`[Credits] [${getTimestamp()}] Supabase query error:`, error);
       throw error;
     }
 
     const actualCount = count ?? 0;
+    const remaining = Math.max(0, tierConfig.maxPerMonth - actualCount);
 
-    console.log('[Credits Check] Trials used:', actualCount, '/', tierConfig.maxPerMonth);
+    console.log(`[Credits] [${getTimestamp()}] Query complete:`, {
+      trialsUsed: actualCount,
+      limit: tierConfig.maxPerMonth,
+      remaining: remaining
+    });
 
     const result = {
       tier,
       used: actualCount,
       limit: tierConfig.maxPerMonth, // 3 trials total for unauthenticated
-      remaining: Math.max(0, tierConfig.maxPerMonth - actualCount),
+      remaining: remaining,
     };
 
-    console.log('[Credits Check] Final result:', result);
-    console.log('[Credits Check] ===== IP-based User Check Completed =====');
+    console.log(`[Credits] [${getTimestamp()}] ===== IP-BASED CHECK COMPLETE =====`);
+    console.log(`[Credits] [${getTimestamp()}] Result:`, result);
 
     return result;
   }
