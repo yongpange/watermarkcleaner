@@ -4,7 +4,6 @@ import { findUserByEmail, findUserByUuid, insertUser } from "@/models/user";
 import type { User } from "@/types/next-auth";
 import { createClient } from "@/lib/supabase-server";
 import { getOneYearLaterTimestr } from "@/lib/time";
-import { headers } from "next/headers";
 import { increaseCredits } from "./credit";
 import { getUuid } from "@/lib/hash";
 import type { Database } from "@/types/database.types";

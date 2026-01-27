@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 
 import { createAdminClient } from '@/lib/supabase-admin';
 import { initPaymentManager, getPaymentConfigs } from '@/lib/payment/service';
-import { createOrder, isOrderPaid } from '@/lib/models/order';
+import { createOrder } from '@/lib/models/order';
 import type { PaymentOrder } from '@/extensions/payment/types';
 import type { Order } from '@/lib/models/order';
 import { PaymentStatus } from '@/extensions/payment/types';
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const user_email = session.user.email;
     const user_id = session.user.id;
 
-    const user = { email: user_email, id: user_id };
+
 
     // Initialize Supabase client for database operations
     const adminSupabase = await createAdminClient();

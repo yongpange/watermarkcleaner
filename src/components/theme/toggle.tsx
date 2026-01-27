@@ -1,38 +1,36 @@
 "use client";
 
 import { BsMoonStars, BsSun } from "react-icons/bs";
-
-import { CacheKey } from "@/services/constant";
-import { cacheSet } from "@/lib/cache";
-import { useAppContext } from "@/contexts/app";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
-  const { theme, setTheme } = useAppContext();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const handleThemeChange = function (_theme: string) {
-    if (_theme === theme) {
-      return;
-    }
+  // Avoid hydration mismatch by only rendering after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-    cacheSet(CacheKey.Theme, _theme, -1);
-    setTheme(_theme);
-  };
+  if (!mounted) {
+    // Return a placeholder with the same dimensions to avoid layout shift
+    return <div className="w-5 h-5" />;
+  }
+
+  const currentTheme = resolvedTheme || theme;
 
   return (
     <div className="flex items-center gap-x-2 px-2">
-      {theme === "dark" ? (
+      {currentTheme === "dark" ? (
         <BsSun
-          className="cursor-pointer text-lg text-muted-foreground"
-          onClick={() => handleThemeChange("light")}
-          width={80}
-          height={20}
+          className="cursor-pointer text-lg text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => setTheme("light")}
         />
       ) : (
         <BsMoonStars
-          className="cursor-pointer text-lg text-muted-foreground"
-          onClick={() => handleThemeChange("dark")}
-          width={80}
-          height={20}
+          className="cursor-pointer text-lg text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => setTheme("dark")}
         />
       )}
     </div>

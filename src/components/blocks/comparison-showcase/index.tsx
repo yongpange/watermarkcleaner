@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
-import ImageComparison from '@/components/image-comparison';
+import ComparisonSlider from '@/components/ui/comparison-slider';
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 interface ComparisonShowcaseProps {
   title: string;
@@ -18,8 +20,25 @@ export default function ComparisonShowcase({
   afterImage,
   reversed = false,
 }: ComparisonShowcaseProps) {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Determine background style based on theme
+  const isDark = mounted && resolvedTheme === 'dark';
+  
   return (
-    <section className="py-16 lg:py-24 bg-gradient-to-br from-violet-50 to-indigo-50 dark:bg-none">
+    <section 
+      className="py-16 lg:py-24"
+      style={{
+        background: isDark 
+          ? 'var(--background)' 
+          : 'linear-gradient(to bottom right, rgb(245 243 255), rgb(238 242 255))'
+      }}
+    >
       <div className="container px-4 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Text Content */}
@@ -35,16 +54,13 @@ export default function ComparisonShowcase({
           </div>
 
           {/* Image Comparison Widget */}
-          <div className={reversed ? "order-1 lg:order-1 flex justify-center" : "order-1 lg:order-2 flex justify-center"}>
-            <ImageComparison
-              beforeImage={{
-                src: beforeImage,
-                alt: 'Original image with watermark',
-              }}
-              afterImage={{
-                src: afterImage,
-                alt: 'Clean image without watermark',
-              }}
+          <div className={reversed ? "order-1 lg:order-1 flex justify-center w-full" : "order-1 lg:order-2 flex justify-center w-full"}>
+            <ComparisonSlider
+              beforeImage={beforeImage}
+              afterImage={afterImage}
+              beforeLabel="Watermarked"
+              afterLabel="Cleaned"
+              className="shadow-2xl aspect-square w-full max-w-2xl" 
             />
           </div>
         </div>

@@ -7,10 +7,9 @@ import type { LocalizedPostSummary } from "@/lib/blog";
 interface RelatedPostsProps {
   currentPostSlug: string;
   posts: LocalizedPostSummary[];
-  locale: string;
 }
 
-export default function RelatedPosts({ currentPostSlug, posts, locale }: RelatedPostsProps) {
+export default function RelatedPosts({ currentPostSlug, posts }: RelatedPostsProps) {
   // Filter out current post and get up to 3 related posts
   const relatedPosts = posts
     .filter(post => post.slug !== currentPostSlug)

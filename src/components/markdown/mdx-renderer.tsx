@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import ImageComparison from '@/components/image-comparison';
+import ComparisonSlider from '@/components/ui/comparison-slider';
 import CTAButton from '@/components/blog/CTAButton';
 import { parseMarkdownTable, MarkdownTable } from '@/components/markdown/table-renderer';
 
@@ -134,10 +134,13 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
           return (
             <div key={index} className="w-full my-8 flex justify-center">
               <div className="w-full max-w-none md:max-w-3xl lg:max-w-4xl">
-                <ImageComparison
-                  beforeImage={part.beforeImage}
-                  afterImage={part.afterImage}
+                <ComparisonSlider
+                  beforeImage={part.beforeImage.src}
+                  afterImage={part.afterImage.src}
+                  beforeAlt={part.beforeImage.alt}
+                  afterAlt={part.afterImage.alt}
                   autoPlay={false}
+                  className="shadow-2xl"
                 />
               </div>
             </div>

@@ -145,7 +145,7 @@ export default function ComparisonSlider({
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full overflow-hidden rounded-xl bg-gray-100 shadow-2xl select-none group cursor-ew-resize touch-pan-y",
+        "relative w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800/50 shadow-2xl select-none group cursor-ew-resize touch-pan-y",
         aspectRatio,
         className
       )}

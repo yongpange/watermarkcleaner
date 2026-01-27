@@ -3,7 +3,7 @@
  * 用于支持邮箱验证码认证系统和自定义字段
  */
 
-import NextAuth from "next-auth";
+
 
 /**
  * 用户等级枚举

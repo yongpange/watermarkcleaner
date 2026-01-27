@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 import { verifySession } from "@/lib/auth-edge";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
-import { checkUserCredits, USER_TIER_CONFIG } from "@/lib/credits/check-legacy";
+import { checkUserCredits } from '@/lib/credits/check-legacy';
 import { CreditTransactionScene } from '@/extensions/payment/types';
 import { createAdminClient } from "@/lib/supabase-admin";
 import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
@@ -320,8 +320,8 @@ export async function POST(request: NextRequest) {
 
     // Calculate width and height from targetSize string (New logic for Doubao compatibility)
     const [rawWidth, rawHeight] = targetSize.split('x').map(Number);
-    let desiredWidth = rawWidth || 1024;
-    let desiredHeight = rawHeight || 1024;
+    const desiredWidth = rawWidth || 1024;
+    const desiredHeight = rawHeight || 1024;
 
     // Normalize size to be safe for API (multiples of 64, min area 1024x1024)
     // This fixes issues where small non-standard inputs (e.g. 1000x660) get rejected or defaulted to 1:1

@@ -12,6 +12,7 @@
   - Fal.ai (SDXL)
   - ByteDance Ark (Doubao-Seedream-4.0 / SeedEdit)
 - **数据库**: Supabase (PostgreSQL)
+- **缓存/限流**: Upstash Redis (Serverless)
 - **认证**: NextAuth.js v5 (Google OAuth + 邮箱验证码)
 - **存储**: Cloudflare R2
 - **部署**: Cloudflare Pages (Edge Runtime)
@@ -22,17 +23,23 @@
 - **适配器**: `CustomSupabaseAdapter` 直接操作 `wmc_*` 表
 - **策略**: JWT Session
 - **方式**: Google OAuth (自动验证), 邮箱验证码
+- **IP安全**: 使用 Web Crypto API 进行 IP 加盐哈希 (Edge 兼容)
 
-### 2.2 额度系统
-- **策略**: 所有用户默认 3 次终身额度，Pro 用户无限
-- **表**: `wmc_processing_history` (Free), `wmc_credit` (Pro)
-- **IP 限制**: SHA-256 加盐哈希追踪未登录用户
-- **UI交互**: 支持静默更新（Silent Revalidation），极简风格展示
+### 2.2 额度与限流系统
+- **策略**: 
+  - 未验证用户: 3次/月 (IP限制)
+  - 验证用户: 10次/月
+  - Pro 用户: 无限
+- **限流**: 使用 Upstash Redis 实现滑动窗口限流 (`src/lib/rate-limit/upstash.ts`)
+- **表**: `wmc_processing_history` (历史记录), `wmc_credit` (额度流水) UI交互支持静默更新。
 
-### 2.3 支付 (Creem/Stripe)
-- **订单**: `wmc_order`
-- **订阅**: `wmc_subscription`
-- **Webhook**: 异步处理充值与续费
+### 2.3 支付系统 (Creem)
+- **服务**: `src/lib/payment/service.ts` (单例模式)
+- **表结构**: 
+  - `wmc_order`: 支付订单 (snake_case 字段)
+  - `wmc_subscription`: 订阅状态 (snake_case 字段)
+- **类型安全**: 全面使用 TypeScript Enums (`PaymentStatus`, `PaymentType`, `CreditTransactionScene`)
+- **Webhook**: 异步处理充值、续费、订阅变更
 
 ### 2.4 图像处理 (Watermark Editor)
 - **模型**: `doubao-seedream-4-0-250828`
@@ -59,10 +66,20 @@ AUTH_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 
+# Upstash Redis (限流)
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+
 # AI 服务
 FAL_AI_API_KEY=
 ARK_API_KEY=
 ARK_API_URL=
+
+# 支付 (Creem)
+CREEM_ENABLED=true
+CREEM_API_KEY=
+CREEM_SIGNING_SECRET=
+CREEM_ENVIRONMENT=
 
 # 其他
 RESEND_API_KEY=
@@ -78,22 +95,25 @@ NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=
 - `wmc_users`: 用户表 (ID, email, tier, creditsused)
 - `wmc_accounts`: OAuth 关联
 - `wmc_sessions`: 登录会话
-- `wmc_processing_history`: 处理记录 (IP/UserID)
-- `wmc_order`: 支付订单
-- `wmc_subscription`: 订阅状态
-- `wmc_credit`: Pro 用户额度池
+- `wmc_processing_history`: 处理记录 (用于审计和免费用户限额)
+- `wmc_order`: 支付订单 (记录交易详情、金额、Provider信息)
+- `wmc_subscription`: 订阅状态 (记录周期、状态、续费信息)
+- `wmc_credit`: 额度流水 (Grant/Consume 记录)
 - `wmc_config`: 系统配置
 
-## 5. 开发工具 & MCP
+## 5. 开发规范
 
-- **Playwright MCP**: 全局安装 `playwright-mcp`，支持浏览器自动化操作。
-- **Browser Tool**: 内置浏览器测试工具。
+- **Lint**: 使用 `npm run lint` 检查代码规范
+- **Type Check**: 使用 `npx tsc --noEmit` 检查类型错误
+- **Imports**: 优先使用 Absolute Imports (`@/lib/...`)
+- **Edge Compatibility**: 避免使用 Node.js 特有 API (如 `crypto`, `fs`)，使用 Web Standard API
 
 ## 6. 开发命令
 
 ```bash
 npm run dev          # 本地开发
 npm run build        # 构建
+npm run lint         # 代码检查
 npm run cf:deploy    # 部署到 Cloudflare Pages
 ```
 

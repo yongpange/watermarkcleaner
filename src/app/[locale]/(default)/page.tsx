@@ -88,8 +88,8 @@ export default async function LandingPage({
       <ComparisonShowcase
         title="AI-Powered Watermark Detection – Automatic & Accurate"
         subtitle="Our advanced AI algorithms automatically detect and identify watermarks, logos, and text overlays in your images. No manual selection needed – WatermarkCleaner's intelligent system recognizes patterns and removes unwanted elements while preserving the original image quality."
-        beforeImage="/imgs/comparison-1-before.webp"
-        afterImage="/imgs/comparison-1-after.webp"
+        beforeImage="/images/custom/woman_city_watermarked.webp"
+        afterImage="/images/custom/woman_city.webp"
         reversed={false}
       />
 
@@ -97,8 +97,8 @@ export default async function LandingPage({
       <ComparisonShowcase
         title="Batch Processing – Remove Multiple Watermarks at Once"
         subtitle="Save time with batch processing capabilities. Upload multiple images and remove watermarks from all of them simultaneously. Perfect for photographers, content creators, and businesses needing to clean large image collections efficiently."
-        beforeImage="/imgs/comparison-2-before.webp"
-        afterImage="/imgs/comparison-2-after.webp"
+        beforeImage="/images/custom/woman_balcony_watermarked.webp"
+        afterImage="/images/custom/woman_balcony.webp"
         reversed={true}
       />
 
@@ -106,8 +106,8 @@ export default async function LandingPage({
       <ComparisonShowcase
         title="Preserve Image Quality – High-Resolution Output"
         subtitle="Worried about quality loss? WatermarkCleaner uses sophisticated inpainting technology that intelligently fills in removed areas based on surrounding pixels. Your images maintain crisp details, natural textures, and original resolution after watermark removal."
-        beforeImage="/imgs/comparison-3-before.webp"
-        afterImage="/imgs/comparison-3-after.webp"
+        beforeImage="/images/custom/beach_watermarked.webp"
+        afterImage="/images/custom/beach.webp"
         reversed={false}
       />
 
@@ -115,8 +115,8 @@ export default async function LandingPage({
       <ComparisonShowcase
         title="Support All Image Formats – JPG, PNG, WEBP & More"
         subtitle="WatermarkCleaner supports all popular image formats including JPG, JPEG, PNG, WEBP, BMP, and TIFF. Whether you're working with product photos, social media graphics, or professional photography, our tool handles it all with the same powerful watermark removal capabilities."
-        beforeImage="/imgs/comparison-4-before.webp"
-        afterImage="/imgs/comparison-4-after.webp"
+        beforeImage="/images/custom/stylish_woman_watermarked.webp"
+        afterImage="/images/custom/stylish_woman.webp"
         reversed={true}
       />
 

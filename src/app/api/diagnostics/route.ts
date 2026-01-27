@@ -27,7 +27,7 @@ export async function GET() {
     // Try a lightweight query - count users or similar, or just check URL
     // We can just check if keys are valid by making a simple request that requires auth
     // accessing a non-existent table is fine, it checks connection
-    const { count, error } = await supabase.from('wmc_users').select('*', { count: 'exact', head: true });
+    const { error } = await supabase.from('wmc_users').select('*', { count: 'exact', head: true });
     
     envCheck.tests.supabase = {
       success: !error,
@@ -44,7 +44,7 @@ export async function GET() {
 
   // Test 2: Resend Initialization (just check constructor)
   try {
-    const resend = new Resend(process.env.RESEND_API_KEY || 're_placeholder');
+    new Resend(process.env.RESEND_API_KEY || 're_placeholder');
     envCheck.tests.resend = {
       success: true,
       result: 'Initialized'

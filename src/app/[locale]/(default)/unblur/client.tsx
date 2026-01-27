@@ -73,7 +73,7 @@ export default function UnblurClient() {
         <section className="space-y-24 lg:space-y-32 py-8 lg:py-12 mt-16 md:mt-24">
           
           {/* Demo 1: Portrait Unblur */}
-          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto px-4">
+          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center container mx-auto px-4">
             <div className="space-y-6 text-center lg:text-left order-1">
               <div className="space-y-3">
                 <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -86,28 +86,28 @@ export default function UnblurClient() {
             </div>
             <div className="order-2 w-full mx-auto">
                <ComparisonSlider 
-                 beforeImage="/images/demo/unblur-demo-before.png"
-                 afterImage="/images/demo/unblur-demo-after.png"
+                 beforeImage="/images/demo/unblur-demo-before.webp"
+                 afterImage="/images/demo/unblur-demo-after.webp"
                  beforeLabel={t("features.f1_alt_before").split(":")[0]}
                  afterLabel={t("features.f1_alt_after").split(":")[0]}
                  beforeAlt={t("features.f1_alt_before")}
                  afterAlt={t("features.f1_alt_after")}
-                 className="shadow-2xl aspect-square"
+                 className="shadow-2xl aspect-square w-full max-w-2xl"
                />
             </div>
           </article>
 
           {/* Demo 2: Document Restoration */}
-          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto px-4">
+          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center container mx-auto px-4">
              <div className="order-2 lg:order-1 w-full mx-auto">
                <ComparisonSlider 
-                 beforeImage="/images/demo/unblur-doc-before-sq.png"
-                 afterImage="/images/demo/unblur-doc-after-sq.png"
+                 beforeImage="/images/demo/unblur-doc-before-sq.webp"
+                 afterImage="/images/demo/unblur-doc-after-sq.webp"
                  beforeLabel={t("features.f2_alt_before").split(":")[0]}
                  afterLabel={t("features.f2_alt_after").split(":")[0]}
                  beforeAlt={t("features.f2_alt_before")}
                  afterAlt={t("features.f2_alt_after")}
-                 className="shadow-2xl aspect-square lg:ml-auto lg:mr-0"
+                 className="shadow-2xl aspect-square lg:ml-auto lg:mr-0 w-full max-w-2xl"
                />
             </div>
             <div className="space-y-6 text-center lg:text-left order-1 lg:order-2">
@@ -123,7 +123,7 @@ export default function UnblurClient() {
           </article>
 
           {/* Demo 3: Landscape */}
-          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-6xl mx-auto px-4">
+          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center container mx-auto px-4">
             <div className="space-y-6 text-center lg:text-left order-1">
               <div className="space-y-3">
                 <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-500 to-teal-600 bg-clip-text text-transparent">
@@ -136,13 +136,13 @@ export default function UnblurClient() {
             </div>
             <div className="order-2 w-full mx-auto">
                <ComparisonSlider 
-                 beforeImage="/images/demo/unblur-beach-before.png"
-                 afterImage="/images/demo/unblur-beach-after.png"
+                 beforeImage="/images/demo/unblur-beach-before.webp"
+                 afterImage="/images/demo/unblur-beach-after.webp"
                  beforeLabel={t("features.f3_alt_before").split(":")[0]}
                  afterLabel={t("features.f3_alt_after").split(":")[0]}
                  beforeAlt={t("features.f3_alt_before")}
                  afterAlt={t("features.f3_alt_after")}
-                 className="shadow-2xl aspect-square"
+                 className="shadow-2xl aspect-square w-full max-w-2xl"
                />
             </div>
           </article>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase-admin';
-import type { Database } from '@/types/database.types';
+
 import {
   verifyCode,
   markCodeAsUsed,
@@ -11,7 +11,7 @@ import {
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-type UserInsert = Database['public']['Tables']['wmc_users']['Insert'];
+
 
 // ============================================================================
 // 请求验证
