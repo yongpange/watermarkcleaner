@@ -49,7 +49,14 @@ export default async function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         {googleAdsenseCode && (
-          <meta name="google-adsense-account" content={googleAdsenseCode} />
+          <>
+            <meta name="google-adsense-account" content={googleAdsenseCode} />
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${googleAdsenseCode}`}
+              crossOrigin="anonymous"
+            />
+          </>
         )}
 
         {isProduction && clarityProjectId && (
