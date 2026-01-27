@@ -131,7 +131,18 @@
       "idle": "اسحب الملفات هنا أو انقر للتحديد",
       "dragover": "أفلت الملفات لبدء التحويل",
       "supported": "المتاح: PDF، DOCX، TXT، MD (بحد أقصى 20 ميجابايت)",
-      "click_to_select": "انقر لتحديد الملفات"
+      "click_to_select": "انقر لتحديد الملفات",
+      "upload_image_file": "تحميل ملف صورة",
+      "drag_or_click": "اسحب الملف هنا أو انقر للاختيار",
+      "select_file": "اختر ملف",
+      "max_size": "الحد الأقصى",
+      "file_selected": "تم تحديد الملف",
+      "file_ready": "الملف جاهز، انقر للمتابعة أو اختر ملفاً آخر",
+      "release_to_upload": "أفلت للتحميل",
+      "release_to_start_upload": "أفلت لبدء التحميل",
+      "unsupported_file_format": "تنسيق الملف غير مدعوم. يرجى تحميل ملفات بتنسيق {formats}.",
+      "about_to_process": "على وشك معالجة صورتك...",
+      "processing_image": "جارٍ معالجة الصورة..."
     },
     "status": {
       "uploading": "جارٍ الرفع...",

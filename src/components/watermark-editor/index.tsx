@@ -210,7 +210,14 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
 
       // Handle response
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: "Unknown error" }));
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch (e) {
+          const text = await response.text();
+          errorData = { error: "Failed to parse API response", details: text, raw: text };
+        }
+        
         console.error(`[Watermark Editor] [${getTimestamp()}] HTTP error response:`, {
           status: response.status,
           statusText: response.statusText,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { Buffer } from "buffer"; // Explicit import for Edge compatibility
+// import { Buffer } from "buffer"; // REMOVED for Edge compatibility
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
@@ -79,12 +79,17 @@ interface ArkApiResponse {
   };
 }
 
-/**
- * 将File/Blob转换为base64 data URL (Node.js optimized)
- */
+// function not needing Buffer import
 async function fileToDataUrl(file: File | Blob): Promise<string> {
-  const buffer = await file.arrayBuffer();
-  const base64 = Buffer.from(buffer).toString('base64');
+  const arrayBuffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(arrayBuffer);
+  let binary = '';
+  const CHUNK_SIZE = 0x8000; // 32KB chunks
+  for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
+    const chunk = bytes.subarray(i, Math.min(i + CHUNK_SIZE, bytes.length));
+    binary += String.fromCharCode.apply(null, Array.from(chunk));
+  }
+  const base64 = btoa(binary);
   const mimeType = file.type || "image/jpeg";
   return `data:${mimeType};base64,${base64}`;
 }
@@ -250,47 +255,22 @@ export async function POST(request: NextRequest) {
   // Get raw IP for credit check consistency
   const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
 
-  // 1.5 CHECK CREDITS (Strict Check)
-  logInfo('Step 1.5: Checking user credits...', { isAuthenticated, userId, clientIp });
-  try {
-    const creditStatus = await checkUserCredits(clientIp, isAuthenticated, userId, clientIp);
-    
-    logInfo('Credit check result:', creditStatus);
-
-    if (creditStatus.remaining <= 0) {
-      logInfo('❌ Credit Limit Exceeded:', { 
-        ident: isAuthenticated ? userId : clientIp,
-        remaining: creditStatus.remaining 
-      });
-      
-      return NextResponse.json(
-        { 
-          error: "Credit limit exceeded", 
-          code: "CREDIT_LIMIT_EXCEEDED",
-          details: isAuthenticated 
-            ? "You have used all your credits. Please upgrade to Pro." 
-            : "Free trial limit reached. Please sign in or upgrade for more."
-        },
-        { status: 403 }
-      );
-    }
-  } catch (err) {
-    logError('Failed to check credits:', err);
-    // Optional: Fail open or closed? Failing open might be safer for UX if DB is down, but failing closed safer for business.
-    // Choosing to log but proceed if check fails, to avoid blocking users on system glitches (or return 500).
-    // return NextResponse.json({ error: "System error checking credits" }, { status: 500 });
-  }
-
-  // 2. 解析form data (Move up to allow access to image size for failure recording)
+  // 2. 解析form data (Moved UP to allow access to image size for failure recording)
   logInfo('Step 2: Parsing FormData...');
+  let image: File | null = null;
+  let mode = "auto";
+  let feature = "watermark";
+  let customPrompt: string | null = null;
+  let targetSize = "1024x1024";
+
   try {
     formData = await request.formData();
-    const image = formData.get("image") as File | null;
-    const mode = (formData.get("mode") as string) || "auto";
-    const feature = (formData.get("feature") as string) || "watermark";
-    const customPrompt = formData.get("prompt") as string | null;
+    image = formData.get("image") as File | null;
+    mode = (formData.get("mode") as string) || "auto";
+    feature = (formData.get("feature") as string) || "watermark";
+    customPrompt = formData.get("prompt") as string | null;
     // Get size from formData, default to 1024x1024 if invalid or missing
-    const targetSize = (formData.get("size") as string) || "1024x1024";
+    targetSize = (formData.get("size") as string) || "1024x1024";
 
     // 3. 验证输入
     if (!image) {
@@ -310,7 +290,59 @@ export async function POST(request: NextRequest) {
       hasCustomPrompt: !!customPrompt
     });
 
-    // ... (intermediate validation code omitted for brevity check file content to ensure continuity)
+  // 1.5 CHECK CREDITS (Strict Check)
+  logInfo('Step 1.5: Checking user credits...', { isAuthenticated, userId, clientIp });
+  try {
+    const creditStatus = await checkUserCredits(clientIp, isAuthenticated, userId, clientIp);
+    
+    logInfo('Credit check result:', creditStatus);
+
+    if (creditStatus.remaining <= 0) {
+      logInfo('❌ Credit Limit Exceeded:', { 
+        ident: isAuthenticated ? userId : clientIp,
+        remaining: creditStatus.remaining 
+      });
+
+      // Record failure to database
+      if (image) {
+          try {
+            const adminClient = createAdminClient();
+            const ipToHash = clientIp || 'unknown-ip';
+            const hashedIP = await hashIPAddress(ipToHash);
+            
+            await (adminClient as any).from("wmc_processing_history").insert({
+                user_id: userId || null,
+                ip_address: hashedIP,
+                image_size: image.size,
+                success: false,
+                created_at: new Date().toISOString(),
+            });
+            logInfo('✅ Recorded credit limit failure to processing history');
+          } catch (recErr) {
+            logError('Failed to record credit limit failure:', recErr);
+          }
+      }
+      
+      return NextResponse.json(
+        { 
+          error: "Credit limit exceeded", 
+          code: "CREDIT_LIMIT_EXCEEDED",
+          details: isAuthenticated 
+            ? "You have used all your credits. Please upgrade to Pro." 
+            : "Free trial limit reached. Please sign in or upgrade for more."
+        },
+        { status: 403 }
+      );
+    }
+  } catch (err) {
+    logError('Failed to check credits:', err);
+    // Optional: Fail open or closed? Failing open might be safer for UX if DB is down, but failing closed safer for business.
+    // Choosing to log but proceed if check fails, to avoid blocking users on system glitches (or return 500).
+    // return NextResponse.json({ error: "System error checking credits" }, { status: 500 });
+  }
+
+    // Moved Step 2 up
+
 
     // 7. 构建请求参数
     logInfo('Step 8: Building AI request parameters...');

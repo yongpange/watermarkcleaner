@@ -118,4 +118,4 @@ npm run cf:deploy    # 部署到 Cloudflare Pages
 ```
 
 ---
-*Last Updated: 2026-01-26*
+*Last Updated: 2026-01-27*

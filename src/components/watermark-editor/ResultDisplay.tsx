@@ -43,9 +43,9 @@ export default function ResultDisplay({
       document.body.removeChild(a);
 
       // 清理
-      setTimeout(() => {
-        URL.revokeObjectURL(activeImageUrl);
-      }, 100);
+      // setTimeout(() => {
+      //   URL.revokeObjectURL(activeImageUrl);
+      // }, 100);
     } catch (error) {
       console.error("Download failed:", error);
 
