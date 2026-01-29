@@ -1,5 +1,7 @@
 import { createAdminClient } from '@/lib/supabase-admin';
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
 import { checkCredits } from '@/lib/credits/check';
 
 export const dynamic = 'force-dynamic';

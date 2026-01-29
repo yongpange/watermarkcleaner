@@ -1,5 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { handleCheckoutSuccess } from '@/lib/payment/service';
 import { PaymentStatus } from '@/extensions/payment/types';

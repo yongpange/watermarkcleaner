@@ -1,5 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'edge';
 import { createAdminClient } from '@/lib/supabase-admin';
 
 export const dynamic = 'force-dynamic';

@@ -1,5 +1,7 @@
 "use client";
 
+export const runtime = 'edge';
+
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, Suspense } from "react";

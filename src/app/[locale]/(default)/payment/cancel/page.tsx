@@ -1,5 +1,7 @@
 "use client";
 
+export const runtime = 'edge';
+
 import { XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
