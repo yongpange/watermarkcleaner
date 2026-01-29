@@ -197,6 +197,8 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
       const response = await fetch(API_ENDPOINT, {
         method: "POST",
         body: formData,
+        // Ensure cookies are sent even if same-origin (safer)
+        credentials: 'include',
         // Set timeout at fetch level (2 minutes)
         signal: AbortSignal.timeout(120000),
       });

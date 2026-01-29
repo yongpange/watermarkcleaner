@@ -7,6 +7,7 @@ import type { LocalizedPostSummary } from "@/lib/blog";
 interface RelatedPostsProps {
   currentPostSlug: string;
   posts: LocalizedPostSummary[];
+  locale?: string;
 }
 
 export default function RelatedPosts({ currentPostSlug, posts }: RelatedPostsProps) {

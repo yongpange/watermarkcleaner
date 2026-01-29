@@ -11,6 +11,7 @@ import { OrganizationStructuredData } from "@/components/seo/structured-data";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/providers/theme";
 import { Toaster } from "react-hot-toast";
+import GoogleOneTap from "@/components/auth/GoogleOneTap";
 
 export async function generateMetadata({
   params,
@@ -95,6 +96,7 @@ export default async function RootLayout({
             <AppContextProvider>
               <ThemeProvider attribute="class" disableTransitionOnChange>
                 {children}
+                <GoogleOneTap />
                 <Toaster position="top-center" />
               </ThemeProvider>
             </AppContextProvider>

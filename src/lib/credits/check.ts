@@ -76,11 +76,11 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
     if (!subData) {
       console.log(`[Credits] No subscription found for user ${userId}, granting free-plan...`);
       const freeSub = await grantFreePlan(userId);
-      return await formatCreditResult(freeSub);
+      return await formatCreditResult(freeSub, undefined, supabase);
     }
 
     // 3. Check credit balance
-    const balance = await getCreditBalance(userId);
+    const balance = await getCreditBalance(userId, supabase);
     console.log(`[Credits] User ${userId} has ${balance} credits remaining`);
 
     // 4. Check if subscription is still valid
@@ -106,7 +106,7 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
       };
     }
 
-    return await formatCreditResult(subData, balance);
+    return await formatCreditResult(subData, balance, supabase);
 
   } catch (error) {
     console.error(`[Credits] Error checking authenticated credits:`, error);
@@ -118,7 +118,7 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
  * Check credits for unauthenticated user (IP-based)
  * Limited to 3 free trials
  */
-async function checkUnauthenticatedCredits(ip: string): Promise<CreditCheckResult> {
+export async function checkUnauthenticatedCredits(ip: string): Promise<CreditCheckResult> {
   const supabase = createAdminClient();
   const ipHash = hashIPAddress(ip);
 
@@ -238,12 +238,13 @@ export async function grantFreePlan(userId: string) {
  */
 async function formatCreditResult(
   subscription: any,
-  balance?: number
+  balance?: number,
+  supabaseClient?: any
 ): Promise<CreditCheckResult> {
   let currentBalance = balance;
 
   if (currentBalance === undefined) {
-    currentBalance = await getCreditBalance(subscription.user_id);
+    currentBalance = await getCreditBalance(subscription.user_id, supabaseClient);
   }
 
   const maxCredits = subscription.credits_amount || 0;

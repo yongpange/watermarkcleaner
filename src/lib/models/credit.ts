@@ -3,11 +3,15 @@
  * Handles all database operations for credit management (FIFO)
  */
 
-import { supabase } from '@/lib/supabase-client';
+import { generateSnowId } from '@/lib/utils';
+import { createAdminClient } from '@/lib/supabase-admin';
+import { getPaymentConfigs } from '@/lib/payment/service';
+import { supabase as defaultSupabase } from '@/lib/supabase-client';
 import {
   type CreditTransactionType,
   CreditTransactionScene,
 } from '@/extensions/payment/types';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 // ==========================================================================
 // Types
@@ -61,6 +65,7 @@ export async function grantCredits({
   scene,
   description,
   metadata,
+  supabaseClient,
 }: {
   userId: string;
   credits: number;
@@ -71,7 +76,10 @@ export async function grantCredits({
   scene?: CreditTransactionScene;
   description?: string;
   metadata?: Record<string, any>;
+  supabaseClient?: SupabaseClient;
 }): Promise<Credit> {
+  const supabase = supabaseClient || defaultSupabase;
+
   // Validate
   if (credits <= 0) {
     throw new Error('Credits must be positive for grant operation');
@@ -130,6 +138,7 @@ export async function consumeCredits({
   imageSize,
   processingTime,
   metadata,
+  supabaseClient,
 }: {
   userId: string;
   amount: number;
@@ -137,14 +146,17 @@ export async function consumeCredits({
   imageSize?: number;
   processingTime?: string;
   metadata?: Record<string, any>;
+  supabaseClient?: SupabaseClient;
 }): Promise<Credit> {
+  const supabase = supabaseClient || defaultSupabase;
+
   // Validate
   if (amount <= 0) {
     throw new Error('Consumption amount must be positive');
   }
 
   // Check if user has enough credits
-  const balance = await getCreditBalance(userId);
+  const balance = await getCreditBalance(userId, supabaseClient);
   if (balance < amount) {
     throw new Error(`Insufficient credits. Required: ${amount}, Available: ${balance}`);
   }
@@ -178,7 +190,7 @@ export async function consumeCredits({
   }
 
   // Update user stats
-  await updateUserCreditStats(userId);
+  await updateUserCreditStats(userId, supabase);
 
   return consumeRecord as Credit;
 }
@@ -192,7 +204,8 @@ export async function consumeCredits({
  * Calculates balance by summing all transactions (grant - consume)
  * Instead of relying on remaining_credits field which is not maintained
  */
-export async function getCreditBalance(userId: string): Promise<number> {
+export async function getCreditBalance(userId: string, supabaseClient?: SupabaseClient): Promise<number> {
+  const supabase = supabaseClient || defaultSupabase;
   // Get all active transactions for the user
   const { data: transactions, error } = await supabase
     .from('wmc_credit')
@@ -216,7 +229,8 @@ export async function getCreditBalance(userId: string): Promise<number> {
 /**
  * Get total granted credits for user
  */
-export async function getTotalGranted(userId: string): Promise<number> {
+export async function getTotalGranted(userId: string, supabaseClient?: SupabaseClient): Promise<number> {
+  const supabase = supabaseClient || defaultSupabase;
   const { data, error } = await supabase
     .from('wmc_credit')
     .select('credits')
@@ -235,7 +249,8 @@ export async function getTotalGranted(userId: string): Promise<number> {
 /**
  * Get total consumed credits for user
  */
-export async function getTotalConsumed(userId: string): Promise<number> {
+export async function getTotalConsumed(userId: string, supabaseClient?: SupabaseClient): Promise<number> {
+  const supabase = supabaseClient || defaultSupabase;
   const { data, error } = await supabase
     .from('wmc_credit')
     .select('credits')
@@ -264,13 +279,16 @@ export async function getCreditHistory({
   scene,
   limit = 50,
   offset = 0,
+  supabaseClient,
 }: {
   userId: string;
   transactionType?: CreditTransactionType;
   scene?: CreditTransactionScene;
   limit?: number;
   offset?: number;
+  supabaseClient?: SupabaseClient;
 }): Promise<Credit[]> {
+  const supabase = supabaseClient || defaultSupabase;
   let query = supabase
     .from('wmc_credit')
     .select('*')
@@ -303,7 +321,8 @@ export async function getCreditHistory({
 /**
  * Expire credits that have passed their expiration date
  */
-export async function expireCredits(): Promise<number> {
+export async function expireCredits(supabaseClient?: SupabaseClient): Promise<number> {
+  const supabase = supabaseClient || defaultSupabase;
   const { count, error } = await supabase
     .from('wmc_credit')
     .update({
@@ -326,7 +345,8 @@ export async function expireCredits(): Promise<number> {
 /**
  * Get expiring credits (within next 7 days)
  */
-export async function getExpiringCredits(userId?: string): Promise<Credit[]> {
+export async function getExpiringCredits(userId?: string, supabaseClient?: SupabaseClient): Promise<Credit[]> {
+  const supabase = supabaseClient || defaultSupabase;
   const now = new Date();
   const in7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
@@ -360,10 +380,11 @@ export async function getExpiringCredits(userId?: string): Promise<Credit[]> {
 /**
  * Update user credit statistics
  */
-export async function updateUserCreditStats(userId: string): Promise<void> {
-  const granted = await getTotalGranted(userId);
-  const consumed = await getTotalConsumed(userId);
-  const balance = await getCreditBalance(userId);
+export async function updateUserCreditStats(userId: string, supabaseClient?: SupabaseClient): Promise<void> {
+  const supabase = supabaseClient || defaultSupabase;
+  const granted = await getTotalGranted(userId, supabase);
+  const consumed = await getTotalConsumed(userId, supabase);
+  const balance = await getCreditBalance(userId, supabase);
 
   const { error } = await supabase
     .from('wmc_users')
@@ -393,6 +414,7 @@ export async function migrateFreeUserHistory(
   creditsToGrant: number
 ): Promise<{ granted: number; consumed: number }> {
   // Get history count from wmc_processing_history
+  const supabase = createAdminClient();
   const { count: historyCount, error: countError } = await supabase
     .from('wmc_processing_history')
     .select('*', { count: 'exact', head: true })
@@ -411,6 +433,7 @@ export async function migrateFreeUserHistory(
     credits: creditsToGrant,
     scene: CreditTransactionScene.MIGRATION,
     description: 'Migration from free to pro',
+    supabaseClient: supabase as any,
   });
 
   // If there was history consumption, record it
@@ -423,6 +446,7 @@ export async function migrateFreeUserHistory(
         migratedFromFree: true,
         description: `Migrated ${consumedCount} historical processing records`,
       },
+      supabaseClient: supabase as any,
     });
   }
 
@@ -450,6 +474,7 @@ export async function migrateFreeUserHistory(
  * Create database functions for credit operations
  */
 export async function createCreditDatabaseFunctions(): Promise<void> {
+  const supabase = createAdminClient();
   // get_credit_balance function
   const { error: error1 } = await supabase.rpc('exec_sql' as any, {
     sql: `

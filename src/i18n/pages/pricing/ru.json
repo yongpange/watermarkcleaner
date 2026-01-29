@@ -41,7 +41,7 @@
         "credits": 200,
         "features_title": "Включает",
         "features": [
-          "200 Кредитов/мес",
+          "200 кредитов/мес",
           "$0.05/кредит",
           "200 изображений/мес"
         ],
@@ -58,7 +58,7 @@
         "description": "",
         "price": "$14.99",
         "unit": "/мес",
-        "interval": "месяц",
+        "interval": "мес",
         "product_id": "business-monthly",
         "amount": 1499,
         "currency": "USD",

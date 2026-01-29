@@ -18,7 +18,13 @@ export function ConvertPageClient() {
 
   // Callback to refresh credits after successful processing
   const handleProcessingComplete = () => {
-    setProcessingCount(prev => prev + 1);
+    // Add a small delay to ensure DB replication/propagation catches up
+    // This prevents fetching stale credit data immediately after write
+    setTimeout(() => {
+        setProcessingCount(prev => prev + 1);
+        // Dispatch global event for Header and other components
+        window.dispatchEvent(new CustomEvent('credit-update'));
+    }, 500); 
   };
 
   // Callback to open auth modal

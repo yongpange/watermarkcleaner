@@ -176,6 +176,7 @@ export interface PaymentOrder {
   // 提供商特定字段
   providerProductId?: string;
   providerPriceId?: string;
+  locale?: string;
   metadata?: Record<string, any>;
 }
 

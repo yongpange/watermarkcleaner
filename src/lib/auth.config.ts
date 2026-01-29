@@ -154,6 +154,108 @@ export const authConfig: NextAuthConfig = {
         }
       }
     }),
+
+    // ==================== Google One Tap Provider ====================
+    Credentials({
+      id: "google-onetap",
+      name: "Google One-Tap",
+      credentials: {
+        credential: { type: "text" },
+      },
+      async authorize(credentials) {
+        const token = credentials?.credential as string;
+        if (!token) return null;
+
+        try {
+          // 1. Verify Google ID Token using fetch (Edge compatible)
+          // const { OAuth2Client } = await import("google-auth-library"); // NOT Edge compatible
+          
+          const infoUrl = `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`;
+          const response = await fetch(infoUrl);
+          
+          if (!response.ok) {
+            console.error("[GoogleOneTap] Token verification failed:", await response.text());
+            return null;
+          }
+          
+          const payload = await response.json();
+          
+          // Verify audience
+          if (payload.aud !== process.env.GOOGLE_CLIENT_ID) {
+            console.error("[GoogleOneTap] Invalid audience:", payload.aud);
+            return null;
+          }
+
+          const { email, name, picture, sub } = payload;
+          if (!email) return null;
+
+          // 2. 查找或创建用户 (使用 Supabase Admin)
+          const supabase = createAdminClient();
+          const { data: user } = await supabase
+            .from("wmc_users")
+            .select("*")
+            .eq("email", email)
+            .single() as any;
+
+          if (user) {
+            // 用户存在，确保 emailverified 字段已更新
+            if (!user.emailverified) {
+              await supabase
+                .from("wmc_users")
+                .update({ emailverified: new Date().toISOString() })
+                .eq("id", user.id);
+            }
+            
+            return {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              image: user.image,
+              tier: user.tier || "verified",
+              creditsUsed: user.creditsused || 0,
+            };
+          }
+
+          // 3. 用户不存在，创建新用户
+          const userId = crypto.randomUUID();
+          const usernameBase = email.split("@")[0].toLowerCase().replace(/[^a-z0-9_]/g, "_");
+
+          const { error } = await supabase.from("wmc_users").insert({
+            id: userId,
+            email: email,
+            name: name || usernameBase,
+            image: picture,
+            tier: "verified",
+            emailverified: new Date().toISOString(),
+            creditsused: 0,
+          } as any);
+
+          if (error) {
+            console.error("[GoogleOneTap] Error creating user:", error);
+            return null;
+          }
+
+          // Fetch the created user to ensure we return correct structure
+           const { data: newUser } = await supabase
+            .from("wmc_users")
+            .select("*")
+            .eq("id", userId)
+            .single() as any;
+
+          return {
+            id: userId,
+            email: email,
+            name: name || usernameBase,
+            image: picture,
+            tier: "verified",
+            creditsUsed: 0,
+          };
+        } catch (error) {
+          console.error("[GoogleOneTap] Auth error:", error);
+          return null;
+        }
+      },
+    }),
   ],
 
   // 注意：NextAuth v5 使用内置页面，不需要自定义 pages 配置

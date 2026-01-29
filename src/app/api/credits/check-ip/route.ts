@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-import { checkUserCredits } from "@/lib/credits/check-legacy";
+import { checkUnauthenticatedCredits } from "@/lib/credits/check";
 import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
 
 /**
@@ -28,13 +28,13 @@ export async function GET(request: NextRequest) {
     console.log(`[Credits API] Full hashed IP length: ${hashedIP.length} chars`);
 
     // Check credits using IP as identifier for unauthenticated users
-    console.log('[Credits API] Calling checkUserCredits...');
-    const credits = await checkUserCredits(ip, false, undefined);
+    console.log('[Credits API] Calling checkUnauthenticatedCredits...');
+    const credits = await checkUnauthenticatedCredits(hashedIP);
 
     console.log('[Credits API] Check result:', {
       tier: credits.tier,
       used: credits.used,
-      limit: credits.limit,
+      limit: credits.maxCredits,
       remaining: credits.remaining
     });
 

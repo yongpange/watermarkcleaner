@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 import { verifySession } from "@/lib/auth-edge";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
-import { checkUserCredits } from '@/lib/credits/check-legacy';
+import { checkCredits } from '@/lib/credits/check';
 import { CreditTransactionScene } from '@/extensions/payment/types';
 import { createAdminClient } from "@/lib/supabase-admin";
 import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
@@ -290,12 +290,13 @@ export async function POST(request: NextRequest) {
       hasCustomPrompt: !!customPrompt
     });
 
-  // 1.5 CHECK CREDITS (Strict Check)
-  logInfo('Step 1.5: Checking user credits...', { isAuthenticated, userId, clientIp });
-  try {
-    const creditStatus = await checkUserCredits(clientIp, isAuthenticated, userId, clientIp);
-    
-    logInfo('Credit check result:', creditStatus);
+    // 1.5 CHECK CREDITS (Strict Check)
+    logInfo('Step 1.5: Checking user credits...', { isAuthenticated, userId, clientIp });
+    try {
+      // Use new checkCredits logic (handles both auth and unauth)
+      const creditStatus = await checkCredits(isAuthenticated && userId ? userId : clientIp, isAuthenticated);
+      
+      logInfo('Credit check result:', creditStatus);
 
     if (creditStatus.remaining <= 0) {
       logInfo('❌ Credit Limit Exceeded:', { 
@@ -538,6 +539,7 @@ export async function POST(request: NextRequest) {
           amount: 1,
           scene: CreditTransactionScene.IMAGE_PROCESSING,
           imageSize: image.size,
+          supabaseClient: createAdminClient(), // Pass admin client to bypass RLS
         });
         logInfo('✅ Credit consumed successfully via consumeCredits()');
       } catch (creditError) {

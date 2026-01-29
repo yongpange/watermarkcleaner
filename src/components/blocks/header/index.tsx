@@ -95,6 +95,7 @@ const SafeLink = ({
 interface CreditsInfo {
   tier: "unverified" | "verified" | "pro";
   used: number;
+  remaining?: number;
 }
 
 export default function Header({ header }: { header: HeaderType }) {
@@ -125,7 +126,8 @@ export default function Header({ header }: { header: HeaderType }) {
           const data = await response.json();
           setCreditsInfo({
             tier: data.tier,
-            used: data.used
+            used: data.used,
+            remaining: data.remaining
           });
         }
       } catch (error) {
@@ -133,7 +135,8 @@ export default function Header({ header }: { header: HeaderType }) {
         // Fallback to session data if API fails
         setCreditsInfo({
           tier: session?.user?.tier || 'unverified',
-          used: session?.user?.creditsUsed || 0
+          used: session?.user?.creditsUsed || 0,
+          remaining: undefined
         });
       } finally {
         setCreditsLoading(false);
@@ -141,11 +144,25 @@ export default function Header({ header }: { header: HeaderType }) {
     }
 
     fetchCredits();
+
+    // Listen for global credit update events
+    const handleCreditUpdate = () => {
+      console.log('Header received credit-update event');
+      fetchCredits();
+    };
+    window.addEventListener('credit-update', handleCreditUpdate);
+
+    return () => {
+      window.removeEventListener('credit-update', handleCreditUpdate);
+    };
   }, [session, status]);
 
   // 计算额度显示
   const userTier = creditsInfo?.tier || session?.user?.tier || 'unverified';
   const creditsUsed = creditsInfo?.used ?? (session?.user?.creditsUsed || 0);
+  const creditsRemaining = creditsInfo?.remaining;
+  const showRemaining = creditsRemaining !== undefined;
+  
   const creditsLimit = USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth === Infinity
     ? '∞'
     : USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth || 3;
@@ -289,7 +306,7 @@ export default function Header({ header }: { header: HeaderType }) {
                       </AvatarFallback>
                     </Avatar>
                     <span className="hidden md:inline text-sm font-medium">
-                      {userName} ({creditsUsed}/{creditsLimit})
+                      {userName} {showRemaining ? `(${creditsRemaining} Credits)` : `(${creditsUsed}/${creditsLimit})`}
                     </span>
                     <ChevronDown className="w-4 h-4 opacity-50" />
                   </Button>
@@ -305,7 +322,7 @@ export default function Header({ header }: { header: HeaderType }) {
                   <DropdownMenuItem asChild>
                     <SafeLink href="/convert" className="flex items-center gap-2 cursor-pointer">
                       <CreditCard className="w-4 h-4" />
-                      {t('my_credits')} ({creditsUsed}/{creditsLimit})
+                      {t('my_credits')} {showRemaining ? `(${creditsRemaining})` : `(${creditsUsed}/${creditsLimit})`}
                     </SafeLink>
                   </DropdownMenuItem>
 
@@ -453,7 +470,7 @@ export default function Header({ header }: { header: HeaderType }) {
                           <div className="font-medium text-foreground">{userName}</div>
                           <div className="text-xs text-muted-foreground">{userEmail}</div>
                           <div className="text-xs text-violet-600 dark:text-violet-400 mt-1">
-                            额度: {creditsUsed}/{creditsLimit}
+                            额度: {showRemaining ? creditsRemaining : `${creditsUsed}/${creditsLimit}`}
                           </div>
                         </div>
                       </div>

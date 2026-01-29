@@ -5,7 +5,6 @@ export const dynamic = 'force-dynamic';
 
 import { v4 as uuidv4 } from 'uuid';
 import { auth } from '@/auth';
-import { checkUserCredits, USER_TIER_CONFIG } from '@/lib/credits/check-legacy';
 import { getClientIP, hashIPAddress } from '@/lib/security/ip-hash';
 import { createAdminClient } from '@/lib/supabase-admin';
 import { rateLimitMiddleware } from '@/lib/rate-limit';
@@ -123,25 +122,25 @@ export async function POST(req: NextRequest) {
 
     // 检查用户额度（月度限额）- 在模拟处理之前检查
     try {
-      const credits = await checkUserCredits(userIdentifier ?? 'unknown-ip', isAuthenticated, userId);
+      const { checkCredits } = await import('@/lib/credits/check');
+      const credits = await checkCredits(userIdentifier ?? 'unknown-ip', isAuthenticated);
 
-      if (credits.remaining <= 0) {
-        const tierConfig = USER_TIER_CONFIG[credits.tier];
-        console.log(`[Mock API] Credit limit exceeded for user ${userIdentifier}. Used: ${credits.used}/${tierConfig.maxPerMonth}`);
+      if (!credits.canProcess) {
+        console.log(`[Mock API] Credit limit exceeded for user ${userIdentifier}. Used: ${credits.used}/${credits.maxCredits}`);
         return NextResponse.json(
           {
             code: 'CREDIT_LIMIT_EXCEEDED',
             error: "Credit limit exceeded",
-            details: `You have used ${credits.used} / ${tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth} credits this month`,
+            details: `You have used ${credits.used} / ${credits.maxCredits === Infinity ? '∞' : credits.maxCredits} credits`,
             tier: credits.tier,
             used: credits.used,
-            limit: tierConfig.maxPerMonth === Infinity ? '∞' : tierConfig.maxPerMonth,
+            limit: credits.maxCredits === Infinity ? '∞' : credits.maxCredits,
             upgradeUrl: credits.tier === 'unverified' ? '/auth/signin' : '/pricing',
           },
           { status: 403 }
         );
       }
-      console.log(`[Mock API] Credit check passed. Remaining: ${credits.remaining}/${credits.limit}`);
+      console.log(`[Mock API] Credit check passed. Remaining: ${credits.remaining}/${credits.maxCredits}`);
     } catch (error) {
       console.error('[Mock API] Failed to check credits:', error);
       // Continue with request but log the error

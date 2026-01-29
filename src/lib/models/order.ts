@@ -3,9 +3,10 @@
  * Handles all database operations for orders
  */
 
-import { supabase } from '@/lib/supabase-client';
+import { supabase as defaultSupabase } from '@/lib/supabase-client';
 import { generateSnowId } from '@/lib/utils';
 import type { PaymentStatus, PaymentType } from '@/extensions/payment/types';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 // ==========================================================================
 // Types
@@ -59,7 +60,11 @@ export interface Order {
 /**
  * Create a new order
  */
-export async function createOrder(newOrder: Omit<Order, 'id' | 'order_no' | 'created_at' | 'updated_at'>): Promise<Order> {
+export async function createOrder(
+  newOrder: Omit<Order, 'id' | 'order_no' | 'created_at' | 'updated_at'>,
+  supabaseClient?: SupabaseClient
+): Promise<Order> {
+  const supabase = supabaseClient || defaultSupabase;
   const orderNo = `ORD-${generateSnowId()}`;
 
   const { data, error } = await supabase
@@ -83,7 +88,11 @@ export async function createOrder(newOrder: Omit<Order, 'id' | 'order_no' | 'cre
 /**
  * Find order by order number
  */
-export async function findOrderByOrderNo(orderNo: string): Promise<Order | null> {
+export async function findOrderByOrderNo(
+  orderNo: string,
+  supabaseClient?: SupabaseClient
+): Promise<Order | null> {
+  const supabase = supabaseClient || defaultSupabase;
   const { data, error } = await supabase
     .from('wmc_order' as any)
     .select('*')
@@ -104,14 +113,17 @@ export async function findOrderByOrderNo(orderNo: string): Promise<Order | null>
 export async function findOrderByTransactionId({
   transactionId,
   paymentProvider,
+  supabaseClient,
 }: {
   transactionId?: string;
   paymentProvider: string;
+  supabaseClient?: SupabaseClient;
 }): Promise<Order | null> {
   if (!transactionId) {
     return null;
   }
 
+  const supabase = supabaseClient || defaultSupabase;
   const { data, error } = await supabase
     .from('wmc_order' as any)
     .select('*')
@@ -132,8 +144,10 @@ export async function findOrderByTransactionId({
  */
 export async function updateOrderByOrderNo(
   orderNo: string,
-  updates: Partial<Omit<Order, 'id' | 'order_no' | 'created_at'>>
+  updates: Partial<Omit<Order, 'id' | 'order_no' | 'created_at'>>,
+  supabaseClient?: SupabaseClient
 ): Promise<Order> {
+  const supabase = supabaseClient || defaultSupabase;
   const { data, error } = await supabase
     .from('wmc_order' as any)
     .update({
@@ -156,8 +170,10 @@ export async function updateOrderByOrderNo(
  */
 export async function updateOrderInTransaction(
   orderNo: string,
-  updates: Partial<Omit<Order, 'id' | 'order_no' | 'created_at'>>
+  updates: Partial<Omit<Order, 'id' | 'order_no' | 'created_at'>>,
+  supabaseClient?: SupabaseClient
 ): Promise<Order> {
+  const supabase = supabaseClient || defaultSupabase;
   // Use Supabase RPC for transaction-like behavior
   const { data, error } = await supabase.rpc('update_order' as any, {
     p_order_no: orderNo,
@@ -183,13 +199,16 @@ export async function getOrdersByUserId({
   paymentType,
   limit = 20,
   offset = 0,
+  supabaseClient,
 }: {
   userId: string;
   status?: PaymentStatus;
   paymentType?: PaymentType;
   limit?: number;
   offset?: number;
+  supabaseClient?: SupabaseClient;
 }): Promise<Order[]> {
+  const supabase = supabaseClient || defaultSupabase;
   let query = supabase
     .from('wmc_order' as any)
     .select('*')
@@ -218,12 +237,16 @@ export async function getOrdersByUserId({
 /**
  * Get order statistics for user
  */
-export async function getOrderStats(userId: string): Promise<{
+export async function getOrderStats(
+  userId: string,
+  supabaseClient?: SupabaseClient
+): Promise<{
   totalOrders: number;
   paidOrders: number;
   failedOrders: number;
   totalAmount: number;
 }> {
+  const supabase = supabaseClient || defaultSupabase;
   const { data, error } = await supabase.rpc('get_order_stats' as any, { p_user_id: userId });
 
   if (error) {
@@ -241,7 +264,11 @@ export async function getOrderStats(userId: string): Promise<{
 /**
  * Soft delete an order
  */
-export async function deleteOrder(orderNo: string): Promise<void> {
+export async function deleteOrder(
+  orderNo: string,
+  supabaseClient?: SupabaseClient
+): Promise<void> {
+  const supabase = supabaseClient || defaultSupabase;
   const { error } = await supabase
     .from('wmc_order' as any)
     .update({
@@ -279,7 +306,8 @@ function _generateOrderNo(): string {
 /**
  * Create database functions for complex operations
  */
-export async function createOrderDatabaseFunctions(): Promise<void> {
+export async function createOrderDatabaseFunctions(supabaseClient?: SupabaseClient): Promise<void> {
+  const supabase = supabaseClient || defaultSupabase;
   // update_order function
   const { error: error1 } = await supabase.rpc('exec_sql' as any, {
     sql: `

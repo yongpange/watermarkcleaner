@@ -2,8 +2,10 @@
 
 import { Check, Loader } from "lucide-react";
 import { PricingItem, Pricing as PricingType } from "@/types/blocks/pricing";
+import { getRealProductId } from "@/lib/payment/products";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
+import { useLocale } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,7 @@ import Image from "next/image";
 
 export default function Pricing({ pricing }: { pricing: PricingType }) {
   const { user, setShowSignModal } = useAppContext();
+  const locale = useLocale();
 
   const [group, setGroup] = useState(pricing.groups?.find(g => g.name === "monthly")?.name || pricing.groups?.[0]?.name || "monthly");
   const [isLoading, setIsLoading] = useState(false);
@@ -33,20 +36,38 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
         amount: cn_pay ? item.cn_amount : (item.amount || 0), // Free 计划 amount 为 0
         currency: cn_pay ? "cny" : (item.currency || 'usd'),
         // 可选字段，如果有值才传递
-        ...(item.credits && { credits: item.credits }),
-        ...(item.interval && { interval: item.interval }),
         ...(item.valid_months && { valid_months: item.valid_months }),
+        success_url: (item.amount === 0 || item.product_id === 'free-plan')
+          ? `${window.location.origin}/${locale}`
+          : `${window.location.origin}/${locale}/payment/success`,
+        cancel_url: `${window.location.origin}/${locale}/payment/cancel`,
+        locale: locale
       };
+      
+      console.log('Checkout params:', {
+        ...params,
+        locale,
+        origin: window.location.origin
+      });
 
       setIsLoading(true);
       setProductId(item.product_id);
 
+      const realProductId = getRealProductId(item.product_id);
+      
       const response = await fetch("/api/payment/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(params),
+        body: JSON.stringify({
+          // Merge params first (contains product_id from item.product_id)
+          ...params,
+          // Explicitly overwrite/ensure snake_case keys for the API
+          product_id: realProductId, 
+          provider_product_id: realProductId, 
+          payment_provider: "creem", 
+        }),
       });
 
       if (response.status === 401) {
@@ -68,12 +89,15 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
 
       // 处理支付响应 - 兼容 Creem 和 Stripe 格式
       const { data } = result;
+      console.log('Checkout response data:', data);
 
       if (data.checkoutUrl) {
         // Creem 格式 - 直接跳转
+        console.log('Redirecting to (Creem):', data.checkoutUrl);
         window.location.href = data.checkoutUrl;
       } else if (data.checkout_url) {
         // 其他格式 - 直接跳转
+        console.log('Redirecting to (Other):', data.checkout_url);
         window.location.href = data.checkout_url;
       } else if (data.public_key && data.session_id) {
         // 兼容旧的 Stripe 格式

@@ -299,4 +299,63 @@ export async function sendWelcomeEmail(
   }
 }
 
+
+/**
+ * Send payment notification email to Admin
+ */
+export async function sendAdminPaymentEmail({
+  orderNo,
+  amount,
+  currency,
+  productName,
+  userEmail,
+  credits
+}: {
+  orderNo: string;
+  amount: number;
+  currency: string;
+  productName: string;
+  userEmail: string;
+  credits: number;
+}) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  
+  if (!adminEmail) {
+    console.warn('[Resend] ADMIN_EMAIL not configured, skipping admin notification');
+    return;
+  }
+
+  try {
+    const subject = `💰 New Payment: ${productName} - ${(amount / 100).toFixed(2)} ${currency.toUpperCase()}`;
+    
+    // Simple text content
+    const text = `
+New Payment Received!
+
+User: ${userEmail}
+Plan: ${productName}
+Amount: ${(amount / 100).toFixed(2)} ${currency.toUpperCase()}
+Credits: ${credits}
+Order No: ${orderNo}
+Time: ${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}
+    `.trim();
+
+    const { data, error } = await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'WatermarkCleaner <onboarding@resend.dev>',
+      to: adminEmail,
+      subject: subject,
+      text: text,
+      // Optional: Add HTML version if needed
+    });
+
+    if (error) {
+      console.error('[Resend] Failed to send admin email:', error);
+    } else {
+      console.log('[Resend] Admin payment email sent');
+    }
+  } catch (error) {
+    console.error('[Resend] Error sending admin email:', error);
+  }
+}
+
 export default resend;

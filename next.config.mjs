@@ -75,10 +75,10 @@ const configWithMDX = {
   ...nextConfig,
   // 需要 Node.js API 的包列表，这些包不应该在 Edge Runtime 中使用
   serverExternalPackages: [
-    '@supabase/supabase-js',
-    '@supabase/realtime-js',
-    '@supabase/ssr',
-    '@supabase/auth-helpers-nextjs',
+    // '@supabase/supabase-js',
+    // '@supabase/realtime-js',
+    // '@supabase/ssr',
+    // '@supabase/auth-helpers-nextjs',
   ],
   experimental: {
     mdxRs: true,

@@ -4,13 +4,13 @@ export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 import { auth } from "@/auth";
-import { checkCredits } from "@/lib/credits/check-legacy";
+import { checkCredits } from "@/lib/credits/check";
 
 /**
  * API endpoint to check user's credits
  * GET /api/credits/check
  */
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   try {
     const session = await auth();
 
@@ -21,11 +21,8 @@ export async function GET(request: Request) {
       );
     }
 
-    // Get raw IP for credit check consistency
-    const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
-
-    // Pass clientIp to correctly link anonymous usage to the authenticated user
-    const credits = await checkCredits(session.user.id, clientIp);
+    // Get raw IP for credit check consistency (Available in request headers if needed later)
+    const credits = await checkCredits(session.user.id, true);
 
     return NextResponse.json(credits, {
       status: 200,

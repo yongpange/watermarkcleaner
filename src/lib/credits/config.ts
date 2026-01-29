@@ -10,8 +10,8 @@
 export type ProductId =
   | 'free-plan'
   | 'basic-monthly'
-  | 'pro-monthly'
-  | 'business-monthly'
+  | 'prod_6QIupLnQ0me8AMT8f1kFY6' // Old pro-monthly ($9.99)
+  | 'prod_9QVffTfOEsZ6rBNdedrfi' // Old business-monthly ($14.99)
   | 'basic-yearly'
   | 'pro-yearly';
 
@@ -50,25 +50,25 @@ export const PRODUCT_CONFIG: Record<ProductId, ProductConfig> = {
   // Monthly plans
   'basic-monthly': {
     productId: 'basic-monthly',
-    displayName: 'Basic',
+    displayName: 'Starter',
     amount: 6.99,
     credits: 100,
     interval: 'month',
     validDays: 30,
     pricePerCredit: 0.0699,
   },
-  'pro-monthly': {
-    productId: 'pro-monthly',
-    displayName: 'Pro',
+  'prod_6QIupLnQ0me8AMT8f1kFY6': {
+    productId: 'prod_6QIupLnQ0me8AMT8f1kFY6',
+    displayName: 'Basic', // Was Pro in config, but Basic in UI ($9.99)
     amount: 9.99,
     credits: 200,
     interval: 'month',
     validDays: 30,
     pricePerCredit: 0.04995,
   },
-  'business-monthly': {
-    productId: 'business-monthly',
-    displayName: 'Business',
+  'prod_9QVffTfOEsZ6rBNdedrfi': {
+    productId: 'prod_9QVffTfOEsZ6rBNdedrfi',
+    displayName: 'Pro', // Was Business in config, but Pro in UI ($14.99)
     amount: 14.99,
     credits: 500,
     interval: 'month',
@@ -194,7 +194,7 @@ export function getSavingsPercentage(yearProductId: ProductId): number {
  * Get featured product (default: pro-monthly)
  */
 export function getFeaturedProduct(): ProductConfig {
-  return getProductConfig('pro-monthly');
+  return getProductConfig('prod_6QIupLnQ0me8AMT8f1kFY6');
 }
 
 /**

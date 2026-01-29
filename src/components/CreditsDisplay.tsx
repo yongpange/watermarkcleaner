@@ -9,7 +9,8 @@ import { useTranslations } from "next-intl";
 interface CreditsInfo {
   tier: "unverified" | "verified" | "pro";
   used: number;
-  limit: number;
+  limit?: number;
+  maxCredits?: number;
   remaining: number;
 }
 
@@ -70,6 +71,16 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
     }
 
     fetchCredits();
+    
+    // Listen for global credit update events
+    const handleCreditUpdate = () => {
+      fetchCredits();
+    };
+    window.addEventListener('credit-update', handleCreditUpdate);
+
+    return () => {
+      window.removeEventListener('credit-update', handleCreditUpdate);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, status, refreshKey]); // Keep dependencies but ensure fetch logic handles silent updates
 
@@ -103,7 +114,10 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
   if (!credits) return null;
 
   const isUnlimited = credits.limit === Infinity || credits.tier === 'pro';
-  const percentage = isUnlimited ? 100 : Math.min((credits.used / credits.limit) * 100, 100);
+  const displayLimit = credits.maxCredits || credits.limit || 0;
+  // Calculate percentage: if remaining > limit, show full bar or based on some scale? 
+  // For pay-as-you-go, just show 100% if they have credits.
+  const percentage = isUnlimited ? 100 : (credits.remaining > 0 ? 100 : 0);
 
   return (
     <div className="w-full px-4 py-3 border-t border-border/40 mt-auto bg-background/50 backdrop-blur-sm">
@@ -116,7 +130,7 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
                    ✨ {t("pro_user")}
                 </span>
              ) : (
-                <span>{credits.used} / {credits.limit} {t("credits")}</span>
+                <span>{credits.remaining} {t("credits")}</span>
              )
           )}
         </div>
@@ -137,7 +151,7 @@ export function CreditsDisplay({ onVerifyEmail, refreshKey }: CreditsDisplayProp
         <div className="h-1 w-full bg-muted/50 rounded-full overflow-hidden">
           <div 
             className="h-full bg-primary/80 rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${percentage}%` }}
+            style={{ width: `${Math.min(100, (credits.remaining / (displayLimit || 10)) * 100)}%` }}
           />
         </div>
       ) : (

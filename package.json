@@ -89,6 +89,7 @@
     "eslint-config-next": "^15.2.3",
     "framer-motion": "^11.15.0",
     "goober": "^2.1.18",
+    "google-auth-library": "^10.5.0",
     "highlight.js": "^11.11.0",
     "lucide-react": "^0.439.0",
     "mammoth": "^1.11.0",

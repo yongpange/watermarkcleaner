@@ -3,7 +3,9 @@
  * Centralized payment business logic
  */
 
+
 // import { supabase } from '@/lib/supabase-client';
+import { createAdminClient } from '@/lib/supabase-admin';
 import { PaymentManager } from '@/extensions/payment';
 import { CreemProvider } from '@/extensions/payment/creem';
 import { grantCredits } from '@/lib/models/credit';
@@ -114,34 +116,49 @@ export async function handleCheckoutSuccess({
 }): Promise<void> {
   const orderNo = order.order_no;
 
+  // Create admin client early for checks
+  const adminSupabase = createAdminClient();
+
   // Check if order is already paid (idempotency)
   if (order.status === 'paid') {
-    console.log(`Order ${orderNo} already paid, skipping`);
-    return;
+    // Check if credits were actually granted (to fix cases where payment succeeded but credits failed)
+    const { data: credits } = await adminSupabase
+      .from('wmc_credit')
+      .select('id')
+      .eq('order_no', orderNo)
+      .limit(1);
+
+    if (credits && credits.length > 0) {
+      console.log(`Order ${orderNo} already paid and credits granted, skipping`);
+      return;
+    }
+    
+    console.log(`Order ${orderNo} marked paid but credits missing. Proceeding to grant credits...`);
   }
 
   try {
-    // Update order status
-    const orderUpdates: Partial<Order> = {
-      status: 'paid' as PaymentStatus,
-      payment_result: JSON.stringify({
-        paymentId: session.paymentInfo?.paymentId,
-        transactionId: session.paymentInfo?.transactionId,
-        paidAt: session.paymentInfo?.paidAt,
-        ...session.paymentInfo,
-      }),
-      transaction_id: session.paymentInfo?.transactionId,
-      paid_at: session.paymentInfo?.paidAt?.toISOString(),
-    };
+    // Update order status if not already paid
+    if (order.status !== 'paid') {
+      const orderUpdates: Partial<Order> = {
+        status: 'paid' as PaymentStatus,
+        payment_result: JSON.stringify({
+          paymentId: session.paymentInfo?.paymentId,
+          transactionId: session.paymentInfo?.transactionId,
+          paidAt: session.paymentInfo?.paidAt,
+          ...session.paymentInfo,
+        }),
+        transaction_id: session.paymentInfo?.transactionId,
+        paid_at: session.paymentInfo?.paidAt?.toISOString(),
+      };
 
-    if (session.subscriptionId && session.subscriptionInfo) {
-        orderUpdates.subscription_id = session.subscriptionId;
-        orderUpdates.subscription_result = JSON.stringify(session.subscriptionInfo);
+      if (session.subscriptionId && session.subscriptionInfo) {
+          orderUpdates.subscription_id = session.subscriptionId;
+          orderUpdates.subscription_result = JSON.stringify(session.subscriptionInfo);
+      }
+
+      await updateOrderByOrderNo(orderNo, orderUpdates, adminSupabase);
+      console.log(`Order ${orderNo} marked as paid`);
     }
-
-    await updateOrderByOrderNo(orderNo, orderUpdates);
-
-    console.log(`Order ${orderNo} marked as paid`);
 
     // If this is a subscription, create/update subscription record
     if (order.payment_type === 'subscription' && session.subscriptionInfo) {
@@ -161,8 +178,38 @@ export async function handleCheckoutSuccess({
         validDays: order.credits_valid_days || undefined,
         isSubscription: order.payment_type === 'subscription',
         subscriptionInfo: session.subscriptionInfo,
+        supabaseClient: adminSupabase,
       });
     }
+
+    // ========================================================================
+    // 🔔 Send Admin Notifications (Async, don't block main flow)
+    // ========================================================================
+    Promise.allSettled([
+      // 1. Telegram Notification
+      import('@/lib/notification/telegram').then(({ sendTelegramPaymentNotification }) => 
+        sendTelegramPaymentNotification({
+          orderNo: order.order_no,
+          amount: order.amount,
+          currency: order.currency,
+          productName: order.product_name || 'Unknown',
+          email: order.user_email || order.user_id,
+          credits: order.credits_amount || 0,
+        })
+      ),
+      // 2. Email Notification
+      import('@/lib/email/resend').then(({ sendAdminPaymentEmail }) => 
+        sendAdminPaymentEmail({
+          orderNo: order.order_no,
+          amount: order.amount,
+          currency: order.currency,
+          productName: order.product_name || 'Unknown',
+          userEmail: order.user_email || order.user_id,
+          credits: order.credits_amount || 0,
+        })
+      )
+    ]).catch(err => console.error('Failed to send notifications:', err));
+
   } catch (error) {
     console.error(`Failed to handle checkout success for order ${orderNo}:`, error);
     throw error;
@@ -355,6 +402,7 @@ export async function handleCreditGrant({
   isSubscription = false,
   isRenewal = false,
   subscriptionInfo,
+  supabaseClient,
 }: {
   userId: string;
   credits: number;
@@ -364,6 +412,7 @@ export async function handleCreditGrant({
   isSubscription?: boolean;
   isRenewal?: boolean;
   subscriptionInfo?: SubscriptionInfo;
+  supabaseClient?: any;
 }): Promise<void> {
   try {
     // Calculate expiration
@@ -394,6 +443,7 @@ export async function handleCreditGrant({
         : isSubscription
         ? 'Subscription credits'
         : 'One-time purchase credits',
+      supabaseClient,
     });
 
     console.log(`Granted ${credits} credits to user ${userId}`);

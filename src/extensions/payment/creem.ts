@@ -120,49 +120,43 @@ export class CreemProvider implements PaymentProvider {
         metadata = {},
       } = order;
 
-      // 构建checkout数据
+      // 构建checkout数据 - Creem uses 'product_id' field
       const checkoutData: any = {
-        product_id: providerProductId || productId,
-        price: {
-          amount: amount / 100, // to dollar
-          currency: currency.toLowerCase(),
-        },
+        product_id: providerProductId || productId, // Must be a string
         metadata: {
           order_no: order.orderNo,
-          product_id: productId,
+          internal_product_id: productId, // renamed to avoid conflict
           ...(metadata || {}),
         },
         success_url: successUrl,
-        cancel_url: cancelUrl,
+        request_id: order.orderNo, // Unique request ID for idempotency
       };
 
-      // 添加客户信息
+      // Note: price is NOT sent when using pre-configured Creem products
+      // (pricing is already configured in Creem dashboard)
+
+      // 添加客户信息 (Creem doesn't accept customer.metadata, so we only send email)
       if (customer) {
         checkoutData.customer = {
           email: customer.email,
-          name: customer.name,
-          metadata: {
-            user_id: order.userId,
-          },
         };
+        // Add user_id to top-level metadata instead
+        checkoutData.metadata.user_id = order.userId;
 
         // 如果已有customerId，使用existingCustomerEmail
         if (customer.id) {
           checkoutData.existingCustomerEmail = customer.email;
         }
+      } else if (order.userEmail) {
+        // Fallback to order email if no customer object
+        checkoutData.customer = {
+          email: order.userEmail,
+        };
+        checkoutData.metadata.user_id = order.userId;
       }
 
-      // 订阅类型
-      if (paymentType === 'subscription') {
-        checkoutData.type = 'subscription';
-
-        if (paymentInterval) {
-          checkoutData.billing_cycle = {
-            interval: paymentInterval,
-            interval_count: 1, // will be overwritten by product settings
-          };
-        }
-      }
+      // Debug: Log request payload
+      console.log('[Creem] Sending checkout request:', JSON.stringify(checkoutData, null, 2));
 
       // 发送请求
       const response = await fetch(`${this.baseUrl}/v1/checkouts`, {
@@ -176,23 +170,38 @@ export class CreemProvider implements PaymentProvider {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        console.error('[Creem] API error response:', errorData);
         throw new Error(
           `Creem checkout failed: ${response.status} ${errorData.message || ''}`
         );
       }
 
-      const data = await response.json();
+      const responseData = await response.json();
+      
+      // Debug: Log full response
+      console.log('[Creem] Full API response:', JSON.stringify(responseData, null, 2));
 
-      if (!data?.data?.id) {
+      // Handle both response structures:
+      // 1. Direct: { id, checkout_url, ... }
+      // 2. Nested: { data: { id, url, ... } }
+      const checkout = responseData.data || responseData;
+      
+      // Creem uses 'checkout_url' not 'url'
+      const checkoutUrl = checkout.checkout_url || checkout.url;
+      const checkoutId = checkout.id;
+
+      if (!checkoutId) {
+        console.error('[Creem] Invalid response structure:', responseData);
         throw new Error('Invalid Creem checkout response: missing checkout ID');
       }
 
-      const checkout: CreemCheckoutData = data.data;
+      console.log('[Creem] Checkout URL:', checkoutUrl);
+      console.log('[Creem] Checkout ID:', checkoutId);
 
       return {
         success: true,
-        checkoutUrl: checkout.url,
-        sessionId: checkout.id,
+        checkoutUrl: checkoutUrl,
+        sessionId: checkoutId,
       };
     } catch (error: any) {
       return {
