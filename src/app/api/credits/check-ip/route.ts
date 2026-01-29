@@ -42,6 +42,12 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(credits, {
       status: 200,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+        'Surrogate-Control': 'no-store',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
     });
   } catch (error) {
     console.error("[Credits API] Error checking IP credits:", error);
