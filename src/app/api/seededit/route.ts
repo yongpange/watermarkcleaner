@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-import { verifySession } from "@/lib/auth-edge";
+import { auth } from "@/auth";
 import { rateLimitMiddleware } from "@/lib/rate-limit";
 import { checkCredits } from '@/lib/credits/check';
 import { CreditTransactionScene } from '@/extensions/payment/types';
@@ -228,8 +228,9 @@ export async function POST(request: NextRequest) {
 
   logInfo('Step 1: Authenticating user...');
   try {
-    const verifyResult = await verifySession(request);
-    session = verifyResult.session;
+    // Replace manual verifySession with standard NextAuth auth()
+    session = await auth();
+    
     logInfo('Session retrieved:', {
       hasSession: !!session,
       hasUser: !!session?.user,
