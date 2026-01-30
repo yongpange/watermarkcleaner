@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -184,6 +185,13 @@ export default function Header({ header }: { header: HeaderType }) {
               href={header.brand?.url || "/"}
               className="flex items-center gap-2"
             >
+              <Image 
+                src="/logo.png" 
+                alt="Logo" 
+                width={32} 
+                height={32} 
+                className="w-8 h-8 rounded-lg"
+              />
               {header.brand?.title && (
                 <span className="text-xl text-primary font-bold">
                   {header.brand?.title || ""}
@@ -365,6 +373,13 @@ export default function Header({ header }: { header: HeaderType }) {
               href={header.brand?.url || "/"}
               className="flex items-center gap-2"
             >
+              <Image 
+                src="/logo.png" 
+                alt="Logo" 
+                width={32} 
+                height={32} 
+                className="w-8 h-8 rounded-lg"
+              />
               {header.brand?.title && (
                 <span className="text-xl font-bold">
                   {header.brand?.title || ""}
@@ -384,6 +399,13 @@ export default function Header({ header }: { header: HeaderType }) {
                       href={header.brand?.url || "/"}
                       className="flex items-center gap-2"
                     >
+                      <Image 
+                        src="/logo.png" 
+                        alt="Logo" 
+                        width={32} 
+                        height={32} 
+                        className="w-8 h-8 rounded-lg"
+                      />
                       {header.brand?.title && (
                         <span className="text-xl font-bold">
                           {header.brand?.title || ""}

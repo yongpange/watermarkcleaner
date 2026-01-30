@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, DragEvent, ChangeEvent } from 'react';
+import React, { useState, useRef, DragEvent, ChangeEvent, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { RiUploadCloud2Line, RiImageLine, RiCloseLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,14 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const t = useTranslations('convert.dropzone');
+
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
 
   const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -72,11 +80,8 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
     }
 
     // 生成预览
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setPreview(e.target?.result as string);
-    };
-    reader.readAsDataURL(file);
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
 
     // 调用回调函数
     onFileSelect(file);

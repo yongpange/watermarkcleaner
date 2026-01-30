@@ -111,12 +111,12 @@ export async function POST(req: NextRequest) {
         console.log(`[Mock API] Authenticated user: ${userId}`);
       } else {
         // Use IP address for non-authenticated users
-        userIdentifier = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown-ip';
+        userIdentifier = getClientIP(req);
         console.log(`[Mock API] Guest user (IP: ${userIdentifier})`);
       }
     } catch (_error) {
       // Fallback to IP if session check fails
-      userIdentifier = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown-ip';
+      userIdentifier = getClientIP(req);
       console.log(`[Mock API] Session check failed, treating as guest (IP: ${userIdentifier})`);
     }
 
@@ -174,12 +174,11 @@ export async function POST(req: NextRequest) {
     // 第一步：优先写入 wmc_processing_history（lifetime 计数的唯一依据）
     try {
       const adminClient = createAdminClient();
-      const clientIP = getClientIP(req);
-      const ipToHash = clientIP || 'unknown-ip';
+      const ipToHash = userIdentifier || 'unknown-ip';
       const hashedIP = await hashIPAddress(ipToHash);
 
       console.log('[Mock API] IP Information:');
-      console.log('  - Raw IP:', clientIP);
+      console.log('  - Raw IP:', userIdentifier);
       console.log('  - Hash salt (first 10 chars):', process.env.IP_HASH_SALT?.substring(0, 10));
       console.log('  - Hashed IP:', hashedIP);
       console.log('  - Is authenticated:', isAuthenticated);

@@ -245,16 +245,16 @@ export async function POST(request: NextRequest) {
       userIdentifier = userId as string;
       logInfo('User authenticated:', { userId: userIdentifier });
     } else {
-      userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
-      logInfo('Guest user detected:', { ipAddress: userIdentifier });
+      userIdentifier = getClientIP(request);
+      logInfo('Guest user detected:', { ipAddress: userIdentifier }); // 检测到访客用户
     }
   } catch (_error) {
-    logError('Session authentication failed:', _error);
-    userIdentifier = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
+    logError('Session authentication failed:', _error); // 会话认证失败
+    userIdentifier = getClientIP(request);
   }
 
-  // Get raw IP for credit check consistency
-  const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown-ip";
+  // 获取原始 IP 以保持积分检查的一致性
+  const clientIp = getClientIP(request);
 
   // 2. 解析form data (Moved UP to allow access to image size for failure recording)
   logInfo('Step 2: Parsing FormData...');

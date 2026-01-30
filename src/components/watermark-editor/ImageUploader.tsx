@@ -43,21 +43,20 @@ export default function ImageUploader({
       }
 
       setError(null);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          onImageLoad(img, file);
-        };
-        img.onerror = () => {
-          setError(t("image_load_failed"));
-        };
-        img.src = e.target?.result as string;
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+      
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        onImageLoad(img, file);
       };
-      reader.onerror = () => {
-        setError(t("file_read_failed"));
+      
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        setError(t("image_load_failed"));
       };
-      reader.readAsDataURL(file);
+      
+      img.src = objectUrl;
     },
     [onImageLoad, setError, validateFile]
   );

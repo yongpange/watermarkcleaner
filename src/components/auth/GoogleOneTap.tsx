@@ -70,6 +70,8 @@ export default function GoogleOneTap() {
         auto_select: false, 
         // 禁用自动取消
         cancel_on_tap_outside: false,
+        // 禁用 FedCM (解决 localhost 报错)
+        use_fedcm_for_prompt: false,
       });
 
       // 显示 One Tap 提示，包括 native_login（如果支持）
