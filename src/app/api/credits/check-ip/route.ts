@@ -4,7 +4,7 @@ export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 import { checkUnauthenticatedCredits } from "@/lib/credits/check";
-import { getClientIP, hashIPAddress } from "@/lib/security/ip-hash";
+import { getClientIP } from "@/lib/security/ip-hash";
 
 /**
  * API endpoint to check IP-based credits for unauthenticated users
@@ -21,15 +21,10 @@ export async function GET(request: NextRequest) {
     console.log(`[Credits API] Request headers:`, Object.fromEntries(request.headers.entries()));
     console.log(`[Credits API] IP Hash Salt: "${process.env.IP_HASH_SALT?.substring(0, 10)}..."`);
 
-    const hashedIP = await hashIPAddress(ip);
-
-    console.log(`[Credits API] Hashed IP: "${hashedIP}"`);
-    console.log(`[Credits API] Hashed IP (first 10 chars): "${hashedIP.substring(0, 10)}..."`);
-    console.log(`[Credits API] Full hashed IP length: ${hashedIP.length} chars`);
-
     // Check credits using IP as identifier for unauthenticated users
+    // Note: checkUnauthenticatedCredits will hash the IP internally
     console.log('[Credits API] Calling checkUnauthenticatedCredits...');
-    const credits = await checkUnauthenticatedCredits(hashedIP);
+    const credits = await checkUnauthenticatedCredits(ip);
 
     console.log('[Credits API] Check result:', {
       tier: credits.tier,
@@ -43,7 +38,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       ...credits,
       debug: {
-        ipHash: hashedIP.substring(0, 10) + '...',
         clientIpMasked: ip.replace(/\d+/g, '*'),
       }
     }, {

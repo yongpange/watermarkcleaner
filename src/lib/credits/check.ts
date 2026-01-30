@@ -120,7 +120,7 @@ async function checkAuthenticatedCredits(userId: string): Promise<CreditCheckRes
  */
 export async function checkUnauthenticatedCredits(ip: string): Promise<CreditCheckResult> {
   const supabase = createAdminClient();
-  const ipHash = hashIPAddress(ip);
+  const ipHash = await hashIPAddress(ip);
 
   console.log(`[Credits] IP Check - Original: ${ip}, Hashed: ${ipHash}`);
 
