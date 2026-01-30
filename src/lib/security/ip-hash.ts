@@ -69,7 +69,11 @@ export async function hashIPAddress(ip: string): Promise<string> {
   );
 
   const signature = await crypto.subtle.sign('HMAC', key, data);
-  const hashedIP = bufToHex(signature);
+  const fullHash = bufToHex(signature);
+  
+  // Truncate to 32 characters to ensure it fits in standard IP columns (IPv6 max is 45 chars)
+  // SHA-256 hex is 64 chars, which might exceed varchar(50) or varchar(64) limits in some schemas
+  const hashedIP = fullHash.substring(0, 32);
 
   // 存储到缓存（LRU策略）
   if (hashCache.size >= CACHE_MAX_SIZE) {

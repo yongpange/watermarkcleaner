@@ -582,6 +582,10 @@ export async function POST(request: NextRequest) {
           originalType: image.type,
           originalName: image.name,
           mode,
+          debug: {
+            ipHash: (await hashIPAddress(getClientIP(request))).substring(0, 10) + '...',
+            clientIpMasked: getClientIP(request).replace(/\d+/g, '*'),
+          }
         },
         // 添加速率限制信息
         rateLimit: {

@@ -40,7 +40,13 @@ export async function GET(request: NextRequest) {
 
     console.log('[Credits API] ===== Credit Check Completed =====');
 
-    return NextResponse.json(credits, {
+    return NextResponse.json({
+      ...credits,
+      debug: {
+        ipHash: hashedIP.substring(0, 10) + '...',
+        clientIpMasked: ip.replace(/\d+/g, '*'),
+      }
+    }, {
       status: 200,
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
