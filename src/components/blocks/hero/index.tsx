@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
 import { loadImage, validateImageFile } from "@/lib/imageUtils";
 import { toast } from "react-hot-toast";
+import ComparisonSlider from '@/components/ui/comparison-slider';
 
 export default function Hero({ hero }: { hero: HeroType }) {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function Hero({ hero }: { hero: HeroType }) {
   return (
     <>
       <HeroBg />
-      <section className="py-12 lg:py-20">
+      <section className="pt-0 pb-12 lg:pt-4 lg:pb-20">
         <div className="container">
           <div className="text-center">
             {hero.announcement && (
@@ -69,41 +70,57 @@ export default function Hero({ hero }: { hero: HeroType }) {
               dangerouslySetInnerHTML={{ __html: hero.description || "" }}
             />
 
-            {/* Upload Area - Key Feature */}
-            <div className="mx-auto max-w-2xl mb-8">
-              <UploadArea
-                onFileSelect={async (file) => {
-                  // 验证文件
-                  const validation = validateImageFile(file);
-                  if (!validation.valid) {
-                    toast.error(validation.error!);
-                    return;
-                  }
-
-                  try {
-                    // 加载图片
-                    const image = await loadImage(file);
-                    // 存储到 Zustand store
-                    setPendingImage({ image, file });
-                    // 跳转到 /convert 页面
-                    router.push('/convert?fromUpload=true');
-                  } catch (error) {
-                    toast.error('Failed to load image. Please try again.');
-                    console.error('Image loading error:', error);
-                  }
-                }}
-                acceptedFormats={['.jpg', '.jpeg', '.png', '.webp']}
-                maxSize={20}
-              />
-            </div>
-
             {hero.tip && (
               <p className="text-sm text-muted-foreground mb-6">{hero.tip}</p>
             )}
 
+            {/* Split Layout: Comparison (Left) + Upload (Right) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mt-8 lg:mt-12 max-w-7xl mx-auto text-left">
+              
+              {/* Left Column: Comparison Showcase */}
+              <div className="w-full flex justify-center lg:justify-end">
+                 <ComparisonSlider
+                    beforeImage="/images/custom/demo_boy_watermarked.png"
+                    afterImage="/images/custom/demo_boy_clean.png"
+                    beforeLabel="Watermarked"
+                    afterLabel="Cleaned"
+                    className="w-full max-w-xl aspect-[4/3] shadow-2xl rounded-2xl overflow-hidden border-4 border-white/20 dark:border-white/10"
+                  />
+              </div>
+
+              {/* Right Column: Upload Area */}
+              <div className="w-full max-w-xl mx-auto lg:mx-0">
+                <UploadArea
+                  onFileSelect={async (file) => {
+                    // 验证文件
+                    const validation = validateImageFile(file);
+                    if (!validation.valid) {
+                      toast.error(validation.error!);
+                      return;
+                    }
+
+                    try {
+                      // 加载图片
+                      const image = await loadImage(file);
+                      // 存储到 Zustand store
+                      setPendingImage({ image, file });
+                      // 跳转到 /convert 页面
+                      router.push('/convert?fromUpload=true');
+                    } catch (error) {
+                      toast.error('Failed to load image. Please try again.');
+                      console.error('Image loading error:', error);
+                    }
+                  }}
+                  acceptedFormats={['.jpg', '.jpeg', '.png', '.webp']}
+                  maxSize={20}
+                />
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
+
     </>
   );
 }

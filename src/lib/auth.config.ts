@@ -205,7 +205,7 @@ export const authConfig: NextAuthConfig = {
                 .update({ emailverified: new Date().toISOString() })
                 .eq("id", user.id);
             }
-            
+
             return {
               id: user.id,
               email: user.email,
