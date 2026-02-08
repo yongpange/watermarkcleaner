@@ -277,13 +277,15 @@
       "processing_time_info": "处理时间取决于图片大小，一般在30秒到2分钟之间",
       "processing_failed": "处理失败",
       "ratio_square": "1:1 方形",
-      "ratio_default": "默认"
+      "ratio_default": "默认",
+      "please_wait": "请稍候，处理时间约30秒到2分钟"
     },
     "watermark_removal": {
       "image_ratio": "图片比例",
       "watermark_removed_successfully": "去水印成功！",
       "start_watermark_removal": "开始去水印",
       "processing": "处理中...",
+      "generating": "正在生成...",
       "process_another_image": "处理另一张图片",
       "download_image": "下载图片",
       "downloading": "下载中...",

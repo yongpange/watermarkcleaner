@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
-import { v4 as uuidv4 } from 'uuid';
 import { auth } from '@/auth';
 import { getClientIP, hashIPAddress } from '@/lib/security/ip-hash';
 import { createAdminClient } from '@/lib/supabase-admin';
@@ -235,13 +234,23 @@ export async function POST(req: NextRequest) {
 
     console.log('[Mock API] ===== Recording History Completed =====');
 
-    // 生成唯一的 Mock ID
-    const mockResultId = uuidv4();
+    // 使用之前读取的 buffer 转换为 base64
+    let binary = '';
+    const CHUNK_SIZE = 0x8000;
+    for (let i = 0; i < buffer.length; i += CHUNK_SIZE) {
+      const chunk = buffer.subarray(i, Math.min(i + CHUNK_SIZE, buffer.length));
+      binary += String.fromCharCode.apply(null, Array.from(chunk));
+    }
+    const base64 = btoa(binary);
+    const mimeType = image.type || "image/jpeg";
+    const dataUrl = `data:${mimeType};base64,${base64}`;
+
+    console.log(`[Mock API] Returning image as data URL, size: ${base64.length} chars`);
 
     // 返回模拟的处理结果（匹配前端 ApiResponse 接口）
     return NextResponse.json({
       success: true,
-      imageUrl: `/api/mock-seededit/result?id=${mockResultId}`, // 前端期望 imageUrl 字段
+      imageUrl: dataUrl, // 直接返回原图作为处理结果
       processingTime: delay
     });
 
@@ -254,51 +263,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-/**
- * GET /api/mock-seededit/result?id=<uuid>
- * 返回模拟的处理结果图片
- */
-export async function GET(req: NextRequest) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
-
-    if (!id) {
-      return NextResponse.json(
-        { error: 'Result ID required' },
-        { status: 400 }
-      );
-    }
-
-    console.log(`[Mock API] Fetching result: ${id}`);
-
-    // 1x1 transparent PNG as base64
-    const base64Png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
-    const binaryString = atob(base64Png);
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-    const transparentPixel = bytes; // Edge Runtime compatible
-
-    return new NextResponse(transparentPixel, {
-      headers: {
-        'Content-Type': 'image/png',
-        'Content-Length': transparentPixel.length.toString(),
-        'X-Mock-Result': 'true',
-        'X-Original-ID': id,
-        'Cache-Control': 'no-cache, no-store, must-revalidate'
-      }
-    });
-
-  } catch (error) {
-    console.error('[Mock API] GET Error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch result' },
-      { status: 500 }
-    );
-  }
-}
 
 /**
  * OPTIONS 处理 CORS 预检请求

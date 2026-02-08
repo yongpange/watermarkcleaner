@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
 import { toast } from "react-hot-toast";
@@ -53,6 +53,9 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
   // Image ratio state
   const [selectedRatio, setSelectedRatio] = useState<string>("default");
 
+  // Auto processing ref
+  const autoProcessRef = useRef(false);
+
   // 格式化当前时间的辅助函数
   const getTimestamp = () => new Date().toISOString();
 
@@ -87,12 +90,18 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
       handleImageLoad(pendingImage.image, pendingImage.file);
       clearPendingImage();
 
+      // 检查是否需要自动处理
+      const shouldAutoProcess = searchParams.get('autoProcess') === 'true';
+      if (shouldAutoProcess) {
+        autoProcessRef.current = true;
+      }
+
       // Clean URL parameter
       window.history.replaceState({}, '', '/convert');
 
       toast.success(imageT('image_load_success'));
     }
-  }, [isFromUpload, pendingImage, handleImageLoad, clearPendingImage]);
+  }, [isFromUpload, pendingImage, handleImageLoad, clearPendingImage, searchParams]);
 
   // Remove image
   const handleRemoveImage = useCallback(() => {
@@ -356,6 +365,15 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
     }
   }, [error]);
 
+  // 图片加载完成后自动开始处理
+  useEffect(() => {
+    if (autoProcessRef.current && imageFile && !isProcessing && !resultImageUrl) {
+      autoProcessRef.current = false;
+      console.log('[WatermarkEditor] Auto-starting processing after upload');
+      handleProcess();
+    }
+  }, [imageFile, isProcessing, resultImageUrl, handleProcess]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -393,18 +411,29 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
         />
       ) : (
         <>
-          {/* 图片预览 */}
-          <ImagePreview
-            imageUrl={imagePreviewUrl!}
-            file={imageFile}
-            metadata={{
-              width: imageMetadata?.width ?? 0,
-              height: imageMetadata?.height ?? 0,
-              size: `${(imageFile.size / 1024 / 1024).toFixed(2)} MB`,
-              type: imageFile.type,
-            }}
-            onRemove={handleRemoveImage}
-          />
+          {/* 图片预览 - 带处理中遮罩 */}
+          <div className="relative">
+            <ImagePreview
+              imageUrl={imagePreviewUrl!}
+              file={imageFile}
+              metadata={{
+                width: imageMetadata?.width ?? 0,
+                height: imageMetadata?.height ?? 0,
+                size: `${(imageFile.size / 1024 / 1024).toFixed(2)} MB`,
+                type: imageFile.type,
+              }}
+              onRemove={handleRemoveImage}
+            />
+
+            {/* 处理中遮罩 */}
+            {isProcessing && (
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center z-10">
+                <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
+                <p className="text-white font-medium text-lg">{t("generating")}</p>
+                <p className="text-white/70 text-sm mt-2">{processingT("please_wait")}</p>
+              </div>
+            )}
+          </div>
 
           {/* 错误信息 */}
           {error && (
@@ -418,47 +447,6 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
               </div>
             </div>
           )}
-
-          {/* 比例选择 */}
-          <div className="bg-muted/30 p-4 rounded-lg border border-border/50 space-y-3">
-             <label className="text-sm font-medium text-foreground flex items-center gap-2">
-               <span className="w-1 h-4 bg-primary rounded-full"></span>
-               {t("image_ratio")}
-             </label>
-             <div className="grid grid-cols-5 sm:grid-cols-9 gap-2">
-               {RATIO_OPTIONS.map((ratio) => (
-                 <button
-                   key={ratio.value}
-                   onClick={() => setSelectedRatio(ratio.value)}
-                   disabled={isProcessing}
-                   className={`
-                     relative flex flex-col items-center justify-center p-2 rounded-lg transition-all
-                     border hover:bg-muted/50 group
-                     ${selectedRatio === ratio.value
-                       ? "bg-primary/5 border-primary text-primary"
-                       : "bg-background border-border text-muted-foreground"
-                     }
-                   `}
-                   title={ratio.label}
-                 >
-                   {/* Icon Area */}
-                   <div className={`mb-1.5 flex items-center justify-center opacity-80 group-hover:opacity-100 ${selectedRatio === ratio.value ? "opacity-100" : ""}`}>
-                     {ratio.value === 'default' ? (
-                        // Special icon for Default (Smart) - maybe an icon representing "image" or "scan"
-                        <RiMagicLine className="w-5 h-5" /> 
-                     ) : (
-                        <div className={`border-current ${ratio.iconClass}`} />
-                     )}
-                   </div>
-                   
-                   {/* Text Label */}
-                   <span className="text-[10px] leading-tight font-medium truncate max-w-full">
-                     {ratio.label}
-                   </span>
-                 </button>
-               ))}
-             </div>
-          </div>
 
           {/* 控制按钮 */}
           <div className="pt-4 border-t border-border">

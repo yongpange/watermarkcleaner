@@ -104,8 +104,8 @@ export default function Hero({ hero }: { hero: HeroType }) {
                       const image = await loadImage(file);
                       // 存储到 Zustand store
                       setPendingImage({ image, file });
-                      // 跳转到 /convert 页面
-                      router.push('/convert?fromUpload=true');
+                      // 跳转到 /convert 页面，自动开始处理
+                      router.push('/convert?fromUpload=true&autoProcess=true');
                     } catch (error) {
                       toast.error('Failed to load image. Please try again.');
                       console.error('Image loading error:', error);

@@ -277,13 +277,15 @@
       "processing_time_info": "Processing time depends on image size, usually between 30 seconds to 2 minutes",
       "processing_failed": "Processing Failed",
       "ratio_square": "1:1 Square",
-      "ratio_default": "Default"
+      "ratio_default": "Default",
+      "please_wait": "Please wait, this may take 30 seconds to 2 minutes"
     },
     "watermark_removal": {
       "image_ratio": "Aspect Ratio",
       "watermark_removed_successfully": "Watermark Removed Successfully!",
       "start_watermark_removal": "Remove Watermark",
       "processing": "Processing...",
+      "generating": "Generating...",
       "process_another_image": "Process Another Image",
       "download_image": "Download Image",
       "downloading": "Downloading...",
