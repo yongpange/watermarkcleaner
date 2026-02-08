@@ -39,7 +39,8 @@
     "cancel_title": "取消",
     "welcome": "欢迎来到 WatermarkCleaner",
     "login_to_use": "登录以使用我们的 AI 去水印服务",
-    "credit_upgrade_info": "访客用户获得 3 张额度 → 登录获得更多额度"
+    "credit_upgrade_info": "访客用户获得 3 张额度 → 登录获得更多额度",
+    "upgrade_privileges": "升级会员享受更多权限 →"
   },
   "auth": {
     "email_input": {

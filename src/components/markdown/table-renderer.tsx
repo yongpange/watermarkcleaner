@@ -11,8 +11,8 @@ interface TableRendererProps {
 
 export function Table({ children }: TableRendererProps) {
   return (
-    <div className="table-container my-8 overflow-x-auto">
-      <table className="w-full border-collapse bg-card rounded-lg shadow-sm border border-border/50">
+    <div className="table-wrapper">
+      <table>
         {children}
       </table>
     </div>
@@ -20,7 +20,7 @@ export function Table({ children }: TableRendererProps) {
 }
 
 export function TableHeader({ children }: TableRendererProps) {
-  return <thead className="bg-muted/50">{children}</thead>;
+  return <thead>{children}</thead>;
 }
 
 export function TableBody({ children }: TableRendererProps) {
@@ -29,26 +29,18 @@ export function TableBody({ children }: TableRendererProps) {
 
 export function TableRow({ children }: TableRendererProps) {
   return (
-    <tr className="border-b border-border/30 hover:bg-muted/20 transition-colors last:border-b-0">
+    <tr>
       {children}
     </tr>
   );
 }
 
 export function TableHead({ children }: TableRendererProps) {
-  return (
-    <th className="px-6 py-4 text-left font-semibold text-foreground/90">
-      {children}
-    </th>
-  );
+  return <th>{children}</th>;
 }
 
 export function TableCell({ children }: TableRendererProps) {
-  return (
-    <td className="px-6 py-4 text-foreground">
-      {children}
-    </td>
-  );
+  return <td>{children}</td>;
 }
 
 // 解析原始Markdown表格的函数

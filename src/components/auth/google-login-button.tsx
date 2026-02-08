@@ -55,7 +55,7 @@ export const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
       disabled={disabled}
       loading={loading}
       fullWidth
-      className={className}
+      className={`${className} cursor-pointer transition-transform duration-200 transform hover:scale-[1.02] hover:shadow-lg`}
     >
       <span className="flex items-center justify-center">
         <svg

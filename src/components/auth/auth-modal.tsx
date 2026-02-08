@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { AppleIconButton } from '@/components/auth/apple-style/button';
 import { AppleDivider } from '@/components/auth/apple-style/divider';
 import { EmailInputSection } from '@/components/auth/email-input-section';
@@ -283,23 +284,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
                 {/* 内容 */}
                 <div className="p-6 sm:p-8">
-                  {/* Logo 和标题 */}
-                  <div className="text-center mb-6">
-                    <div className="w-14 h-14 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                      <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
-                      </svg>
-                    </div>
+                  {/* 标题 */}
+                  <div className="text-center mb-10">
 
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
                       {tModal('welcome')}
                     </h2>
 
-                    <p className="text-sm text-gray-600">
-                      {tModal('login_to_use')}
-                    </p>
-                    <div className="mt-2 text-xs text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">
-                      🎉 {tModal('credit_upgrade_info')}
+                    <div className="mt-8 transform transition-all hover:scale-105">
+                      <Link 
+                        href="/pricing"
+                        className="group relative inline-flex items-center justify-center px-8 py-3 text-sm font-bold text-white transition-all duration-200 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-full shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 ring-1 ring-white/20 backdrop-blur-sm"
+                      >
+                        <span className="mr-2 text-lg">👑</span>
+                        <span className="tracking-wide">{tModal('upgrade_privileges')}</span>
+                        <div className="absolute inset-0 rounded-full bg-white/20 group-hover:opacity-0 transition-opacity duration-200" />
+                      </Link>
                     </div>
                   </div>
 

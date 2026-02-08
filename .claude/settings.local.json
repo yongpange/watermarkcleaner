@@ -31,7 +31,9 @@
       "Bash(netstat -ano:*)",
       "Bash(timeout:*)",
       "Bash(pkill -f \"next dev\")",
-      "Bash(nul:*)"
+      "Bash(nul:*)",
+      "WebFetch(domain:www.kimi.com)",
+      "Bash(dir:*)"
     ]
   },
   "skills": {

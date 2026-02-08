@@ -35,6 +35,18 @@
         "ar": "نصائح وحيل",
         "ko": "팁과 트릭"
       }
+    },
+    {
+      "id": "ai_learning",
+      "name": {
+        "en": "AI Learning",
+        "zh": "AI学习",
+        "es": "Aprendizaje de IA",
+        "ru": "Изучение ИИ",
+        "fr": "Apprentissage de l'IA",
+        "ar": "تعلم الذكاء الاصطناعي",
+        "ko": "AI 학습"
+      }
     }
   ],
   "authors": [

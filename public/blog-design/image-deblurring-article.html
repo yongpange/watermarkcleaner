@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Clean Up a Blurry Image | From Classical Signal Processing to Large Model-Powered Restoration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-tertiary: #1a1a1d;
+            --accent-cyan: #00f5d4;
+            --accent-amber: #ff9f1c;
+            --accent-magenta: #ff006e;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #606060;
+            --grid-line: rgba(0, 245, 212, 0.08);
+            --scan-line: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* CRT Scanline Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                var(--scan-line) 2px,
+                var(--scan-line) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-cyan);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 245, 212, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: var(--accent-amber);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--accent-amber);
+        }
+
+        .hero-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            max-width: 1200px;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            line-height: 1.7;
+            margin-bottom: 3rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent-cyan);
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .section-number {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.7rem;
+            color: var(--accent-amber);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .subsection-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2.5rem 0 1rem;
+            color: var(--accent-cyan);
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Formula Block */
+        .formula-block {
+            background: var(--bg-secondary);
+            border: 1px solid var(--bg-tertiary);
+            border-left: 3px solid var(--accent-magenta);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            position: relative;
+        }
+
+        .formula-label {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--bg-primary);
+            padding: 0 10px;
+            font-size: 0.7rem;
+            color: var(--accent-magenta);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 2rem 0;
+            border: 1px solid var(--bg-tertiary);
+            background: var(--bg-secondary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        thead {
+            background: var(--bg-tertiary);
+        }
+
+        th {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            text-align: left;
+            padding: 1rem 1.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--accent-cyan);
+        }
+
+        td {
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--bg-tertiary);
+            vertical-align: top;
+        }
+
+        tr:hover td {
+            background: rgba(0, 245, 212, 0.03);
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 245, 212, 0.05) 0%, rgba(255, 159, 28, 0.05) 100%);
+            border: 1px solid var(--bg-tertiary);
+            border-left: 3px solid var(--accent-amber);
+            padding: 2rem;
+            margin: 2.5rem 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '>';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-amber);
+            font-size: 1.2rem;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: var(--text-primary);
+            font-style: italic;
+        }
+
+        /* List Styles */
+        ul {
+            list-style: none;
+            margin: 1.5rem 0;
+            padding-left: 0;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        /* Code/Inline */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-tertiary);
+            padding: 0.2rem 0.5rem;
+            font-size: 0.9em;
+            color: var(--accent-cyan);
+            border-radius: 2px;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--bg-tertiary) 50%, transparent 100%);
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .divider::after {
+            content: '◆';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            padding: 0 1rem;
+            color: var(--accent-cyan);
+            font-size: 0.6rem;
+        }
+
+        /* References Section */
+        .references {
+            margin-top: 6rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--bg-tertiary);
+        }
+
+        .references-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.25rem;
+            color: var(--accent-amber);
+            margin-bottom: 2rem;
+        }
+
+        .ref-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .ref-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .ref-item a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .ref-item a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--bg-tertiary);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                padding: 7rem 3rem 3rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-wrapper {
+                padding: 0 1.5rem 4rem;
+            }
+
+            .ref-list {
+                grid-template-columns: 1fr;
+            }
+
+            th, td {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-amber));
+            z-index: 10000;
+            transition: width 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="grid-bg"></div>
+
+    <nav>
+        <div class="logo">WatermarkCleaner</div>
+        <ul class="nav-links">
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Research</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-label">Technical Research</div>
+        <h1 class="hero-title">How to Clean Up a Blurry Image: From Classical Signal Processing to Large Model-Powered Restoration</h1>
+        <p class="hero-subtitle">Image deblurring has evolved from mathematically elegant but fragile classical methods through powerful but specialized deep learning CNNs, to today's large foundation models that offer unprecedented generalization, semantic awareness, and deployment simplicity.</p>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">+9.42 dB</div>
+                <div class="stat-label">PSNR Improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">32.66 dB</div>
+                <div class="stat-label">MPRNet Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0.959</div>
+                <div class="stat-label">SSIM Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">191×191</div>
+                <div class="stat-label">Max Kernel</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="content-wrapper">
+        <!-- Executive Summary -->
+        <div class="highlight-box">
+            <p>For website operators, large models eliminate the engineering complexity of kernel estimation pipelines while delivering superior results across diverse real-world conditions—making them the definitive choice for modern image restoration services.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Section 1 -->
+        <section class="section">
+            <div class="section-number">Section 01</div>
+            <h2 class="section-title">The Fundamental Problem: Understanding Image Blur</h2>
+
+            <h3 class="subsection-title">The Physics of Blur Formation</h3>
+            <p>Image blur fundamentally represents a <strong>convolutional degradation process</strong> where the observed image results from the mathematical convolution of an ideal sharp scene with a point spread function (PSF), compounded by additive noise.</p>
+
+            <div class="formula-block">
+                <span class="formula-label">Forward Model</span>
+                g = f * h + n
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>g</code></td>
+                            <td>Observed blurry image</td>
+                        </tr>
+                        <tr>
+                            <td><code>f</code></td>
+                            <td>Latent sharp image (target)</td>
+                        </tr>
+                        <tr>
+                            <td><code>h</code></td>
+                            <td>Point Spread Function (blur kernel)</td>
+                        </tr>
+                        <tr>
+                            <td><code>n</code></td>
+                            <td>Additive noise (typically Gaussian or Poisson)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Taxonomy of Blur Types</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Blur Type</th>
+                            <th>Characteristics</th>
+                            <th>Model/Dataset</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Motion Blur</strong></td>
+                            <td>Directional streaking from relative camera-scene movement; edges perpendicular to motion remain sharp</td>
+                            <td>L = v × t (velocity × exposure time); GoPro</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Defocus Blur</strong></td>
+                            <td>Out-of-focus circular patterns; approximate radial symmetry</td>
+                            <td>15×15 to 191×191 pixels; MC-Blur</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Atmospheric Turbulence</strong></td>
+                            <td>Stochastic, time-varying degradation from refractive index fluctuations; speckle patterns</td>
+                            <td>Applications: Astronomy, remote sensing; Challenge: Non-stationary, anisotropic</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gaussian Blur</strong></td>
+                            <td>Mathematically tractable benchmark with uniform softening; separable into 1D convolutions</td>
+                            <td>Parameter: σ controls spread magnitude; UFRJ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">The Inverse Problem Challenge</h3>
+            <p>Image deblurring exemplifies a <strong>classic ill-posed inverse problem</strong> in the Hadamard sense: solutions may not exist, may not be unique, or may not depend continuously on the data.</p>
+
+            <div class="highlight-box">
+                <p><strong>Fundamental Limitation:</strong> No algorithm can recover what has been completely eliminated by the blur process. The convolution operator's smoothing action irreversibly destroys high-frequency information; understanding this explains why regularization is essential for practical deblurring.</p>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Section 2 -->
+        <section class="section">
+            <div class="section-number">Section 02</div>
+            <h2 class="section-title">Classical Deblurring: Foundation Methods</h2>
+
+            <h3 class="subsection-title">Frequency Domain Techniques</h3>
+            <p>The FFT reduces O(N²) convolution operations to O(N log N) complexity, achieving dramatic speedups for large images.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Approach</th>
+                            <th>Operations</th>
+                            <th>Speedup</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Direct convolution (1024×1024 image, 64×64 kernel)</td>
+                            <td>~4 billion</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>FFT approach</td>
+                            <td>~20 million</td>
+                            <td><strong>200×</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Statistical Estimation Methods</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                            <th>Formula/Performance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Wiener Filtering</strong></td>
+                            <td>Optimal linear estimator minimizing mean square error given known second-order statistics</td>
+                            <td><code>W(u,v) = H*(u,v) · S_f(u,v) / (|H(u,v)|² · S_f(u,v) + S_n(u,v))</code>; 36.90 dB vs 27.48 dB classical</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lucy-Richardson Algorithm</strong></td>
+                            <td>Maximum likelihood estimation for Poisson noise models, ideal for photon-limited imaging</td>
+                            <td><code>f^(k+1) = f^(k) ⊗ [g / (f^(k) * h)] * h̃</code>; Guarantees non-negative outputs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Regularization-Based Approaches</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Formulation</th>
+                            <th>Characteristics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tikhonov</td>
+                            <td><code>min ||g-f*h||² + λ||Lf||²</code></td>
+                            <td>L2 penalty, smooth solutions, closed-form</td>
+                        </tr>
+                        <tr>
+                            <td>Total Variation</td>
+                            <td><code>min ||g-f*h||² + λ∫|∇f|</code></td>
+                            <td>Edge-preserving, "cartoon-like" results</td>
+                        </tr>
+                        <tr>
+                            <td>Sparse Representation</td>
+                            <td><code>min ||g-Dα*h||² + λ||α||₁</code></td>
+                            <td>Wavelet/curvelet bases, iterative thresholding</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Limitations of Classical Methods</h3>
+            <p><strong>Critical Failure Modes:</strong></p>
+            <ul>
+                <li>Kernel estimation sensitivity: Small errors propagate to severe artifacts</li>
+                <li>Ringing artifacts: Gibbs phenomenon near sharp edges</li>
+                <li>Noise amplification: Fundamental to ill-posed inversion</li>
+                <li>Computational complexity: O(N·k²) scaling with kernel size</li>
+                <li>Model mismatch: Real-world complexity exceeds idealized assumptions</li>
+            </ul>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Section 3 -->
+        <section class="section">
+            <div class="section-number">Section 03</div>
+            <h2 class="section-title">The Deep Learning Revolution: CNN-Based Deblurring</h2>
+
+            <div class="highlight-box">
+                <p><strong>Paradigm Shift:</strong> Deep learning fundamentally reimagined image deblurring as a supervised regression problem: train neural networks to map blurry inputs directly to sharp outputs, eliminating explicit kernel estimation and iterative optimization.</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Innovation</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Multi-Scale Feature Extraction</td>
+                            <td>Encoder-decoder architectures with skip connections preserve both global context and fine details</td>
+                        </tr>
+                        <tr>
+                            <td>Attention Mechanisms</td>
+                            <td>Dynamic, position-dependent processing adapts to local blur characteristics</td>
+                        </tr>
+                        <tr>
+                            <td>Adversarial Training</td>
+                            <td>GANs produce perceptually realistic results beyond pixel-wise accuracy</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">MPRNet: State-of-the-Art Architecture</h3>
+            <p><strong>Multi-Stage Progressive Restoration:</strong></p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stage</th>
+                            <th>Function</th>
+                            <th>Architecture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Stage 1: Initial Deblur</td>
+                            <td>Full resolution, lightweight encoder-decoder for global structure</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>Stage 2: Context Aggregation</td>
+                            <td>Reduced resolution, deep processing with attention mechanisms</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>Stage 3: Detail Preservation</td>
+                            <td>Original Resolution Subnetwork for fine detail recovery</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Performance Benchmarks (GoPro Dataset):</strong> MPRNet: 32.66 dB PSNR, 0.959 SSIM vs previous state-of-the-art: +0.81 dB improvement</p>
+            </div>
+
+            <h3 class="subsection-title">Training Methodologies and Datasets</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Dataset</th>
+                            <th>Images</th>
+                            <th>Resolution</th>
+                            <th>Blur Type</th>
+                            <th>Key Feature</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GoPro</td>
+                            <td>3,214 train / 1,111 test</td>
+                            <td>1280×720</td>
+                            <td>Motion (frame-averaged)</td>
+                            <td>First large-scale benchmark</td>
+                        </tr>
+                        <tr>
+                            <td>HIDE</td>
+                            <td>8,422 total</td>
+                            <td>1280×720</td>
+                            <td>Human motion</td>
+                            <td>Person-centric evaluation</td>
+                        </tr>
+                        <tr>
+                            <td>RealBlur</td>
+                            <td>4,556 pairs</td>
+                            <td>Various</td>
+                            <td>Real camera shake</td>
+                            <td>Authentic blur with ground truth</td>
+                        </tr>
+                        <tr>
+                            <td>MC-Blur</td>
+                            <td>100,000+</td>
+                            <td>Up to 4K</td>
+                            <td>Four types</td>
+                            <td>Comprehensive benchmarking</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Section 4 -->
+        <section class="section">
+            <div class="section-number">Section 04</div>
+            <h2 class="section-title">Large Model Era: Foundation Models for Restoration</h2>
+
+            <div class="highlight-box">
+                <p><strong>The Foundation Model Revolution:</strong> Foundation models represent a paradigm shift from task-specific networks to universal restoration engines capable of handling multiple degradation types through pretraining on massive, diverse datasets.</p>
+            </div>
+
+            <p><strong>Key Innovations:</strong></p>
+            <ul>
+                <li>Vision Transformers for global context modeling</li>
+                <li>Swin Transformer hierarchical attention</li>
+                <li>Diffusion models for iterative refinement</li>
+                <li>Prompt-guided restoration interfaces</li>
+            </ul>
+
+            <p><strong>Emergent Capabilities:</strong></p>
+            <ul>
+                <li>Zero-shot generalization to novel degradations</li>
+                <li>Semantic-aware detail recovery</li>
+                <li>Contextual understanding for plausible hallucination</li>
+                <li>Unified handling of multiple degradation types</li>
+            </ul>
+
+            <h3 class="subsection-title">Architectural Innovations: Swin Transformer</h3>
+            <p>Swin Transformer addresses ViT limitations through hierarchical architecture with shifted window attention, achieving <strong>CNN-like efficiency with transformer flexibility</strong>.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hierarchical Structure</td>
+                            <td>Progressive patch merging creates pyramid feature representations</td>
+                        </tr>
+                        <tr>
+                            <td>Shifted Window Attention</td>
+                            <td>Alternates regular and offset window partitions for cross-window connection</td>
+                        </tr>
+                        <tr>
+                            <td>Linear Complexity</td>
+                            <td>Achieves efficient processing with transformer flexibility</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Pretraining and Transfer Learning</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Characteristic</th>
+                            <th>Traditional Approach</th>
+                            <th>Foundation Model Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Training data</td>
+                            <td>Task-specific (e.g., only blur)</td>
+                            <td>Diverse: blur, noise, compression, low-light, rain, haze</td>
+                        </tr>
+                        <tr>
+                            <td>Dataset size</td>
+                            <td>Thousands to tens of thousands</td>
+                            <td>Millions to hundreds of millions</td>
+                        </tr>
+                        <tr>
+                            <td>Degradation coverage</td>
+                            <td>Narrow, hand-designed</td>
+                            <td>Broad, learned from data</td>
+                        </tr>
+                        <tr>
+                            <td>Representation</td>
+                            <td>Task-specific features</td>
+                            <td>General, transferable features</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Unified Restoration Frameworks</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Framework</th>
+                            <th>Description</th>
+                            <th>Capabilities</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Prompt-Guided Restoration</strong></td>
+                            <td>Text conditioning enables intuitive control through natural language instructions</td>
+                            <td>"Remove motion blur but keep background soft"; "Sharpen the face, don't change the background"; "Make this look like a professional portrait"</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interactive Refinement</strong></td>
+                            <td>Human-in-the-loop optimization through user feedback</td>
+                            <td>Scribble-based attention; Comparative selection; Direct parameter adjustment; Example-based guidance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Section 5 -->
+        <section class="section">
+            <div class="section-number">Section 05</div>
+            <h2 class="section-title">Comparative Analysis: Classical vs. Deep Learning vs. Large Models</h2>
+
+            <h3 class="subsection-title">Quantitative Performance Metrics</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>PSNR</th>
+                            <th>SSIM</th>
+                            <th>Characteristics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Classical Methods</td>
+                            <td>25-30 dB</td>
+                            <td>~0.85</td>
+                            <td>Limited by model assumptions</td>
+                        </tr>
+                        <tr>
+                            <td>Deep Learning (CNN)</td>
+                            <td>28-32 dB</td>
+                            <td>0.90-0.95</td>
+                            <td>Better priors, task-focused</td>
+                        </tr>
+                        <tr>
+                            <td>Large Foundation Models</td>
+                            <td>33-36 dB</td>
+                            <td>0.96-0.97</td>
+                            <td>Superior generalization</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Qualitative Assessment</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Visual Characteristics</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Classical Methods</td>
+                            <td>Ringing artifacts, noise amplification, over-smoothed texture</td>
+                        </tr>
+                        <tr>
+                            <td>CNN (MSE-trained)</td>
+                            <td>Blurry, overly smooth, regression-to-mean artifacts</td>
+                        </tr>
+                        <tr>
+                            <td>CNN (GAN/perceptual)</td>
+                            <td>Occasional hallucinations, instability, better texture</td>
+                        </tr>
+                        <tr>
+                            <td>Large Models</td>
+                            <td>Minimal artifacts, natural texture, context-appropriate detail</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Computational Considerations</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Application</th>
+                            <th>Latency Requirement</th>
+                            <th>Suitable Approaches</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Real-time video (30fps)</td>
+                            <td>&lt; 33 ms</td>
+                            <td>Lightweight CNNs, optimized classical</td>
+                        </tr>
+                        <tr>
+                            <td>Interactive editing</td>
+                            <td>100-500 ms</td>
+                            <td>Medium CNNs, GPU-accelerated</td>
+                        </tr>
+                        <tr>
+                            <td>Batch photo processing</td>
+                            <td>1-10 seconds</td>
+                            <td>Large CNNs, foundation models</td>
+                        </tr>
+                        <tr>
+                            <td>Professional quality</td>
+                            <td>Minutes acceptable</td>
+                            <td>Diffusion models, iterative refinement</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Section 6 -->
+        <section class="section">
+            <div class="section-number">Section 06</div>
+            <h2 class="section-title">Implementation for Web Platforms: A Site Owner's Perspective</h2>
+
+            <div class="highlight-box">
+                <p><strong>Deployment Strategy Decision Framework:</strong> Choose the approach that balances quality requirements, latency constraints, and operational complexity for your specific use case.</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Approach</th>
+                            <th>Pros</th>
+                            <th>Cons</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Classical Methods</strong></td>
+                            <td>Minimal complexity; Maximum compatibility; Client-side execution</td>
+                            <td>Manual parameter tuning; Limited quality</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deep Learning</strong></td>
+                            <td>Excellent quality; GPU acceleration; Optimization available</td>
+                            <td>Training complexity; Narrow task focus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Large Models</strong></td>
+                            <td>Superior generalization; Semantic awareness; One-click operation</td>
+                            <td>Inference latency; API dependency</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Model Optimization Pipeline</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stage</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Original Model</td>
+                            <td>20M parameters, FP32 precision</td>
+                        </tr>
+                        <tr>
+                            <td>Quantization</td>
+                            <td>INT8 weights, 2-4× speed</td>
+                        </tr>
+                        <tr>
+                            <td>Pruning</td>
+                            <td>5M parameters, 4× compression</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Optimized</strong></td>
+                            <td>~0.3 dB loss, <strong>4× faster inference</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Acceleration Runtimes:</strong></p>
+            <ul>
+                <li>ONNX Runtime: 1.5-3× speedup</li>
+                <li>TensorRT: 3-10× speedup</li>
+                <li>OpenVINO: 2-5× speedup</li>
+            </ul>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Section 7 -->
+        <section class="section">
+            <div class="section-number">Section 07</div>
+            <h2 class="section-title">The Definitive Advantages of Large Model Deblurring</h2>
+
+            <div class="highlight-box">
+                <p><strong>The Paradigm Shift:</strong> Large foundation models eliminate the engineering complexity of traditional deblurring pipelines while delivering superior results across diverse real-world conditions.</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Traditional Pipeline</th>
+                            <th>Large Model Approach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Complexity</td>
+                            <td>Blur type classification → Kernel estimation & validation → Non-blind deconvolution → Post-processing & artifact suppression</td>
+                            <td>Single forward pass inference → Implicit blur estimation & inversion → Learned artifact suppression → Semantic-aware processing</td>
+                        </tr>
+                        <tr>
+                            <td>Outcome</td>
+                            <td>Fragile, error-prone cascade</td>
+                            <td>Predictable, robust operation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Superior Generalization</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capability</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unseen Blur Types</td>
+                            <td>Foundation models handle novel blur patterns without retraining</td>
+                        </tr>
+                        <tr>
+                            <td>Distribution Robustness</td>
+                            <td>Resilient to real-world distribution shifts</td>
+                        </tr>
+                        <tr>
+                            <td>Adaptive Processing</td>
+                            <td>Eliminates manual parameter tuning through automatic content analysis</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Semantic-Aware Restoration</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Content Type</th>
+                            <th>Restoration Guidance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Faces</td>
+                            <td>Identity-preserving features, natural skin texture, correct proportions</td>
+                        </tr>
+                        <tr>
+                            <td>Text</td>
+                            <td>Character shape priors, legible letter formation</td>
+                        </tr>
+                        <tr>
+                            <td>Architecture</td>
+                            <td>Straight line constraints, perspective accuracy</td>
+                        </tr>
+                        <tr>
+                            <td>Nature</td>
+                            <td>Appropriate texture statistics, artifact avoidance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Key Insight:</strong> A face deblurred with awareness of facial structure outperforms generic processing; text with character recognition constraints achieves legibility impossible from pixels alone.</p>
+            </div>
+
+            <h3 class="subsection-title">End-to-End Simplicity</h3>
+            <p><strong>Time-to-Market:</strong></p>
+            <ul>
+                <li>Classical Methods: Weeks to months</li>
+                <li>Deep Learning: Weeks</li>
+                <li><strong>Large Models: Days to hours</strong></li>
+            </ul>
+
+            <h3 class="subsection-title">Continuous Improvement Through Scale</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scale Threshold</th>
+                            <th>Capability</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>100M+</td>
+                            <td>Robust blur identification</td>
+                        </tr>
+                        <tr>
+                            <td>1B+</td>
+                            <td>Zero-shot generalization</td>
+                        </tr>
+                        <tr>
+                            <td>10B+</td>
+                            <td>Complex reasoning</td>
+                        </tr>
+                        <tr>
+                            <td>100B+</td>
+                            <td>Creative enhancement</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="formula-block">
+                <span class="formula-label">Scaling Laws</span>
+                Quality ∝ log(Data size) | Quality ∝ log(Compute) | Quality ∝ log(Model size)
+            </div>
+
+            <h3 class="subsection-title">Practical Impact on User Experience</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Before</th>
+                            <th>After</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>One-Click Restoration</td>
+                            <td>Parameter exploration, kernel selection, regularization tuning</td>
+                            <td>Upload → Quality result</td>
+                        </tr>
+                        <tr>
+                            <td>Consistent Quality</td>
+                            <td>Variable by camera, condition, content type</td>
+                            <td>Reliable across phone/DSLR/action cam; day/night/indoor; portrait/landscape/document</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Section 8 -->
+        <section class="section">
+            <div class="section-number">Section 08</div>
+            <h2 class="section-title">Future Directions and Emerging Trends</h2>
+
+            <div class="highlight-box">
+                <p><strong>The Frontier:</strong> The convergence of multimodal AI, hardware-software co-design, and trustworthy AI principles is shaping the next generation of image deblurring technology.</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Trend</th>
+                            <th>Focus</th>
+                            <th>Applications</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Multimodal</td>
+                            <td>Text-guided enhancement, audio-visual fusion, cross-modal attention</td>
+                            <td>Instruction following, style transfer, regional processing</td>
+                        </tr>
+                        <tr>
+                            <td>Efficiency</td>
+                            <td>Neural architecture search, edge deployment, progressive encoding</td>
+                            <td>Mobile deployment, edge GPU optimization</td>
+                        </tr>
+                        <tr>
+                            <td>Trustworthy</td>
+                            <td>Uncertainty quantification, forensic detection, regulatory compliance</td>
+                            <td>Reliability scoring, authenticity verification, compliance frameworks</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Multimodal Restoration</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Text-Guided Enhancement</td>
+                            <td>Natural language interfaces for precise control</td>
+                            <td>"Remove motion blur but keep background soft"; "Sharpen the face, don't change the background"</td>
+                        </tr>
+                        <tr>
+                            <td>Audio-Visual Fusion</td>
+                            <td>Multi-modal sensing for blur prevention</td>
+                            <td>Audio: Motion trajectory estimation; Accelerometer: Precise motion measurements; Video: Multi-frame temporal consistency</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Efficiency and Accessibility</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Deployment Target</th>
+                            <th>Strategy</th>
+                            <th>Outcome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mobile Deployment</td>
+                            <td>Efficient blocks, limited depth</td>
+                            <td>&lt;10MB models, real-time CPU</td>
+                        </tr>
+                        <tr>
+                            <td>Edge GPU Optimization</td>
+                            <td>Tensor-friendly operations</td>
+                            <td>Maximum FPS on Jetson/embedded</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Trustworthy AI Restoration</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Techniques</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Uncertainty Quantification</td>
+                            <td>Ensemble disagreement detection; Learned confidence prediction; Bayesian neural networks; Conformal prediction intervals</td>
+                        </tr>
+                        <tr>
+                            <td>Forensic Detection</td>
+                            <td>Artifact analysis; Provenance metadata; Multi-modal consistency checks; Cryptographic signatures</td>
+                        </tr>
+                        <tr>
+                            <td>Regulatory Compliance</td>
+                            <td>Watermarking standards; Disclosure requirements; Compliance frameworks; Industry best practices</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Key Recommendations for Website Operators</h3>
+            <ul>
+                <li><strong>Embrace foundation models</strong> for their superior generalization and reduced engineering complexity</li>
+                <li><strong>Invest in multimodal interfaces</strong> to enable intuitive user control and expand market reach</li>
+                <li><strong>Plan for edge deployment</strong> through model optimization and progressive enhancement strategies</li>
+                <li><strong>Build trust through transparency</strong> with uncertainty quantification and clear disclosure practices</li>
+                <li><strong>Stay adaptable</strong> as the field continues to evolve with new capabilities emerging from scale</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 WatermarkCleaner Research. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+    </script>
+</body>
+</html>

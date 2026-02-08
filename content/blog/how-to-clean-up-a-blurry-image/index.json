@@ -1,0 +1,21 @@
+{
+  "slug": "how-to-clean-up-a-blurry-image",
+  "title": {
+    "en": "How to Clean Up a Blurry Image: From Classical Signal Processing to Large Model-Powered Restoration",
+    "zh": "如何清理模糊图像：从经典信号处理到大模型驱动的图像复原"
+  },
+  "description": {
+    "en": "A comprehensive technical guide covering classical deblurring methods, CNN-based deep learning approaches, and modern foundation model techniques for image restoration.",
+    "zh": "涵盖经典去模糊方法、基于CNN的深度学习方法以及现代大模型技术的图像复原综合技术指南。"
+  },
+  "category": "ai_learning",
+  "author": "team",
+  "publishDate": "2026-02-08T10:00:00Z",
+  "readTime": 25,
+  "featured": true,
+  "coverImage": "https://kimi-web-img.moonshot.cn/img/img.freepik.com/14988626b76a6e406113afaaf969ffe0cb9c0937.jpg",
+  "tags": {
+    "en": ["Image Deblurring", "AI", "Deep Learning", "Computer Vision", "Signal Processing"],
+    "zh": ["图像去模糊", "人工智能", "深度学习", "计算机视觉", "信号处理"]
+  }
+}
