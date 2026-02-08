@@ -43,8 +43,12 @@
 
 ### 2.4 图像处理 (Watermark Editor)
 - **模型**: `doubao-seedream-4-0-250828`
-- **特性**: 
-  - 智能比例识别 (Smart Aspect Ratio)
+- **流程**:
+  - 首页上传图片 → 自动跳转 `/convert?autoProcess=true` → 自动开始处理
+  - 处理中显示遮罩动画("正在生成中...")
+  - 完成后显示对比结果
+- **特性**:
+  - 智能比例识别 (Smart Aspect Ratio) - 默认自动保持原图比例
   - 多分辨率支持 (21:9, 16:9, 1:1, etc.)
   - 4K 超高清输出支持
 
@@ -81,7 +85,8 @@ CREEM_API_KEY=
 CREEM_SIGNING_SECRET=
 CREEM_ENVIRONMENT=
 
-# 其他
+# 开发配置
+NEXT_PUBLIC_USE_MOCK_API=false  # true=使用模拟API(不消耗额度), false=调用真实AI服务
 RESEND_API_KEY=
 EMAIL_FROM=
 IP_HASH_SALT=
@@ -118,4 +123,4 @@ npm run cf:deploy    # 部署到 Cloudflare Pages
 ```
 
 ---
-*Last Updated: 2026-01-27*
+*Last Updated: 2026-02-08*
