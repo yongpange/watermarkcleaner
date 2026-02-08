@@ -135,8 +135,60 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
     { label: "21:9", value: "1536x640", aspect: "aspect-[21/9]", iconClass: "w-7 h-3 border-2 rounded-sm" },
   ];
 
-  // Process image
-  const handleProcess = useCallback(async () => {
+  // 解析 SSE 流式响应
+  const parseSSEStream = useCallback(async (response: Response, onEvent: (event: any) => void) => {
+    const reader = response.body?.getReader();
+    if (!reader) return;
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // 保留未完成的行
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed.startsWith('data: ')) {
+            const dataStr = trimmed.slice(6);
+            if (dataStr === '[DONE]') continue;
+            try {
+              const eventData = JSON.parse(dataStr);
+              onEvent(eventData);
+            } catch (e) {
+              console.error('[SSE] Failed to parse event data:', dataStr);
+            }
+          }
+        }
+      }
+
+      // 处理剩余缓冲区
+      if (buffer.trim()) {
+        const trimmed = buffer.trim();
+        if (trimmed.startsWith('data: ')) {
+          const dataStr = trimmed.slice(6);
+          if (dataStr !== '[DONE]') {
+            try {
+              const eventData = JSON.parse(dataStr);
+              onEvent(eventData);
+            } catch (e) {
+              console.error('[SSE] Failed to parse final event data:', dataStr);
+            }
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  }, []);
+
+  // Process image with streaming support
+  const handleProcess = useCallback(async (useStreaming = true) => {
     if (!imageFile || isProcessing) {
       console.log("Cannot process:", { hasFile: !!imageFile, isProcessing });
       return;
@@ -165,7 +217,8 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
       mode: processingOptions.mode,
       selectedRatio,
       actualTargetSize: targetSize,
-      hasCustomPrompt: !!processingOptions.prompt
+      hasCustomPrompt: !!processingOptions.prompt,
+      useStreaming
     });
 
     setIsProcessing(true);
@@ -178,28 +231,17 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
       formData.append("image", imageFile, imageFile.name);
       formData.append("mode", processingOptions.mode);
       formData.append("size", targetSize); // Use calculated size
+      formData.append("stream", useStreaming ? "true" : "false"); // 启用流式输出
 
       if (processingOptions.prompt) {
         formData.append("prompt", processingOptions.prompt);
         console.log(`[Watermark Editor] [${getTimestamp()}] Custom prompt added:`, processingOptions.prompt.substring(0, 100) + '...');
       }
 
-      console.log(`[Watermark Editor] [${getTimestamp()}] FormData built successfully:`, {
-        hasImage: !!imageFile,
-        mode: processingOptions.mode,
-        hasPrompt: !!processingOptions.prompt,
-        formDataEntries: Array.from(formData.entries()).map(([key, value]) => ({
-          key,
-          value: key === 'image' ? (value as File).name : value
-        }))
-      });
-
       console.log(`[Watermark Editor] [${getTimestamp()}] Sending fetch request...`, {
         endpoint: API_ENDPOINT,
         method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        useStreaming,
         timeout: '120s'
       });
 
@@ -212,11 +254,15 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
         signal: AbortSignal.timeout(120000),
       });
 
+      const contentType = response.headers.get('content-type') || '';
+      const isStreaming = contentType.includes('text/event-stream');
+
       console.log(`[Watermark Editor] [${getTimestamp()}] Fetch response received:`, {
         status: response.status,
         statusText: response.statusText,
         ok: response.ok,
-        headers: Object.fromEntries(response.headers.entries())
+        isStreaming,
+        contentType
       });
 
       // Handle response
@@ -228,7 +274,7 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
           const text = await response.text();
           errorData = { error: "Failed to parse API response", details: text, raw: text };
         }
-        
+
         console.error(`[Watermark Editor] [${getTimestamp()}] HTTP error response:`, {
           status: response.status,
           statusText: response.statusText,
@@ -292,6 +338,67 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
         throw new Error(errorData.error || `HTTP error: ${response.status}`);
       }
 
+      // 处理流式响应
+      if (isStreaming) {
+        console.log(`[Watermark Editor] [${getTimestamp()}] Processing streaming response...`);
+
+        let finalImageUrl: string | null = null;
+        let finalUsage: any = null;
+
+        await parseSSEStream(response, (event) => {
+          console.log(`[Watermark Editor] [${getTimestamp()}] Received SSE event:`, {
+            type: event.type,
+            hasUrl: !!event.url,
+            hasB64: !!event.b64_json
+          });
+
+          switch (event.type) {
+            case 'image_generation.partial_succeeded':
+              // 部分成功，获取图片 URL
+              if (event.url) {
+                finalImageUrl = event.url;
+              } else if (event.b64_json) {
+                finalImageUrl = `data:image/jpeg;base64,${event.b64_json}`;
+              }
+              break;
+
+            case 'image_generation.completed':
+              // 全部完成
+              if (event.usage) {
+                finalUsage = event.usage;
+              }
+              break;
+
+            case 'error':
+              // 错误事件
+              console.error(`[Watermark Editor] [${getTimestamp()}] Stream error event:`, event);
+              throw new Error(event.message || 'Stream processing error');
+          }
+        });
+
+        console.log(`[Watermark Editor] [${getTimestamp()}] Stream processing completed:`, {
+          hasImageUrl: !!finalImageUrl,
+          hasUsage: !!finalUsage
+        });
+
+        if (finalImageUrl) {
+          setResultImageUrl(finalImageUrl);
+          toast.success(t("watermark_removed_success"));
+
+          // Notify parent component to refresh credits
+          if (onProcessingComplete) {
+            console.log(`[Watermark Editor] [${getTimestamp()}] Notifying parent component of completion`);
+            onProcessingComplete();
+          }
+        } else {
+          throw new Error('No image generated from stream');
+        }
+
+        setIsProcessing(false);
+        return;
+      }
+
+      // 非流式响应（回退方案）
       const data: ApiResponse = await response.json();
       console.log(`[Watermark Editor] [${getTimestamp()}] API response parsed:`, {
         success: data.success,
@@ -355,7 +462,7 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
     } finally {
       setIsProcessing(false);
     }
-  }, [imageFile, isProcessing, imagePreviewUrl, processingOptions, t, processingT]);
+  }, [imageFile, isProcessing, imagePreviewUrl, processingOptions, t, processingT, onProcessingComplete, parseSSEStream, selectedRatio, imageMetadata]);
 
   // 处理错误警告
   useEffect(() => {
@@ -365,12 +472,12 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
     }
   }, [error]);
 
-  // 图片加载完成后自动开始处理
+  // 图片加载完成后自动开始处理（使用流式输出）
   useEffect(() => {
     if (autoProcessRef.current && imageFile && !isProcessing && !resultImageUrl) {
       autoProcessRef.current = false;
-      console.log('[WatermarkEditor] Auto-starting processing after upload');
-      handleProcess();
+      console.log('[WatermarkEditor] Auto-starting processing after upload (with streaming)');
+      handleProcess(true); // 启用流式输出
     }
   }, [imageFile, isProcessing, resultImageUrl, handleProcess]);
 
@@ -464,7 +571,7 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
 
               <Button
                 size="lg"
-                onClick={handleProcess}
+                onClick={() => handleProcess(true)}
                 disabled={isProcessing || !imageFile}
                 className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg shadow-primary/25 px-8 min-w-[200px] cursor-pointer disabled:cursor-not-allowed"
               >

@@ -64,6 +64,7 @@ interface ArkApiRequest {
   seed?: number;
   guidance_scale: number;
   watermark: boolean;
+  stream?: boolean; // 启用流式输出
 }
 
 interface ArkApiResponse {
@@ -385,15 +386,19 @@ export async function POST(request: NextRequest) {
     // and likely what the API expects for custom resolutions.
     const normalizedSizeStr = `${width}x${height}`;
 
+    // 检查是否请求流式输出
+    const useStreaming = formData.get("stream") === "true";
+
     const requestPayload: ArkApiRequest = {
       model: "doubao-seedream-4-0-250828",
       prompt: prompt,
       image: imageDataUrl,
       response_format: "url",
-      size: normalizedSizeStr, 
+      size: normalizedSizeStr,
       guidance_scale: guidanceScale,
       seed: Math.floor(Math.random() * 1000000), // 随机种子
       watermark: false, // 不添加API水印
+      stream: useStreaming, // 启用流式输出
     };
 
     logInfo('AI API request body prepared (preview):', {
@@ -461,6 +466,25 @@ export async function POST(request: NextRequest) {
         { error: `API error: ${response.statusText}`, details: errorText },
         { status: response.status }
       );
+    }
+
+    // 如果启用了流式输出，直接转发流式响应
+    if (useStreaming && response.headers.get('content-type')?.includes('text/event-stream')) {
+      logInfo('AI API returned streaming response, forwarding to client...');
+
+      // 转发流式响应给前端
+      return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Connection': 'keep-alive',
+          'X-Streaming': 'true',
+          // 保留原始响应的相关头部
+          'X-Request-Id': response.headers.get('x-request-id') || '',
+        },
+      });
     }
 
     logInfo('AI API response OK, parsing JSON...');
