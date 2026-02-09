@@ -52,7 +52,70 @@
   - 多分辨率支持 (21:9, 16:9, 1:1, etc.)
   - 4K 超高清输出支持
 
-### 2.5 其他
+### 2.5 功能页面架构
+
+所有功能页面遵循统一的架构模式：
+
+| 页面 | 路径 | 主题色 | 说明 |
+|------|------|--------|------|
+| 去水印 | `/convert` | 默认 | 核心功能，去除水印、Logo、文字 |
+| 图片变清晰 | `/unblur` | blue/cyan | 修复模糊照片 |
+| 老照片修复 | `/restore` | amber/orange | 修复划痕、上色 |
+| 图片降噪 | `/denoise` | emerald/teal | 去除噪点和颗粒感 |
+| 去除背景 | `/remove-background` | violet/purple | 创建透明PNG |
+| 背景模糊 | `/blur-background` | cyan/sky | 人像模式虚化 |
+| 照片上色 | `/colorize` | rose/pink | 黑白照片着色 |
+| 图片放大 | `/upscale` | indigo/purple | 无损放大 |
+
+**页面结构**:
+```
+src/app/[locale]/(default)/[feature]/
+├── page.tsx          # Server Component, SEO metadata
+└── client.tsx        # Client Component, UI + ComparisonSlider
+
+src/components/[feature]-editor/
+└── index.tsx         # Editor组件, 调用 /api/seededit
+```
+
+**API 调用**:
+- 统一使用 `POST /api/seededit`
+- 参数: `feature=[featureName]` 决定使用的提示词
+- 提示词配置: `src/lib/prompts.ts`
+
+### 2.6 Demo 图片配置最佳实践
+
+**问题**: 不同功能页面可能需要不同的图片格式（如背景移除输出 PNG，其他页面使用 WebP）
+
+**解决方案**: 在翻译文件中定义完整图片路径，页面组件读取配置
+
+```json
+// src/i18n/messages/en.json
+{
+  "[feature]": {
+    "features": {
+      "f1_image_before": "/images/demo/xxx-before.png",
+      "f1_image_after": "/images/demo/xxx-after.png"
+    }
+  }
+}
+```
+
+```tsx
+// client.tsx
+<ComparisonSlider
+  beforeImage={t("features.f1_image_before")}
+  afterImage={t("features.f1_image_after")}
+  ...
+/>
+```
+
+**优势**:
+- `ComparisonSlider` 组件保持通用，无需修改
+- 各页面完全独立，互不干扰
+- 可配置任意格式（.png, .webp, .jpg）
+- 更换图片格式只需修改翻译文件
+
+### 2.7 其他
 - **博客**: 基于文件系统的 MDX，支持多语言动态路由
 - **API**: Edge Runtime 兼容，使用 `Uint8Array` 替代 `Buffer`
 
@@ -123,4 +186,4 @@ npm run cf:deploy    # 部署到 Cloudflare Pages
 ```
 
 ---
-*Last Updated: 2026-02-08*
+*Last Updated: 2026-02-09*

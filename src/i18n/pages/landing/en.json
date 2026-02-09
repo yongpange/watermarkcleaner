@@ -22,6 +22,42 @@
               "url": "/unblur",
               "description": "Make blurry photos clear with AI",
               "icon": "RiDropLine"
+            },
+            {
+              "title": "Restore Old Photos",
+              "url": "/restore",
+              "description": "Repair scratches, tears, and colorize B&W photos",
+              "icon": "RiImageEditLine"
+            },
+            {
+              "title": "Denoise Image",
+              "url": "/denoise",
+              "description": "Remove noise and grain from photos with AI",
+              "icon": "RiSparklingLine"
+            },
+            {
+              "title": "Remove Background",
+              "url": "/remove-background",
+              "description": "Remove background and create transparent PNG",
+              "icon": "RiScissorsCutLine"
+            },
+            {
+              "title": "Blur Background",
+              "url": "/blur-background",
+              "description": "Apply beautiful portrait mode blur effect",
+              "icon": "RiBlurOffLine"
+            },
+            {
+              "title": "Colorize Photo",
+              "url": "/colorize",
+              "description": "Add color to black and white photos with AI",
+              "icon": "RiPaletteLine"
+            },
+            {
+              "title": "Upscale Image",
+              "url": "/upscale",
+              "description": "Enlarge images without losing quality",
+              "icon": "RiExpandLine"
             }
           ]
         },
@@ -390,6 +426,36 @@
             {
               "title": "Unblur Image",
               "url": "/unblur",
+              "target": "_self"
+            },
+            {
+              "title": "Restore Old Photos",
+              "url": "/restore",
+              "target": "_self"
+            },
+            {
+              "title": "Denoise Image",
+              "url": "/denoise",
+              "target": "_self"
+            },
+            {
+              "title": "Remove Background",
+              "url": "/remove-background",
+              "target": "_self"
+            },
+            {
+              "title": "Blur Background",
+              "url": "/blur-background",
+              "target": "_self"
+            },
+            {
+              "title": "Colorize Photo",
+              "url": "/colorize",
+              "target": "_self"
+            },
+            {
+              "title": "Upscale Image",
+              "url": "/upscale",
               "target": "_self"
             },
             {

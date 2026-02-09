@@ -12,8 +12,9 @@ interface ComparisonSliderProps {
   beforeAlt?: string; // SEO friendly alt text
   afterAlt?: string;  // SEO friendly alt text
   className?: string;
-  aspectRatio?: string;
+  aspectRatio?: string; // Optional: manual override (e.g., "aspect-video", "aspect-square")
   autoPlay?: boolean;
+  maxHeight?: number; // Maximum height in pixels (default: 600)
 }
 
 export default function ComparisonSlider({
@@ -24,18 +25,45 @@ export default function ComparisonSlider({
   beforeAlt = "Before processing",
   afterAlt = "After processing",
   className,
-  aspectRatio = "aspect-square",
+  aspectRatio, // No default - will be calculated from image
   autoPlay = true,
+  maxHeight = 600,
 }: ComparisonSliderProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [imageRatio, setImageRatio] = useState<number>(1); // Default 1:1 (square)
+  const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Animation state references
   const animationRef = useRef<number>();
   const startTimeRef = useRef<number>();
-  const autoPlaySpeed = 4000; // Time for full cycle (ms)
+  const autoPlaySpeed = 8000; // Time for full cycle (ms) - slower animation
+
+  // Load image and calculate aspect ratio
+  useEffect(() => {
+    // Reset state when image changes
+    setIsLoaded(false);
+
+    const img = new window.Image();
+    img.src = beforeImage;
+
+    img.onload = () => {
+      const ratio = img.width / img.height;
+      // Limit extreme ratios to prevent layout issues
+      // Min ratio: 0.5 (2:1 portrait), Max ratio: 3 (3:1 landscape)
+      const clampedRatio = Math.max(0.5, Math.min(3, ratio));
+      setImageRatio(clampedRatio);
+      setIsLoaded(true);
+    };
+
+    img.onerror = () => {
+      // Fallback to 1:1 on error
+      setImageRatio(1);
+      setIsLoaded(true);
+    };
+  }, [beforeImage]);
 
   // 1. Manual Move Handler
   const handleMove = useCallback(
@@ -141,14 +169,26 @@ export default function ComparisonSlider({
     }
   };
 
+  // Calculate container style based on aspect ratio
+  // Use manual aspectRatio prop if provided, otherwise use calculated imageRatio
+  const effectiveRatio = aspectRatio ? undefined : imageRatio;
+
   return (
     <div
       ref={containerRef}
       className={cn(
         "relative w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800/50 shadow-2xl select-none group cursor-ew-resize touch-pan-y",
-        aspectRatio,
+        aspectRatio, // Only apply if manually provided
         className
       )}
+      style={{
+        // Apply dynamic aspect ratio if no manual override
+        ...(effectiveRatio && { aspectRatio: `${effectiveRatio}` }),
+        // Limit max height to prevent extremely tall images
+        maxHeight: `${maxHeight}px`,
+        // Smooth transition for aspect ratio changes
+        transition: isLoaded ? 'aspect-ratio 0.3s ease-out' : undefined,
+      }}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
       onMouseEnter={() => setIsHovered(true)}

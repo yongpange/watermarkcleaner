@@ -22,6 +22,42 @@
               "url": "/unblur",
               "description": "使用 AI 智能修复模糊照片",
               "icon": "RiDropLine"
+            },
+            {
+              "title": "老照片修复",
+              "url": "/restore",
+              "description": "修复划痕破损，黑白照片上色",
+              "icon": "RiImageEditLine"
+            },
+            {
+              "title": "图片降噪",
+              "url": "/denoise",
+              "description": "AI 智能去除照片噪点和颗粒感",
+              "icon": "RiSparklingLine"
+            },
+            {
+              "title": "去除背景",
+              "url": "/remove-background",
+              "description": "移除背景，创建透明PNG图片",
+              "icon": "RiScissorsCutLine"
+            },
+            {
+              "title": "背景模糊",
+              "url": "/blur-background",
+              "description": "应用美丽的人像模式虚化效果",
+              "icon": "RiBlurOffLine"
+            },
+            {
+              "title": "照片上色",
+              "url": "/colorize",
+              "description": "为黑白照片添加自然的AI色彩",
+              "icon": "RiPaletteLine"
+            },
+            {
+              "title": "图片放大",
+              "url": "/upscale",
+              "description": "无损放大图片，保持清晰度",
+              "icon": "RiExpandLine"
             }
           ]
         },
@@ -391,6 +427,36 @@
             {
               "title": "图片变清晰",
               "url": "/unblur",
+              "target": "_self"
+            },
+            {
+              "title": "老照片修复",
+              "url": "/restore",
+              "target": "_self"
+            },
+            {
+              "title": "图片降噪",
+              "url": "/denoise",
+              "target": "_self"
+            },
+            {
+              "title": "去除背景",
+              "url": "/remove-background",
+              "target": "_self"
+            },
+            {
+              "title": "背景模糊",
+              "url": "/blur-background",
+              "target": "_self"
+            },
+            {
+              "title": "照片上色",
+              "url": "/colorize",
+              "target": "_self"
+            },
+            {
+              "title": "图片放大",
+              "url": "/upscale",
               "target": "_self"
             },
             {
