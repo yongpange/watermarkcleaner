@@ -4,16 +4,44 @@ import BackgroundRemoverEditor from "@/components/background-remover-editor";
 import ComparisonSlider from "@/components/ui/comparison-slider";
 import { useTranslations } from "next-intl";
 import { useAppContext } from "@/contexts/app";
-import { useEffect } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useEffect, useState } from "react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CreditsDisplay } from "@/components/CreditsDisplay";
 import { AuthModal } from "@/components/auth/auth-modal";
-import { useState } from "react";
+import TrustBadges from "@/components/blocks/trust-badges";
+import ProblemTypes from "@/components/blocks/problem-types";
+import UseCases from "@/components/blocks/use-cases";
+import HowToSteps from "@/components/blocks/how-to-steps";
+import SocialProof from "@/components/blocks/social-proof";
+import RelatedTools from "@/components/blocks/related-tools";
+import { User, ShoppingBag, LayoutTemplate, Share2, Scissors, Image, Layers, Wand2, Upload, Download, Maximize2, Wind, History, Palette, Square } from "lucide-react";
+
+const problemTypesConfig = [
+  { key: 'portrait', icon: User, color: 'bg-violet-500/10 text-violet-600' },
+  { key: 'product', icon: ShoppingBag, color: 'bg-purple-500/10 text-purple-600' },
+  { key: 'complex', icon: Layers, color: 'bg-pink-500/10 text-pink-600' },
+  { key: 'hair', icon: Scissors, color: 'bg-rose-500/10 text-rose-600' },
+];
+
+const useCasesConfig = [
+  { key: 'ecommerce', icon: ShoppingBag, color: 'bg-blue-500/10 text-blue-600' },
+  { key: 'portrait', icon: User, color: 'bg-pink-500/10 text-pink-600' },
+  { key: 'design', icon: LayoutTemplate, color: 'bg-indigo-500/10 text-indigo-600' },
+  { key: 'social', icon: Share2, color: 'bg-purple-500/10 text-purple-600' },
+];
+
+const howToStepsConfig = [
+  { key: 'step1', icon: Upload },
+  { key: 'step2', icon: Wand2 },
+  { key: 'step3', icon: Download },
+];
+
+const relatedToolsConfig = [
+  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20' },
+  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-green-500/10 text-green-600 hover:bg-green-500/20' },
+  { key: 'restore', icon: History, href: '/restore', color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20' },
+  { key: 'colorize', icon: Palette, href: '/colorize', color: 'bg-rose-500/10 text-rose-600 hover:bg-rose-500/20' },
+];
 
 export default function RemoveBackgroundClient() {
   const t = useTranslations("remove-background");
@@ -21,159 +49,94 @@ export default function RemoveBackgroundClient() {
   const [processingCount, setProcessingCount] = useState(0);
   const [authModalOpen, setAuthModalOpen] = useState(false);
 
-  // Refresh credits when page loads
-  useEffect(() => {
-    refreshCredits();
-  }, [refreshCredits]);
-
-  const handleProcessingComplete = () => {
-    refreshCredits();
-    setProcessingCount(prev => prev + 1);
-  };
-
-  const handleVerifyEmail = () => {
-    setAuthModalOpen(true);
-  };
+  useEffect(() => { refreshCredits(); }, [refreshCredits]);
+  const handleProcessingComplete = () => { refreshCredits(); setProcessingCount(prev => prev + 1); };
+  const handleVerifyEmail = () => { setAuthModalOpen(true); };
 
   return (
-    <div className="container mx-auto px-4 py-4 md:py-8">
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* Header Section */}
-        <section className="text-center space-y-3">
-          <h1 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-violet-600 leading-tight py-1">
-            {t("title")}
-          </h1>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto">
-            {t("description")}
-          </p>
-        </section>
-
-        {/* Editor Section */}
-        <div className="space-y-4">
-             {/* Credits Display */}
-             <div className="max-w-4xl mx-auto">
-                <CreditsDisplay
-                  refreshKey={processingCount}
-                  onVerifyEmail={handleVerifyEmail}
-                />
-              </div>
-
+    <div>
+      <section className="container mx-auto px-4 py-8 md:py-12">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="text-center space-y-3">
+            <h1 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-violet-600 leading-tight py-1">{t("title")}</h1>
+            <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto">{t("description")}</p>
+          </div>
+          <div id="remove-bg-editor" className="space-y-4">
+            <div className="max-w-4xl mx-auto">
+              <CreditsDisplay refreshKey={processingCount} onVerifyEmail={handleVerifyEmail} />
+            </div>
             <div className="bg-card rounded-2xl shadow-sm border border-border/50 p-1 md:p-6">
               <BackgroundRemoverEditor onProcessingComplete={handleProcessingComplete} />
             </div>
+          </div>
         </div>
+      </section>
+      <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
 
-        {/* Auth Modal */}
-        <AuthModal
-          isOpen={authModalOpen}
-          onClose={() => setAuthModalOpen(false)}
-        />
-
-        {/* Feature Demos Section */}
-        <section className="space-y-24 lg:space-y-32 py-8 lg:py-12 mt-16 md:mt-24">
-
-          {/* Demo 1: Portrait Background Removal */}
+      {/* Comparison Demos - 首屏视觉展示 */}
+      <section className="container mx-auto px-4 py-12 lg:py-16">
+        <div className="space-y-24 lg:space-y-32">
           <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center container mx-auto px-4">
             <div className="space-y-6 text-center lg:text-left order-1">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-                  {t("features.f1_title")}
-                </h2>
-                <h3 className="text-lg md:text-xl text-muted-foreground font-medium">
-                  {t("features.f1_desc")}
-                </h3>
+                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">{t("features.f1_title")}</h2>
+                <h3 className="text-lg md:text-xl text-muted-foreground font-medium">{t("features.f1_desc")}</h3>
               </div>
             </div>
             <div className="order-2 w-full mx-auto">
-               <ComparisonSlider
-                 beforeImage={t("features.f1_image_before")}
-                 afterImage={t("features.f1_image_after")}
-                 beforeLabel={t("features.f1_alt_before").split(":")[0]}
-                 afterLabel={t("features.f1_alt_after").split(":")[0]}
-                 beforeAlt={t("features.f1_alt_before")}
-                 afterAlt={t("features.f1_alt_after")}
-                 className="shadow-2xl aspect-square w-full max-w-2xl"
-               />
+              <ComparisonSlider beforeImage={t("features.f1_image_before")} afterImage={t("features.f1_image_after")} beforeLabel={t("features.f1_alt_before").split(":")[0]} afterLabel={t("features.f1_alt_after").split(":")[0]} beforeAlt={t("features.f1_alt_before")} afterAlt={t("features.f1_alt_after")} className="shadow-2xl aspect-square w-full max-w-[360px]" />
             </div>
           </article>
-
-          {/* Demo 2: Product Background Removal */}
           <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center container mx-auto px-4">
-             <div className="order-2 lg:order-1 w-full mx-auto">
-               <ComparisonSlider
-                 beforeImage={t("features.f2_image_before")}
-                 afterImage={t("features.f2_image_after")}
-                 beforeLabel={t("features.f2_alt_before").split(":")[0]}
-                 afterLabel={t("features.f2_alt_after").split(":")[0]}
-                 beforeAlt={t("features.f2_alt_before")}
-                 afterAlt={t("features.f2_alt_after")}
-                 className="shadow-2xl aspect-square lg:ml-auto lg:mr-0 w-full max-w-2xl"
-               />
+            <div className="order-2 lg:order-1 w-full mx-auto">
+              <ComparisonSlider beforeImage={t("features.f2_image_before")} afterImage={t("features.f2_image_after")} beforeLabel={t("features.f2_alt_before").split(":")[0]} afterLabel={t("features.f2_alt_after").split(":")[0]} beforeAlt={t("features.f2_alt_before")} afterAlt={t("features.f2_alt_after")} className="shadow-2xl aspect-square lg:ml-auto lg:mr-0 w-full max-w-[360px]" />
             </div>
             <div className="space-y-6 text-center lg:text-left order-1 lg:order-2">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  {t("features.f2_title")}
-                </h2>
-                <h3 className="text-lg md:text-xl text-muted-foreground font-medium">
-                  {t("features.f2_desc")}
-                </h3>
+                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{t("features.f2_title")}</h2>
+                <h3 className="text-lg md:text-xl text-muted-foreground font-medium">{t("features.f2_desc")}</h3>
               </div>
             </div>
           </article>
-
-          {/* Demo 3: Complex Background Removal */}
           <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center container mx-auto px-4">
             <div className="space-y-6 text-center lg:text-left order-1">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
-                  {t("features.f3_title")}
-                </h2>
-                <h3 className="text-lg md:text-xl text-muted-foreground font-medium">
-                  {t("features.f3_desc")}
-                </h3>
+                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">{t("features.f3_title")}</h2>
+                <h3 className="text-lg md:text-xl text-muted-foreground font-medium">{t("features.f3_desc")}</h3>
               </div>
             </div>
             <div className="order-2 w-full mx-auto">
-               <ComparisonSlider
-                 beforeImage={t("features.f3_image_before")}
-                 afterImage={t("features.f3_image_after")}
-                 beforeLabel={t("features.f3_alt_before").split(":")[0]}
-                 afterLabel={t("features.f3_alt_after").split(":")[0]}
-                 beforeAlt={t("features.f3_alt_before")}
-                 afterAlt={t("features.f3_alt_after")}
-                 className="shadow-2xl aspect-square w-full max-w-2xl"
-               />
+              <ComparisonSlider beforeImage={t("features.f3_image_before")} afterImage={t("features.f3_image_after")} beforeLabel={t("features.f3_alt_before").split(":")[0]} afterLabel={t("features.f3_alt_after").split(":")[0]} beforeAlt={t("features.f3_alt_before")} afterAlt={t("features.f3_alt_after")} className="shadow-2xl aspect-square w-full max-w-[360px]" />
             </div>
           </article>
+        </div>
+      </section>
 
-        </section>
-
-        {/* FAQ Section */}
-        <section aria-labelledby="faq-heading" className="max-w-3xl mx-auto py-12 border-t border-border/50">
-          <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-center mb-10">{t("faq.title")}</h2>
-
-          <Accordion type="single" collapsible className="w-full space-y-4">
-            {Array.from({ length: 8 }).map((_, index) => {
-              const i = index + 1;
-              return (
-                <AccordionItem key={i} value={`item-${i}`} className="bg-muted/30 px-6 rounded-xl border-none">
-                  <AccordionTrigger className="hover:no-underline py-4 text-left font-semibold text-lg">
-                    <span className="flex items-center gap-3">
-                      <span className="bg-primary/10 text-primary w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0">Q</span>
-                      {t(`faq.q${i}` as any)}
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pl-9 pb-4 text-base leading-relaxed">
-                    {t(`faq.a${i}` as any)}
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
-          </Accordion>
-        </section>
-
-      </div>
+      <TrustBadges namespace="remove-background" />
+      <ProblemTypes namespace="remove-background" types={problemTypesConfig} />
+      <UseCases namespace="remove-background" cases={useCasesConfig} />
+      <HowToSteps namespace="remove-background" steps={howToStepsConfig} editorId="remove-bg-editor" />
+      <SocialProof namespace="remove-background" />
+      <RelatedTools namespace="remove-background" tools={relatedToolsConfig} />
+      <section aria-labelledby="faq-heading" className="container mx-auto px-4 max-w-3xl py-16 border-t border-border/50">
+        <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-center mb-10">{t("faq.title")}</h2>
+        <Accordion type="single" collapsible className="w-full space-y-4">
+          {Array.from({ length: 10 }).map((_, index) => {
+            const i = index + 1;
+            return (
+              <AccordionItem key={i} value={`item-${i}`} className="bg-muted/30 px-6 rounded-xl border-none">
+                <AccordionTrigger className="hover:no-underline py-4 text-left font-semibold text-lg">
+                  <span className="flex items-center gap-3">
+                    <span className="bg-primary/10 text-primary w-6 h-6 rounded-full flex items-center justify-center text-xs shrink-0">Q</span>
+                    {t(`faq.q${i}` as any)}
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pl-9 pb-4 text-base leading-relaxed">{t(`faq.a${i}` as any)}</AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </section>
     </div>
   );
 }

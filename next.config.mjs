@@ -20,14 +20,9 @@ const nextConfig = {
   output: "standalone",
   reactStrictMode: false,
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
-  // NOTE: Database field names in generated types don't match code (e.g. userid vs user_id)
-  // Need to update code to use lowercase field names or regenerate types with proper naming
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // 静态页面生成超时设置
+  staticPageGenerationTimeout: 60,
+  // 禁用图片优化以加速构建
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -37,10 +32,13 @@ const nextConfig = {
       },
     ],
   },
-  // 确保 content 目录在构建输出中被包含（用于 Vercel 部署）
-  outputFileTracingIncludes: {
-    "/[locale]/blog": ["./content/blog/**/*"],
-    "/[locale]/blog/[slug]": ["./content/blog/**/*"],
+  // NOTE: Database field names in generated types don't match code (e.g. userid vs user_id)
+  // Need to update code to use lowercase field names or regenerate types with proper naming
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   async redirects() {
     return [];

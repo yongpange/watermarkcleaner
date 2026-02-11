@@ -1,5 +1,4 @@
-// Blog pages use pre-compiled data, compatible with Edge Runtime
-export const runtime = 'edge';
+// Blog pages use Node.js runtime for fs access
 export const dynamic = 'force-dynamic';
 
 import { Metadata } from "next";

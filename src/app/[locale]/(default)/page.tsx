@@ -2,7 +2,13 @@ export const runtime = 'edge';
 
 import CTA from "@/components/blocks/cta";
 import FAQ from "@/components/blocks/faq";
+import Feature from "@/components/blocks/feature";
+import Stats from "@/components/blocks/stats";
+import Testimonial from "@/components/blocks/testimonial";
 import Hero from "@/components/blocks/hero";
+import WhyNeedSection from "@/components/blocks/why-need-section";
+import HowToUse from "@/components/blocks/how-to-use";
+import FormatSpecs from "@/components/blocks/format-specs";
 import { getLandingPage } from "@/services/page";
 import { getTranslations } from "next-intl/server";
 import ComparisonShowcase from '@/components/blocks/comparison-showcase';
@@ -49,7 +55,7 @@ export async function generateMetadata({
           url: "/imgs/comparison-1-after.webp",
           width: 1200,
           height: 675,
-          alt: "WatermarkCleaner AI watermark removal demonstration",
+          alt: t("landing.hero.og_alt"),
         },
       ],
     },
@@ -80,47 +86,82 @@ export default async function LandingPage({
   const { locale } = await params;
   const page = await getLandingPage(locale);
 
+  // 从 JSON 获取 comparison 数据（国际化），如果没有则使用默认英文
+  const comparisons = page.comparisons?.items || [];
+  const compImages = [
+    { before: "/images/custom/woman_city_watermarked.webp", after: "/images/custom/woman_city.webp" },
+    { before: "/images/custom/woman_balcony_watermarked.webp", after: "/images/custom/woman_balcony.webp" },
+    { before: "/images/custom/beach_watermarked.webp", after: "/images/custom/beach.webp" },
+    { before: "/images/custom/stylish_woman_watermarked.webp", after: "/images/custom/stylish_woman.webp" },
+  ];
+
   return (
     <>
+      {/* 1. Hero Section with Comparison Slider + Upload */}
       {page.hero && <Hero hero={page.hero} />}
 
-      {/* Feature 1 - AI-Powered Watermark Detection */}
-      <ComparisonShowcase
-        title="AI-Powered Watermark Detection – Automatic & Accurate"
-        subtitle="Our advanced AI algorithms automatically detect and identify watermarks, logos, and text overlays in your images. No manual selection needed – WatermarkCleaner's intelligent system recognizes patterns and removes unwanted elements while preserving the original image quality."
-        beforeImage="/images/custom/woman_city_watermarked.webp"
-        afterImage="/images/custom/woman_city.webp"
-        reversed={false}
-      />
+      {/* 2. Comparison Showcase Group 1 (2 items) */}
+      {comparisons.length >= 2 && (
+        <>
+          <ComparisonShowcase
+            title={comparisons[0]?.title || ""}
+            subtitle={comparisons[0]?.description || ""}
+            beforeImage={compImages[0].before}
+            afterImage={compImages[0].after}
+            reversed={false}
+          />
+          <ComparisonShowcase
+            title={comparisons[1]?.title || ""}
+            subtitle={comparisons[1]?.description || ""}
+            beforeImage={compImages[1].before}
+            afterImage={compImages[1].after}
+            reversed={true}
+          />
+        </>
+      )}
 
-      {/* Feature 2 - Batch Processing – Remove Multiple Watermarks at Once */}
-      <ComparisonShowcase
-        title="Batch Processing – Remove Multiple Watermarks at Once"
-        subtitle="Save time with batch processing capabilities. Upload multiple images and remove watermarks from all of them simultaneously. Perfect for photographers, content creators, and businesses needing to clean large image collections efficiently."
-        beforeImage="/images/custom/woman_balcony_watermarked.webp"
-        afterImage="/images/custom/woman_balcony.webp"
-        reversed={true}
-      />
+      {/* 3. Why Need AI Watermark Removal */}
+      {page.why_need && <WhyNeedSection section={page.why_need} />}
 
-      {/* Feature 3 - Preserve Image Quality – High-Resolution Output */}
-      <ComparisonShowcase
-        title="Preserve Image Quality – High-Resolution Output"
-        subtitle="Worried about quality loss? WatermarkCleaner uses sophisticated inpainting technology that intelligently fills in removed areas based on surrounding pixels. Your images maintain crisp details, natural textures, and original resolution after watermark removal."
-        beforeImage="/images/custom/beach_watermarked.webp"
-        afterImage="/images/custom/beach.webp"
-        reversed={false}
-      />
+      {/* 4. Feature Grid (9 features) */}
+      {page.feature && <Feature section={page.feature} />}
 
-      {/* Feature 4 - Support All Image Formats – JPG, PNG, WEBP & More */}
-      <ComparisonShowcase
-        title="Support All Image Formats – JPG, PNG, WEBP & More"
-        subtitle="WatermarkCleaner supports all popular image formats including JPG, JPEG, PNG, WEBP, BMP, and TIFF. Whether you're working with product photos, social media graphics, or professional photography, our tool handles it all with the same powerful watermark removal capabilities."
-        beforeImage="/images/custom/stylish_woman_watermarked.webp"
-        afterImage="/images/custom/stylish_woman.webp"
-        reversed={true}
-      />
+      {/* 5. How To Use (4 steps) */}
+      {page.usage && <HowToUse section={page.usage} />}
 
+      {/* 6. Supported Formats & Specs */}
+      {page.format_specs && <FormatSpecs section={page.format_specs} />}
+
+      {/* 7. Stats */}
+      {page.stats && <Stats section={page.stats} />}
+
+      {/* 8. Testimonials */}
+      {page.testimonial && <Testimonial section={page.testimonial} />}
+
+      {/* 9. Comparison Showcase Group 2 (2 items) */}
+      {comparisons.length >= 4 && (
+        <>
+          <ComparisonShowcase
+            title={comparisons[2]?.title || ""}
+            subtitle={comparisons[2]?.description || ""}
+            beforeImage={compImages[2].before}
+            afterImage={compImages[2].after}
+            reversed={false}
+          />
+          <ComparisonShowcase
+            title={comparisons[3]?.title || ""}
+            subtitle={comparisons[3]?.description || ""}
+            beforeImage={compImages[3].before}
+            afterImage={compImages[3].after}
+            reversed={true}
+          />
+        </>
+      )}
+
+      {/* 10. FAQ */}
       {page.faq && <FAQ section={page.faq} />}
+
+      {/* 11. CTA */}
       {page.cta && <CTA section={page.cta} />}
     </>
   );

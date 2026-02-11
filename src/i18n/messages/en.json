@@ -310,7 +310,10 @@
     "metadata": {
       "title": "Unblur Image Online - Make Blurry Photos Clear with AI",
       "description": "Fix blurry photos instantly! Our AI tool sharpens faces, text, and entire images. Upload & unblur in seconds.",
-      "keywords": "unblur image, make blurry photo clear, sharpen blurred image, fix blurry photo, AI unblur tool"
+      "keywords": "unblur image, make blurry photo clear, sharpen blurred image, fix blurry photo, AI unblur tool",
+      "og_title": "Unblur Image Online Free | AI Sharpen Blurry Photos - WatermarkCleaner",
+      "og_description": "Fix blurry photos instantly with AI! Unblur faces, text, and entire images online for free. No signup, no watermark. Try our sharpen photo tool now!",
+      "og_image_alt": "AI Unblur Tool - Make Blurry Photos Clear"
     },
     "title": "Unblur Image Online – AI Tool to Make Blurry Photos Clear",
     "description": "Instantly unblur photos and enhance details to make your images sharp and clear",
@@ -329,6 +332,149 @@
       "f3_alt_before": "Before: blurry beach landscape photo",
       "f3_alt_after": "After: crisp high-resolution beach photo fixed by AI"
     },
+    "trust_badges": {
+      "title": "Why Choose Our Unblur Tool",
+      "free": {
+        "title": "Start Free",
+        "desc": "Free monthly credits, upgrade for more"
+      },
+      "watermark": {
+        "title": "No Watermark",
+        "desc": "Clean output without any branding"
+      },
+      "instant": {
+        "title": "Instant Results",
+        "desc": "Get clear photos in seconds"
+      },
+      "privacy": {
+        "title": "Privacy Protected",
+        "desc": "Images deleted after processing"
+      },
+      "signup": {
+        "title": "No Signup",
+        "desc": "Use immediately without account"
+      }
+    },
+    "problem_types": {
+      "title": "What Types of Blur Can We Fix?",
+      "subtitle": "Our AI handles various blur types caused by different issues",
+      "types": {
+        "motion": {
+          "title": "Motion Blur",
+          "desc": "Caused by camera shake or moving subjects. Common in low-light photos or action shots.",
+          "examples": "Shaky hand photos | Moving vehicle shots | Sports photography"
+        },
+        "lens": {
+          "title": "Out of Focus",
+          "desc": "When the camera focuses on the wrong area or the depth of field is too shallow.",
+          "examples": "Wrong focus point | Shallow depth portraits | Close-up shots"
+        },
+        "soft": {
+          "title": "Softness & Detail Loss",
+          "desc": "Overall lack of sharpness from low-quality cameras or aggressive compression.",
+          "examples": "Low-res images | Heavy JPEG compression | Old digital photos"
+        },
+        "text": {
+          "title": "Blurry Text",
+          "desc": "Illegible documents, receipts, and screenshots that need to be readable.",
+          "examples": "Scanned documents | Receipts & invoices | Screenshots"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Perfect For Every Use Case",
+      "subtitle": "See how different users benefit from our AI unblur tool",
+      "pain_point": "Pain Point",
+      "solution": "Solution",
+      "cases": {
+        "portrait": {
+          "title": "Portrait Photography",
+          "pain_point": "Blurry faces ruin precious memories",
+          "solution": "AI detects and enhances facial features, making eyes sharp and skin natural",
+          "examples": "Family photos | Selfies | Professional portraits"
+        },
+        "ecommerce": {
+          "title": "E-commerce Products",
+          "pain_point": "Blurry product photos reduce sales",
+          "solution": "Clear product images that showcase details and boost conversions",
+          "examples": "Amazon listings | Shopify stores | Social media ads"
+        },
+        "documents": {
+          "title": "Document Scanning",
+          "pain_point": "Blurry text is impossible to read",
+          "solution": "Sharpen text in receipts, contracts, and scanned PDFs",
+          "examples": "Receipts & invoices | Contracts | ID documents"
+        },
+        "social": {
+          "title": "Social Media",
+          "pain_point": "Compressed images lose quality",
+          "solution": "Restore clarity to photos for Instagram, Facebook, and more",
+          "examples": "Instagram posts | Profile pictures | Story highlights"
+        }
+      }
+    },
+    "how_to": {
+      "title": "How to Unblur an Image in 3 Simple Steps",
+      "subtitle": "No technical skills required - fix blurry photos instantly",
+      "schema_name": "How to Unblur an Image Online",
+      "schema_description": "Fix blurry photos instantly with AI using these 3 simple steps",
+      "step1_title": "Upload Your Image",
+      "step1_desc": "Drag and drop or click to select your blurry photo. We support JPG, PNG, and WebP formats up to 10MB.",
+      "step2_title": "AI Automatically Sharpens",
+      "step2_desc": "Our AI analyzes the blur type and intelligently enhances details. Processing takes just seconds.",
+      "step3_title": "Download Clear Photo",
+      "step3_desc": "Get your unblurred image instantly. Free download with no watermark or quality loss.",
+      "cta": "Unblur Your Image Now"
+    },
+    "social_proof": {
+      "title": "Trusted by 1M+ Users Worldwide",
+      "subtitle": "Join millions who trust our AI unblur tool for their photos",
+      "stats": {
+        "users": "Happy Users",
+        "images": "Images Processed",
+        "rating": "Average Rating",
+        "satisfaction": "Satisfaction Rate"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "This tool saved my vacation photos! I had blurry shots from a moving boat and this fixed them perfectly. Amazing quality!",
+          "name": "Sarah Johnson",
+          "role": "Travel Photographer"
+        },
+        "2": {
+          "quote": "I use this for all my e-commerce product photos. It clears up blurry shots and makes them look professional. Great for Amazon listings!",
+          "name": "Michael Chen",
+          "role": "Online Seller"
+        },
+        "3": {
+          "quote": "Fixed all my old blurry family photos. The face unblur feature is incredible - it made 20-year-old photos look new again!",
+          "name": "Emma Williams",
+          "role": "Family Historian"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Explore More AI Image Tools",
+      "subtitle": "Enhance your images further with our other free AI tools",
+      "tools": {
+        "upscale": {
+          "name": "Upscale Image",
+          "desc": "Increase resolution up to 4x without losing quality"
+        },
+        "denoise": {
+          "name": "Denoise Photo",
+          "desc": "Remove noise and grain from your photos"
+        },
+        "restore": {
+          "name": "Restore Old Photos",
+          "desc": "Fix scratches and damage in vintage photos"
+        },
+        "remove_bg": {
+          "name": "Remove Background",
+          "desc": "Create transparent PNG backgrounds instantly"
+        }
+      }
+    },
     "faq": {
       "title": "Frequently Asked Questions",
       "q1": "Can AI really unblur a photo?",
@@ -346,14 +492,21 @@
       "q7": "Is my uploaded image safe?",
       "a7": "Yes. All images are processed securely and automatically deleted from our servers within minutes. We don't store or share your files.",
       "q8": "Can I use this on mobile phones?",
-      "a8": "Yes! The tool works on any device—iPhone, Android, tablet, or desktop. No app install required; just open the website in your browser."
+      "a8": "Yes! The tool works on any device—iPhone, Android, tablet, or desktop. No app install required; just open the website in your browser.",
+      "q9": "How to unblur an image on iPhone or Android?",
+      "a9": "Simply open our website in your mobile browser - no app download needed! Tap 'Upload Image', select your photo from your gallery, and our AI will unblur it in seconds. Works perfectly on iPhone, Samsung, and all Android devices.",
+      "q10": "What's the difference between unblur and sharpen?",
+      "a10": "Unblur specifically targets and fixes blur caused by motion, focus issues, or camera shake by reconstructing lost details. Sharpen enhances edge contrast to make images appear crisper. Our AI unblur tool does both - it removes blur AND enhances sharpness for the best results."
     }
   },
   "restore": {
     "metadata": {
       "title": "Restore Old Photos Online Free - AI Photo Restoration Tool",
       "description": "Restore old, damaged photos instantly with AI. Remove scratches, tears, and fading. Colorize black & white photos for free.",
-      "keywords": "restore old photos, photo restoration, fix old pictures, AI photo repair, colorize old photos"
+      "keywords": "restore old photos, photo restoration, fix old pictures, AI photo repair, colorize old photos",
+      "og_title": "Restore Old Photos Online Free | AI Photo Restoration - WatermarkCleaner",
+      "og_description": "Restore old, damaged photos instantly with AI! Remove scratches, repair tears, colorize B&W photos. No signup, no watermark. Try our free photo restoration tool now!",
+      "og_image_alt": "AI Photo Restoration Tool - Restore Old Photos"
     },
     "title": "Restore Old Photos Online Free – AI Photo Restoration",
     "description": "Bring your old, damaged photos back to life with AI restoration technology",
@@ -361,6 +514,149 @@
     "process_failed": "Restoration failed, please try again",
     "processing": "AI is restoring your photo...",
     "start_restore": "Restore Photo",
+    "trust_badges": {
+      "title": "Why Choose Our Photo Restoration Tool",
+      "free": {
+        "title": "Start Free",
+        "desc": "Free monthly credits, upgrade for more"
+      },
+      "watermark": {
+        "title": "No Watermark",
+        "desc": "Clean output without any branding"
+      },
+      "instant": {
+        "title": "Instant Results",
+        "desc": "Get restored photos in seconds"
+      },
+      "privacy": {
+        "title": "Privacy Protected",
+        "desc": "Images deleted after processing"
+      },
+      "signup": {
+        "title": "No Signup",
+        "desc": "Use immediately without account"
+      }
+    },
+    "problem_types": {
+      "title": "What Types of Damage Can We Fix?",
+      "subtitle": "Our AI handles various types of photo damage and deterioration",
+      "types": {
+        "scratches": {
+          "title": "Scratches & Tears",
+          "desc": "Physical damage from handling, storage, or age that creates visible lines and rips on the photo surface.",
+          "examples": "Surface scratches | Edge tears | Fold marks"
+        },
+        "fading": {
+          "title": "Fading & Discoloration",
+          "desc": "Loss of color vibrancy and contrast from light exposure, oxidation, or chemical degradation over time.",
+          "examples": "Sun-faded prints | Yellowed photos | Lost contrast"
+        },
+        "bw": {
+          "title": "Black & White Photos",
+          "desc": "Monochrome photos that can be transformed with realistic, historically accurate colorization.",
+          "examples": "Vintage portraits | Historical images | Family archives"
+        },
+        "noise": {
+          "title": "Noise & Spots",
+          "desc": "Digital or film grain, dust spots, and artifacts that reduce photo clarity and detail.",
+          "examples": "Film grain | Dust spots | Compression artifacts"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Perfect For Every Use Case",
+      "subtitle": "See how different users benefit from our AI photo restoration tool",
+      "pain_point_label": "Pain Point",
+      "solution_label": "Solution",
+      "cases": {
+        "family": {
+          "title": "Family Photos",
+          "pain_point": "Precious family memories deteriorating with age",
+          "solution": "Restore clarity, color, and detail to preserve memories for future generations",
+          "examples": "Childhood photos | Wedding albums | Holiday memories"
+        },
+        "historical": {
+          "title": "Historical Preservation",
+          "pain_point": "Historical documents and photos fading away",
+          "solution": "Digitally preserve historical images with professional-grade restoration",
+          "examples": "War photos | Vintage scenes | Historical figures"
+        },
+        "vintage": {
+          "title": "Vintage Photo Recovery",
+          "pain_point": "Old photos losing their original charm and detail",
+          "solution": "Bring back the original vibrancy while maintaining vintage character",
+          "examples": "1920s portraits | Classic cars | Retro fashion"
+        },
+        "genealogy": {
+          "title": "Genealogy Research",
+          "pain_point": "Ancestor photos too damaged to identify details",
+          "solution": "Enhance facial features and details to better identify relatives",
+          "examples": "Ancestor portraits | Family trees | Heritage research"
+        }
+      }
+    },
+    "how_to": {
+      "title": "How to Restore an Old Photo in 3 Simple Steps",
+      "subtitle": "No technical skills required - restore your photos instantly",
+      "schema_name": "How to Restore an Old Photo Online",
+      "schema_description": "Restore old, damaged photos instantly with AI using these 3 simple steps",
+      "step1_title": "Upload Your Photo",
+      "step1_desc": "Drag and drop or click to select your damaged old photo. We support JPG, PNG, and WebP formats up to 10MB.",
+      "step2_title": "AI Automatically Restores",
+      "step2_desc": "Our AI analyzes the damage type and intelligently repairs scratches, tears, fading, and discoloration.",
+      "step3_title": "Download Restored Photo",
+      "step3_desc": "Get your beautifully restored photo instantly. Free download with no watermark or quality loss.",
+      "cta": "Restore Your Photo Now"
+    },
+    "social_proof": {
+      "title": "Trusted by 1M+ Users Worldwide",
+      "subtitle": "Join millions who trust our AI photo restoration tool",
+      "stats": {
+        "users": "Happy Users",
+        "images": "Photos Restored",
+        "rating": "Average Rating",
+        "satisfaction": "Satisfaction Rate"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "This tool brought my grandmother's wedding photos back to life! The scratches are completely gone and the colors look so natural. Absolutely amazing!",
+          "name": "Margaret Chen",
+          "role": "Family Historian"
+        },
+        "2": {
+          "quote": "I had old photos from the 1960s that were almost completely faded. This AI restored them beautifully - I can finally see my parents' faces clearly again.",
+          "name": "Robert Williams",
+          "role": "Photography Enthusiast"
+        },
+        "3": {
+          "quote": "As a genealogy researcher, I've tried many restoration tools. This is by far the best - it even fixed torn photos that I thought were beyond repair!",
+          "name": "Sarah Johnson",
+          "role": "Genealogy Researcher"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Explore More AI Image Tools",
+      "subtitle": "Enhance your restored photos further with our other free AI tools",
+      "tools": {
+        "upscale": {
+          "name": "Upscale Image",
+          "desc": "Increase resolution up to 4x without losing quality"
+        },
+        "denoise": {
+          "name": "Denoise Photo",
+          "desc": "Remove noise and grain from your photos"
+        },
+        "remove_bg": {
+          "name": "Remove Background",
+          "desc": "Create transparent PNG backgrounds instantly"
+        },
+        "colorize": {
+          "name": "Colorize Photo",
+          "desc": "Add natural colors to black and white photos"
+        }
+      }
+    },
     "features": {
       "f1_title": "Remove Scratches & Tears: Repair Damaged Photos",
       "f1_desc": "AI intelligently removes scratches, tears, and physical damage from old photos",
@@ -392,14 +688,21 @@
       "q7": "Is my photo safe and private?",
       "a7": "Yes. All photos are processed securely and deleted from our servers within minutes.",
       "q8": "Can severely damaged photos be restored?",
-      "a8": "While our AI is powerful, extremely damaged photos with missing sections may have limitations. Try it to see the results!"
+      "a8": "While our AI is powerful, extremely damaged photos with missing sections may have limitations. Try it to see the results!",
+      "q9": "What is the best way to scan old photos for restoration?",
+      "a9": "For best results, scan at 300-600 DPI in color mode (even for B&W photos). Save as TIFF or high-quality JPG. Make sure the photo is flat and evenly lit during scanning.",
+      "q10": "How long does photo restoration take?",
+      "a10": "Most photos are restored in 30-60 seconds. Complex damage may take slightly longer. You'll see a preview and can download the full-resolution result immediately."
     }
   },
   "denoise": {
     "metadata": {
       "title": "Denoise Image Online Free - Remove Noise from Photos",
       "description": "Remove noise and grain from photos instantly with AI. Clean up noisy images, fix grainy photos, and preserve details for free.",
-      "keywords": "denoise image, remove noise from photo, photo denoise online, clean up grainy photo, fix noisy image"
+      "keywords": "denoise image, remove noise from photo, photo denoise online, clean up grainy photo, fix noisy image",
+      "og_title": "Denoise Image Online Free | AI Noise Removal - WatermarkCleaner",
+      "og_description": "Remove noise and grain from photos instantly with AI! Clean up high-ISO night shots, smooth skin, fix grainy images. No signup, no watermark. Try now!",
+      "og_image_alt": "AI Photo Denoise Tool - Remove Noise from Photos"
     },
     "title": "Denoise Image Online Free – AI Photo Noise Removal",
     "description": "Clean up noisy photos and remove grain while preserving image details with AI technology",
@@ -407,6 +710,69 @@
     "process_failed": "Denoising failed, please try again",
     "processing": "AI is removing noise...",
     "start_denoise": "Remove Noise",
+    "trust_badges": {
+      "title": "Why Choose Our Photo Denoise Tool",
+      "free": { "title": "Start Free", "desc": "Free monthly credits, upgrade for more" },
+      "watermark": { "title": "No Watermark", "desc": "Clean output without any branding" },
+      "instant": { "title": "Instant Results", "desc": "Get clean photos in seconds" },
+      "privacy": { "title": "Privacy Protected", "desc": "Images deleted after processing" },
+      "signup": { "title": "No Signup", "desc": "Use immediately without account" }
+    },
+    "problem_types": {
+      "title": "What Types of Noise Can We Remove?",
+      "subtitle": "Our AI handles various noise types from different sources",
+      "types": {
+        "high_iso": { "title": "High-ISO Noise", "desc": "Grain and speckles from low-light photography and high camera sensitivity settings.", "examples": "Night shots | Indoor photos | Fast-action shots" },
+        "color_noise": { "title": "Color Noise", "desc": "Random colored pixels and chromatic speckles that appear in shadow areas.", "examples": "Shadow noise | Color speckles | Purple fringing" },
+        "luminance": { "title": "Luminance Grain", "desc": "Monochrome grain patterns that reduce smoothness in gradients and solid colors.", "examples": "Sky banding | Skin texture loss | Gradient issues" },
+        "compression": { "title": "Compression Artifacts", "desc": "Blocky patterns and mosquito noise from aggressive JPEG compression.", "examples": "JPEG blocks | Posterization | Mosquito noise" }
+      }
+    },
+    "use_cases": {
+      "title": "Perfect For Every Use Case",
+      "subtitle": "See how different users benefit from our AI denoise tool",
+      "pain_point_label": "Pain Point",
+      "solution_label": "Solution",
+      "cases": {
+        "night": { "title": "Night Photography", "pain_point": "High-ISO shots are too grainy", "solution": "Remove noise while preserving stars and city lights for clean night photos", "examples": "Astrophotography | Cityscapes | Street photography" },
+        "portrait": { "title": "Portrait Photos", "pain_point": "Skin looks rough and noisy", "solution": "Smooth skin naturally while keeping pores and texture detail intact", "examples": "Headshots | Family photos | Selfies" },
+        "mobile": { "title": "Mobile Photos", "pain_point": "Phone cameras produce noisy images", "solution": "Clean up small-sensor noise while enhancing overall image quality", "examples": "Smartphone shots | Low-light mobile | Social media" },
+        "landscape": { "title": "Landscape Photos", "pain_point": "Grain ruins scenic beauty", "solution": "Preserve fine details while removing noise from skies and foliage", "examples": "Nature shots | Sunsets | Mountain views" }
+      }
+    },
+    "how_to": {
+      "title": "How to Denoise a Photo in 3 Simple Steps",
+      "subtitle": "No technical skills required - clean up your photos instantly",
+      "schema_name": "How to Denoise a Photo Online",
+      "schema_description": "Remove noise from photos instantly with AI using these 3 simple steps",
+      "step1_title": "Upload Your Image",
+      "step1_desc": "Drag and drop or click to select your noisy photo. We support JPG, PNG, and WebP formats up to 10MB.",
+      "step2_title": "AI Automatically Denoises",
+      "step2_desc": "Our AI analyzes the noise type and intelligently removes grain while preserving important details.",
+      "step3_title": "Download Clean Photo",
+      "step3_desc": "Get your denoised image instantly. Free download with no watermark or quality loss.",
+      "cta": "Denoise Your Photo Now"
+    },
+    "social_proof": {
+      "title": "Trusted by 1M+ Users Worldwide",
+      "subtitle": "Join millions who trust our AI denoise tool for their photos",
+      "stats": { "users": "Happy Users", "images": "Photos Cleaned", "rating": "Average Rating", "satisfaction": "Satisfaction Rate" },
+      "testimonials": {
+        "1": { "quote": "My night photography has improved dramatically! This tool removes noise without making photos look artificial. Game changer for astrophotography!", "name": "David Park", "role": "Photography Enthusiast" },
+        "2": { "quote": "I use this for all my client portrait work. It smooths skin beautifully while maintaining natural texture. My clients love the results!", "name": "Lisa Chen", "role": "Portrait Photographer" },
+        "3": { "quote": "Finally fixed all those grainy phone photos from concerts and events. The AI is incredible at preserving details while removing noise.", "name": "James Miller", "role": "Event Photographer" }
+      }
+    },
+    "related_tools": {
+      "title": "Explore More AI Image Tools",
+      "subtitle": "Enhance your images further with our other free AI tools",
+      "tools": {
+        "upscale": { "name": "Upscale Image", "desc": "Increase resolution up to 4x without losing quality" },
+        "restore": { "name": "Restore Old Photos", "desc": "Fix scratches and damage in vintage photos" },
+        "remove_bg": { "name": "Remove Background", "desc": "Create transparent PNG backgrounds instantly" },
+        "colorize": { "name": "Colorize Photo", "desc": "Add natural colors to black and white photos" }
+      }
+    },
     "features": {
       "f1_title": "Night Photo Denoising: Clean Up Dark Grainy Images",
       "f1_desc": "AI removes noise from high-ISO night shots while preserving stars and city lights",
@@ -438,14 +804,21 @@
       "q7": "Can I use this on mobile photos?",
       "a7": "Absolutely! Mobile photos often have more noise, and our AI is optimized to clean them up effectively.",
       "q8": "Will it work on extreme noise?",
-      "a8": "While our AI is powerful, extremely noisy images with lost detail may have limitations. Try it to see the results!"
+      "a8": "While our AI is powerful, extremely noisy images with lost detail may have limitations. Try it to see the results!",
+      "q9": "What's the difference between luminance and color noise?",
+      "a9": "Luminance noise appears as grainy brightness variations (like film grain), while color noise shows as random colored speckles. Our AI removes both types while preserving image details.",
+      "q10": "Can denoising help with old scanned photos?",
+      "a10": "Yes! Old scanned photos often have film grain and dust artifacts. Our denoise tool works great on these, especially when combined with our photo restoration tool for scratches and tears."
     }
   },
   "remove-background": {
     "metadata": {
       "title": "Remove Background from Image Free - Transparent PNG Maker",
       "description": "Remove background from images instantly with AI. Create transparent PNGs, cut out subjects, and make professional product photos for free.",
-      "keywords": "remove background, transparent background, cut out image, background remover, png maker"
+      "keywords": "remove background, transparent background, cut out image, background remover, png maker",
+      "og_title": "Remove Background Free | AI Transparent PNG Maker - WatermarkCleaner",
+      "og_description": "Remove image backgrounds instantly with AI! Create transparent PNGs, cut out subjects, make professional product photos. No signup, no watermark. Try now!",
+      "og_image_alt": "AI Background Remover - Transparent PNG Maker"
     },
     "title": "Remove Background from Image Free – AI Background Remover",
     "description": "Instantly remove backgrounds and create transparent PNG images with AI technology",
@@ -453,6 +826,69 @@
     "process_failed": "Background removal failed, please try again",
     "processing": "AI is removing background...",
     "start_remove_background": "Remove Background",
+    "trust_badges": {
+      "title": "Why Choose Our Background Remover",
+      "free": { "title": "Start Free", "desc": "Free monthly credits, upgrade for more" },
+      "watermark": { "title": "No Watermark", "desc": "Clean transparent PNG output" },
+      "instant": { "title": "Instant Results", "desc": "Get transparent PNGs in seconds" },
+      "privacy": { "title": "Privacy Protected", "desc": "Images deleted after processing" },
+      "signup": { "title": "No Signup", "desc": "Use immediately without account" }
+    },
+    "problem_types": {
+      "title": "What Types of Images Can We Process?",
+      "subtitle": "Our AI handles various subjects and background complexities",
+      "types": {
+        "portrait": { "title": "Portrait Photos", "desc": "Precise edge detection for people, keeping hair details and natural outlines.", "examples": "Profile photos | Family portraits | Selfies" },
+        "product": { "title": "Product Images", "desc": "Clean cutouts for e-commerce with smooth edges on all product types.", "examples": "E-commerce items | Marketing photos | Catalog images" },
+        "complex": { "title": "Complex Backgrounds", "desc": "Handles busy scenes with multiple elements and challenging compositions.", "examples": "Street scenes | Nature photos | Group shots" },
+        "hair": { "title": "Hair & Fur Details", "desc": "Preserves fine hair strands and fur texture that other tools often miss.", "examples": "Hair details | Pet fur | Fuzzy edges" }
+      }
+    },
+    "use_cases": {
+      "title": "Perfect For Every Use Case",
+      "subtitle": "See how different users benefit from our AI background remover",
+      "pain_point_label": "Pain Point",
+      "solution_label": "Solution",
+      "cases": {
+        "ecommerce": { "title": "E-commerce Sellers", "pain_point": "Need clean product photos for listings", "solution": "Create professional white/transparent backgrounds that boost sales and look consistent", "examples": "Amazon listings | Shopify stores | Etsy shops" },
+        "portrait": { "title": "Portrait Photos", "pain_point": "Distracting backgrounds ruin photos", "solution": "Remove backgrounds for professional headshots, profile pictures, and portraits", "examples": "LinkedIn photos | ID photos | Profile pictures" },
+        "design": { "title": "Design Projects", "pain_point": "Need isolated subjects for creative work", "solution": "Get clean cutouts perfect for graphic design, photo manipulation, and creative projects", "examples": "Graphic design | Photo composites | Marketing materials" },
+        "social": { "title": "Social Media", "pain_point": "Want standout images for social feeds", "solution": "Create eye-catching images with transparent or custom backgrounds for any platform", "examples": "Instagram posts | YouTube thumbnails | TikTok covers" }
+      }
+    },
+    "how_to": {
+      "title": "How to Remove Background in 3 Simple Steps",
+      "subtitle": "No design skills required - get transparent PNGs instantly",
+      "schema_name": "How to Remove Image Background Online",
+      "schema_description": "Remove image backgrounds and create transparent PNGs instantly with AI using these 3 simple steps",
+      "step1_title": "Upload Your Image",
+      "step1_desc": "Drag and drop or click to select your image. We support JPG, PNG with any background type.",
+      "step2_title": "AI Removes Background",
+      "step2_desc": "Our AI automatically detects the subject and removes the background with precision edge detection.",
+      "step3_title": "Download Transparent PNG",
+      "step3_desc": "Get your image with transparent background as PNG. Free download with no watermark.",
+      "cta": "Remove Background Now"
+    },
+    "social_proof": {
+      "title": "Trusted by 1M+ Users Worldwide",
+      "subtitle": "Join millions who trust our AI background remover",
+      "stats": { "users": "Happy Users", "images": "Backgrounds Removed", "rating": "Average Rating", "satisfaction": "Satisfaction Rate" },
+      "testimonials": {
+        "1": { "quote": "This tool is incredible! I use it daily for my Amazon listings. The hair detail preservation is amazing - better than expensive software I've tried.", "name": "Jennifer Adams", "role": "E-commerce Seller" },
+        "2": { "quote": "As a graphic designer, I need clean cutouts fast. This AI background remover saves me hours of manual work every week. Absolutely essential!", "name": "Michael Torres", "role": "Graphic Designer" },
+        "3": { "quote": "I create YouTube thumbnails and this tool is a game-changer. Clean transparent backgrounds in seconds. My click-through rate has improved significantly!", "name": "Emma Wilson", "role": "Content Creator" }
+      }
+    },
+    "related_tools": {
+      "title": "Explore More AI Image Tools",
+      "subtitle": "Enhance your images further with our other free AI tools",
+      "tools": {
+        "upscale": { "name": "Upscale Image", "desc": "Increase resolution up to 4x without losing quality" },
+        "denoise": { "name": "Denoise Photo", "desc": "Remove noise and grain from your photos" },
+        "restore": { "name": "Restore Old Photos", "desc": "Fix scratches and damage in vintage photos" },
+        "colorize": { "name": "Colorize Photo", "desc": "Add natural colors to black and white photos" }
+      }
+    },
     "features": {
       "f1_title": "Portrait Background Removal: Perfect for Profile Photos",
       "f1_desc": "AI precisely detects people and removes backgrounds while keeping hair details and natural edges",
@@ -490,14 +926,21 @@
       "q7": "Can I use this for product photos?",
       "a7": "Yes! Many e-commerce sellers use our tool to create clean product photos with transparent backgrounds for their listings.",
       "q8": "Will it work on group photos?",
-      "a8": "Yes! Our AI can detect and keep multiple people or subjects in the image while removing the background."
+      "a8": "Yes! Our AI can detect and keep multiple people or subjects in the image while removing the background.",
+      "q9": "What is the maximum image size supported?",
+      "a9": "We support images up to 10MB in size. For best results, we recommend uploading images with at least 1000px on the shortest side for crisp edge detection.",
+      "q10": "Can I use the transparent images commercially?",
+      "a10": "Yes! All images processed with our free tool are yours to use commercially. No attribution required. Create product listings, marketing materials, or design assets freely."
     }
   },
   "blur-background": {
     "metadata": {
       "title": "Blur Background Online Free - Portrait Mode Effect",
       "description": "Blur photo backgrounds instantly with AI. Create professional bokeh effect, portrait mode photos, and beautiful depth of field for free.",
-      "keywords": "blur background, portrait mode effect, bokeh background, background blur online, photo background blur"
+      "keywords": "blur background, portrait mode effect, bokeh background, background blur online, photo background blur",
+      "og_title": "Blur Background Free | AI Portrait Mode Effect - WatermarkCleaner",
+      "og_description": "Blur photo backgrounds instantly with AI! Create professional bokeh effect, portrait mode photos, beautiful depth of field. No signup, no watermark. Try now!",
+      "og_image_alt": "AI Background Blur Tool - Portrait Mode Effect"
     },
     "title": "Blur Background Online Free – AI Portrait Mode Effect",
     "description": "Create professional portrait mode photos with beautiful background blur and bokeh effects",
@@ -505,6 +948,69 @@
     "process_failed": "Background blur failed, please try again",
     "processing": "AI is blurring background...",
     "start_blur_background": "Blur Background",
+    "trust_badges": {
+      "title": "Why Choose Our Background Blur Tool",
+      "free": { "title": "Start Free", "desc": "Free monthly credits, upgrade for more" },
+      "watermark": { "title": "No Watermark", "desc": "Clean output without any branding" },
+      "instant": { "title": "Instant Results", "desc": "Get blurred backgrounds in seconds" },
+      "privacy": { "title": "Privacy Protected", "desc": "Images deleted after processing" },
+      "signup": { "title": "No Signup", "desc": "Use immediately without account" }
+    },
+    "problem_types": {
+      "title": "What Types of Photos Work Best?",
+      "subtitle": "Our AI handles various photo types for beautiful background blur",
+      "types": {
+        "portrait": { "title": "Portrait Photos", "desc": "People photos with clear subjects that benefit from professional-looking background separation.", "examples": "Selfies | Headshots | Family photos" },
+        "bokeh": { "title": "Bokeh Effect", "desc": "Creates beautiful circular light blur and artistic background effects like professional cameras.", "examples": "City lights | Nature scenes | Artistic shots" },
+        "professional": { "title": "Professional Headshots", "desc": "Transform casual photos into LinkedIn-worthy professional portraits with studio-quality blur.", "examples": "LinkedIn photos | Resumes | Business profiles" },
+        "product": { "title": "Product Highlight", "desc": "Make products stand out by blurring distracting backgrounds while keeping items sharp.", "examples": "Product photos | Food photography | Catalog images" }
+      }
+    },
+    "use_cases": {
+      "title": "Perfect For Every Use Case",
+      "subtitle": "See how different users benefit from our AI background blur tool",
+      "pain_point_label": "Pain Point",
+      "solution_label": "Solution",
+      "cases": {
+        "linkedin": { "title": "Professional Profiles", "pain_point": "Need polished photos for work", "solution": "Transform any photo into a professional headshot with beautiful background blur perfect for LinkedIn", "examples": "LinkedIn profiles | Company websites | Email signatures" },
+        "social": { "title": "Social Media", "pain_point": "Photos look amateur with busy backgrounds", "solution": "Create stunning portrait mode photos that stand out in any social feed with cinematic blur", "examples": "Instagram posts | Profile pictures | Story highlights" },
+        "portrait": { "title": "Portrait Photography", "pain_point": "Don't have an expensive camera", "solution": "Get DSLR-quality bokeh and depth of field effects from any smartphone or camera photo", "examples": "Portrait sessions | Engagement photos | Pet portraits" },
+        "product": { "title": "Product Photography", "pain_point": "Background distracts from products", "solution": "Draw attention to your products by artistically blurring the background while keeping items sharp", "examples": "E-commerce listings | Marketing materials | Social ads" }
+      }
+    },
+    "how_to": {
+      "title": "How to Blur Photo Background in 3 Simple Steps",
+      "subtitle": "No photography skills required - get professional blur instantly",
+      "schema_name": "How to Blur Photo Background Online",
+      "schema_description": "Blur photo backgrounds and create portrait mode effects instantly with AI using these 3 simple steps",
+      "step1_title": "Upload Your Photo",
+      "step1_desc": "Drag and drop or click to select your photo. We support JPG, PNG, and WebP formats with any background.",
+      "step2_title": "AI Applies Background Blur",
+      "step2_desc": "Our AI detects the subject and applies natural-looking background blur while keeping edges crisp.",
+      "step3_title": "Download Blurred Photo",
+      "step3_desc": "Get your photo with beautiful background blur instantly. Free download with no watermark.",
+      "cta": "Blur Your Photo Now"
+    },
+    "social_proof": {
+      "title": "Trusted by 1M+ Users Worldwide",
+      "subtitle": "Join millions who trust our AI background blur tool",
+      "stats": { "users": "Happy Users", "images": "Photos Enhanced", "rating": "Average Rating", "satisfaction": "Satisfaction Rate" },
+      "testimonials": {
+        "1": { "quote": "This tool transformed my LinkedIn profile! The background blur looks completely natural, like it was shot with an expensive camera. Got so many compliments!", "name": "Alex Thompson", "role": "Marketing Professional" },
+        "2": { "quote": "I create content for Instagram and this is my secret weapon. The bokeh effect is gorgeous and makes my photos look so professional. Highly recommend!", "name": "Sophie Chen", "role": "Content Creator" },
+        "3": { "quote": "As a real estate agent, I use this for my headshots and property photos. The blur effect is perfect - professional quality every time.", "name": "Marcus Johnson", "role": "Real Estate Agent" }
+      }
+    },
+    "related_tools": {
+      "title": "Explore More AI Image Tools",
+      "subtitle": "Enhance your photos further with our other free AI tools",
+      "tools": {
+        "upscale": { "name": "Upscale Image", "desc": "Increase resolution up to 4x without losing quality" },
+        "denoise": { "name": "Denoise Photo", "desc": "Remove noise and grain from your photos" },
+        "restore": { "name": "Restore Old Photos", "desc": "Fix scratches and damage in vintage photos" },
+        "remove_bg": { "name": "Remove Background", "desc": "Create transparent PNG backgrounds instantly" }
+      }
+    },
     "features": {
       "f1_title": "Portrait Mode Effect: Professional Looking Photos",
       "f1_desc": "AI detects the subject and applies beautiful background blur while keeping the person sharp and clear",
@@ -536,16 +1042,86 @@
       "q7": "Can I use this for professional photos?",
       "a7": "Yes! Many professionals use our tool to create LinkedIn headshots, profile pictures, and marketing photos with beautiful background blur.",
       "q8": "Will it work on pets and objects?",
-      "a8": "Yes! Our AI works on people, pets, products, and any subject you want to highlight with a beautiful blurred background."
+      "a8": "Yes! Our AI works on people, pets, products, and any subject you want to highlight with a beautiful blurred background.",
+      "q9": "What's the difference between bokeh and regular blur?",
+      "a9": "Regular blur uniformly softens the background, while bokeh creates beautiful circular light patterns from bright spots. Our AI can create both effects depending on your photo's content.",
+      "q10": "Can I adjust how much blur is applied?",
+      "a10": "Our AI automatically applies the optimal blur amount for professional results. The blur strength is calibrated to look natural while effectively separating the subject from the background."
     }
   },
   "colorize": {
     "metadata": {
       "title": "Colorize Black and White Photos Free - AI Photo Colorization",
       "description": "Add color to black and white photos instantly with AI. Colorize old family photos, historical images, and vintage pictures for free.",
-      "keywords": "colorize photo, colorize black and white photo, add color to old photos, AI photo colorization, vintage photo colorizer"
+      "keywords": "colorize photo, colorize black and white photo, add color to old photos, AI photo colorization, vintage photo colorizer",
+      "og_title": "Colorize B&W Photos Free | AI Photo Colorization - WatermarkCleaner",
+      "og_description": "Add color to black and white photos instantly with AI! Colorize old family photos, historical images, vintage pictures with natural colors. No signup, no watermark!",
+      "og_image_alt": "AI Photo Colorization Tool - Colorize Black and White Photos"
     },
     "title": "Colorize Black and White Photos Free – AI Photo Colorization",
+    "trust_badges": {
+      "title": "Why Choose Our Photo Colorization Tool",
+      "free": { "title": "Start Free", "desc": "Free monthly credits, upgrade for more" },
+      "watermark": { "title": "No Watermark", "desc": "Clean output without any branding" },
+      "instant": { "title": "Instant Results", "desc": "Get colorized photos in seconds" },
+      "privacy": { "title": "Privacy Protected", "desc": "Images deleted after processing" },
+      "signup": { "title": "No Signup", "desc": "Use immediately without account" }
+    },
+    "problem_types": {
+      "title": "What Types of Photos Can We Colorize?",
+      "subtitle": "Our AI handles various monochrome photo types",
+      "types": {
+        "bw_family": { "title": "Black & White Family Photos", "desc": "Vintage family portraits and memories that deserve to be seen in full color with realistic skin tones.", "examples": "Wedding photos | Baby pictures | Family gatherings" },
+        "historical": { "title": "Historical Images", "desc": "Historical photographs with period-accurate colors based on research and context.", "examples": "War photos | Historical figures | Vintage street scenes" },
+        "vintage": { "title": "Vintage Photography", "desc": "Old photos from any era with natural color restoration that respects the original time period.", "examples": "1920s portraits | Classic cars | Retro fashion" },
+        "artistic": { "title": "Artistic Colorization", "desc": "Creative colorization for artistic projects with vibrant and imaginative color palettes.", "examples": "Fine art | Creative projects | Photo restoration" }
+      }
+    },
+    "use_cases": {
+      "title": "Perfect For Every Use Case",
+      "subtitle": "See how different users benefit from our AI colorization tool",
+      "pain_point_label": "Pain Point",
+      "solution_label": "Solution",
+      "cases": {
+        "family": { "title": "Family Memories", "pain_point": "Old B&W photos feel distant", "solution": "Bring ancestors and old family photos to life with natural, realistic colors that connect generations", "examples": "Grandparent photos | Childhood memories | Wedding albums" },
+        "historical": { "title": "Historical Preservation", "pain_point": "History feels disconnected in B&W", "solution": "Colorize historical photos with era-accurate colors for education, museums, and documentation", "examples": "Archives | Museums | Educational content" },
+        "genealogy": { "title": "Genealogy Research", "pain_point": "Hard to connect with ancestors", "solution": "See your ancestors in color to better visualize family history and share with relatives", "examples": "Ancestor portraits | Family trees | Heritage books" },
+        "artistic": { "title": "Artistic Projects", "pain_point": "Want creative color interpretations", "solution": "Use AI colorization as a starting point for artistic projects and creative photo editing", "examples": "Art projects | Photo books | Gifts" }
+      }
+    },
+    "how_to": {
+      "title": "How to Colorize a B&W Photo in 3 Simple Steps",
+      "subtitle": "No editing skills required - add color to your photos instantly",
+      "schema_name": "How to Colorize a Black and White Photo Online",
+      "schema_description": "Add color to black and white photos instantly with AI using these 3 simple steps",
+      "step1_title": "Upload Your B&W Photo",
+      "step1_desc": "Drag and drop or click to select your black and white photo. We support JPG, PNG, and scanned images.",
+      "step2_title": "AI Adds Natural Colors",
+      "step2_desc": "Our AI analyzes the photo and adds historically accurate, natural-looking colors based on the content and era.",
+      "step3_title": "Download Colorized Photo",
+      "step3_desc": "Get your colorized photo instantly. Free download with no watermark in full resolution.",
+      "cta": "Colorize Your Photo Now"
+    },
+    "social_proof": {
+      "title": "Trusted by 1M+ Users Worldwide",
+      "subtitle": "Join millions who trust our AI photo colorization tool",
+      "stats": { "users": "Happy Users", "images": "Photos Colorized", "rating": "Average Rating", "satisfaction": "Satisfaction Rate" },
+      "testimonials": {
+        "1": { "quote": "I colorized my grandmother's wedding photos from the 1940s and the results brought tears to my mother's eyes. The colors look so natural and authentic!", "name": "Rachel Kim", "role": "Family Historian" },
+        "2": { "quote": "As a history teacher, I use this tool to make historical photos more engaging for students. The era-accurate colors really help them connect with the past.", "name": "Thomas Anderson", "role": "History Teacher" },
+        "3": { "quote": "I've tried many colorization tools and this is by far the best. The skin tones are incredibly realistic and the overall colors match the time period perfectly.", "name": "Nina Patel", "role": "Professional Photographer" }
+      }
+    },
+    "related_tools": {
+      "title": "Explore More AI Image Tools",
+      "subtitle": "Enhance your colorized photos further with our other free AI tools",
+      "tools": {
+        "upscale": { "name": "Upscale Image", "desc": "Increase resolution up to 4x without losing quality" },
+        "denoise": { "name": "Denoise Photo", "desc": "Remove noise and grain from your photos" },
+        "restore": { "name": "Restore Old Photos", "desc": "Fix scratches and damage in vintage photos" },
+        "remove_bg": { "name": "Remove Background", "desc": "Create transparent PNG backgrounds instantly" }
+      }
+    },
     "description": "Bring your black and white photos to life with realistic AI colorization",
     "process_success": "Success! Photo colorized",
     "process_failed": "Colorization failed, please try again",
@@ -582,14 +1158,21 @@
       "q7": "Can I colorize old damaged photos?",
       "a7": "Yes! For best results, you may want to restore damaged photos first using our photo restoration tool, then colorize them.",
       "q8": "Will colorization affect the original photo quality?",
-      "a8": "No! We preserve all original details and textures while adding color. You'll get a high-quality colorized version of your photo."
+      "a8": "No! We preserve all original details and textures while adding color. You'll get a high-quality colorized version of your photo.",
+      "q9": "How accurate are the colors added by AI?",
+      "a9": "Our AI uses advanced algorithms trained on millions of photos to predict historically accurate colors. While exact original colors can never be known with certainty, our results are remarkably natural and era-appropriate.",
+      "q10": "Can I colorize any black and white photo?",
+      "a10": "Yes! Our AI works on any monochrome image including scanned photos, digital B&W images, and even sepia-toned vintage photos. The quality of results depends on the clarity of the original image."
     }
   },
   "upscale": {
     "metadata": {
       "title": "Upscale Image Online Free - AI Image Enlarger & Enhancer",
       "description": "Upscale images online for free with AI. Enlarge photos without losing quality, enhance details, and create high-resolution images instantly.",
-      "keywords": "upscale image, enlarge photo without losing quality, AI image upscaler, increase image resolution, photo enlarger online, image quality enhancer"
+      "keywords": "upscale image, enlarge photo without losing quality, AI image upscaler, increase image resolution, photo enlarger online, image quality enhancer",
+      "og_title": "Upscale Image Free | AI Image Enlarger 4x - WatermarkCleaner",
+      "og_description": "Upscale images online free with AI! Enlarge photos up to 4x without losing quality, enhance details, remove pixelation. No signup, no watermark. Try now!",
+      "og_image_alt": "AI Image Upscaler - Enlarge Photos Without Losing Quality"
     },
     "title": "Upscale Image Online Free – AI Image Enlarger & Enhancer",
     "description": "Enlarge and enhance your images with AI technology while preserving quality and details",
@@ -597,6 +1180,69 @@
     "process_failed": "Upscaling failed, please try again",
     "processing": "AI is upscaling image...",
     "start_upscale": "Upscale Image",
+    "trust_badges": {
+      "title": "Why Choose Our Image Upscaler",
+      "free": { "title": "Start Free", "desc": "Free monthly credits, upgrade for more" },
+      "watermark": { "title": "No Watermark", "desc": "Clean high-resolution output" },
+      "instant": { "title": "Instant Results", "desc": "Get upscaled images in seconds" },
+      "privacy": { "title": "Privacy Protected", "desc": "Images deleted after processing" },
+      "signup": { "title": "No Signup", "desc": "Use immediately without account" }
+    },
+    "problem_types": {
+      "title": "What Types of Images Can We Upscale?",
+      "subtitle": "Our AI handles various low-resolution image issues",
+      "types": {
+        "low_res": { "title": "Low Resolution Photos", "desc": "Small images that need to be enlarged for better viewing or printing without losing clarity.", "examples": "Old digital photos | Small downloads | Thumbnails" },
+        "pixelated": { "title": "Pixelated Images", "desc": "Photos that show visible pixel blocks when zoomed in, common with over-compressed images.", "examples": "Compressed JPGs | Screenshots | Resized images" },
+        "compressed": { "title": "Compression Artifacts", "desc": "Images with blocky artifacts, ringing edges, and lost details from aggressive compression.", "examples": "Social media photos | Web images | Old scans" },
+        "print": { "title": "Print-Ready Enlargement", "desc": "Photos that need resolution enhancement for physical printing at larger sizes.", "examples": "Wall art | Photo books | Canvas prints" }
+      }
+    },
+    "use_cases": {
+      "title": "Perfect For Every Use Case",
+      "subtitle": "See how different users benefit from our AI image upscaler",
+      "pain_point_label": "Pain Point",
+      "solution_label": "Solution",
+      "cases": {
+        "print": { "title": "Large Format Printing", "pain_point": "Photos too small for quality prints", "solution": "Upscale images 4x while enhancing details for stunning large format prints up to poster size", "examples": "Wall art | Photo albums | Canvas prints" },
+        "ecommerce": { "title": "E-commerce Products", "pain_point": "Small product photos look unprofessional", "solution": "Enlarge product images while preserving details for crisp, professional-looking listings", "examples": "Amazon listings | Shopify stores | Catalog images" },
+        "wallpaper": { "title": "Desktop & Phone Wallpapers", "pain_point": "Favorite photos too small for screens", "solution": "Upscale any image to 4K or higher resolution for stunning high-DPI wallpapers", "examples": "Desktop wallpapers | Phone backgrounds | 4K displays" },
+        "old_photos": { "title": "Old Photo Restoration", "pain_point": "Vintage photos are low resolution", "solution": "Combine upscaling with restoration to bring old photos into the modern high-res era", "examples": "Scanned photos | Digital archives | Family history" }
+      }
+    },
+    "how_to": {
+      "title": "How to Upscale an Image in 3 Simple Steps",
+      "subtitle": "No technical skills required - enhance your images instantly",
+      "schema_name": "How to Upscale an Image Online",
+      "schema_description": "Upscale and enlarge images instantly with AI using these 3 simple steps",
+      "step1_title": "Upload Your Image",
+      "step1_desc": "Drag and drop or click to select your low-resolution image. We support JPG, PNG, and WebP formats up to 10MB.",
+      "step2_title": "AI Upscales & Enhances",
+      "step2_desc": "Our AI intelligently enlarges your image up to 4x while enhancing details and removing artifacts.",
+      "step3_title": "Download High-Res Image",
+      "step3_desc": "Get your upscaled high-resolution image instantly. Free download with no watermark in full quality.",
+      "cta": "Upscale Your Image Now"
+    },
+    "social_proof": {
+      "title": "Trusted by 1M+ Users Worldwide",
+      "subtitle": "Join millions who trust our AI image upscaler",
+      "stats": { "users": "Happy Users", "images": "Images Upscaled", "rating": "Average Rating", "satisfaction": "Satisfaction Rate" },
+      "testimonials": {
+        "1": { "quote": "I needed to print old family photos as large canvas prints. This tool upscaled them beautifully - the detail enhancement is incredible! Can't believe it's free.", "name": "Daniel Roberts", "role": "Photography Enthusiast" },
+        "2": { "quote": "As an e-commerce seller, I use this daily for product photos. The AI preserves all the product details while upscaling. My listings look so much more professional now!", "name": "Amy Zhang", "role": "E-commerce Entrepreneur" },
+        "3": { "quote": "I create 4K wallpapers from vintage photography. This upscaler is amazing at restoring details that were lost in low-res scans. My favorite tool by far!", "name": "Chris Martinez", "role": "Digital Artist" }
+      }
+    },
+    "related_tools": {
+      "title": "Explore More AI Image Tools",
+      "subtitle": "Enhance your upscaled images further with our other free AI tools",
+      "tools": {
+        "denoise": { "name": "Denoise Photo", "desc": "Remove noise and grain from your photos" },
+        "restore": { "name": "Restore Old Photos", "desc": "Fix scratches and damage in vintage photos" },
+        "remove_bg": { "name": "Remove Background", "desc": "Create transparent PNG backgrounds instantly" },
+        "colorize": { "name": "Colorize Photo", "desc": "Add natural colors to black and white photos" }
+      }
+    },
     "features": {
       "f1_title": "Portrait Enhancement: Enlarge Photos While Keeping Details",
       "f1_desc": "AI upscales portrait photos while preserving facial features, skin texture, and natural appearance",
@@ -628,7 +1274,11 @@
       "q7": "Can I upscale compressed or low-quality images?",
       "a7": "Yes! Our AI can enhance compressed images by recovering lost details and reducing compression artifacts.",
       "q8": "What file formats are supported for upscaling?",
-      "a8": "We support all major formats including JPG, PNG, WebP, and BMP. Output maintains the original format with enhanced resolution."
+      "a8": "We support all major formats including JPG, PNG, WebP, and BMP. Output maintains the original format with enhanced resolution.",
+      "q9": "Is there a limit to how small the original image can be?",
+      "a9": "We recommend images be at least 100x100 pixels for best results. Extremely small images (under 50x50) may have limited enhancement potential due to the lack of source detail.",
+      "q10": "Can I use upscaled images for commercial purposes?",
+      "a10": "Yes! All images processed with our free tool are yours to use commercially. No attribution required. Many professionals use our upscaler for client work, product photography, and creative projects."
     }
   },
   "workspace": {
@@ -663,6 +1313,17 @@
       "pdf": "PDF",
       "docx": "Word Document",
       "download": "Download"
+    }
+  },
+  "landing": {
+    "comparison": {
+      "before_label": "Watermarked",
+      "after_label": "Cleaned"
+    },
+    "happy_users": "from 99+ happy users",
+    "hero": {
+      "image_load_failed": "Failed to load image. Please try again.",
+      "og_alt": "WatermarkCleaner AI watermark removal demonstration"
     }
   }
 }

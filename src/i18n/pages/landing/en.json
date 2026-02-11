@@ -92,9 +92,9 @@
     "show_locale": true
   },
   "hero": {
-    "title": "Remove Watermarks from Photos Instantly with AI",
-    "highlight_text": "Remove Watermarks",
-    "description": "WatermarkCleaner uses advanced AI to remove watermarks, logos, text, and unwanted objects from your photos in seconds.",
+    "title": "Free AI Watermark Remover – Remove Image Watermarks Online, Support JPG/PNG/WEBP",
+    "highlight_text": "AI Watermark Remover",
+    "description": "WatermarkCleaner uses advanced AI to remove watermarks, logos, text, and unwanted objects from your photos in seconds. Free, fast, and no sign-up required.",
     "announcement": {
       "label": "AI",
       "title": "✨ AI-Powered Watermark Removal",
@@ -173,8 +173,9 @@
   },
   "usage": {
     "name": "usage",
-    "title": "How to Remove Watermarks in 3 Easy Steps",
-    "description": "Remove watermarks from your photos in seconds with our simple process:",
+    "label": "How To Use",
+    "title": "How to Remove Image Watermarks Online with WatermarkCleaner",
+    "description": "Remove watermarks from your photos in seconds with our simple 4-step process:",
     "image": {
       "src": "/imgs/features/steps.webp"
     },
@@ -183,24 +184,19 @@
     "items": [
       {
         "title": "Upload Your Image",
-        "description": "Drag and drop your image or click to upload. We support JPG, PNG, WebP, and BMP formats up to 10MB.",
-        "image": {
-          "src": "/imgs/features/step1.webp"
-        }
+        "description": "Visit WatermarkCleaner and drag your watermarked image into the upload area, or click to select from your device. We support JPG, PNG, and WEBP formats."
       },
       {
-        "title": "Mark the Watermark",
-        "description": "Use our brush tool to highlight the watermark area you want to remove. Our AI will detect and process it automatically.",
-        "image": {
-          "src": "/imgs/features/step2.webp"
-        }
+        "title": "AI Auto-Detects & Removes Watermark",
+        "description": "Once uploaded, WatermarkCleaner's AI system automatically analyzes the image, identifies watermark locations, and begins the removal process. This usually takes just seconds."
       },
       {
-        "title": "Download Clean Image",
-        "description": "Preview the result and download your watermark-free image in high quality. No watermarks added by us!",
-        "image": {
-          "src": "/imgs/features/step3.webp"
-        }
+        "title": "Fine-Tune If Needed",
+        "description": "For complex watermarks or special cases, use our manual adjustment tools to precisely select areas that need additional cleaning for perfect results."
+      },
+      {
+        "title": "Download Watermark-Free Image",
+        "description": "Preview the result and download your clean, watermark-free image. The output maintains the original quality and resolution of your photo."
       }
     ]
   },
@@ -379,6 +375,99 @@
       {
         "title": "Is it legal to remove watermarks?",
         "description": "WatermarkCleaner is a tool for legitimate use cases like removing your own watermarks, cleaning personal photos, or removing distracting elements. Please respect copyright laws and only remove watermarks from images you own or have permission to edit."
+      }
+    ]
+  },
+  "why_need": {
+    "name": "why-need",
+    "label": "Why AI Watermark Removal",
+    "title": "Why Do You Need an AI Watermark Removal Tool?",
+    "description": "In the era of digital content explosion, watermarks have become a common obstacle when browsing and using images. Whether it's photos on social media, stock image resources, or product images on e-commerce platforms, watermarks often obscure key content and affect visual experience and professionalism. Traditional watermark removal methods typically require professional software like Photoshop, which is complex and technically demanding — too high a barrier for most users.<br/><br/>AI watermark removal technology has completely changed this landscape. Compared to traditional methods, AI watermark removal tools offer significant advantages:",
+    "items": [
+      {
+        "title": "Easy to Use",
+        "description": "No professional skills needed. Simply upload your image and let the AI handle everything automatically.",
+        "icon": "RiUserSmileLine"
+      },
+      {
+        "title": "Fast & Efficient",
+        "description": "Complete watermark removal in seconds, significantly improving your workflow efficiency.",
+        "icon": "RiFlashlightLine"
+      },
+      {
+        "title": "High Quality Output",
+        "description": "Maintain the original image's clarity, details, and resolution after watermark removal.",
+        "icon": "RiHdLine"
+      },
+      {
+        "title": "Safe & Secure",
+        "description": "No registration required. We don't store your data — your privacy is fully protected.",
+        "icon": "RiShieldCheckLine"
+      }
+    ]
+  },
+  "format_specs": {
+    "name": "format-specs",
+    "label": "Supported Formats",
+    "title": "Supported Image Formats & File Size Limits",
+    "description": "WatermarkCleaner supports multiple mainstream image formats to cover all your needs.",
+    "items": [
+      {
+        "title": "JPG / JPEG",
+        "description": "The most commonly used image format, ideal for most web and photography use cases.",
+        "icon": "RiFileImageLine",
+        "label": "Most Popular"
+      },
+      {
+        "title": "PNG",
+        "description": "Perfect for images that require transparent backgrounds and lossless compression quality.",
+        "icon": "RiImageLine",
+        "label": "Transparency"
+      },
+      {
+        "title": "WEBP",
+        "description": "Next-generation high-efficiency image format offering better compression ratios and quality.",
+        "icon": "RiFileCodeLine",
+        "label": "Modern Format"
+      },
+      {
+        "title": "Max File Size",
+        "description": "Upload images up to 20MB in size. For larger files, we recommend using an image compressor first.",
+        "icon": "RiUploadCloud2Line",
+        "label": "20MB"
+      },
+      {
+        "title": "Max Resolution",
+        "description": "Process images up to 6000×6000 pixels. This limit ensures fast and high-quality AI processing.",
+        "icon": "RiFullscreenLine",
+        "label": "6000×6000px"
+      },
+      {
+        "title": "Multiple Devices",
+        "description": "Use WatermarkCleaner on any device — desktop, tablet, or mobile with any modern browser.",
+        "icon": "RiSmartphoneLine",
+        "label": "All Devices"
+      }
+    ]
+  },
+  "comparisons": {
+    "name": "comparisons",
+    "items": [
+      {
+        "title": "AI-Powered Watermark Detection – Automatic & Accurate",
+        "description": "Our advanced AI algorithms automatically detect and identify watermarks, logos, and text overlays in your images. No manual selection needed – WatermarkCleaner's intelligent system recognizes patterns and removes unwanted elements while preserving the original image quality."
+      },
+      {
+        "title": "Batch Processing – Remove Multiple Watermarks at Once",
+        "description": "Save time with batch processing capabilities. Upload multiple images and remove watermarks from all of them simultaneously. Perfect for photographers, content creators, and businesses needing to clean large image collections efficiently."
+      },
+      {
+        "title": "Preserve Image Quality – High-Resolution Output",
+        "description": "Worried about quality loss? WatermarkCleaner uses sophisticated inpainting technology that intelligently fills in removed areas based on surrounding pixels. Your images maintain crisp details, natural textures, and original resolution after watermark removal."
+      },
+      {
+        "title": "Support All Image Formats – JPG, PNG, WEBP & More",
+        "description": "WatermarkCleaner supports all popular image formats including JPG, JPEG, PNG, WEBP, BMP, and TIFF. Whether you're working with product photos, social media graphics, or professional photography, our tool handles it all with the same powerful watermark removal capabilities."
       }
     ]
   },

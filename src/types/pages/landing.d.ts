@@ -18,6 +18,9 @@ export interface LandingPage {
   faq?: Section;
   cta?: Section;
   footer?: Footer;
+  why_need?: Section;
+  format_specs?: Section;
+  comparisons?: Section;
 }
 
 export interface PricingPage {

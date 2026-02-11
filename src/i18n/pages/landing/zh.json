@@ -92,8 +92,8 @@
     "show_locale": true
   },
   "hero": {
-    "title": "AI智能去水印 - 一键去除图片水印",
-    "highlight_text": "去水印",
+    "title": "免费AI水印去除工具 - 一键在线移除图片水印，支持JPG/PNG/WEBP",
+    "highlight_text": "AI水印去除",
     "description": "WatermarkCleaner 使用先进的 AI 技术，几秒钟内即可去除图片中的水印、Logo、文字等。免费使用，无需注册，保持原图质量。",
     "announcement": {
       "label": "免费",
@@ -174,8 +174,9 @@
   },
   "usage": {
     "name": "usage",
-    "title": "3步轻松去水印",
-    "description": "只需简单三步，几秒钟内即可去除图片水印：",
+    "label": "使用教程",
+    "title": "如何使用WatermarkCleaner在线去除图片水印？",
+    "description": "只需简单四步，几秒钟内即可去除图片水印：",
     "image": {
       "src": "/imgs/features/steps.webp"
     },
@@ -183,25 +184,20 @@
     "text_align": "center",
     "items": [
       {
-        "title": "上传图片",
-        "description": "拖拽图片或点击上传。支持 JPG、PNG、WebP、BMP 格式，最大 20MB。",
-        "image": {
-          "src": "/imgs/features/step1.webp"
-        }
+        "title": "上传带有水印的图片",
+        "description": "访问WatermarkCleaner网站，将带有水印的图片拖放到指定区域，或点击选择文件按钮从您的设备中选择图片。支持JPG、PNG和WEBP格式。"
       },
       {
-        "title": "标记水印区域",
-        "description": "使用画笔工具标记要去除的水印区域。AI 会自动检测并处理。",
-        "image": {
-          "src": "/imgs/features/step2.webp"
-        }
+        "title": "AI自动识别并去除水印",
+        "description": "上传完成后，AI系统将自动分析图片，识别水印位置并开始去除过程。这个过程通常只需要几秒钟，无需用户干预。"
       },
       {
-        "title": "下载干净图片",
-        "description": "预览处理结果，下载无水印的高质量图片。我们不会添加任何水印！",
-        "image": {
-          "src": "/imgs/features/step3.webp"
-        }
+        "title": "手动调整（如需要）",
+        "description": "对于复杂的水印或特殊情况，WatermarkCleaner提供了手动调整功能。您可以使用画笔工具精确选择需要去除的区域。"
+      },
+      {
+        "title": "下载无水印的图片",
+        "description": "处理完成后，预览去除水印后的图片效果。确认满意后，点击下载按钮，将无水印的图片保存到您的设备。"
       }
     ]
   },
@@ -380,6 +376,99 @@
       {
         "title": "去除水印合法吗？",
         "description": "WatermarkCleaner 是一个用于合法用途的工具，如去除您自己的水印、清理个人照片或移除干扰元素。请尊重版权法，只对您拥有或有权编辑的图片进行去水印处理。"
+      }
+    ]
+  },
+  "why_need": {
+    "name": "why-need",
+    "label": "为什么选择AI去水印",
+    "title": "为什么需要AI水印去除工具？",
+    "description": "在数字内容爆炸的时代，水印已成为我们浏览和使用图片时的常见障碍。无论是社交媒体上的图片、网络资源库的素材，还是电商平台的产品图，水印常常遮挡了关键内容，影响了视觉体验和专业性。传统去除水印的方法往往需要使用Photoshop等专业软件，操作复杂且对技术要求高，对于普通用户来说门槛过高。<br/><br/>AI水印去除技术的出现彻底改变了这一局面。与传统方法相比，AI水印去除工具具有以下显著优势：",
+    "items": [
+      {
+        "title": "简单易用",
+        "description": "无需专业技能，只需上传图片，AI自动处理，轻松完成水印去除。",
+        "icon": "RiUserSmileLine"
+      },
+      {
+        "title": "高效快速",
+        "description": "几秒内完成水印去除，大幅提升工作效率，节省宝贵时间。",
+        "icon": "RiFlashlightLine"
+      },
+      {
+        "title": "高质量输出",
+        "description": "保持原始图片的清晰度和细节，去水印后图片质量不受影响。",
+        "icon": "RiHdLine"
+      },
+      {
+        "title": "安全可靠",
+        "description": "无需注册，不存储用户数据，您的隐私得到完全保护。",
+        "icon": "RiShieldCheckLine"
+      }
+    ]
+  },
+  "format_specs": {
+    "name": "format-specs",
+    "label": "支持格式",
+    "title": "支持的图片格式与文件大小",
+    "description": "WatermarkCleaner支持多种主流图片格式，满足您的各种需求。",
+    "items": [
+      {
+        "title": "JPG / JPEG",
+        "description": "最常用的图片格式，适合大多数网络使用场景和摄影作品。",
+        "icon": "RiFileImageLine",
+        "label": "最常用"
+      },
+      {
+        "title": "PNG",
+        "description": "适合需要透明背景的图片，支持无损压缩，画质更佳。",
+        "icon": "RiImageLine",
+        "label": "透明背景"
+      },
+      {
+        "title": "WEBP",
+        "description": "新一代高效图片格式，提供更好的压缩率和质量平衡。",
+        "icon": "RiFileCodeLine",
+        "label": "新一代格式"
+      },
+      {
+        "title": "最大文件大小",
+        "description": "支持上传最大20MB的图片。对于更大的文件，建议先使用图像压缩工具。",
+        "icon": "RiUploadCloud2Line",
+        "label": "20MB"
+      },
+      {
+        "title": "最大分辨率",
+        "description": "支持处理最高6000×6000像素的图片，确保AI处理的效率和质量。",
+        "icon": "RiFullscreenLine",
+        "label": "6000×6000px"
+      },
+      {
+        "title": "多设备支持",
+        "description": "在任何设备上使用——台式机、平板或手机，只需现代浏览器即可。",
+        "icon": "RiSmartphoneLine",
+        "label": "全设备"
+      }
+    ]
+  },
+  "comparisons": {
+    "name": "comparisons",
+    "items": [
+      {
+        "title": "AI智能水印检测 - 自动精准识别",
+        "description": "WatermarkCleaner采用先进的深度学习算法，能够精准识别各种类型的水印，包括文字水印、Logo水印、半透明水印等。AI系统会自动分析水印位置和特征，确保去除过程既彻底又不破坏图片主体。"
+      },
+      {
+        "title": "批量处理 - 一次去除多张图片水印",
+        "description": "节省时间的批量处理功能。一次上传多张图片，同时去除所有水印。非常适合摄影师、内容创作者和需要高效处理大量图片的企业用户。"
+      },
+      {
+        "title": "保持图片原始质量 - 高清输出",
+        "description": "WatermarkCleaner在去除水印后不会导致图片质量下降。我们的AI技术通过智能填充算法，根据周围像素信息重建被水印覆盖的区域，确保图片保持原有的清晰度、细节和色彩。"
+      },
+      {
+        "title": "支持多种图片格式 - JPG、PNG、WEBP",
+        "description": "WatermarkCleaner支持JPG、PNG和WEBP等多种主流图片格式，覆盖了绝大多数图片使用场景。无论您需要去除的是社交媒体图片、产品照片还是专业摄影，都能轻松应对。"
       }
     ]
   },

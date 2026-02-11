@@ -51,9 +51,9 @@ export default function ComparisonSlider({
 
     img.onload = () => {
       const ratio = img.width / img.height;
-      // Limit extreme ratios to prevent layout issues
-      // Min ratio: 0.5 (2:1 portrait), Max ratio: 3 (3:1 landscape)
-      const clampedRatio = Math.max(0.5, Math.min(3, ratio));
+      // Use image's natural aspect ratio, with loose limits to prevent extreme cases
+      // Min ratio: 0.3 (3:1 portrait), Max ratio: 5 (5:1 landscape)
+      const clampedRatio = Math.max(0.3, Math.min(5, ratio));
       setImageRatio(clampedRatio);
       setIsLoaded(true);
     };

@@ -16,10 +16,12 @@ import { useUploadStore } from "@/store/uploadStore";
 import { loadImage, validateImageFile } from "@/lib/imageUtils";
 import { toast } from "react-hot-toast";
 import ComparisonSlider from '@/components/ui/comparison-slider';
+import { useTranslations } from 'next-intl';
 
 export default function Hero({ hero }: { hero: HeroType }) {
   const router = useRouter();
   const setPendingImage = useUploadStore(state => state.setPendingImage);
+  const t = useTranslations('landing');
 
   if (hero.disabled) {
     return null;
@@ -82,9 +84,9 @@ export default function Hero({ hero }: { hero: HeroType }) {
                  <ComparisonSlider
                     beforeImage="/images/custom/demo_boy_watermarked.png"
                     afterImage="/images/custom/demo_boy_clean.png"
-                    beforeLabel="Watermarked"
-                    afterLabel="Cleaned"
-                    className="w-full max-w-xl aspect-[4/3] shadow-2xl rounded-2xl overflow-hidden border-4 border-white/20 dark:border-white/10"
+                    beforeLabel={t('comparison.before_label')}
+                    afterLabel={t('comparison.after_label')}
+                    className="w-full max-w-[360px] shadow-2xl rounded-2xl overflow-hidden border-4 border-white/20 dark:border-white/10"
                   />
               </div>
 
@@ -107,7 +109,7 @@ export default function Hero({ hero }: { hero: HeroType }) {
                       // 跳转到 /convert 页面，自动开始处理
                       router.push('/convert?fromUpload=true&autoProcess=true');
                     } catch (error) {
-                      toast.error('Failed to load image. Please try again.');
+                      toast.error(t('hero.image_load_failed'));
                       console.error('Image loading error:', error);
                     }
                   }}

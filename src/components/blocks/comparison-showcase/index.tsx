@@ -4,6 +4,7 @@ import React from 'react';
 import ComparisonSlider from '@/components/ui/comparison-slider';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface ComparisonShowcaseProps {
   title: string;
@@ -22,6 +23,7 @@ export default function ComparisonShowcase({
 }: ComparisonShowcaseProps) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const t = useTranslations('landing.comparison');
 
   useEffect(() => {
     setMounted(true);
@@ -58,9 +60,9 @@ export default function ComparisonShowcase({
             <ComparisonSlider
               beforeImage={beforeImage}
               afterImage={afterImage}
-              beforeLabel="Watermarked"
-              afterLabel="Cleaned"
-              className="shadow-2xl aspect-square w-full max-w-2xl" 
+              beforeLabel={t('before_label')}
+              afterLabel={t('after_label')}
+              className="shadow-2xl w-full max-w-[360px]"
             />
           </div>
         </div>

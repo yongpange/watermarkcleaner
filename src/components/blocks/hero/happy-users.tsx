@@ -1,8 +1,12 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+'use client';
 
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function HappyUsers() {
+  const t = useTranslations('landing');
+
   return (
     <div className="mx-auto mt-8 flex w-fit flex-col items-center gap-2 sm:flex-row">
       <span className="mx-4 inline-flex items-center -space-x-2">
@@ -10,7 +14,7 @@ export default function HappyUsers() {
           <Avatar className="size-12 border" key={index}>
             <AvatarImage
               src={`/imgs/users/${index + 6}.png`}
-              alt="placeholder"
+              alt="user avatar"
             />
           </Avatar>
         ))}
@@ -25,7 +29,7 @@ export default function HappyUsers() {
           ))}
         </div>
         <p className="text-left font-medium text-muted-foreground">
-          from 99+ happy users
+          {t('happy_users')}
         </p>
       </div>
     </div>

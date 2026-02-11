@@ -1,38 +1,88 @@
 {
-  "template": "watermarkcleaner",
+  "template": "watermarkcleaner-template",
   "theme": "light",
   "header": {
     "brand": {
       "title": "WatermarkCleaner",
       "logo": {
         "src": "/logo.png",
-        "alt": "WatermarkCleaner - Alternativa gratuita a Quizlet"
+        "alt": "WatermarkCleaner - Eliminador de marcas de agua con IA gratuito"
       },
       "url": "/"
     },
     "nav": {
       "items": [
-
-
         {
           "title": "Características",
           "url": "/#feature",
           "icon": "RiAppsLine",
           "children": [
             {
-              "title": "Desenfocar Imagen",
+              "title": "Desenfocar imagen",
               "url": "/unblur",
-              "description": "Hacer fotos borrosas claras con IA",
+              "description": "Aclara fotos borrosas con IA",
               "icon": "RiDropLine"
+            },
+            {
+              "title": "Restaurar fotos antiguas",
+              "url": "/restore",
+              "description": "Repara rasguños, roturas y colorea fotos en blanco y negro",
+              "icon": "RiImageEditLine"
+            },
+            {
+              "title": "Eliminar ruido de imagen",
+              "url": "/denoise",
+              "description": "Elimina el ruido y el grano de las fotos con IA",
+              "icon": "RiSparklingLine"
+            },
+            {
+              "title": "Eliminar fondo",
+              "url": "/remove-background",
+              "description": "Elimina el fondo y crea PNG transparentes",
+              "icon": "RiScissorsCutLine"
+            },
+            {
+              "title": "Desenfocar fondo",
+              "url": "/blur-background",
+              "description": "Aplica un hermoso efecto de desenfoque de modo retrato",
+              "icon": "RiBlurOffLine"
+            },
+            {
+              "title": "Colorear foto",
+              "url": "/colorize",
+              "description": "Añade color a fotos en blanco y negro con IA",
+              "icon": "RiPaletteLine"
+            },
+            {
+              "title": "Aumentar escala de imagen",
+              "url": "/upscale",
+              "description": "Agranda imágenes sin perder calidad",
+              "icon": "RiExpandLine"
             }
           ]
         },
         {
           "title": "Blog",
           "url": "/blog",
-          "icon": "RiBook2Line"
+          "icon": "RiArticleLine",
+          "children": [
+            {
+              "title": "Guía definitiva 2025: Cómo usar la tecnología de IA para eliminar marcas de agua de imágenes perfectamente",
+              "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
+              "description": "Guía paso a paso para la eliminación de marcas de agua con IA"
+            },
+            {
+              "title": "Las 7 mejores herramientas de IA para eliminar marcas de agua",
+              "url": "/blog/best-ai-tools-for-watermark-removal",
+              "description": "Compara las mejores herramientas de eliminación de marcas de agua con IA"
+            },
+            {
+              "title": "Aspectos legales de la eliminación de marcas de agua",
+              "url": "/blog/watermark-removal-legal-aspects-guide",
+              "description": "Comprende las consideraciones legales"
+            }
+          ]
         }
-
       ]
     },
     "buttons": [],
@@ -41,12 +91,12 @@
     "show_locale": true
   },
   "hero": {
-    "title": "Elimina marcas de agua de fotos al instante con IA",
-    "highlight_text": "Eliminar marcas de agua",
-    "description": "WatermarkCleaner utiliza IA avanzada para eliminar marcas de agua, logotipos, texto y objetos no deseados de tus fotos en segundos. Gratis, rápido y sin registro necesario.",
+    "title": "Eliminador de marcas de agua con IA gratuito – Elimina marcas de agua de imágenes en línea, compatible con JPG/PNG/WEBP",
+    "highlight_text": "Eliminador de marcas de agua con IA",
+    "description": "WatermarkCleaner utiliza IA avanzada para eliminar marcas de agua, logotipos, texto y objetos no deseados de tus fotos en segundos. Gratis, rápido y sin necesidad de registrarse.",
     "announcement": {
-      "label": "Gratis",
-      "title": "✨ Eliminación de marcas de agua con IA",
+      "label": "IA",
+      "title": "✨ Eliminación de marcas de agua impulsada por IA",
       "url": "/#feature"
     },
     "tip": "",
@@ -62,203 +112,225 @@
     "show_happy_users": true,
     "show_badge": false
   },
-
   "introduce": {
     "name": "introduce",
-    "title": "Por qué elegir WatermarkCleaner como tu alternativa gratuita a Quizlet",
-    "label": "Introducción",
-    "description": "WatermarkCleaner ofrece todo lo que necesitas para un aprendizaje efectivo: funciones impulsadas por IA, libertad completa y resultados comprobados.",
+    "title": "¿Qué puede eliminar WatermarkCleaner?",
+    "label": "Casos de uso",
+    "description": "Nuestra herramienta impulsada por IA maneja todo tipo de marcas de agua y elementos no deseados de tus fotos con resultados profesionales.",
     "image": {
-      "src": "/imgs/features/1.webp"
+      "src": "/imgs/features/watermark-demo.webp"
     },
     "items": [
       {
-        "title": "Aprendizaje con IA",
-        "description": "Algoritmos avanzados de IA analizan tus patrones de aprendizaje y optimizan los horarios de revisión para una retención máxima.",
-        "icon": "RiRobot2Line"
+        "title": "Marcas de agua de texto",
+        "description": "Elimina texto de derechos de autor, nombres de marcas, fechas y cualquier superposición de texto de tus fotos sin problemas.",
+        "icon": "RiText"
       },
       {
-        "title": "100% Gratis para siempre",
-        "description": "Todas las funciones incluyendo tarjetas ilimitadas, generación con IA y acceso sin conexión son completamente gratuitas sin costos ocultos.",
-        "icon": "RiMoneyDollarCircleLine"
+        "title": "Marcas de agua de logotipo",
+        "description": "Borra logotipos de fotos de archivo, marcas de empresas y marcas de agua corporativas preservando la calidad de la imagen.",
+        "icon": "RiImageLine"
       },
       {
-        "title": "Múltiples modos de estudio",
-        "description": "Tarjetas, cuestionarios, juegos de emparejamiento, pruebas de ortografía y más: elige el mejor modo para tu estilo de aprendizaje.",
-        "icon": "RiGamepadLine"
+        "title": "Objetos no deseados",
+        "description": "Elimina personas, intrusos, objetos o cualquier distracción de tus fotos con precisión de IA.",
+        "icon": "RiDeleteBin7Line"
       }
     ]
   },
   "benefit": {
     "name": "benefit",
-    "title": "WatermarkCleaner vs Quizlet - Por qué somos mejores",
-    "label": "Comparación",
-    "description": "Vea cómo WatermarkCleaner supera a Quizlet en todos los aspectos: más funciones, mejor privacidad y completamente gratis.",
+    "title": "Por qué elegir WatermarkCleaner",
+    "label": "Beneficios",
+    "description": "Experimenta la tecnología de eliminación de marcas de agua con IA más avanzada: rápida, precisa y completamente gratuita.",
     "items": [
       {
-        "title": "100% Gratis vs Suscripción de pago",
-        "description": "WatermarkCleaner ofrece todas las funciones premium gratis, mientras que Quizlet cobra $7.99/mes por funciones básicas como acceso sin conexión y eliminación de anuncios.",
-        "icon": "RiMoneyDollarCircleLine",
-        "image": {
-          "src": "/imgs/features/2.webp"
-        }
-      },
-      {
-        "title": "IA potenciada vs Memorización tradicional",
-        "description": "Nuestra avanzada IA analiza tus patrones de aprendizaje y optimiza los horarios de revisión, mientras que Quizlet usa repetición espaciada básica.",
+        "title": "Precisión impulsada por IA",
+        "description": "Nuestra IA avanzada comprende el contexto de la imagen y llena inteligentemente las áreas eliminadas con contenido de aspecto natural, sin dejar rastros.",
         "icon": "RiRobot2Line",
         "image": {
-          "src": "/imgs/features/3.webp"
+          "src": "/imgs/features/ai-accuracy.webp"
         }
       },
       {
-        "title": "Protección de privacidad vs Recopilación de datos",
-        "description": "Nunca vendemos tus datos ni mostramos anuncios dirigidos. Quizlet recopila y monetiza datos de usuarios para fines publicitarios.",
-        "icon": "RiShieldCheckLine",
+        "title": "Preservar la calidad de la imagen",
+        "description": "A diferencia de otras herramientas que desenfocan o distorsionan las imágenes, WatermarkCleaner mantiene la resolución y calidad originales de tus fotos.",
+        "icon": "RiHdLine",
         "image": {
-          "src": "/imgs/features/4.webp"
+          "src": "/imgs/features/quality.webp"
+        }
+      },
+      {
+        "title": "No requiere registro",
+        "description": "Comienza a eliminar marcas de agua de inmediato: sin creación de cuenta, sin verificación de correo electrónico, sin molestias. Solo sube y limpia.",
+        "icon": "RiUserLine",
+        "image": {
+          "src": "/imgs/features/no-signup.webp"
         }
       }
     ]
   },
   "usage": {
     "name": "usage",
-    "title": "Cómo comenzar con WatermarkCleaner",
-    "description": "Comienza tu viaje de aprendizaje eficiente en solo unos pasos simples:",
+    "label": "Cómo usar",
+    "title": "Cómo eliminar marcas de agua de imágenes en línea con WatermarkCleaner",
+    "description": "Elimina marcas de agua de tus fotos en segundos con nuestro sencillo proceso de 4 pasos:",
     "image": {
-      "src": "/imgs/features/1.webp"
+      "src": "/imgs/features/steps.webp"
     },
     "image_position": "left",
     "text_align": "center",
     "items": [
       {
-        "title": "Crear cuenta gratuita",
-        "description": "No se requiere tarjeta de crédito: regístrate en 30 segundos con correo electrónico, Google o GitHub. Comienza a aprender inmediatamente.",
-        "image": {
-          "src": "/imgs/features/5.webp"
-        }
+        "title": "Sube tu imagen",
+        "description": "Visita WatermarkCleaner y arrastra tu imagen con marca de agua al área de carga, o haz clic para seleccionar desde tu dispositivo. Admitimos formatos JPG, PNG y WEBP."
       },
       {
-        "title": "Crear tarjetas didácticas",
-        "description": "Crea manualmente o usa IA para generar automáticamente tarjetas. Importa conjuntos existentes de Quizlet, Anki u otras plataformas.",
-        "image": {
-          "src": "/imgs/features/6.webp"
-        }
+        "title": "La IA detecta y elimina automáticamente la marca de agua",
+        "description": "Una vez cargada, el sistema de IA de WatermarkCleaner analiza automáticamente la imagen, identifica las ubicaciones de las marcas de agua y comienza el proceso de eliminación. Esto suele tardar solo unos segundos."
       },
       {
-        "title": "Elegir modo de estudio",
-        "description": "Selecciona entre tarjetas, cuestionarios, emparejamiento u ortografía según tus objetivos. La IA ajusta la dificultad automáticamente.",
-        "image": {
-          "src": "/imgs/features/7.webp"
-        }
+        "title": "Ajustar si es necesario",
+        "description": "Para marcas de agua complejas o casos especiales, utiliza nuestras herramientas de ajuste manual para seleccionar con precisión las áreas que necesitan una limpieza adicional para obtener resultados perfectos."
       },
       {
-        "title": "Seguir tu progreso",
-        "description": "Ve estadísticas detalladas de aprendizaje e informes de progreso. La IA te recuerda inteligentemente revisar contenido antes de que lo olvides.",
-        "image": {
-          "src": "/imgs/features/8.webp"
-        }
+        "title": "Descargar imagen libre de marcas de agua",
+        "description": "Previsualiza el resultado y descarga tu imagen limpia y sin marcas de agua. La salida mantiene la calidad y resolución originales de tu foto."
       }
     ]
   },
   "feature": {
     "name": "feature",
-    "title": "Funciones potentes para un aprendizaje efectivo",
-    "description": "Todo lo que necesitas para dominar cualquier tema: desde tarjetas con IA hasta modos de estudio avanzados.",
+    "title": "Potentes funciones de IA para resultados perfectos",
+    "description": "Tecnología avanzada que hace que la eliminación de marcas de agua sea sencilla y profesional.",
     "items": [
       {
-        "title": "Generación de tarjetas con IA",
-        "description": "Genera automáticamente tarjetas de alta calidad desde tus notas, PDFs o libros de texto usando IA avanzada.",
+        "title": "Detección inteligente de IA",
+        "description": "Nuestra IA detecta automáticamente marcas de agua, logotipos y superposiciones de texto para una eliminación rápida con un solo clic.",
         "icon": "RiRobot2Line"
       },
       {
-        "title": "Múltiples modos de estudio",
-        "description": "Tarjetas, cuestionarios, juegos de emparejamiento, pruebas de ortografía y modo de estudio completo: elige lo que mejor funcione.",
-        "icon": "RiGamepadLine"
+        "title": "Procesamiento por lotes",
+        "description": "Elimina marcas de agua de varias imágenes a la vez. Ahorra tiempo con la capacidad de procesamiento masivo.",
+        "icon": "RiStackLine"
       },
       {
-        "title": "Algoritmo de repetición espaciada",
-        "description": "Repetición espaciada impulsada por IA basada en ciencia cognitiva que garantiza retención óptima a largo plazo.",
-        "icon": "RiTimeLine"
+        "title": "Salida de alta resolución",
+        "description": "Descarga tus imágenes limpias en resolución original. Sin pérdida de calidad ni compresión.",
+        "icon": "RiHdLine"
       },
       {
-        "title": "Aprendizaje colaborativo",
-        "description": "Comparte conjuntos de tarjetas con compañeros de clase, crea grupos de estudio y aprende juntos más efectivamente.",
-        "icon": "RiTeamLine"
+        "title": "Soporte de múltiples formatos",
+        "description": "Funciona con JPG, PNG, WebP, BMP y más. Convierte entre formatos según sea necesario.",
+        "icon": "RiFileImageLine"
       },
       {
-        "title": "Aprendizaje sin conexión",
-        "description": "Descarga tarjetas y estudia en cualquier lugar sin internet. Todo el progreso se sincroniza automáticamente cuando estás en línea.",
-        "icon": "RiDownloadCloudLine"
+        "title": "Herramienta de pincel precisa",
+        "description": "Ajusta la eliminación con tamaños de pincel ajustables. Perfecto para marcas de agua complejas.",
+        "icon": "RiBrushLine"
       },
       {
-        "title": "Estadísticas avanzadas",
-        "description": "Análisis detallados de tu progreso, patrones de aprendizaje y áreas que necesitan más atención.",
-        "icon": "RiBarChartLine"
+        "title": "Vista previa instantánea",
+        "description": "Ve los resultados en tiempo real antes de descargar. Haz ajustes hasta que quede perfecto.",
+        "icon": "RiEyeLine"
       },
       {
-        "title": "Importación fácil",
-        "description": "Importa conjuntos existentes de Quizlet, Anki, CSV o Excel con un solo clic. Compatible con todos los formatos populares.",
-        "icon": "RiUploadLine"
+        "title": "Procesamiento en la nube",
+        "description": "El procesamiento pesado de IA ocurre en la nube. Funciona en cualquier dispositivo sin ralentizaciones.",
+        "icon": "RiCloudLine"
       },
       {
-        "title": "Modo sin distracciones",
-        "description": "Interfaz limpia y minimalista que te ayuda a concentrarte en lo que más importa: aprender.",
-        "icon": "RiFocusLine"
+        "title": "Privacidad protegida",
+        "description": "Tus imágenes se procesan de forma segura y se eliminan automáticamente. Nunca almacenamos tus datos.",
+        "icon": "RiShieldCheckLine"
+      },
+      {
+        "title": "Sin marcas de agua añadidas",
+        "description": "Descarga imágenes limpias sin marcas de agua añadidas por nosotros. Tu resultado es verdaderamente limpio.",
+        "icon": "RiCheckDoubleLine"
+      }
+    ]
+  },
+  "stats": {
+    "name": "stats",
+    "label": "Estadísticas",
+    "title": "Con la confianza de millones en todo el mundo",
+    "description": "Únete a millones de usuarios que confían en WatermarkCleaner para sus necesidades de edición de imágenes",
+    "icon": "FaRegHeart",
+    "items": [
+      {
+        "title": "Imágenes procesadas",
+        "label": "10M+",
+        "description": "Fotos limpiadas"
+      },
+      {
+        "title": "Usuarios felices",
+        "label": "2M+",
+        "description": "Usuarios activos"
+      },
+      {
+        "title": "Tasa de éxito",
+        "label": "99%",
+        "description": "Precisión de eliminación"
+      },
+      {
+        "title": "Tiempo de procesamiento",
+        "label": "<5s",
+        "description": "Velocidad promedio"
       }
     ]
   },
   "testimonial": {
     "name": "testimonial",
-    "label": "Testimonial",
-    "title": "What Our Users Say",
-    "description": "Real feedback from photographers, designers, marketers, and everyday users.",
+    "label": "Testimonios",
+    "title": "Lo que dicen nuestros usuarios",
+    "description": "Comentarios reales de fotógrafos, diseñadores, especialistas en marketing y usuarios cotidianos.",
     "icon": "GoThumbsup",
     "items": [
       {
         "title": "Sarah Chen",
-        "label": "Photographer",
-        "description": "Finally a watermark remover that actually works! I use it daily for my photography business. The AI is incredibly smart at preserving image quality.",
+        "label": "Fotógrafa",
+        "description": "¡Finalmente un eliminador de marcas de agua que realmente funciona! Lo uso a diario para mi negocio de fotografía. La IA es increíblemente inteligente para preservar la calidad de la imagen.",
         "image": {
           "src": "/imgs/users/1.png"
         }
       },
       {
         "title": "Michael Rodriguez",
-        "label": "Graphic Designer",
-        "description": "I've tried many tools but WatermarkCleaner is the best. It handles complex backgrounds perfectly and the batch processing saves me hours.",
+        "label": "Diseñador Gráfico",
+        "description": "He probado muchas herramientas, pero WatermarkCleaner es la mejor. Maneja fondos complejos a la perfección y el procesamiento por lotes me ahorra horas.",
         "image": {
           "src": "/imgs/users/2.png"
         }
       },
       {
         "title": "Emma Wilson",
-        "label": "Social Media Manager",
-        "description": "Perfect for cleaning up images for social media. No more ugly watermarks ruining my posts. And it's completely free!",
+        "label": "Gestora de Redes Sociales",
+        "description": "Perfecto para limpiar imágenes para redes sociales. No más marcas de agua feas arruinando mis publicaciones. ¡Y es completamente gratis!",
         "image": {
           "src": "/imgs/users/3.png"
         }
       },
       {
         "title": "David Park",
-        "label": "E-commerce Owner",
-        "description": "My product photos look so much more professional now. Removed all the stock photo watermarks instantly. Highly recommend!",
+        "label": "Propietario de E-commerce",
+        "description": "Mis fotos de productos se ven mucho más profesionales ahora. Eliminó todas las marcas de agua de fotos de archivo al instante. ¡Altamente recomendado!",
         "image": {
           "src": "/imgs/users/4.png"
         }
       },
       {
         "title": "Lisa Thompson",
-        "label": "Content Creator",
-        "description": "The no sign-up feature is amazing. I can just upload and get my clean images immediately. This tool is a game-changer.",
+        "label": "Creadora de Contenido",
+        "description": "La función sin registro es increíble. Solo puedo subir y obtener mis imágenes limpias de inmediato. Esta herramienta es un cambio de juego.",
         "image": {
           "src": "/imgs/users/5.png"
         }
       },
       {
         "title": "James Miller",
-        "label": "Marketing Director",
-        "description": "We use WatermarkCleaner for all our marketing materials. The quality is professional-grade and the speed is unmatched.",
+        "label": "Director de Marketing",
+        "description": "Usamos WatermarkCleaner para todos nuestros materiales de marketing. La calidad es de grado profesional y la velocidad es inigualable.",
         "image": {
           "src": "/imgs/users/6.png"
         }
@@ -267,54 +339,153 @@
   },
   "faq": {
     "name": "faq",
-    "label": "FAQ",
-    "title": "Frequently Asked Questions",
-    "description": "Everything you need to know about WatermarkCleaner",
+    "label": "Preguntas frecuentes",
+    "title": "Preguntas Frecuentes",
+    "description": "Todo lo que necesitas saber sobre WatermarkCleaner",
     "items": [
       {
-        "title": "Is WatermarkCleaner really free?",
-        "description": "Yes! WatermarkCleaner offers free watermark removal with no sign-up required. You can process images instantly without any cost. We also offer premium plans for users who need advanced features like batch processing and higher resolution outputs."
+        "title": "¿WatermarkCleaner es realmente gratuito?",
+        "description": "¡Sí! WatermarkCleaner ofrece eliminación de marcas de agua gratuita sin necesidad de registrarse. Puedes procesar imágenes al instante sin costo alguno. También ofrecemos planes premium para usuarios que necesitan funciones avanzadas como procesamiento por lotes y salidas de mayor resolución."
       },
       {
-        "title": "What image formats are supported?",
-        "description": "WatermarkCleaner supports all major image formats including JPG, JPEG, PNG, WebP, and BMP. You can upload images up to 20MB in size. The output format matches your input, or you can choose to convert between formats."
+        "title": "¿Qué formatos de imagen son compatibles?",
+        "description": "WatermarkCleaner admite todos los formatos de imagen principales, incluidos JPG, JPEG, PNG, WebP y BMP. Puedes cargar imágenes de hasta 10 MB de tamaño. El formato de salida coincide con tu entrada, o puedes elegir convertir entre formatos."
       },
       {
-        "title": "Will removing watermarks lower image quality?",
-        "description": "No! Our AI technology is designed to preserve the original image quality. Unlike basic tools that blur or distort the image, WatermarkCleaner intelligently fills the removed area with matching content, maintaining sharpness and resolution."
+        "title": "¿La eliminación de marcas de agua reducirá la calidad de la imagen?",
+        "description": "¡No! Nuestra tecnología de IA está diseñada para preservar la calidad original de la imagen. A diferencia de las herramientas básicas que desenfocan o distorsionan la imagen, WatermarkCleaner llena inteligentemente el área eliminada con contenido coincidente, manteniendo la nitidez y la resolución."
       },
       {
-        "title": "Can I use WatermarkCleaner on mobile devices?",
-        "description": "Absolutely! WatermarkCleaner is fully responsive and works on any device - smartphones, tablets, and desktops. No app installation required - just visit our website and start removing watermarks."
+        "title": "¿Puedo usar WatermarkCleaner en dispositivos móviles?",
+        "description": "¡Absolutamente! WatermarkCleaner es totalmente receptivo y funciona en cualquier dispositivo: teléfonos inteligentes, tabletas y computadoras de escritorio. No se requiere instalación de aplicaciones: solo visita nuestro sitio web y comienza a eliminar marcas de agua."
       },
       {
-        "title": "What if the watermark is on a complex background?",
-        "description": "Our AI excels at handling complex backgrounds! It analyzes the surrounding area and intelligently reconstructs the image beneath the watermark. For best results with very complex areas, use our brush tool to precisely mark the watermark."
+        "title": "¿Qué pasa si la marca de agua está en un fondo complejo?",
+        "description": "¡Nuestra IA sobresale en el manejo de fondos complejos! Analiza el área circundante y reconstruye inteligentemente la imagen debajo de la marca de agua. Para obtener los mejores resultados con áreas muy complejas, utiliza nuestra herramienta de pincel para marcar con precisión la marca de agua."
       },
       {
-        "title": "Is my data secure and private?",
-        "description": "Absolutely. Your images are processed securely and automatically deleted from our servers after processing. We never store, share, or use your images for any other purpose. Your privacy is our priority."
+        "title": "¿Son mis datos seguros y privados?",
+        "description": "Absolutamente. Tus imágenes se procesan de forma segura y se eliminan automáticamente de nuestros servidores después del procesamiento. Nunca almacenamos, compartimos ni usamos tus imágenes para ningún otro propósito. Tu privacidad es nuestra prioridad."
       },
       {
-        "title": "Can I remove watermarks from multiple images at once?",
-        "description": "Yes! With our batch processing feature, you can upload and process multiple images simultaneously. This is perfect for cleaning up large collections of photos efficiently."
+        "title": "¿Puedo eliminar marcas de agua de varias imágenes a la vez?",
+        "description": "¡Sí! Con nuestra función de procesamiento por lotes, puedes cargar y procesar varias imágenes simultáneamente. Esto es perfecto para limpiar grandes colecciones de fotos de manera eficiente."
       },
       {
-        "title": "Is it legal to remove watermarks?",
-        "description": "WatermarkCleaner is a tool for legitimate use cases like removing your own watermarks, cleaning personal photos, or removing distracting elements. Please respect copyright laws and only remove watermarks from images you own or have permission to edit."
+        "title": "¿Es legal eliminar marcas de agua?",
+        "description": "WatermarkCleaner es una herramienta para casos de uso legítimos, como eliminar tus propias marcas de agua, limpiar fotos personales o eliminar elementos que distraen. Respeta las leyes de derechos de autor y solo elimina marcas de agua de las imágenes que posees o tienes permiso para editar."
+      }
+    ]
+  },
+  "why_need": {
+    "name": "why-need",
+    "label": "Por qué eliminar marcas de agua con IA",
+    "title": "¿Por qué necesitas una herramienta de eliminación de marcas de agua con IA?",
+    "description": "En la era de la explosión del contenido digital, las marcas de agua se han convertido en un obstáculo común al navegar y usar imágenes. Ya sean fotos en redes sociales, recursos de imágenes de archivo o imágenes de productos en plataformas de comercio electrónico, las marcas de agua a menudo oscurecen el contenido clave y afectan la experiencia visual y el profesionalismo. Los métodos tradicionales de eliminación de marcas de agua suelen requerir software profesional como Photoshop, que es complejo y técnicamente exigente, una barrera demasiado alta para la mayoría de los usuarios.<br/><br/>La tecnología de eliminación de marcas de agua con IA ha cambiado completamente este panorama. En comparación con los métodos tradicionales, las herramientas de eliminación de marcas de agua con IA ofrecen ventajas significativas:",
+    "items": [
+      {
+        "title": "Fácil de usar",
+        "description": "No se necesitan habilidades profesionales. Simplemente sube tu imagen y deja que la IA se encargue de todo automáticamente.",
+        "icon": "RiUserSmileLine"
+      },
+      {
+        "title": "Rápido y eficiente",
+        "description": "Completa la eliminación de marcas de agua en segundos, mejorando significativamente la eficiencia de tu flujo de trabajo.",
+        "icon": "RiFlashlightLine"
+      },
+      {
+        "title": "Salida de alta calidad",
+        "description": "Mantén la claridad, los detalles y la resolución de la imagen original después de la eliminación de la marca de agua.",
+        "icon": "RiHdLine"
+      },
+      {
+        "title": "Seguro y protegido",
+        "description": "No se requiere registro. No almacenamos tus datos; tu privacidad está totalmente protegida.",
+        "icon": "RiShieldCheckLine"
+      }
+    ]
+  },
+  "format_specs": {
+    "name": "format-specs",
+    "label": "Formatos soportados",
+    "title": "Formatos de imagen soportados y límites de tamaño de archivo",
+    "description": "WatermarkCleaner admite múltiples formatos de imagen principales para cubrir todas tus necesidades.",
+    "items": [
+      {
+        "title": "JPG / JPEG",
+        "description": "El formato de imagen más utilizado, ideal para la mayoría de los casos de uso web y fotográfico.",
+        "icon": "RiFileImageLine",
+        "label": "Más popular"
+      },
+      {
+        "title": "PNG",
+        "description": "Perfecto para imágenes que requieren fondos transparentes y calidad de compresión sin pérdidas.",
+        "icon": "RiImageLine",
+        "label": "Transparencia"
+      },
+      {
+        "title": "WEBP",
+        "description": "Formato de imagen de alta eficiencia de próxima generación que ofrece mejores tasas de compresión y calidad.",
+        "icon": "RiFileCodeLine",
+        "label": "Formato moderno"
+      },
+      {
+        "title": "Tamaño máx. de archivo",
+        "description": "Sube imágenes de hasta 20 MB de tamaño. Para archivos más grandes, recomendamos usar un compresor de imágenes primero.",
+        "icon": "RiUploadCloud2Line",
+        "label": "20 MB"
+      },
+      {
+        "title": "Resolución máx.",
+        "description": "Procesa imágenes de hasta 6000×6000 píxeles. Este límite garantiza un procesamiento de IA rápido y de alta calidad.",
+        "icon": "RiFullscreenLine",
+        "label": "6000×6000 px"
+      },
+      {
+        "title": "Múltiples dispositivos",
+        "description": "Usa WatermarkCleaner en cualquier dispositivo: escritorio, tableta o móvil con cualquier navegador moderno.",
+        "icon": "RiSmartphoneLine",
+        "label": "Todos los dispositivos"
+      }
+    ]
+  },
+  "comparisons": {
+    "name": "comparisons",
+    "items": [
+      {
+        "title": "Detección de marcas de agua con IA – Automática y precisa",
+        "description": "Nuestros algoritmos avanzados de IA detectan e identifican automáticamente marcas de agua, logotipos y superposiciones de texto en tus imágenes. No es necesaria la selección manual: el sistema inteligente de WatermarkCleaner reconoce patrones y elimina elementos no deseados mientras preserva la calidad original de la imagen."
+      },
+      {
+        "title": "Procesamiento por lotes – Elimina múltiples marcas de agua a la vez",
+        "description": "Ahorra tiempo con las capacidades de procesamiento por lotes. Sube múltiples imágenes y elimina marcas de agua de todas ellas simultáneamente. Perfecto para fotógrafos, creadores de contenido y empresas que necesitan limpiar grandes colecciones de imágenes de manera eficiente."
+      },
+      {
+        "title": "Preservar calidad de imagen – Salida de alta resolución",
+        "description": "¿Preocupado por la pérdida de calidad? WatermarkCleaner utiliza tecnología de inpainting sofisticada que rellena inteligentemente las áreas eliminadas basándose en los píxeles circundantes. Tus imágenes mantienen detalles nítidos, texturas naturales y resolución original después de la eliminación de la marca de agua."
+      },
+      {
+        "title": "Soporte para todos los formatos de imagen – JPG, PNG, WEBP y más",
+        "description": "WatermarkCleaner admite todos los formatos de imagen populares, incluidos JPG, JPEG, PNG, WEBP, BMP y TIFF. Ya sea que estés trabajando con fotos de productos, gráficos de redes sociales o fotografía profesional, nuestra herramienta lo maneja todo con las mismas potentes capacidades de eliminación de marcas de agua."
       }
     ]
   },
   "cta": {
     "name": "cta",
-    "title": "Listo para cambiar a WatermarkCleaner?",
-    "description": "Únete a miles de estudiantes que ya han cambiado a la mejor alternativa gratuita a Quizlet",
+    "title": "¿Listo para eliminar marcas de agua?",
+    "description": "Comienza a limpiar tus fotos ahora: gratis, rápido y sin necesidad de registrarse.",
     "buttons": [
       {
-        "title": "Comenzar gratis ahora",
+        "title": "Eliminar marca de agua ahora",
         "url": "/convert",
         "target": "_self",
-        "variant": "default"
+        "icon": "RiMagicLine"
+      },
+      {
+        "title": "Aprender más",
+        "url": "/#feature",
+        "target": "_self",
+        "variant": "outline"
       }
     ]
   },
@@ -322,37 +493,67 @@
     "name": "footer",
     "brand": {
       "title": "WatermarkCleaner",
-      "description": "WatermarkCleaner es la mejor alternativa gratuita a Quizlet, que ofrece tarjetas de memoria inteligentes con IA, cuestionarios y múltiples modos de estudio. Completamente gratuito con uso ilimitado.",
+      "description": "WatermarkCleaner es una herramienta gratuita impulsada por IA para eliminar marcas de agua, logotipos y objetos no deseados de las fotos. Rápido, fácil y sin necesidad de registrarse.",
       "logo": {
         "src": "/logo.png",
-        "alt": "WatermarkCleaner - Alternativa gratuita a Quizlet"
+        "alt": "WatermarkCleaner - Eliminador de marcas de agua con IA gratuito"
       },
       "url": "/"
     },
-    "copyright": "© 2025 • WatermarkCleaner Todos los derechos reservados.",
+    "copyright": "© 2025 WatermarkCleaner. Todos los derechos reservados.",
     "nav": {
       "items": [
         {
           "title": "Producto",
           "children": [
             {
+              "title": "Eliminar marca de agua",
+              "url": "/convert",
+              "target": "_self"
+            },
+            {
+              "title": "Desenfocar imagen",
+              "url": "/unblur",
+              "target": "_self"
+            },
+            {
+              "title": "Restaurar fotos antiguas",
+              "url": "/restore",
+              "target": "_self"
+            },
+            {
+              "title": "Eliminar ruido de imagen",
+              "url": "/denoise",
+              "target": "_self"
+            },
+            {
+              "title": "Eliminar fondo",
+              "url": "/remove-background",
+              "target": "_self"
+            },
+            {
+              "title": "Desenfocar fondo",
+              "url": "/blur-background",
+              "target": "_self"
+            },
+            {
+              "title": "Colorear foto",
+              "url": "/colorize",
+              "target": "_self"
+            },
+            {
+              "title": "Aumentar escala de imagen",
+              "url": "/upscale",
+              "target": "_self"
+            },
+            {
               "title": "Características",
               "url": "/#feature",
               "target": "_self"
             },
             {
-              "title": "Desenfocar Imagen",
-              "url": "/unblur",
-              "target": "_self"
-            },
-            {
-              "title": "Comparación",
-              "url": "/#benefit",
-              "target": "_self"
-            },
-            {
-              "title": "Testimonios",
-              "url": "/#testimonial",
+              "title": "Precios",
+              "url": "/pricing",
               "target": "_self"
             }
           ]
@@ -361,13 +562,8 @@
           "title": "Recursos",
           "children": [
             {
-              "title": "Centro de ayuda",
-              "url": "/#faq",
-              "target": "_self"
-            },
-            {
-              "title": "Guías de estudio",
-              "url": "/blog",
+              "title": "Cómo funciona",
+              "url": "/#usage",
               "target": "_self"
             },
             {
@@ -376,7 +572,12 @@
               "target": "_self"
             },
             {
-              "title": "Guía Definitiva 2025: Cómo Usar IA para Eliminar Marcas de Agua",
+              "title": "Blog",
+              "url": "/blog",
+              "target": "_self"
+            },
+            {
+              "title": "Guía definitiva 2025: Cómo usar IA para eliminar marcas de agua",
               "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
               "target": "_self"
             }
@@ -386,17 +587,17 @@
           "title": "Herramientas",
           "children": [
             {
-              "title": "Asistente de estudio con IA",
+              "title": "Eliminador de marcas de agua",
               "url": "/convert",
               "target": "_self"
             },
             {
-              "title": "Generador de tarjetas",
+              "title": "Eliminador de logotipos",
               "url": "/convert",
               "target": "_self"
             },
             {
-              "title": "Estadísticas de aprendizaje",
+              "title": "Eliminador de objetos",
               "url": "/convert",
               "target": "_self"
             }
@@ -409,25 +610,19 @@
         {
           "title": "X",
           "icon": "RiTwitterXFill",
-          "url": "https://x.com/turbolearn",
+          "url": "https://x.com/watermarkcleaner",
           "target": "_blank"
         },
         {
           "title": "Github",
           "icon": "RiGithubFill",
-          "url": "https://github.com/turbolearn",
-          "target": "_blank"
-        },
-        {
-          "title": "Discord",
-          "icon": "RiDiscordFill",
-          "url": "https://discord.gg/turbolearn",
+          "url": "https://github.com/watermarkcleaner",
           "target": "_blank"
         },
         {
           "title": "Email",
           "icon": "RiMailLine",
-          "url": "mailto:support@turbolearn.ai",
+          "url": "mailto:support@watermarkcleaner.com",
           "target": "_self"
         }
       ]
