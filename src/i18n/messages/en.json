@@ -1324,6 +1324,10 @@
     "hero": {
       "image_load_failed": "Failed to load image. Please try again.",
       "og_alt": "WatermarkCleaner AI watermark removal demonstration"
+    },
+    "sample_images": {
+      "title": "Or try with these sample images",
+      "alt": "Sample watermarked image"
     }
   }
 }

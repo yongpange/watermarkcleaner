@@ -13,6 +13,7 @@ import Image from "next/image";
 import { RiUploadCloud2Line, RiImageLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
+import { SAMPLE_IMAGES } from "@/config/sampleImages";
 import { loadImage, validateImageFile } from "@/lib/imageUtils";
 import { toast } from "react-hot-toast";
 import ComparisonSlider from '@/components/ui/comparison-slider';
@@ -21,7 +22,14 @@ import { useTranslations } from 'next-intl';
 export default function Hero({ hero }: { hero: HeroType }) {
   const router = useRouter();
   const setPendingImage = useUploadStore(state => state.setPendingImage);
+  const setSampleId = useUploadStore(state => state.setSampleId);
   const t = useTranslations('landing');
+
+  // 点击示例图片
+  const handleSampleClick = (sampleId: string) => {
+    setSampleId(sampleId);
+    router.push('/convert?fromSample=true');
+  };
 
   if (hero.disabled) {
     return null;
@@ -90,7 +98,7 @@ export default function Hero({ hero }: { hero: HeroType }) {
                   />
               </div>
 
-              {/* Right Column: Upload Area */}
+              {/* Right Column: Upload Area + Sample Images */}
               <div className="w-full max-w-xl mx-auto lg:mx-0">
                 <UploadArea
                   onFileSelect={async (file) => {
@@ -116,6 +124,34 @@ export default function Hero({ hero }: { hero: HeroType }) {
                   acceptedFormats={['.jpg', '.jpeg', '.png', '.webp']}
                   maxSize={20}
                 />
+
+                {/* 示例图片 */}
+                <div className="mt-4">
+                  <p className="text-sm text-muted-foreground text-center mb-3">
+                    {t('sample_images.title')}
+                  </p>
+                  <div className="flex items-center justify-center gap-3">
+                    {SAMPLE_IMAGES.map((sample) => (
+                      <button
+                        key={sample.id}
+                        onClick={() => handleSampleClick(sample.id)}
+                        className="group relative w-[90px] h-[90px] rounded-xl overflow-hidden border-2 border-border/50 hover:border-primary/60 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:scale-105 cursor-pointer"
+                      >
+                        <Image
+                          src={sample.before}
+                          alt={t('sample_images.alt')}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-110"
+                          sizes="90px"
+                        />
+                        {/* Hover overlay */}
+                        <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/20 transition-colors duration-300 flex items-center justify-center">
+                          <RiImageLine className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 

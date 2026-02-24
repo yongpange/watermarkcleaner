@@ -684,5 +684,20 @@
     "preferences_reset": "语言偏好已重置",
     "switching": "切换中...",
     "detected": "已检测"
+  },
+  "landing": {
+    "comparison": {
+      "before_label": "有水印",
+      "after_label": "已清除"
+    },
+    "happy_users": "来自 99+ 满意用户",
+    "hero": {
+      "image_load_failed": "图片加载失败，请重试。",
+      "og_alt": "WatermarkCleaner AI 去水印效果展示"
+    },
+    "sample_images": {
+      "title": "或试试这些示例图片",
+      "alt": "示例水印图片"
+    }
   }
 }

@@ -51,6 +51,9 @@
   - 智能比例识别 (Smart Aspect Ratio) - 默认自动保持原图比例
   - 多分辨率支持 (21:9, 16:9, 1:1, etc.)
   - 4K 超高清输出支持
+  - **示例图片试用**: 首页展示 3 张示例缩略图，点击后跳转 `/convert?fromSample=true`，模拟处理延迟后直接展示预存结果图，零 API 调用零积分消耗
+    - 配置: `src/config/sampleImages.ts`
+    - 状态传递: `uploadStore.sampleId` (Zustand)
 
 ### 2.5 功能页面架构
 
@@ -186,4 +189,4 @@ npm run cf:deploy    # 部署到 Cloudflare Pages
 ```
 
 ---
-*Last Updated: 2026-02-09*
+*Last Updated: 2026-02-24*

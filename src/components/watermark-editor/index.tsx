@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useUploadStore } from "@/store/uploadStore";
+import { getSampleImageById } from "@/config/sampleImages";
 import { toast } from "react-hot-toast";
 import { RiCloseCircleLine, RiImageAddLine, RiMagicLine, RiLoader4Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
@@ -67,8 +68,14 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
   // Zustand store for uploaded images (from homepage)
   const searchParams = useSearchParams();
   const isFromUpload = searchParams.get('fromUpload') === 'true';
+  const isFromSample = searchParams.get('fromSample') === 'true';
   const pendingImage = useUploadStore(state => state.pendingImage);
   const clearPendingImage = useUploadStore(state => state.clearPendingImage);
+  const sampleId = useUploadStore(state => state.sampleId);
+  const clearSampleId = useUploadStore(state => state.clearSampleId);
+
+  // 示例模式处理 ref
+  const sampleProcessedRef = useRef(false);
 
   // Image upload
   const handleImageLoad = useCallback((img: HTMLImageElement, file: File) => {
@@ -102,6 +109,53 @@ export default function WatermarkEditor({ onProcessingComplete }: WatermarkEdito
       toast.success(imageT('image_load_success'));
     }
   }, [isFromUpload, pendingImage, handleImageLoad, clearPendingImage, searchParams]);
+
+  // 示例模式：加载预存图片并模拟处理过程
+  useEffect(() => {
+    if (isFromSample && sampleId && !sampleProcessedRef.current) {
+      sampleProcessedRef.current = true;
+      const sample = getSampleImageById(sampleId);
+      if (!sample) {
+        console.error('[WatermarkEditor] Sample not found:', sampleId);
+        clearSampleId();
+        return;
+      }
+
+      console.log('[WatermarkEditor] Sample mode activated:', sample.id);
+
+      // 设置 before 图片作为预览（使用公共路径）
+      setImagePreviewUrl(sample.before);
+      // 创建一个虚拟 File 对象以满足 UI 条件
+      fetch(sample.before)
+        .then(res => res.blob())
+        .then(blob => {
+          const file = new File([blob], `sample-${sample.id}.webp`, { type: 'image/webp' });
+          setImageFile(file);
+          setImageMetadata({ width: 800, height: 600 });
+
+          // 立即开始模拟处理
+          setIsProcessing(true);
+          setError(null);
+
+          // 延迟 10 秒，模拟真实 API 调用
+          const delay = 10000;
+          setTimeout(() => {
+            setResultImageUrl(sample.after);
+            setIsProcessing(false);
+            toast.success(t('watermark_removed_success'));
+            // 不调用 onProcessingComplete —— 不扣积分
+          }, delay);
+        })
+        .catch(err => {
+          console.error('[WatermarkEditor] Failed to load sample image:', err);
+          setIsProcessing(false);
+        });
+
+      // 清理 URL 和 store
+      window.history.replaceState({}, '', '/convert');
+      clearSampleId();
+    }
+  }, [isFromSample, sampleId, clearSampleId, t]);
 
   // Remove image
   const handleRemoveImage = useCallback(() => {
