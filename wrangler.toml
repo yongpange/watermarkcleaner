@@ -1,6 +1,12 @@
 name = "watermarkcleaner"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
+
+# next-on-pages 使用 Vercel Build Output API 格式，产物固定写到这个目录。
+# 这不是部署到 Vercel，只是 Cloudflare Pages 适配器的输出路径。
+# Dashboard 必须设置 Build command，否则不会生成该目录：
+#   Build command: npm run cf:build
+#   Build output directory: .vercel/output/static
 pages_build_output_dir = ".vercel/output/static"
 
 # Bindings for Client-side/Server-side variables
@@ -8,4 +14,4 @@ pages_build_output_dir = ".vercel/output/static"
 
 [vars]
 # Public variables can be safe here, but usually better to keep all in Dashboard or .env.local for local dev
-# NEXT_PUBLIC_SUPABASE_URL = "..." 
+# NEXT_PUBLIC_SUPABASE_URL = "..."
