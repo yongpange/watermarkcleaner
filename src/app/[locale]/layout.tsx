@@ -12,6 +12,26 @@ import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/providers/theme";
 import { Toaster } from "react-hot-toast";
 import GoogleOneTap from "@/components/auth/GoogleOneTap";
+import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 export async function generateMetadata({
   params,
@@ -88,6 +108,9 @@ export default async function RootLayout({
       </head>
       <body
         className={cn(
+          inter.variable,
+          spaceGrotesk.variable,
+          jetbrainsMono.variable,
           "min-h-screen bg-background font-sans antialiased overflow-x-hidden"
         )}
       >

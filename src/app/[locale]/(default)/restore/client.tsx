@@ -24,18 +24,18 @@ import { Scissors, Palette, Sun, Sparkles, Users, BookOpen, Clock, Heart, Upload
 
 // Problem Types Configuration
 const problemTypesConfig = [
-  { key: 'scratches', icon: Scissors, color: 'bg-amber-500/10 text-amber-600' },
+  { key: 'scratches', icon: Scissors, color: 'bg-warning/10 text-warning' },
   { key: 'fading', icon: Sun, color: 'bg-orange-500/10 text-orange-600' },
-  { key: 'bw', icon: Palette, color: 'bg-purple-500/10 text-purple-600' },
-  { key: 'noise', icon: Sparkles, color: 'bg-blue-500/10 text-blue-600' },
+  { key: 'bw', icon: Palette, color: 'bg-primary/10 text-primary' },
+  { key: 'noise', icon: Sparkles, color: 'bg-primary/10 text-primary' },
 ];
 
 // Use Cases Configuration
 const useCasesConfig = [
-  { key: 'family', icon: Users, color: 'bg-pink-500/10 text-pink-600' },
-  { key: 'historical', icon: BookOpen, color: 'bg-amber-500/10 text-amber-600' },
-  { key: 'vintage', icon: Clock, color: 'bg-indigo-500/10 text-indigo-600' },
-  { key: 'genealogy', icon: Heart, color: 'bg-rose-500/10 text-rose-600' },
+  { key: 'family', icon: Users, color: 'bg-accent/10 text-accent' },
+  { key: 'historical', icon: BookOpen, color: 'bg-warning/10 text-warning' },
+  { key: 'vintage', icon: Clock, color: 'bg-accent/10 text-accent' },
+  { key: 'genealogy', icon: Heart, color: 'bg-destructive/10 text-destructive' },
 ];
 
 // How To Steps Configuration
@@ -47,10 +47,10 @@ const howToStepsConfig = [
 
 // Related Tools Configuration
 const relatedToolsConfig = [
-  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20' },
-  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-green-500/10 text-green-600 hover:bg-green-500/20' },
-  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20' },
-  { key: 'colorize', icon: Palette, href: '/colorize', color: 'bg-rose-500/10 text-rose-600 hover:bg-rose-500/20' },
+  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-primary/10 text-primary hover:bg-blue-500/20' },
+  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-success/10 text-success hover:bg-green-500/20' },
+  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-primary/10 text-primary hover:bg-purple-500/20' },
+  { key: 'colorize', icon: Palette, href: '/colorize', color: 'bg-destructive/10 text-destructive hover:bg-rose-500/20' },
 ];
 
 export default function RestoreClient() {
@@ -150,7 +150,7 @@ export default function RestoreClient() {
             </div>
             <div className="space-y-6 text-center lg:text-left order-1 lg:order-2">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <h2 className="text-2xl md:text-3xl font-bold gradient-text">
                   {t("features.f2_title")}
                 </h2>
                 <h3 className="text-lg md:text-xl text-muted-foreground font-medium">

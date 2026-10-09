@@ -3,18 +3,19 @@
 import { Check, Loader } from "lucide-react";
 import { PricingItem, Pricing as PricingType } from "@/types/blocks/pricing";
 import { getRealProductId } from "@/lib/payment/products";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
+import { motion } from "framer-motion";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/icon";
-import { Label } from "@/components/ui/label";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "sonner";
 import { useAppContext } from "@/contexts/app";
 import Image from "next/image";
+import { FadeIn } from "@/components/motion/FadeIn";
+import { cn } from "@/lib/utils";
 
 export default function Pricing({ pricing }: { pricing: PricingType }) {
   const { user, setShowSignModal } = useAppContext();
@@ -156,147 +157,168 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
     return null;
   }
 
+  const visibleItems = pricing.items?.filter(
+    (item) => !item.group || item.group === group
+  ) || [];
+
+  const gridCols: Record<number, string> = {
+    1: "md:grid-cols-1",
+    2: "md:grid-cols-2",
+    3: "md:grid-cols-3",
+    4: "md:grid-cols-4",
+  };
+
   return (
-    <section id={pricing.name} className="py-16">
+    <section id={pricing.name} className="py-24 bg-background">
       <div className="container">
-        <div className="mx-auto mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-semibold lg:text-5xl">
+        <FadeIn className="mx-auto mb-14 max-w-2xl text-center">
+          <h2 className="font-display text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {pricing.title}
           </h2>
-          <p className="text-muted-foreground lg:text-lg">
-            {pricing.description}
-          </p>
-        </div>
-        <div className="w-full flex flex-col items-center gap-2">
+          {pricing.description && (
+            <p className="mt-4 text-lg text-muted-foreground">
+              {pricing.description}
+            </p>
+          )}
+        </FadeIn>
+
+        <div className="flex flex-col items-center gap-10">
           {pricing.groups && pricing.groups.length > 0 && (
-            <div className="flex h-12 mb-12 items-center rounded-md bg-muted p-1 text-lg">
-              <RadioGroup
-                value={group}
-                className={`h-full grid-cols-${pricing.groups.length}`}
-                onValueChange={(value) => {
-                  setGroup(value);
-                }}
-              >
+            <FadeIn delay={0.1}>
+              <div className="relative flex items-center rounded-xl bg-muted p-1.5 shadow-sm">
                 {pricing.groups.map((item, i) => {
+                  const isActive = group === item.name;
                   return (
-                    <div
+                    <button
                       key={i}
-                      className='h-full rounded-md transition-all has-[button[data-state="checked"]]:bg-white'
+                      type="button"
+                      onClick={() => setGroup(item.name || "")}
+                      className={cn(
+                        "relative z-10 flex h-10 items-center justify-center gap-2 px-5 text-sm font-medium transition-colors duration-200 sm:px-7 sm:text-base",
+                        isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                      )}
                     >
-                      <RadioGroupItem
-                        value={item.name || ""}
-                        id={item.name}
-                        className="peer sr-only"
-                      />
-                      <Label
-                        htmlFor={item.name}
-                        className="flex h-full cursor-pointer items-center justify-center px-7 font-semibold text-muted-foreground peer-data-[state=checked]:text-primary"
-                      >
-                        {item.title}
-                        {item.label && (
-                          <Badge
-                            variant="outline"
-                            className="border-primary bg-primary px-1.5 ml-1 text-primary-foreground"
-                          >
-                            {item.label}
-                          </Badge>
-                        )}
-                      </Label>
-                    </div>
+                      {isActive && (
+                        <motion.div
+                          layoutId="activePricingGroup"
+                          className="absolute inset-0 rounded-lg bg-background shadow"
+                          transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                        />
+                      )}
+                      <span className="relative z-10">{item.title}</span>
+                      {item.label && (
+                        <Badge
+                          variant="outline"
+                          className="relative z-10 border-primary/30 bg-primary/10 px-1.5 text-xs text-primary"
+                        >
+                          {item.label}
+                        </Badge>
+                      )}
+                    </button>
                   );
                 })}
-              </RadioGroup>
-            </div>
+              </div>
+            </FadeIn>
           )}
+
           <div
-            className={`w-full mt-0 grid gap-6 md:grid-cols-${
-              pricing.items?.filter(
-                (item) => !item.group || item.group === group
-              )?.length
-            }`}
+            className={cn(
+              "w-full grid gap-6",
+              gridCols[visibleItems.length] || "md:grid-cols-3"
+            )}
           >
-            {pricing.items?.map((item, index) => {
-              if (item.group && item.group !== group) {
-                return null;
-              }
+            {visibleItems.map((item, index) => {
+              const featured = item.is_featured;
 
               return (
-                <div
-                  key={index}
-                  className={`rounded-lg p-6 ${
-                    item.is_featured
-                      ? "border-primary border-2 bg-card text-card-foreground"
-                      : "border-muted border"
-                  }`}
-                >
-                  <div className="flex h-full flex-col justify-between gap-5">
-                    <div>
-                      <div className="flex items-center gap-2 mb-4">
+                <FadeIn key={index} delay={0.15 + index * 0.08}>
+                  <div
+                    className={cn(
+                      "relative flex h-full flex-col rounded-2xl border bg-card p-7 sm:p-8 transition-all duration-300",
+                      featured
+                        ? "border-primary shadow-glow"
+                        : "border-border shadow hover:shadow-md"
+                    )}
+                  >
+                    {featured && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <Badge className="bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground shadow">
+                          Most Popular
+                        </Badge>
+                      </div>
+                    )}
+
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between gap-3">
                         {item.title && (
-                          <h3 className="text-xl font-semibold">
+                          <h3 className="font-display text-xl font-semibold text-foreground sm:text-2xl">
                             {item.title}
                           </h3>
                         )}
-                        <div className="flex-1"></div>
-                        {item.label && (
+                        {!featured && item.label && (
                           <Badge
                             variant="outline"
-                            className="border-primary bg-primary px-1.5 text-primary-foreground"
+                            className="border-primary/30 bg-primary/10 px-2 text-xs text-primary"
                           >
                             {item.label}
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-end gap-2 mb-4">
-                        {item.original_price && (
-                          <span className="text-xl text-muted-foreground font-semibold line-through">
-                            {item.original_price}
-                          </span>
-                        )}
-                        {item.price && (
-                          <span className="text-5xl font-semibold">
-                            {item.price}
-                          </span>
-                        )}
-                        {item.unit && (
-                          <span className="block font-semibold">
-                            {item.unit}
-                          </span>
-                        )}
-                      </div>
                       {item.description && (
-                        <p className="text-muted-foreground">
+                        <p className="mt-2 text-sm text-muted-foreground">
                           {item.description}
                         </p>
                       )}
+                    </div>
+
+                    <div className="mb-6 flex items-baseline gap-2">
+                      {item.original_price && (
+                        <span className="text-base text-muted-foreground line-through">
+                          {item.original_price}
+                        </span>
+                      )}
+                      {item.price && (
+                        <span className="text-5xl font-mono font-semibold tracking-tight text-foreground">
+                          {item.price}
+                        </span>
+                      )}
+                      {item.unit && (
+                        <span className="text-sm font-medium text-muted-foreground">
+                          {item.unit}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex-1">
                       {item.features_title && (
-                        <p className="mb-3 mt-6 font-semibold">
+                        <p className="mb-3 text-sm font-semibold text-foreground">
                           {item.features_title}
                         </p>
                       )}
                       {item.features && (
                         <ul className="flex flex-col gap-3">
-                          {item.features.map((feature, fi) => {
-                            return (
-                              <li className="flex gap-2" key={`feature-${fi}`}>
-                                <Check className="mt-1 size-4 shrink-0" />
-                                {feature}
-                              </li>
-                            );
-                          })}
+                          {item.features.map((feature, fi) => (
+                            <li
+                              className="flex items-start gap-3 text-sm text-muted-foreground"
+                              key={`feature-${fi}`}
+                            >
+                              <Check className="mt-0.5 size-4 shrink-0 text-accent" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
                         </ul>
                       )}
                     </div>
-                    <div className="flex flex-col gap-2">
+
+                    <div className="mt-8 flex flex-col gap-3">
                       {item.cn_amount && item.cn_amount > 0 ? (
-                        <div className="flex items-center gap-x-2 mt-2">
-                          <span className="text-sm">人民币支付 👉</span>
-                          <div
-                            className="inline-block p-2 hover:cursor-pointer hover:bg-base-200 rounded-md"
+                        <div className="flex items-center justify-between rounded-lg border border-border bg-background/50 px-3 py-2">
+                          <span className="text-sm text-muted-foreground">人民币支付</span>
+                          <button
+                            type="button"
+                            className="inline-flex items-center rounded-md p-1 transition-colors hover:bg-accent/10"
                             onClick={() => {
-                              if (isLoading) {
-                                return;
-                              }
+                              if (isLoading) return;
                               handleCheckout(item, true);
                             }}
                           >
@@ -305,46 +327,47 @@ export default function Pricing({ pricing }: { pricing: PricingType }) {
                               alt="China payment methods"
                               width={80}
                               height={40}
-                              className="w-20 h-10 rounded-lg"
+                              className="h-8 w-auto rounded-md object-contain"
                             />
-                          </div>
+                          </button>
                         </div>
                       ) : null}
+
                       {item.button && (
                         <Button
-                          className="w-full flex items-center justify-center gap-2 font-semibold"
+                          variant={featured ? "glow" : "default"}
+                          size="lg"
+                          className="w-full gap-2 font-semibold"
                           disabled={isLoading}
                           onClick={() => {
-                            if (isLoading) {
-                              return;
-                            }
+                            if (isLoading) return;
                             handleCheckout(item);
                           }}
                         >
-                          {(!isLoading ||
-                            (isLoading && productId !== item.product_id)) && (
-                            <p>{item.button.title}</p>
-                          )}
-
-                          {isLoading && productId === item.product_id && (
-                            <p>{item.button.title}</p>
-                          )}
-                          {isLoading && productId === item.product_id && (
-                            <Loader className="mr-2 h-4 w-4 animate-spin" />
-                          )}
-                          {item.button.icon && (
-                            <Icon name={item.button.icon} className="size-4" />
+                          {isLoading && productId === item.product_id ? (
+                            <>
+                              <Loader className="size-4 animate-spin" />
+                              <span>{item.button.title}</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>{item.button.title}</span>
+                              {item.button.icon && (
+                                <Icon name={item.button.icon} className="size-4" />
+                              )}
+                            </>
                           )}
                         </Button>
                       )}
+
                       {item.tip && (
-                        <p className="text-muted-foreground text-sm mt-2">
+                        <p className="text-center text-xs text-muted-foreground">
                           {item.tip}
                         </p>
                       )}
                     </div>
                   </div>
-                </div>
+                </FadeIn>
               );
             })}
           </div>

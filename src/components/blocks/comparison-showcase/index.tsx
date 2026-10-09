@@ -2,9 +2,9 @@
 
 import React from 'react';
 import ComparisonSlider from '@/components/ui/comparison-slider';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { FadeIn } from '@/components/motion/FadeIn';
+import { cn } from '@/lib/utils';
 
 interface ComparisonShowcaseProps {
   title: string;
@@ -21,50 +21,47 @@ export default function ComparisonShowcase({
   afterImage,
   reversed = false,
 }: ComparisonShowcaseProps) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const t = useTranslations('landing.comparison');
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Determine background style based on theme
-  const isDark = mounted && resolvedTheme === 'dark';
-  
   return (
-    <section 
-      className="py-16 lg:py-24"
-      style={{
-        background: isDark 
-          ? 'var(--background)' 
-          : 'linear-gradient(to bottom right, rgb(245 243 255), rgb(238 242 255))'
-      }}
-    >
-      <div className="container px-4 mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-          {/* Text Content */}
-          <div className={reversed ? "order-2 lg:order-2" : "order-2 lg:order-1"}>
-            <div className="max-w-xl">
-              <h2 className="text-3xl lg:text-5xl font-bold mb-6 lg:mb-8 leading-tight bg-gradient-to-r from-gray-900 to-violet-600 dark:from-white dark:to-violet-400 bg-clip-text text-transparent">
+    <section className="py-16 lg:py-24 border-b border-border last:border-b-0">
+      <div className="container">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+          <FadeIn
+            direction="up"
+            className={cn(
+              "lg:col-span-5",
+              reversed ? "order-2 lg:order-2 lg:col-start-8" : "order-2 lg:order-1"
+            )}
+          >
+            <div className="max-w-lg">
+              <h2 className="font-display text-3xl lg:text-4xl xl:text-5xl font-semibold tracking-tight mb-5 leading-[1.1]">
                 {title}
               </h2>
-              <p className="text-base text-muted-foreground mb-8 lg:mb-12">
+              <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
                 {subtitle}
               </p>
             </div>
-          </div>
+          </FadeIn>
 
-          {/* Image Comparison Widget */}
-          <div className={reversed ? "order-1 lg:order-1 flex justify-center w-full" : "order-1 lg:order-2 flex justify-center w-full"}>
-            <ComparisonSlider
-              beforeImage={beforeImage}
-              afterImage={afterImage}
-              beforeLabel={t('before_label')}
-              afterLabel={t('after_label')}
-              className="shadow-2xl w-full max-w-[360px]"
-            />
-          </div>
+          <FadeIn
+            direction="up"
+            delay={0.1}
+            className={cn(
+              "lg:col-span-7",
+              reversed ? "order-1 lg:order-1 lg:col-start-1" : "order-1 lg:order-2"
+            )}
+          >
+            <div className="flex justify-center w-full">
+              <ComparisonSlider
+                beforeImage={beforeImage}
+                afterImage={afterImage}
+                beforeLabel={t('before_label')}
+                afterLabel={t('after_label')}
+                className="w-full max-w-[420px] lg:max-w-none lg:w-full"
+              />
+            </div>
+          </FadeIn>
         </div>
       </div>
     </section>

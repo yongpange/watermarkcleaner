@@ -33,12 +33,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 import { Header as HeaderType } from "@/types/blocks/header";
 import Icon from "@/components/icon";
 import { Link } from "@/i18n/routing";
 import LocaleToggle from "@/components/locale/toggle";
-import { Menu, User, CreditCard, LogOut, ChevronDown } from "lucide-react";
+import { Menu, User, CreditCard, LogOut, ChevronDown, Sparkles } from "lucide-react";
 import ThemeToggle from "@/components/theme/toggle";
 import { cn } from "@/lib/utils";
 import { AuthModal } from "@/components/auth/auth-modal";
@@ -48,10 +49,9 @@ import { USER_TIER_CONFIG } from "@/lib/credits/config";
 import type { User as NextAuthUser } from "@/types/next-auth";
 import { Link as NextIntlLink } from "@/i18n/routing";
 import type { AppPathname } from "@/i18n/locale";
+import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
-/**
- * 安全链接组件 - 根据URL类型渲染内部Link或外部a标签
- */
 const SafeLink = ({
   href,
   children,
@@ -59,18 +59,14 @@ const SafeLink = ({
   target,
   ...props
 }: {
-  href?: string;  // 直接使用string类型，避免next-intl的复杂类型检查
+  href?: string;
   children: React.ReactNode;
   className?: string;
   target?: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  // 如果没有href，回退到首页
   const url = href || "/";
-
-  // 判断是否为外部链接
   const isExternal = url.startsWith("http://") || url.startsWith("https://");
 
-  // 内部链接使用Next.js Link
   if (!isExternal) {
     return (
       <NextIntlLink href={url as any} className={className} {...props}>
@@ -79,7 +75,6 @@ const SafeLink = ({
     );
   }
 
-  // 外部链接使用原生a标签
   return (
     <a
       href={url}
@@ -101,18 +96,24 @@ interface CreditsInfo {
 
 export default function Header({ header }: { header: HeaderType }) {
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { data: session, status } = useSession();
-  const t = useTranslations('header');
+  const t = useTranslations("header");
+  const pathname = usePathname();
+  const isHomePage = pathname === "/" || pathname === "/en" || pathname === "/zh";
 
-  // 用户基本信息（从 session 获取）
-  const userName = session?.user?.name || session?.user?.email?.split('@')[0] || '';
-  const userEmail = session?.user?.email || '';
+  const userName = session?.user?.name || session?.user?.email?.split("@")[0] || "";
+  const userEmail = session?.user?.email || "";
 
-  // 额度信息（主动查询，不是从 session）
   const [creditsInfo, setCreditsInfo] = useState<CreditsInfo | null>(null);
   const [creditsLoading, setCreditsLoading] = useState(false);
 
-  // 获取用户额度（实时查询，不依赖 session）
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 12);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     async function fetchCredits() {
       if (status !== "authenticated" || !session?.user) {
@@ -128,16 +129,14 @@ export default function Header({ header }: { header: HeaderType }) {
           setCreditsInfo({
             tier: data.tier,
             used: data.used,
-            remaining: data.remaining
+            remaining: data.remaining,
           });
         }
       } catch (error) {
-        console.error("Failed to fetch credits in header:", error);
-        // Fallback to session data if API fails
         setCreditsInfo({
-          tier: session?.user?.tier || 'unverified',
+          tier: session?.user?.tier || "unverified",
           used: session?.user?.creditsUsed || 0,
-          remaining: undefined
+          remaining: undefined,
         });
       } finally {
         setCreditsLoading(false);
@@ -146,177 +145,191 @@ export default function Header({ header }: { header: HeaderType }) {
 
     fetchCredits();
 
-    // Listen for global credit update events
-    const handleCreditUpdate = () => {
-      console.log('Header received credit-update event');
-      fetchCredits();
-    };
-    window.addEventListener('credit-update', handleCreditUpdate);
-
-    return () => {
-      window.removeEventListener('credit-update', handleCreditUpdate);
-    };
+    const handleCreditUpdate = () => fetchCredits();
+    window.addEventListener("credit-update", handleCreditUpdate);
+    return () => window.removeEventListener("credit-update", handleCreditUpdate);
   }, [session, status]);
 
-  // 计算额度显示
-  const userTier = creditsInfo?.tier || session?.user?.tier || 'unverified';
+  const userTier = creditsInfo?.tier || session?.user?.tier || "unverified";
   const creditsUsed = creditsInfo?.used ?? (session?.user?.creditsUsed || 0);
   const creditsRemaining = creditsInfo?.remaining;
   const showRemaining = creditsRemaining !== undefined;
-  
-  const creditsLimit = USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth === Infinity
-    ? '∞'
-    : USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth || 3;
+
+  const creditsLimit =
+    USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth === Infinity
+      ? "∞"
+      : USER_TIER_CONFIG[userTier as keyof typeof USER_TIER_CONFIG]?.maxPerMonth || 3;
 
   if (header.disabled) {
     return null;
   }
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' });
+    await signOut({ callbackUrl: "/" });
   };
 
   return (
-    <section className="py-3">
+    <header
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        isHomePage
+          ? scrolled
+            ? "bg-[#0B0C15]/85 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/10"
+            : "bg-transparent"
+          : scrolled
+            ? "bg-background/75 backdrop-blur-xl border-b border-border/50 shadow-sm"
+            : "bg-transparent"
+      )}
+    >
       <div className="container">
-        <nav className="hidden justify-between lg:flex">
-          <div className="flex items-center gap-6">
+        <nav className="hidden justify-between items-center h-16 lg:flex">
+          {/* Left: Logo + Nav */}
+          <div className="flex items-center gap-8">
             <SafeLink
               href={header.brand?.url || "/"}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2.5 group"
             >
-              <Image 
-                src="/logo.png" 
-                alt="Logo" 
-                width={32} 
-                height={32} 
-                className="w-8 h-8 rounded-lg"
-              />
+              <div className="relative w-8 h-8 rounded-lg overflow-hidden ring-1 ring-border/50 group-hover:ring-primary/30 transition-all">
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  fill
+                  className="object-cover"
+                />
+              </div>
               {header.brand?.title && (
-                <span className="text-xl text-primary font-bold">
+                <span className={cn(
+                  "text-lg font-display font-semibold tracking-tight",
+                  isHomePage ? "text-white" : "text-foreground"
+                )}>
                   {header.brand?.title || ""}
                 </span>
               )}
             </SafeLink>
-            <div className="flex items-center">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {header.nav?.items?.map((item, i) => {
-                    if (item.children && item.children.length > 0) {
-                      return (
-                        <NavigationMenuItem
-                          key={i}
-                          className="text-muted-foreground"
-                        >
-                          <NavigationMenuTrigger>
-                            {item.icon && (
-                              <Icon
-                                name={item.icon}
-                                className="size-4 shrink-0 mr-2"
-                              />
-                            )}
-                            <span>{item.title}</span>
-                          </NavigationMenuTrigger>
-                          <NavigationMenuContent>
-                            <ul className="w-80 p-3">
-                              <NavigationMenuLink>
-                                {item.children.map((iitem, ii) => (
-                                  <li key={ii}>
-                                    <SafeLink
-                                      className={cn(
-                                        "flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                      )}
-                                      href={iitem.url || "/"}
-                                      target={iitem.target}
-                                    >
-                                      {iitem.icon && (
-                                        <Icon
-                                          name={iitem.icon}
-                                          className="size-5 shrink-0"
-                                        />
-                                      )}
-                                      <div>
-                                        <div className="text-sm font-semibold">
-                                          {iitem.title}
-                                        </div>
-                                        <p className="text-sm leading-snug text-muted-foreground">
-                                          {iitem.description}
-                                        </p>
-                                      </div>
-                                    </SafeLink>
-                                  </li>
-                                ))}
-                              </NavigationMenuLink>
-                            </ul>
-                          </NavigationMenuContent>
-                        </NavigationMenuItem>
-                      );
-                    }
 
+            <NavigationMenu>
+              <NavigationMenuList>
+                {header.nav?.items?.map((item, i) => {
+                  if (item.children && item.children.length > 0) {
                     return (
-                      <NavigationMenuItem key={i}>
-                        <SafeLink
-                          className={cn(
-                            "text-muted-foreground",
-                            navigationMenuTriggerStyle,
-                            buttonVariants({
-                              variant: "ghost",
-                            })
-                          )}
-                          href={item.url || "/"}
-                          target={item.target}
-                        >
+                      <NavigationMenuItem key={i} className={isHomePage ? "text-white/70" : "text-muted-foreground"}>
+                        <NavigationMenuTrigger className={cn("text-sm font-medium", isHomePage && "text-white/70 hover:text-white data-[state=open]:text-white")}>
                           {item.icon && (
                             <Icon
                               name={item.icon}
-                              className="size-4 shrink-0 mr-0"
+                              className="size-4 shrink-0 mr-2"
                             />
                           )}
-                          {item.title}
-                        </SafeLink>
+                          <span>{item.title}</span>
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="w-80 p-2">
+                            {item.children.map((iitem, ii) => (
+                              <li key={ii}>
+                                <NavigationMenuLink asChild>
+                                  <SafeLink
+                                    className="flex select-none gap-4 rounded-xl p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent/50 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                    href={iitem.url || "/"}
+                                    target={iitem.target}
+                                  >
+                                    {iitem.icon && (
+                                      <Icon
+                                        name={iitem.icon}
+                                        className="size-5 shrink-0 text-muted-foreground"
+                                      />
+                                    )}
+                                    <div>
+                                      <div className="text-sm font-medium">
+                                        {iitem.title}
+                                      </div>
+                                      <p className="text-sm leading-snug text-muted-foreground">
+                                        {iitem.description}
+                                      </p>
+                                    </div>
+                                  </SafeLink>
+                                </NavigationMenuLink>
+                              </li>
+                            ))}
+                          </ul>
+                        </NavigationMenuContent>
                       </NavigationMenuItem>
                     );
-                  })}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
+                  }
+
+                  return (
+                    <NavigationMenuItem key={i}>
+                      <SafeLink
+                        className={cn(
+                          "relative text-sm font-medium transition-colors",
+                          isHomePage
+                            ? "text-white/70 hover:text-white after:bg-white"
+                            : "text-muted-foreground hover:text-foreground after:bg-primary",
+                          navigationMenuTriggerStyle,
+                          buttonVariants({ variant: "ghost" }),
+                          "after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all after:duration-200 hover:after:w-4/5",
+                          isHomePage && "hover:bg-white/10"
+                        )}
+                        href={item.url || "/"}
+                        target={item.target}
+                      >
+                        {item.icon && (
+                          <Icon name={item.icon} className="size-4 shrink-0 mr-1.5" />
+                        )}
+                        {item.title}
+                      </SafeLink>
+                    </NavigationMenuItem>
+                  );
+                })}
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
-          <div className="shrink-0 flex gap-2 items-center">
-            {header.show_locale && <LocaleToggle />}
-            {header.show_theme && <ThemeToggle />}
 
-            {header.buttons?.map((item, i) => {
-              return (
-                <Button key={i} variant={item.variant}>
-                  <SafeLink
-                    href={item.url || "/"}
-                    target={item.target || ""}
-                    className="flex items-center gap-1 cursor-pointer"
-                  >
-                    {item.title}
-                    {item.icon && (
-                      <Icon name={item.icon} className="size-4 shrink-0" />
-                    )}
-                  </SafeLink>
-                </Button>
-              );
-            })}
+          {/* Right: Actions */}
+          <div className="shrink-0 flex items-center gap-1">
+            {header.show_locale && <LocaleToggle className={cn(isHomePage && "text-white/70 hover:text-white")} />}
+            {header.show_theme && <ThemeToggle className={cn(isHomePage && "text-white/70 hover:text-white")} />}
 
-            {/* 登录状态展示 */}
+            {header.buttons?.map((item, i) => (
+              <Button key={i} variant={item.variant} className="ml-2">
+                <SafeLink
+                  href={item.url || "/"}
+                  target={item.target || ""}
+                  className="flex items-center gap-1.5 cursor-pointer"
+                >
+                  {item.title}
+                  {item.icon && <Icon name={item.icon} className="size-4 shrink-0" />}
+                </SafeLink>
+              </Button>
+            ))}
+
             {status === "authenticated" && session?.user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="gap-2 px-2">
-                    <Avatar className="w-8 h-8">
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "gap-2 pl-2 pr-3 ml-2 h-9 rounded-full border hover:bg-white/10",
+                      isHomePage
+                        ? "border-white/20 text-white hover:text-white"
+                        : "border-border/50 hover:bg-accent/50"
+                    )}
+                  >
+                    <Avatar className="w-6 h-6 ring-1 ring-border/50">
                       <AvatarImage src={session.user.image ?? undefined} />
-                      <AvatarFallback>
-                        {userName?.[0]?.toUpperCase() || 'U'}
+                      <AvatarFallback className="text-xs">
+                        {userName?.[0]?.toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="hidden md:inline text-sm font-medium">
-                      {userName} {showRemaining ? `(${creditsRemaining} Credits)` : `(${creditsUsed}/${creditsLimit})`}
+                    <span className="hidden md:inline text-sm font-medium max-w-[120px] truncate">
+                      {userName}
                     </span>
-                    <ChevronDown className="w-4 h-4 opacity-50" />
+                    <Badge
+                      variant="secondary"
+                      className="hidden lg:inline-flex text-xs px-1.5 py-0 h-5 font-mono"
+                    >
+                      {showRemaining ? creditsRemaining : `${creditsUsed}/${creditsLimit}`}
+                    </Badge>
+                    <ChevronDown className="w-3.5 h-3.5 opacity-50" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -324,97 +337,88 @@ export default function Header({ header }: { header: HeaderType }) {
                     <div className="font-medium text-foreground">{userName}</div>
                     <div className="text-xs text-muted-foreground truncate">{userEmail}</div>
                   </div>
-
                   <DropdownMenuSeparator />
-
                   <DropdownMenuItem asChild>
                     <SafeLink href="/convert" className="flex items-center gap-2 cursor-pointer">
                       <CreditCard className="w-4 h-4" />
-                      {t('my_credits')} {showRemaining ? `(${creditsRemaining})` : `(${creditsUsed}/${creditsLimit})`}
+                      {t("my_credits")}{" "}
+                      {showRemaining ? `(${creditsRemaining})` : `(${creditsUsed}/${creditsLimit})`}
                     </SafeLink>
                   </DropdownMenuItem>
-
-                  {userTier !== 'pro' && (
+                  {userTier !== "pro" && (
                     <DropdownMenuItem asChild>
                       <SafeLink href="/pricing" className="flex items-center gap-2 cursor-pointer">
-                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                        {t('upgrade_pro')}
+                        <Sparkles className="w-4 h-4" />
+                        {t("upgrade_pro")}
                       </SafeLink>
                     </DropdownMenuItem>
                   )}
-
                   <DropdownMenuSeparator />
-
                   <DropdownMenuItem
                     onClick={handleSignOut}
-                    className="flex items-center gap-2 text-red-600 focus:text-red-600"
+                    className="flex items-center gap-2 text-destructive focus:text-destructive"
                   >
                     <LogOut className="w-4 h-4" />
-                    {t('sign_out')}
+                    {t("sign_out")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <Button
                 onClick={() => setShowAuthModal(true)}
-                className="cursor-pointer"
+                className={cn(
+                  "cursor-pointer ml-2",
+                  isHomePage && "border-white/20 text-white bg-white/5 hover:bg-white/10 hover:text-white"
+                )}
+                variant={isHomePage ? "outline" : "glow"}
               >
-                {t('sign_in')}
+                {t("sign_in")}
               </Button>
             )}
           </div>
         </nav>
 
-        <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            <SafeLink
-              href={header.brand?.url || "/"}
-              className="flex items-center gap-2"
-            >
-              <Image 
-                src="/logo.png" 
-                alt="Logo" 
-                width={32} 
-                height={32} 
-                className="w-8 h-8 rounded-lg"
-              />
-              {header.brand?.title && (
-                <span className="text-xl font-bold">
-                  {header.brand?.title || ""}
-                </span>
-              )}
-            </SafeLink>
+        {/* Mobile */}
+        <div className="flex lg:hidden items-center justify-between h-14">
+          <SafeLink href={header.brand?.url || "/"} className="flex items-center gap-2.5">
+            <div className="relative w-7 h-7 rounded-lg overflow-hidden ring-1 ring-border/50">
+              <Image src="/logo.png" alt="Logo" fill className="object-cover" />
+            </div>
+            {header.brand?.title && (
+              <span className={cn(
+                "text-base font-display font-semibold tracking-tight",
+                isHomePage ? "text-white" : "text-foreground"
+              )}>
+                {header.brand?.title}
+              </span>
+            )}
+          </SafeLink>
+
+          <div className="flex items-center gap-1">
+            {header.show_theme && <ThemeToggle />}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="default" size="icon">
-                  <Menu className="size-4" />
+                <Button variant="ghost" size="icon" className={cn("rounded-full", isHomePage && "text-white hover:bg-white/10")}>
+                  <Menu className="size-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent className="overflow-y-auto">
+              <SheetContent className="w-full sm:w-80 overflow-y-auto bg-background/95 backdrop-blur-xl">
                 <SheetHeader>
                   <SheetTitle>
-                    <SafeLink
-                      href={header.brand?.url || "/"}
-                      className="flex items-center gap-2"
-                    >
-                      <Image 
-                        src="/logo.png" 
-                        alt="Logo" 
-                        width={32} 
-                        height={32} 
-                        className="w-8 h-8 rounded-lg"
-                      />
+                    <SafeLink href={header.brand?.url || "/"} className="flex items-center gap-2.5">
+                      <div className="relative w-8 h-8 rounded-lg overflow-hidden">
+                        <Image src="/logo.png" alt="Logo" fill className="object-cover" />
+                      </div>
                       {header.brand?.title && (
-                        <span className="text-xl font-bold">
-                          {header.brand?.title || ""}
+                        <span className="text-lg font-display font-semibold">
+                          {header.brand?.title}
                         </span>
                       )}
                     </SafeLink>
                   </SheetTitle>
                 </SheetHeader>
-                <div className="mb-8 mt-8 flex flex-col gap-4">
+
+                <div className="mt-8 flex flex-col gap-2">
                   <Accordion type="single" collapsible className="w-full">
                     {header.nav?.items?.map((item, i) => {
                       if (item.children && item.children.length > 0) {
@@ -424,35 +428,28 @@ export default function Header({ header }: { header: HeaderType }) {
                             value={item.title || ""}
                             className="border-b-0"
                           >
-                            <AccordionTrigger className="mb-4 py-0 font-semibold hover:no-underline text-left">
+                            <AccordionTrigger className="py-3 text-base font-medium hover:no-underline hover:bg-accent/50 rounded-lg px-3">
                               {item.title}
                             </AccordionTrigger>
-                            <AccordionContent className="mt-2">
-                              {item.children.map((iitem, ii) => (
-                                <SafeLink
-                                  key={ii}
-                                  className={cn(
-                                    "flex select-none gap-4 rounded-md p-3 leading-none outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                  )}
-                                  href={iitem.url || "/"}
-                                  target={iitem.target}
-                                >
-                                  {iitem.icon && (
-                                    <Icon
-                                      name={iitem.icon}
-                                      className="size-4 shrink-0"
-                                    />
-                                  )}
-                                  <div>
-                                    <div className="text-sm font-semibold">
-                                      {iitem.title}
+                            <AccordionContent className="pl-3">
+                              <div className="flex flex-col gap-1">
+                                {item.children.map((iitem, ii) => (
+                                  <SafeLink
+                                    key={ii}
+                                    className="flex select-none gap-3 rounded-lg p-3 transition-colors hover:bg-accent/50"
+                                    href={iitem.url || "/"}
+                                    target={iitem.target}
+                                  >
+                                    {iitem.icon && (
+                                      <Icon name={iitem.icon} className="size-5 shrink-0 text-muted-foreground" />
+                                    )}
+                                    <div>
+                                      <div className="text-sm font-medium">{iitem.title}</div>
+                                      <p className="text-xs text-muted-foreground">{iitem.description}</p>
                                     </div>
-                                    <p className="text-sm leading-snug text-muted-foreground">
-                                      {iitem.description}
-                                    </p>
-                                  </div>
-                                </SafeLink>
-                              ))}
+                                  </SafeLink>
+                                ))}
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         );
@@ -462,41 +459,32 @@ export default function Header({ header }: { header: HeaderType }) {
                           key={i}
                           href={item.url || "/"}
                           target={item.target}
-                          className="font-semibold my-4 flex items-center gap-2 px-4"
+                          className="font-medium py-3 px-3 flex items-center gap-2 rounded-lg hover:bg-accent/50"
                         >
-                          {item.icon && (
-                            <Icon
-                              name={item.icon}
-                              className="size-4 shrink-0"
-                            />
-                          )}
+                          {item.icon && <Icon name={item.icon} className="size-4 shrink-0" />}
                           {item.title}
                         </SafeLink>
                       );
                     })}
                   </Accordion>
                 </div>
-                <div className="flex-1"></div>
-                <div className="border-t pt-4">
-                  {/* 登录状态展示（移动端） */}
+
+                <div className="mt-8 pt-6 border-t">
                   {status === "authenticated" && session?.user ? (
-                    <div className="mb-4 space-y-3">
+                    <div className="space-y-3">
                       <div className="flex items-center gap-3 px-2">
-                        <Avatar className="w-10 h-10">
+                        <Avatar className="w-10 h-10 ring-1 ring-border/50">
                           <AvatarImage src={session.user.image ?? undefined} />
-                          <AvatarFallback>
-                            {userName?.[0]?.toUpperCase() || 'U'}
-                          </AvatarFallback>
+                          <AvatarFallback>{userName?.[0]?.toUpperCase() || "U"}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium text-foreground">{userName}</div>
-                          <div className="text-xs text-muted-foreground">{userEmail}</div>
-                          <div className="text-xs text-violet-600 dark:text-violet-400 mt-1">
-                            额度: {showRemaining ? creditsRemaining : `${creditsUsed}/${creditsLimit}`}
+                          <div className="font-medium text-foreground truncate">{userName}</div>
+                          <div className="text-xs text-muted-foreground truncate">{userEmail}</div>
+                          <div className="text-xs text-primary mt-1 font-mono">
+                            {showRemaining ? creditsRemaining : `${creditsUsed}/${creditsLimit}`} credits
                           </div>
                         </div>
                       </div>
-
                       <div className="grid grid-cols-2 gap-2 px-2">
                         <SafeLink
                           href="/convert"
@@ -506,10 +494,9 @@ export default function Header({ header }: { header: HeaderType }) {
                           )}
                         >
                           <CreditCard className="w-4 h-4" />
-                          <span className="text-sm">我的额度</span>
+                          <span className="text-sm">{t("my_credits")}</span>
                         </SafeLink>
-
-                        {userTier !== 'pro' && (
+                        {userTier !== "pro" && (
                           <SafeLink
                             href="/pricing"
                             className={cn(
@@ -517,75 +504,52 @@ export default function Header({ header }: { header: HeaderType }) {
                               "flex items-center gap-2 justify-start"
                             )}
                           >
-                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
-                            <span className="text-sm">升级</span>
+                            <Sparkles className="w-4 h-4" />
+                            <span className="text-sm">{t("upgrade_pro")}</span>
                           </SafeLink>
                         )}
-
                         <button
                           onClick={handleSignOut}
                           className={cn(
                             buttonVariants({ variant: "ghost" }),
-                            "col-span-2 flex items-center gap-2 justify-start text-red-600 hover:text-red-600"
+                            "col-span-2 flex items-center gap-2 justify-start text-destructive hover:text-destructive"
                           )}
                         >
                           <LogOut className="w-4 h-4" />
-                          <span className="text-sm">退出登录</span>
+                          <span className="text-sm">{t("sign_out")}</span>
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <div className="mt-2 flex flex-col gap-3">
-                      {header.buttons?.map((item, i) => {
-                        return (
-                          <Button key={i} variant={item.variant}>
-                            <SafeLink
-                              href={item.url || "/"}
-                              target={item.target || ""}
-                              className="flex items-center gap-1"
-                            >
-                              {item.title}
-                              {item.icon && (
-                                <Icon
-                                  name={item.icon}
-                                  className="size-4 shrink-0"
-                                />
-                              )}
-                            </SafeLink>
-                          </Button>
-                        );
-                      })}
-
-                      {/* 移动端登录按钮 */}
-                      <Button
-                        onClick={() => setShowAuthModal(true)}
-                        className="w-full"
-                      >
-                        {t('sign_in')}
+                    <div className="space-y-3">
+                      {header.buttons?.map((item, i) => (
+                        <Button key={i} variant={item.variant} className="w-full">
+                          <SafeLink
+                            href={item.url || "/"}
+                            target={item.target || ""}
+                            className="flex items-center justify-center gap-1.5"
+                          >
+                            {item.title}
+                            {item.icon && <Icon name={item.icon} className="size-4" />}
+                          </SafeLink>
+                        </Button>
+                      ))}
+                      <Button onClick={() => setShowAuthModal(true)} className="w-full" variant="glow">
+                        {t("sign_in")}
                       </Button>
                     </div>
                   )}
-
-                  <div className="mt-4 flex items-center gap-2">
+                  <div className="mt-4 flex items-center justify-between px-2">
                     {header.show_locale && <LocaleToggle />}
-                    <div className="flex-1"></div>
-
-                    {header.show_theme && <ThemeToggle />}
                   </div>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
-
-        {/* 认证弹窗 */}
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-        />
       </div>
-    </section>
+
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+    </header>
   );
 }

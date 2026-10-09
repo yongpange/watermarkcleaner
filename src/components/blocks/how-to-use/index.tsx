@@ -1,12 +1,15 @@
 import { Section as SectionType } from "@/types/blocks/section";
+import { FadeIn } from "@/components/motion/FadeIn";
 
 export default function HowToUse({ section }: { section: SectionType }) {
   if (section.disabled) {
     return null;
   }
 
+  const steps = section.items ?? [];
+
   return (
-    <section id={section.name} className="py-16 lg:py-24">
+    <section id={section.name} className="py-16 lg:py-24 overflow-hidden">
       <div className="container">
         <div className="text-center mb-14">
           {section.label && (
@@ -14,7 +17,7 @@ export default function HowToUse({ section }: { section: SectionType }) {
               {section.label}
             </span>
           )}
-          <h2 className="text-3xl font-bold lg:text-4xl mb-4">
+          <h2 className="font-display text-3xl font-bold lg:text-4xl mb-4">
             {section.title}
           </h2>
           {section.description && (
@@ -25,27 +28,39 @@ export default function HowToUse({ section }: { section: SectionType }) {
         </div>
 
         {/* Steps */}
-        {section.items && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {section.items.map((item, index) => (
-              <div key={index} className="relative flex flex-col items-center text-center group">
-                {/* Connector Line (hidden on last item and mobile) */}
-                {index < section.items!.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-[calc(50%+2rem)] w-[calc(100%-4rem)] h-0.5 bg-gradient-to-r from-primary/40 to-primary/10" />
-                )}
+        {steps.length > 0 && (
+          <div className="relative max-w-6xl mx-auto">
+            {/* Connecting gradient line */}
+            <div className="hidden lg:block absolute top-[2.25rem] left-[12.5%] right-[12.5%] h-px">
+              <div className="h-full w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+            </div>
 
-                {/* Step Number */}
-                <div className="relative z-10 flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white text-2xl font-bold mb-6 shadow-lg group-hover:scale-110 transition-transform">
-                  {index + 1}
-                </div>
+            <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+              {steps.map((item, index) => (
+                <FadeIn
+                  key={index}
+                  delay={index * 0.12}
+                  direction="up"
+                  distance={24}
+                  className="flex flex-col items-center text-center"
+                >
+                  {/* Step Number Badge */}
+                  <div className="relative z-10 mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-border bg-card shadow-md transition-transform duration-300 hover:scale-105">
+                    <span className="font-mono text-2xl font-semibold text-primary">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
 
-                {/* Content */}
-                <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-                  {item.description}
-                </p>
-              </div>
-            ))}
+                  {/* Content */}
+                  <h3 className="font-display font-semibold text-lg mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+                    {item.description}
+                  </p>
+                </FadeIn>
+              ))}
+            </div>
           </div>
         )}
       </div>

@@ -41,23 +41,35 @@ export async function generateMetadata({
 
 export default async function ConvertPage() {
   return (
-    <section className="py-8 lg:py-12">
+    <section className="py-10 lg:py-16">
       <div className="container mx-auto px-4">
-        {/* Page Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl lg:text-4xl font-bold mb-3">
-            <span className="bg-gradient-to-r from-violet-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+          <div>
+            <p className="text-sm font-medium text-primary mb-2 uppercase tracking-wider">AI Editor</p>
+            <h1 className="font-display text-3xl lg:text-5xl font-semibold tracking-tight">
               Remove Watermarks
-            </span>{" "}
-            from Your Photos
-          </h1>
+              <span className="text-muted-foreground"> from Photos</span>
+            </h1>
+          </div>
 
+          {/* Step indicator */}
+          <div className="flex items-center gap-2 bg-muted/50 rounded-full p-1.5 border border-border">
+            {['Upload', 'Process', 'Download'].map((step, idx) => (
+              <div
+                key={step}
+                className="flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium text-muted-foreground"
+              >
+                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-xs font-mono">
+                  {idx + 1}
+                </span>
+                {step}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Use client component for interactive parts */}
         <ConvertPageClient />
       </div>
     </section>
   );
 }
-

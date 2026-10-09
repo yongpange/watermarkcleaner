@@ -12,7 +12,6 @@ interface UploadAreaProps {
   maxSize?: number;
 }
 
-// 轻量级动画，使用CSS类而非JavaScript动画
 export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '.png', '.webp'], maxSize = 20 }: UploadAreaProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
@@ -51,39 +50,32 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
 
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      handleFile(file);
+      handleFile(files[0]);
     }
   };
 
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      const file = files[0];
-      handleFile(file);
+      handleFile(files[0]);
     }
   };
 
   const handleFile = async (file: File) => {
-    // 验证文件类型
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
     if (!acceptedFormats.includes(fileExtension)) {
       alert(t('unsupported_file_format', { formats: acceptedFormats.join(', ') }));
       return;
     }
 
-    // 验证文件大小
     const fileSizeMB = file.size / (1024 * 1024);
     if (fileSizeMB > maxSize) {
       alert(`${t('file_too_large')}: ${t('max_size')} ${maxSize}MB`);
       return;
     }
 
-    // 生成预览
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
-
-    // 调用回调函数
     onFileSelect(file);
   };
 
@@ -95,15 +87,14 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
   };
 
   return (
-    <div className="relative mx-auto max-w-2xl">
-      {/* 主上传区域 - 优化版本 */}
+    <div className="relative">
       <div
         className={cn(
-          "group relative overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer",
-          "bg-gradient-to-br from-primary/5 via-background to-violet-50/30 dark:from-primary/10 dark:via-background dark:to-indigo-950/20",
-          "hover:border-primary/60 hover:shadow-xl hover:shadow-primary/20 hover:scale-[1.01]",
-          isDragging && "border-primary/80 scale-[1.01] shadow-2xl shadow-primary/30",
-          "before:absolute before:inset-0 before:bg-gradient-to-r before:from-violet-500/5 before:to-indigo-500/5 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100",
+          "group relative overflow-hidden rounded-2xl border border-dashed cursor-pointer transition-all duration-300",
+          "bg-white/[0.02] hover:bg-white/[0.04]",
+          isDragging
+            ? "border-primary bg-white/[0.06] scale-[1.01]"
+            : "border-white/20 hover:border-primary/50",
           "active:scale-[0.99]"
         )}
         onClick={() => fileInputRef.current?.click()}
@@ -112,78 +103,51 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        {/* 内容区域 */}
-        <div className="relative flex flex-col items-center gap-6 p-8 lg:p-12">
-          {/* 图标区域 - 简化动画 */}
-          <div className={cn(
-            "relative flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 rounded-full",
-            "bg-gradient-to-br from-violet-500 to-indigo-600 text-white",
-            "shadow-lg shadow-violet-500/30",
-            "transition-all duration-300 ease-out",
-            "group-hover:scale-110 group-hover:shadow-2xl group-hover:shadow-violet-500/50",
-            isDragging && "scale-110 shadow-2xl shadow-violet-500/50"
-          )}>
-            {/* 背景光环 - 简化版 */}
-            <div className={cn(
-              "absolute inset-0 rounded-full bg-gradient-to-r from-violet-400 to-indigo-400 blur-xl opacity-0 transition-opacity duration-300",
-              "group-hover:opacity-40",
-              isDragging && "opacity-60"
-            )} />
-
-            {/* 主图标 */}
-            <div className="relative z-10 transition-transform duration-300 group-hover:rotate-3">
+        <div className="relative flex flex-col items-center gap-4 p-6 lg:p-8">
+          <div
+            className={cn(
+              "relative flex items-center justify-center w-16 h-16 rounded-2xl",
+              "bg-gradient-to-br from-primary to-accent text-white",
+              "transition-all duration-300 ease-out",
+              "group-hover:scale-110 group-hover:shadow-glow",
+              isDragging && "scale-110 shadow-glow"
+            )}
+          >
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary to-accent blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
+            <div className="relative z-10">
               {preview ? (
-                <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden">
+                  <img src={preview} alt="Preview" className="w-full h-full object-cover" />
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       clearPreview();
                     }}
-                    className="absolute top-1 right-1 w-6 h-6 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-black/70 transition-colors z-10"
+                    className="absolute top-0.5 right-0.5 w-5 h-5 bg-black/60 text-white rounded-full flex items-center justify-center hover:bg-black/80 transition-colors z-10"
                   >
-                    <RiCloseLine className="w-4 h-4" />
+                    <RiCloseLine className="w-3 h-3" />
                   </button>
                 </div>
               ) : (
-                <RiUploadCloud2Line className="w-10 h-10 lg:w-12 lg:h-12 transition-transform duration-300 group-hover:scale-110" />
-              )}
-
-              {/* 拖拽指示器 - 简化版 */}
-              {isDragging && (
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center animate-bounce shadow-lg">
-                  <span className="text-white text-xs font-bold">+</span>
-                </div>
+                <RiUploadCloud2Line className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" />
               )}
             </div>
           </div>
 
-          {/* 文本内容 */}
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-1">
             <h3 className={cn(
-              "text-xl lg:text-2xl font-bold text-foreground transition-colors duration-300",
-              isDragging && "text-violet-600 dark:text-violet-400"
+              "text-lg font-semibold text-white transition-colors duration-300",
+              isDragging && "text-primary"
             )}>
               {preview ? t('file_selected') : (isDragging ? t('release_to_upload') : t('upload_image_file'))}
             </h3>
-
-            <p className="text-muted-foreground text-sm lg:text-base">
-              {preview
-                ? t('file_ready')
-                : (isDragging ? t('about_to_process') : t('drag_or_click'))
-              }
+            <p className="text-white/50 text-sm">
+              {preview ? t('file_ready') : (isDragging ? t('about_to_process') : t('drag_or_click'))}
             </p>
-
-            <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground/70">
+            <div className="flex items-center justify-center gap-2 text-xs text-white/40 mt-2">
               {acceptedFormats.map((format, index) => (
                 <React.Fragment key={format}>
-                  <span className="px-2 py-1 bg-muted/50 rounded transition-all hover:bg-muted/70">
-                    {format.toUpperCase()}
-                  </span>
+                  <span className="px-2 py-0.5 bg-white/5 rounded">{format.toUpperCase()}</span>
                   {index < acceptedFormats.length - 1 && <span>•</span>}
                 </React.Fragment>
               ))}
@@ -192,58 +156,28 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
             </div>
           </div>
 
-          {/* 按钮区域 - 简化版 */}
           {!preview && (
             <Button
-              size="lg"
-              className={cn(
-                "relative overflow-hidden bg-gradient-to-r from-violet-600 to-indigo-600",
-                "hover:from-violet-700 hover:to-indigo-700",
-                "text-white shadow-lg shadow-violet-500/25",
-                "px-8 py-6 text-lg font-semibold",
-                "transition-all duration-300",
-                "before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:to-transparent",
-                "before:translate-x-[-100%] before:transition-transform before:duration-700",
-                "hover:before:translate-x-[100%]",
-                "group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-violet-500/40",
-                isDragging && "scale-105 shadow-xl shadow-violet-500/40"
-              )}
+              size="default"
+              className="relative overflow-hidden bg-white text-foreground hover:bg-white/90 rounded-full px-6"
             >
-              <RiImageLine className="w-5 h-5 mr-2" />
+              <RiImageLine className="w-4 h-4 mr-2" />
               {t('select_file')}
             </Button>
           )}
-
-          {/* 拖拽提示 - 简化版 */}
-          <div className={cn(
-            "absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300",
-            isDragging ? 'opacity-100' : 'opacity-0'
-          )}>
-            <div className="bg-violet-500/90 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 animate-pulse">
-              <span>✨</span> {t('release_to_start_upload')}
-            </div>
-          </div>
         </div>
 
-        {/* 波纹效果 - 简化版 */}
-        <div className={cn(
-          "absolute inset-0 pointer-events-none",
-          "bg-[radial-gradient(circle_at_center,rgba(124,58,237,0.2)_0%,transparent_70%)]",
-          "opacity-0 transition-opacity duration-300",
-          isDragging && "opacity-100"
-        )} />
-
-        {/* 扫描线效果 */}
-        <div className={cn(
-          "absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-violet-500 to-transparent",
-          "opacity-0 transition-opacity duration-300",
-          isDragging && "opacity-60 animate-pulse"
-        )}
-          style={{ top: '50%' }}
+        <div
+          className={cn(
+            "absolute inset-0 pointer-events-none transition-opacity duration-300",
+            isDragging ? 'opacity-100' : 'opacity-0'
+          )}
+          style={{
+            background: 'radial-gradient(circle at center, oklch(0.55 0.12 255 / 0.15) 0%, transparent 70%)',
+          }}
         />
       </div>
 
-      {/* 隐藏的文件输入 */}
       <input
         ref={fileInputRef}
         type="file"
@@ -251,94 +185,6 @@ export function UploadArea({ onFileSelect, acceptedFormats = ['.jpg', '.jpeg', '
         onChange={handleFileSelect}
         className="hidden"
       />
-
-      {/* CSS 动画 - 使用 CSS 类而非内联样式 */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
-        }
-
-        @keyframes pulse-ring {
-          0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.05);
-            opacity: 0.8;
-          }
-        }
-
-        .float-animation {
-          animation: float 3s ease-in-out infinite;
-        }
-
-        .pulse-ring {
-          animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-          .group:hover {
-            transform: none;
-          }
-
-          .group:hover .group-hover\:scale-110 {
-            transform: none;
-          }
-
-          .group:hover .group-hover\:shadow-2xl {
-            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.1), 0 4px 6px -2px rgba(124, 58, 237, 0.05);
-          }
-        }
-
-        /* 减少动画偏好 */
-        @media (prefers-reduced-motion: reduce) {
-          * {
-            animation-duration: 0.01ms !important;
-            animation-iteration-count: 1 !important;
-            transition-duration: 0.01ms !important;
-          }
-        }
-      `}</style>
-    </div>
-  );
-}
-
-// 添加额外的效果组件
-export function UploadSparkles() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {[...Array(3)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-1 h-1 bg-violet-400 rounded-full animate-pulse"
-          style={{
-            left: `${20 + i * 30}%`,
-            top: `${20 + (i % 2) * 40}%`,
-            animationDelay: `${i * 0.5}s`,
-            animationDuration: `${2 + i * 0.5}s`
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-// 添加文件验证提示
-export function FileValidationHint({ show, message }: { show: boolean; message: string }) {
-  return (
-    <div className={cn(
-      "absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-lg text-sm transition-all duration-300",
-      show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
-    )}>
-      {message}
-      <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-red-500" />
     </div>
   );
 }

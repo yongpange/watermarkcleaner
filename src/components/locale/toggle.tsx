@@ -10,8 +10,9 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 
 import { MdLanguage } from "react-icons/md";
 import { localeNames } from "@/i18n/locale";
+import { cn } from "@/lib/utils";
 
-const LocaleToggle = ({ isIcon = false }: { isIcon?: boolean }) => {
+const LocaleToggle = ({ isIcon = false, className }: { isIcon?: boolean; className?: string }) => {
   const params = useParams();
   const locale = params.locale as string;
   const router = useRouter();
@@ -29,7 +30,7 @@ const LocaleToggle = ({ isIcon = false }: { isIcon?: boolean }) => {
 
   return (
     <Select value={locale} onValueChange={handleSwitchLanguage}>
-      <SelectTrigger className="flex items-center gap-2 border-none text-muted-foreground outline-hidden hover:bg-transparent focus:ring-0 focus:ring-offset-0">
+      <SelectTrigger className={cn("flex items-center gap-2 border-none outline-hidden hover:bg-transparent focus:ring-0 focus:ring-offset-0", className)}>
         <MdLanguage className="text-xl" />
         {!isIcon && (
           <span className="hidden md:block">{localeNames[locale]}</span>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { RiSettings3Line } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 export type ProcessingMode = "auto" | "conservative" | "aggressive";
 
@@ -20,6 +21,8 @@ interface ProcessingOptionsProps {
   compact?: boolean;
   className?: string;
 }
+
+const modes: ProcessingMode[] = ["auto", "conservative", "aggressive"];
 
 export default function ProcessingOptions({
   value,
@@ -42,111 +45,80 @@ export default function ProcessingOptions({
   };
 
   return (
-    <div className={cn("bg-card rounded-lg", className)}>
-      {/* 简洁模式：只显示当前模式 */}
+    <div className={cn("bg-card rounded-2xl border border-border", className)}>
       {compact ? (
-        <div className="p-3">
+        <div className="p-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="text-sm text-muted-foreground">{t("processing_mode")}:</div>
-              <div className="px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium">
-                {t(value.mode)}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary">
+                <RiSettings3Line className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">{t("processing_mode")}</p>
+                <p className="text-sm font-medium text-foreground">{t(value.mode)}</p>
               </div>
             </div>
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-sm text-primary hover:text-primary/80 flex items-center gap-1"
+              className="text-sm text-primary hover:text-primary/80 font-medium flex items-center gap-1 transition-colors"
             >
-              <RiSettings3Line className="w-4 h-4" />
               {expanded ? t("collapse") || "收起" : t("expand") || "展开"}
             </button>
           </div>
         </div>
       ) : (
-        // 完整模式：显示所有选项
-        <div className="p-4 space-y-4">
-          <div className="flex items-center gap-2 mb-3">
-            <RiSettings3Line className="w-5 h-5 text-primary" />
-            <h3 className="font-medium text-foreground">{t("processing_options")}</h3>
-          </div>
-
-          {/* 处理模式选择 */}
+        <div className="p-5 space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-2">{t("processing_mode")}</label>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                onClick={() => onChange?.({ ...value, mode: "auto" })}
-                className={cn(
-                  "p-3 rounded-lg border text-left transition-colors",
-                  value.mode === "auto"
-                    ? "border-primary bg-primary/10"
-                    : "border-border bg-background hover:border-primary/50"
-                )}
-              >
-                <div className="font-medium mb-1">{t("auto")}</div>
-                <div className="text-xs text-muted-foreground">{t("balance_quality_speed")}</div>
-              </button>
-
-              <button
-                onClick={() => onChange?.({ ...value, mode: "conservative" })}
-                className={cn(
-                  "p-3 rounded-lg border text-left transition-colors",
-                  value.mode === "conservative"
-                    ? "border-primary bg-primary/10"
-                    : "border-border bg-background hover:border-primary/50"
-                )}
-              >
-                <div className="font-medium mb-1">{t("conservative")}</div>
-                <div className="text-xs text-muted-foreground">{t("avoid_overprocessing")}</div>
-              </button>
-
-              <button
-                onClick={() => onChange?.({ ...value, mode: "aggressive" })}
-                className={cn(
-                  "p-3 rounded-lg border text-left transition-colors",
-                  value.mode === "aggressive"
-                    ? "border-primary bg-primary/10"
-                    : "border-border bg-background hover:border-primary/50"
-                )}
-              >
-                <div className="font-medium mb-1">{t("aggressive")}</div>
-                <div className="text-xs text-muted-foreground">{t("thoroughly_remove_watermark")}</div>
-              </button>
+            <label className="block text-sm font-medium mb-3">{t("processing_mode")}</label>
+            <div className="relative grid grid-cols-3 gap-1 p-1 rounded-xl bg-muted">
+              {modes.map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => onChange?.({ ...value, mode })}
+                  className={cn(
+                    "relative z-10 py-2.5 px-3 rounded-lg text-sm font-medium transition-colors text-center",
+                    value.mode === mode ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {value.mode === mode && (
+                    <motion.div
+                      layoutId="processing-mode"
+                      className="absolute inset-0 bg-primary rounded-lg"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{t(mode)}</span>
+                </button>
+              ))}
             </div>
-
-            {/* 当前模式说明 */}
-            <div className="mt-2 p-3 bg-primary/5 rounded-lg border border-primary/20">
-              <div className="text-sm text-primary">
-                {getModeDescription(value.mode)}
-              </div>
+            <div className="mt-3 p-3 rounded-xl bg-muted/50 border border-border">
+              <p className="text-sm text-muted-foreground">{getModeDescription(value.mode)}</p>
             </div>
           </div>
 
-          {/* 自定义Prompt（高级选项） */}
           <details className="group">
-            <summary className="cursor-pointer list-none text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-2">
-              <span className="inline-block w-3">→</span>
+            <summary className="cursor-pointer list-none text-sm font-medium text-foreground hover:text-primary transition-colors flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-md bg-muted text-xs transition-transform group-open:rotate-90">
+                →
+              </span>
               {t("advanced_options")}
             </summary>
-            <div className="mt-3 space-y-2 pl-5">
+            <div className="mt-3 space-y-2 pl-7">
               <textarea
                 value={value.prompt || ""}
                 onChange={(e) => onChange?.({ ...value, prompt: e.target.value })}
                 placeholder={t("input_instructions")}
-                className="w-full p-3 bg-background border border-input rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full p-3 bg-background border border-input rounded-xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring transition-all"
                 rows={3}
               />
-              <p className="text-xs text-muted-foreground">
-                {t("ai_optimization")}
-              </p>
+              <p className="text-xs text-muted-foreground">{t("ai_optimization")}</p>
             </div>
           </details>
         </div>
       )}
 
-      {/* 展开/收起区域 */}
       {compact && expanded && (
-        <div className="mt-3 border-t border-border pt-3">
+        <div className="border-t border-border p-5">
           <ProcessingOptions
             value={value}
             onChange={onChange}

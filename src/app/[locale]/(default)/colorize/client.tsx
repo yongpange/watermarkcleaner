@@ -17,17 +17,17 @@ import RelatedTools from "@/components/blocks/related-tools";
 import { Users, BookOpen, Palette, Brush, Heart, Sparkles, Upload, Download, Maximize2, Wind, History, Square } from "lucide-react";
 
 const problemTypesConfig = [
-  { key: 'bw_family', icon: Users, color: 'bg-rose-500/10 text-rose-600' },
-  { key: 'historical', icon: BookOpen, color: 'bg-amber-500/10 text-amber-600' },
-  { key: 'vintage', icon: Palette, color: 'bg-purple-500/10 text-purple-600' },
-  { key: 'artistic', icon: Brush, color: 'bg-pink-500/10 text-pink-600' },
+  { key: 'bw_family', icon: Users, color: 'bg-destructive/10 text-destructive' },
+  { key: 'historical', icon: BookOpen, color: 'bg-warning/10 text-warning' },
+  { key: 'vintage', icon: Palette, color: 'bg-primary/10 text-primary' },
+  { key: 'artistic', icon: Brush, color: 'bg-accent/10 text-accent' },
 ];
 
 const useCasesConfig = [
-  { key: 'family', icon: Heart, color: 'bg-rose-500/10 text-rose-600' },
-  { key: 'historical', icon: BookOpen, color: 'bg-amber-500/10 text-amber-600' },
-  { key: 'genealogy', icon: Users, color: 'bg-indigo-500/10 text-indigo-600' },
-  { key: 'artistic', icon: Palette, color: 'bg-pink-500/10 text-pink-600' },
+  { key: 'family', icon: Heart, color: 'bg-destructive/10 text-destructive' },
+  { key: 'historical', icon: BookOpen, color: 'bg-warning/10 text-warning' },
+  { key: 'genealogy', icon: Users, color: 'bg-accent/10 text-accent' },
+  { key: 'artistic', icon: Palette, color: 'bg-accent/10 text-accent' },
 ];
 
 const howToStepsConfig = [
@@ -37,10 +37,10 @@ const howToStepsConfig = [
 ];
 
 const relatedToolsConfig = [
-  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20' },
-  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-green-500/10 text-green-600 hover:bg-green-500/20' },
-  { key: 'restore', icon: History, href: '/restore', color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20' },
-  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20' },
+  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-primary/10 text-primary hover:bg-blue-500/20' },
+  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-success/10 text-success hover:bg-green-500/20' },
+  { key: 'restore', icon: History, href: '/restore', color: 'bg-warning/10 text-warning hover:bg-amber-500/20' },
+  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-primary/10 text-primary hover:bg-purple-500/20' },
 ];
 
 export default function ColorizeClient() {

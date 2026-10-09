@@ -4,6 +4,7 @@ import { useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 
 interface ImagePreviewProps {
   imageUrl: string;
@@ -36,89 +37,71 @@ export default function ImagePreview({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  const getImageDimensions = (): Promise<{ width: number; height: number }> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        resolve({ width: img.width, height: img.height });
-        URL.revokeObjectURL(img.src);
-      };
-      img.onerror = reject;
-      img.src = imageUrl;
-    });
-  };
-
   return (
     <div className={cn("relative w-full", className)}>
-      {/* 图片预览 */}
-      <div className="relative w-full">
+      {/* Canvas workspace */}
+      <div className="relative w-full rounded-2xl border border-border bg-muted/50 p-4 lg:p-8">
         {imageError ? (
-          <div className="flex flex-col items-center justify-center w-full h-64 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <div className="text-gray-500 dark:text-gray-400 mb-2">{t("image_load_failed")}</div>
+          <div className="flex flex-col items-center justify-center w-full h-64 rounded-xl bg-card">
+            <div className="text-muted-foreground mb-2">{t("image_load_failed")}</div>
             <button
               onClick={() => setImageError(false)}
-              className="text-violet-600 hover:text-violet-700 text-sm font-medium"
+              className="text-primary hover:text-primary/80 text-sm font-medium"
             >
               {t("retry")}
             </button>
           </div>
         ) : (
-          <img
-            src={imageUrl}
-            alt="Preview"
-            className="w-full h-auto max-h-96 object-contain rounded-lg shadow-md bg-gray-100 dark:bg-gray-800"
-            onError={() => setImageError(true)}
-          />
+          <div className="relative flex items-center justify-center min-h-[280px]">
+            <img
+              src={imageUrl}
+              alt="Preview"
+              className="max-w-full h-auto max-h-[480px] object-contain rounded-xl shadow-lg"
+              onError={() => setImageError(true)}
+            />
+          </div>
         )}
 
-        {/* 移除按钮 */}
         {onRemove && (
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={onRemove}
-            className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 rounded-full shadow-lg transition-colors"
+            className="absolute top-4 right-4 p-2 bg-background/80 hover:bg-background backdrop-blur-md rounded-full border border-border shadow-sm transition-colors"
             title={t("remove_image")}
           >
-            <RiCloseLine className="w-4 h-4 text-gray-700 dark:text-gray-300" />
-          </button>
+            <RiCloseLine className="w-4 h-4 text-foreground" />
+          </motion.button>
         )}
       </div>
 
-      {/* 图片信息 */}
-      <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
-        <div className="grid grid-cols-2 gap-3 text-sm">
+      {/* Metadata pills */}
+      {(file || metadata) && (
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
           {file && (
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">{t("filename")}</span>
-              <span className="font-medium text-foreground truncate">{file.name}</span>
+            <div className="px-3 py-1.5 rounded-full bg-card border border-border text-xs text-muted-foreground">
+              <span className="text-foreground font-medium truncate max-w-[160px] inline-block align-bottom">
+                {file.name}
+              </span>
             </div>
           )}
-
           {file && (
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">{t("size")}</span>
-              <span className="font-medium text-foreground">{formatFileSize(file.size)}</span>
+            <div className="px-3 py-1.5 rounded-full bg-card border border-border text-xs text-muted-foreground">
+              {formatFileSize(file.size)}
             </div>
           )}
-
           {metadata && (
             <>
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">{t("dimensions")}</span>
-                <span className="font-medium text-foreground">
-                  {metadata.width} × {metadata.height}
-                </span>
+              <div className="px-3 py-1.5 rounded-full bg-card border border-border text-xs text-muted-foreground font-mono">
+                {metadata.width} × {metadata.height}
               </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">{t("type")}</span>
-                <span className="font-medium text-foreground">
-                  {metadata.type.split("/")[1]?.toUpperCase()}
-                </span>
+              <div className="px-3 py-1.5 rounded-full bg-card border border-border text-xs text-muted-foreground uppercase">
+                {metadata.type.split("/")[1]}
               </div>
             </>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 }

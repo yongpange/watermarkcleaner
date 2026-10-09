@@ -177,8 +177,8 @@ export default function ComparisonSlider({
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800/50 shadow-2xl select-none group cursor-ew-resize touch-pan-y",
-        aspectRatio, // Only apply if manually provided
+        "relative w-full overflow-hidden rounded-2xl bg-muted/50 select-none group cursor-ew-resize touch-pan-y",
+        aspectRatio,
         className
       )}
       style={{
@@ -208,7 +208,7 @@ export default function ComparisonSlider({
           draggable={false}
           priority
         />
-        <div className="absolute top-4 right-4 bg-black/50 text-white/90 px-3 py-1 rounded text-xs font-semibold backdrop-blur-sm z-10 pointer-events-none transition-opacity duration-300 group-hover:opacity-0">
+        <div className="absolute top-3 right-3 bg-black/40 text-white/90 px-2.5 py-1 rounded-lg text-xs font-medium backdrop-blur-md z-10 pointer-events-none transition-opacity duration-300 group-hover:opacity-0 border border-white/10">
           {afterLabel}
         </div>
       </div>
@@ -232,7 +232,7 @@ export default function ComparisonSlider({
           draggable={false}
           priority
         />
-        <div className="absolute top-4 left-4 bg-black/50 text-white/90 px-3 py-1 rounded text-xs font-semibold backdrop-blur-sm z-10 transition-opacity duration-300 group-hover:opacity-0">
+        <div className="absolute top-3 left-3 bg-black/40 text-white/90 px-2.5 py-1 rounded-lg text-xs font-medium backdrop-blur-md z-10 transition-opacity duration-300 group-hover:opacity-0 border border-white/10">
           {beforeLabel}
         </div>
       </div>
@@ -245,21 +245,17 @@ export default function ComparisonSlider({
         className="absolute inset-y-0 w-0 pointer-events-none"
         style={{ left: `${sliderPosition}%` }}
       >
-        {/* The visible line centered on the position */}
-        <div className="absolute top-0 bottom-0 left-[-1px] w-[2px] bg-white shadow-[0_0_10px_rgba(0,0,0,0.5)]"></div>
-        
-        {/* Minimalist Center Indicator (Optional, keep it very subtle or remove) */}
-        <div className="absolute top-1/2 left-[-12px] w-6 h-6 -mt-3 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-             {/* Small handle arrows */}
-             <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/50 shadow-lg flex items-center justify-center text-white">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                  <path d="M15 18l-6-6 6-6" />
-                  <path d="M9 18l6-6-6-6" opacity="0" /> 
-                </svg>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="rotate-180">
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-             </div>
+        <div className="absolute top-0 bottom-0 left-[-1px] w-px bg-white/90 shadow-[0_0_12px_rgba(255,255,255,0.6)]"></div>
+
+        <div className="absolute top-1/2 left-[-20px] w-10 h-10 -mt-5 flex items-center justify-center transition-all duration-200 opacity-80 group-hover:opacity-100 group-hover:scale-110">
+          <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-xl border border-white/40 shadow-xl flex items-center justify-center text-white">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="rotate-180">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </div>
         </div>
       </div>
     </div>

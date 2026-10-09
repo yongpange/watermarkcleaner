@@ -18,16 +18,16 @@ import { Zap, Palette, Sun, Sparkles, Moon, User, Smartphone, Mountain, Upload, 
 
 const problemTypesConfig = [
   { key: 'high_iso', icon: Zap, color: 'bg-emerald-500/10 text-emerald-600' },
-  { key: 'color_noise', icon: Palette, color: 'bg-purple-500/10 text-purple-600' },
-  { key: 'luminance', icon: Sun, color: 'bg-amber-500/10 text-amber-600' },
-  { key: 'compression', icon: Sparkles, color: 'bg-blue-500/10 text-blue-600' },
+  { key: 'color_noise', icon: Palette, color: 'bg-primary/10 text-primary' },
+  { key: 'luminance', icon: Sun, color: 'bg-warning/10 text-warning' },
+  { key: 'compression', icon: Sparkles, color: 'bg-primary/10 text-primary' },
 ];
 
 const useCasesConfig = [
-  { key: 'night', icon: Moon, color: 'bg-indigo-500/10 text-indigo-600' },
-  { key: 'portrait', icon: User, color: 'bg-pink-500/10 text-pink-600' },
+  { key: 'night', icon: Moon, color: 'bg-accent/10 text-accent' },
+  { key: 'portrait', icon: User, color: 'bg-accent/10 text-accent' },
   { key: 'mobile', icon: Smartphone, color: 'bg-cyan-500/10 text-cyan-600' },
-  { key: 'landscape', icon: Mountain, color: 'bg-green-500/10 text-green-600' },
+  { key: 'landscape', icon: Mountain, color: 'bg-success/10 text-success' },
 ];
 
 const howToStepsConfig = [
@@ -37,10 +37,10 @@ const howToStepsConfig = [
 ];
 
 const relatedToolsConfig = [
-  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20' },
-  { key: 'restore', icon: History, href: '/restore', color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20' },
-  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20' },
-  { key: 'colorize', icon: PaletteIcon, href: '/colorize', color: 'bg-rose-500/10 text-rose-600 hover:bg-rose-500/20' },
+  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-primary/10 text-primary hover:bg-blue-500/20' },
+  { key: 'restore', icon: History, href: '/restore', color: 'bg-warning/10 text-warning hover:bg-amber-500/20' },
+  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-primary/10 text-primary hover:bg-purple-500/20' },
+  { key: 'colorize', icon: PaletteIcon, href: '/colorize', color: 'bg-destructive/10 text-destructive hover:bg-rose-500/20' },
 ];
 
 export default function DenoiseClient() {

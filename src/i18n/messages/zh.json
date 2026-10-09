@@ -692,6 +692,10 @@
     },
     "happy_users": "来自 99+ 满意用户",
     "hero": {
+      "cta_primary": "立即去水印",
+      "cta_secondary": "查看价格",
+      "ai_powered": "AI 驱动",
+      "precise_removal": "精准去除水印",
       "image_load_failed": "图片加载失败，请重试。",
       "og_alt": "WatermarkCleaner AI 去水印效果展示"
     },

@@ -40,7 +40,7 @@ export default function FormatSpecs({ section }: { section: SectionType }) {
                 )}
                 <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
                 {item.label && (
-                  <span className="inline-block px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-sm font-medium mb-3">
+                  <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-3">
                     {item.label}
                   </span>
                 )}

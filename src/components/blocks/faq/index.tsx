@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Section as SectionType } from "@/types/blocks/section";
 import {
   Accordion,
@@ -6,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { FadeIn } from "@/components/motion/FadeIn";
 
 export default function FAQ({ section }: { section: SectionType }) {
   if (section.disabled) {
@@ -15,35 +15,39 @@ export default function FAQ({ section }: { section: SectionType }) {
   return (
     <section id={section.name} className="py-16">
       <div className="container">
-        <div className="text-center">
+        <FadeIn className="text-center">
           {section.label && (
-            <Badge className="text-xs font-medium">{section.label}</Badge>
+            <span className="inline-block mb-4 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold uppercase tracking-wider">
+              {section.label}
+            </span>
           )}
-          <h2 className="mt-4 text-4xl font-semibold">{section.title}</h2>
-          <p className="mt-6 font-medium text-muted-foreground">
+          <h2 className="mt-4 font-display text-4xl font-semibold">
+            {section.title}
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl font-medium text-muted-foreground">
             {section.description}
           </p>
-        </div>
+        </FadeIn>
         <div className="mx-auto mt-14 max-w-3xl">
-          <Accordion type="single" collapsible className="w-full space-y-4">
+          <Accordion type="single" collapsible className="w-full space-y-3">
             {section.items?.map((item, index) => (
               <AccordionItem
                 key={index}
                 value={`item-${index}`}
-                className="rounded-lg border border-border bg-card px-6 data-[state=open]:bg-accent/50"
+                className="rounded-xl border border-border bg-card px-6 shadow-sm transition-colors data-[state=open]:bg-primary/[0.03]"
               >
                 <AccordionTrigger className="py-6 hover:no-underline">
                   <div className="flex items-center gap-x-4 text-left">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-medium text-primary flex-shrink-0">
+                    <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                       {index + 1}
                     </span>
-                    <span className="text-base font-semibold leading-7">
+                    <span className="text-lg font-semibold leading-snug text-foreground">
                       {item.title}
                     </span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="pb-6 pt-2">
-                  <p className="text-base leading-7 text-muted-foreground pl-12">
+                <AccordionContent className="pb-6 pt-0">
+                  <p className="pl-10 text-base leading-7 text-muted-foreground">
                     {item.description}
                   </p>
                 </AccordionContent>

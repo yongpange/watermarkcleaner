@@ -24,18 +24,18 @@ import { Move, Focus, Droplets, Type, User, ShoppingBag, FileText, Instagram, Up
 
 // Problem Types Configuration
 const problemTypesConfig = [
-  { key: 'motion', icon: Move, color: 'bg-blue-500/10 text-blue-600' },
-  { key: 'lens', icon: Focus, color: 'bg-purple-500/10 text-purple-600' },
+  { key: 'motion', icon: Move, color: 'bg-primary/10 text-primary' },
+  { key: 'lens', icon: Focus, color: 'bg-primary/10 text-primary' },
   { key: 'soft', icon: Droplets, color: 'bg-orange-500/10 text-orange-600' },
-  { key: 'text', icon: Type, color: 'bg-green-500/10 text-green-600' },
+  { key: 'text', icon: Type, color: 'bg-success/10 text-success' },
 ];
 
 // Use Cases Configuration
 const useCasesConfig = [
-  { key: 'portrait', icon: User, color: 'bg-pink-500/10 text-pink-600' },
-  { key: 'ecommerce', icon: ShoppingBag, color: 'bg-blue-500/10 text-blue-600' },
-  { key: 'documents', icon: FileText, color: 'bg-green-500/10 text-green-600' },
-  { key: 'social', icon: Instagram, color: 'bg-purple-500/10 text-purple-600' },
+  { key: 'portrait', icon: User, color: 'bg-accent/10 text-accent' },
+  { key: 'ecommerce', icon: ShoppingBag, color: 'bg-primary/10 text-primary' },
+  { key: 'documents', icon: FileText, color: 'bg-success/10 text-success' },
+  { key: 'social', icon: Instagram, color: 'bg-primary/10 text-primary' },
 ];
 
 // How To Steps Configuration
@@ -47,10 +47,10 @@ const howToStepsConfig = [
 
 // Related Tools Configuration
 const relatedToolsConfig = [
-  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20' },
-  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-green-500/10 text-green-600 hover:bg-green-500/20' },
-  { key: 'restore', icon: History, href: '/restore', color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20' },
-  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20' },
+  { key: 'upscale', icon: Maximize2, href: '/upscale', color: 'bg-primary/10 text-primary hover:bg-blue-500/20' },
+  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-success/10 text-success hover:bg-green-500/20' },
+  { key: 'restore', icon: History, href: '/restore', color: 'bg-warning/10 text-warning hover:bg-amber-500/20' },
+  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-primary/10 text-primary hover:bg-purple-500/20' },
 ];
 
 export default function UnblurClient() {
@@ -114,7 +114,7 @@ export default function UnblurClient() {
           <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center container mx-auto px-4">
             <div className="space-y-6 text-center lg:text-left order-1">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                <h2 className="text-2xl md:text-3xl font-bold gradient-text">
                   {t("features.f1_title")}
                 </h2>
                 <h3 className="text-lg md:text-xl text-muted-foreground font-medium">
@@ -150,7 +150,7 @@ export default function UnblurClient() {
             </div>
             <div className="space-y-6 text-center lg:text-left order-1 lg:order-2">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <h2 className="text-2xl md:text-3xl font-bold gradient-text">
                   {t("features.f2_title")}
                 </h2>
                 <h3 className="text-lg md:text-xl text-muted-foreground font-medium">

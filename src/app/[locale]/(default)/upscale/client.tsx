@@ -17,17 +17,17 @@ import RelatedTools from "@/components/blocks/related-tools";
 import { ImageIcon, Mountain, Sparkles, Grid3X3, Printer, ShoppingBag, Image, Frame, Upload, Download, Wind, History, Palette, Square } from "lucide-react";
 
 const problemTypesConfig = [
-  { key: 'low_res', icon: ImageIcon, color: 'bg-indigo-500/10 text-indigo-600' },
-  { key: 'pixelated', icon: Grid3X3, color: 'bg-purple-500/10 text-purple-600' },
-  { key: 'compressed', icon: Sparkles, color: 'bg-pink-500/10 text-pink-600' },
-  { key: 'print', icon: Printer, color: 'bg-blue-500/10 text-blue-600' },
+  { key: 'low_res', icon: ImageIcon, color: 'bg-accent/10 text-accent' },
+  { key: 'pixelated', icon: Grid3X3, color: 'bg-primary/10 text-primary' },
+  { key: 'compressed', icon: Sparkles, color: 'bg-accent/10 text-accent' },
+  { key: 'print', icon: Printer, color: 'bg-primary/10 text-primary' },
 ];
 
 const useCasesConfig = [
-  { key: 'print', icon: Printer, color: 'bg-amber-500/10 text-amber-600' },
-  { key: 'ecommerce', icon: ShoppingBag, color: 'bg-blue-500/10 text-blue-600' },
-  { key: 'wallpaper', icon: Frame, color: 'bg-indigo-500/10 text-indigo-600' },
-  { key: 'old_photos', icon: History, color: 'bg-rose-500/10 text-rose-600' },
+  { key: 'print', icon: Printer, color: 'bg-warning/10 text-warning' },
+  { key: 'ecommerce', icon: ShoppingBag, color: 'bg-primary/10 text-primary' },
+  { key: 'wallpaper', icon: Frame, color: 'bg-accent/10 text-accent' },
+  { key: 'old_photos', icon: History, color: 'bg-destructive/10 text-destructive' },
 ];
 
 const howToStepsConfig = [
@@ -37,10 +37,10 @@ const howToStepsConfig = [
 ];
 
 const relatedToolsConfig = [
-  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-green-500/10 text-green-600 hover:bg-green-500/20' },
-  { key: 'restore', icon: History, href: '/restore', color: 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20' },
-  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20' },
-  { key: 'colorize', icon: Palette, href: '/colorize', color: 'bg-rose-500/10 text-rose-600 hover:bg-rose-500/20' },
+  { key: 'denoise', icon: Wind, href: '/denoise', color: 'bg-success/10 text-success hover:bg-green-500/20' },
+  { key: 'restore', icon: History, href: '/restore', color: 'bg-warning/10 text-warning hover:bg-amber-500/20' },
+  { key: 'remove_bg', icon: Square, href: '/remove-background', color: 'bg-primary/10 text-primary hover:bg-purple-500/20' },
+  { key: 'colorize', icon: Palette, href: '/colorize', color: 'bg-destructive/10 text-destructive hover:bg-rose-500/20' },
 ];
 
 export default function UpscaleClient() {
@@ -93,7 +93,7 @@ export default function UpscaleClient() {
             </div>
             <div className="space-y-6 text-center lg:text-left order-1 lg:order-2">
               <div className="space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">{t("features.f2_title")}</h2>
+                <h2 className="text-2xl md:text-3xl font-bold gradient-text">{t("features.f2_title")}</h2>
                 <h3 className="text-lg md:text-xl text-muted-foreground font-medium">{t("features.f2_desc")}</h3>
               </div>
             </div>

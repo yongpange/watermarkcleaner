@@ -1322,6 +1322,10 @@
     },
     "happy_users": "from 99+ happy users",
     "hero": {
+      "cta_primary": "Remove Watermark Now",
+      "cta_secondary": "See Pricing",
+      "ai_powered": "AI-Powered",
+      "precise_removal": "Precise watermark removal",
       "image_load_failed": "Failed to load image. Please try again.",
       "og_alt": "WatermarkCleaner AI watermark removal demonstration"
     },

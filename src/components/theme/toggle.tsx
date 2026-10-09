@@ -3,8 +3,9 @@
 import { BsMoonStars, BsSun } from "react-icons/bs";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
-const ThemeToggle = () => {
+const ThemeToggle = ({ className }: { className?: string }) => {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -24,12 +25,12 @@ const ThemeToggle = () => {
     <div className="flex items-center gap-x-2 px-2">
       {currentTheme === "dark" ? (
         <BsSun
-          className="cursor-pointer text-lg text-muted-foreground hover:text-foreground transition-colors"
+          className={cn("cursor-pointer text-lg transition-colors", className || "text-muted-foreground hover:text-foreground")}
           onClick={() => setTheme("light")}
         />
       ) : (
         <BsMoonStars
-          className="cursor-pointer text-lg text-muted-foreground hover:text-foreground transition-colors"
+          className={cn("cursor-pointer text-lg transition-colors", className || "text-muted-foreground hover:text-foreground")}
           onClick={() => setTheme("dark")}
         />
       )}
