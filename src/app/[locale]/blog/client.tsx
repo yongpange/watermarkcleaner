@@ -14,7 +14,7 @@ interface BlogClientProps {
 }
 
 // 分类键列表
-const categoryKeys = ["all", "ai_learning", "study_science", "comparison", "tips", "updates"];
+const categoryOrder = ["tutorials", "comparison", "tips", "ai_learning", "updates"];
 
 export default function BlogClient({ initialPosts }: BlogClientProps) {
   const t = useTranslations("blog");
@@ -25,6 +25,11 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
   const [sortBy, setSortBy] = useState<"date" | "readTime" | "title">("date");
 
   // 使用 useMemo 优化过滤逻辑
+  const categories = useMemo(() => {
+    const present = new Set(initialPosts.map((post) => post.category));
+    return ["all", ...categoryOrder.filter((id) => present.has(id))];
+  }, [initialPosts]);
+
   const filteredPosts = useMemo(() => {
     let filtered = initialPosts;
 
@@ -100,7 +105,7 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
               {/* Category Filter */}
               <div className="flex flex-wrap gap-2">
-                {categoryKeys.map((categoryKey) => (
+                {categories.map((categoryKey) => (
                   <Button
                     key={categoryKey}
                     variant={selectedCategory === categoryKey ? "default" : "outline"}
@@ -121,9 +126,9 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
                   onChange={(e) => setSortBy(e.target.value as any)}
                   className="px-3 py-2 border border-primary/20 rounded-lg bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
-                  <option value="date">Sort by Date</option>
-                  <option value="readTime">Sort by Read Time</option>
-                  <option value="title">Sort by Title</option>
+                  <option value="date">{t("sort_date")}</option>
+                  <option value="readTime">{t("sort_read_time")}</option>
+                  <option value="title">{t("sort_title")}</option>
                 </select>
 
                 {/* View Mode Toggle */}
@@ -150,7 +155,7 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
 
             {/* Results Count */}
             <div className="text-center text-sm text-muted-foreground">
-              {filteredPosts.length} {filteredPosts.length === 1 ? "article" : "articles"} found
+              {t("results", { count: filteredPosts.length })}
             </div>
           </div>
         </div>
@@ -179,27 +184,6 @@ export default function BlogClient({ initialPosts }: BlogClientProps) {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 bg-primary/5">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-2xl mx-auto">
-            <h3 className="text-3xl font-bold mb-4">{t("newsletter.title")}</h3>
-            <p className="text-muted-foreground mb-8">
-              {t("newsletter.description")}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <Input
-                type="email"
-                placeholder={t("newsletter.placeholder")}
-                className="flex-1"
-              />
-              <Button className="bg-primary hover:bg-primary/90">
-                {t("newsletter.button")}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

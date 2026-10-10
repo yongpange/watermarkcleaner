@@ -117,7 +117,12 @@
       "tips": "팁과 요령",
       "updates": "제품 업데이트",
       "tutorials": "튜토리얼"
-    }
+    },
+    "featured": "추천",
+    "sort_date": "날짜순",
+    "sort_read_time": "읽는 시간순",
+    "sort_title": "제목순",
+    "results": "기사 {count}개"
   },
   "feedback": {
     "title": "피드백",

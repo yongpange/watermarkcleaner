@@ -16,6 +16,8 @@
   },
   "category": "tips",
   "featured": true,
+  "readTime": 8,
   "readingTime": 8,
-  "image": "/images/blog/automatic-vs-manual-watermark-removal/cover.jpg"
+  "coverImage": "/images/blog/automatic-vs-manual-cover.jpg",
+  "image": "/images/blog/automatic-vs-manual-cover.jpg"
 }

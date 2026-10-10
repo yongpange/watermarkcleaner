@@ -117,7 +117,12 @@
       "tips": "Conseils et Astuces",
       "updates": "Mises à Jour Produit",
       "tutorials": "Tutoriels"
-    }
+    },
+    "featured": "À la une",
+    "sort_date": "Trier par date",
+    "sort_read_time": "Trier par durée",
+    "sort_title": "Trier par titre",
+    "results": "{count} articles"
   },
   "feedback": {
     "title": "Commentaires",

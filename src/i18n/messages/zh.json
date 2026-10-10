@@ -154,7 +154,12 @@
       "tips": "技巧分享",
       "updates": "产品更新",
       "tutorials": "教程"
-    }
+    },
+    "featured": "精选",
+    "sort_date": "按时间",
+    "sort_read_time": "按阅读时长",
+    "sort_title": "按标题",
+    "results": "{count} 篇文章"
   },
   "feedback": {
     "title": "反馈",

@@ -138,6 +138,11 @@
     "no_results_hint": "Try adjusting your search or filter criteria",
     "min_read": "{minutes} min read",
     "read_more": "Read More",
+    "featured": "Featured",
+    "sort_date": "Sort by date",
+    "sort_read_time": "Sort by read time",
+    "sort_title": "Sort by title",
+    "results": "{count} articles",
     "back_to_blog": "← Back to Blog",
     "by_author": "By {author}",
     "newsletter": {

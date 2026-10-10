@@ -67,9 +67,9 @@ function localizePostMeta(
     authorName: author?.name[locale] || author?.name.en || meta.author,
     authorAvatar: author?.avatar,
     publishDate: meta.publishDate,
-    readTime: meta.readTime,
+    readTime: meta.readTime || meta.readingTime || 5,
     featured: meta.featured,
-    coverImage: meta.coverImage,
+    coverImage: meta.coverImage || meta.image,
     tags: meta.tags[locale] || meta.tags.en,
   };
 }

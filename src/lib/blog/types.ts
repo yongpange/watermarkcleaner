@@ -47,9 +47,11 @@ export interface PostMeta {
   category: string;
   author: string;
   publishDate: string;
-  readTime: number;
+  readTime?: number;
+  readingTime?: number;
   featured?: boolean;
   coverImage?: string;
+  image?: string;
   tags: LocalizedStringArray;
   title: LocalizedString;
   description: LocalizedString;
