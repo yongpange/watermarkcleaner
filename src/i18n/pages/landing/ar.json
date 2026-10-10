@@ -24,6 +24,42 @@
               "url": "/unblur",
               "description": "اجعل الصور المضببة واضحة بالذكاء الاصطناعي",
               "icon": "RiDropLine"
+            },
+            {
+              "title": "ترميم الصور القديمة",
+              "url": "/restore",
+              "description": "إصلاح الخدوش والتمزقات وتلوين الصور بالأبيض والأسود",
+              "icon": "RiImageEditLine"
+            },
+            {
+              "title": "إزالة التشويش",
+              "url": "/denoise",
+              "description": "إزالة الضوضاء والحبيبات من الصور بالذكاء الاصطناعي",
+              "icon": "RiSparklingLine"
+            },
+            {
+              "title": "إزالة الخلفية",
+              "url": "/remove-background",
+              "description": "إزالة الخلفية وإنشاء PNG شفاف",
+              "icon": "RiScissorsCutLine"
+            },
+            {
+              "title": "طمس الخلفية",
+              "url": "/blur-background",
+              "description": "تطبيق ضبابية جميلة بنمط الصور الشخصية",
+              "icon": "RiBlurOffLine"
+            },
+            {
+              "title": "تلوين الصورة",
+              "url": "/colorize",
+              "description": "إضافة ألوان إلى الصور بالأبيض والأسود بالذكاء الاصطناعي",
+              "icon": "RiPaletteLine"
+            },
+            {
+              "title": "تكبير الصورة",
+              "url": "/upscale",
+              "description": "تكبير الصور دون فقدان الجودة",
+              "icon": "RiExpandDiagonalLine"
             }
           ]
         },

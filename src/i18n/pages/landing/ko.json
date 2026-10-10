@@ -24,6 +24,42 @@
               "url": "/unblur",
               "description": "AI로 흐릿한 사진을 선명하게 만들기",
               "icon": "RiDropLine"
+            },
+            {
+              "title": "오래된 사진 복원",
+              "url": "/restore",
+              "description": "긁힘과 찢어짐을 복구하고 흑백 사진에 색을 입히기",
+              "icon": "RiImageEditLine"
+            },
+            {
+              "title": "이미지 노이즈 제거",
+              "url": "/denoise",
+              "description": "AI로 사진의 노이즈와 그레인을 제거",
+              "icon": "RiSparklingLine"
+            },
+            {
+              "title": "배경 제거",
+              "url": "/remove-background",
+              "description": "배경을 제거하고 투명 PNG 만들기",
+              "icon": "RiScissorsCutLine"
+            },
+            {
+              "title": "배경 흐리게",
+              "url": "/blur-background",
+              "description": "인물 사진처럼 배경을 아름답게 흐리게",
+              "icon": "RiBlurOffLine"
+            },
+            {
+              "title": "사진 채색",
+              "url": "/colorize",
+              "description": "AI로 흑백 사진에 자연스러운 색 입히기",
+              "icon": "RiPaletteLine"
+            },
+            {
+              "title": "이미지 확대",
+              "url": "/upscale",
+              "description": "화질 손실 없이 이미지를 확대",
+              "icon": "RiExpandDiagonalLine"
             }
           ]
         },

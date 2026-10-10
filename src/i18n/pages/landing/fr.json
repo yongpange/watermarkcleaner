@@ -20,10 +20,46 @@
           "icon": "RiAppsLine",
           "children": [
             {
-              "title": "Déflouter Image",
+              "title": "Rendre une image nette",
               "url": "/unblur",
               "description": "Rendre les photos floues nettes avec l'IA",
               "icon": "RiDropLine"
+            },
+            {
+              "title": "Restaurer les vieilles photos",
+              "url": "/restore",
+              "description": "Réparer les rayures, les déchirures et coloriser les photos N&B",
+              "icon": "RiImageEditLine"
+            },
+            {
+              "title": "Réduire le bruit",
+              "url": "/denoise",
+              "description": "Supprimer le bruit et le grain des photos avec l'IA",
+              "icon": "RiSparklingLine"
+            },
+            {
+              "title": "Supprimer l'arrière-plan",
+              "url": "/remove-background",
+              "description": "Supprimer l'arrière-plan et créer un PNG transparent",
+              "icon": "RiScissorsCutLine"
+            },
+            {
+              "title": "Flouter l'arrière-plan",
+              "url": "/blur-background",
+              "description": "Appliquer un beau flou de type portrait",
+              "icon": "RiBlurOffLine"
+            },
+            {
+              "title": "Coloriser la photo",
+              "url": "/colorize",
+              "description": "Ajouter des couleurs aux photos noir et blanc avec l'IA",
+              "icon": "RiPaletteLine"
+            },
+            {
+              "title": "Agrandir l'image",
+              "url": "/upscale",
+              "description": "Agrandir les images sans perdre en qualité",
+              "icon": "RiExpandDiagonalLine"
             }
           ]
         },

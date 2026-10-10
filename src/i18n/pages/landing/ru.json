@@ -20,10 +20,46 @@
           "icon": "RiAppsLine",
           "children": [
             {
-              "title": "Улучшить фото",
+              "title": "Сделать фото чётким",
               "url": "/unblur",
-              "description": "Сделайте размытые фото четкими с ИИ",
+              "description": "Сделайте размытые фото чёткими с помощью ИИ",
               "icon": "RiDropLine"
+            },
+            {
+              "title": "Восстановить старые фото",
+              "url": "/restore",
+              "description": "Убрать царапины и разрывы, раскрасить чёрно-белые фото",
+              "icon": "RiImageEditLine"
+            },
+            {
+              "title": "Убрать шум",
+              "url": "/denoise",
+              "description": "Удалите шум и зернистость с фото с помощью ИИ",
+              "icon": "RiSparklingLine"
+            },
+            {
+              "title": "Удалить фон",
+              "url": "/remove-background",
+              "description": "Удалите фон и создайте прозрачный PNG",
+              "icon": "RiScissorsCutLine"
+            },
+            {
+              "title": "Размыть фон",
+              "url": "/blur-background",
+              "description": "Красивое размытие фона в портретном режиме",
+              "icon": "RiBlurOffLine"
+            },
+            {
+              "title": "Раскрасить фото",
+              "url": "/colorize",
+              "description": "Добавьте цвет на чёрно-белые фото с помощью ИИ",
+              "icon": "RiPaletteLine"
+            },
+            {
+              "title": "Увеличить изображение",
+              "url": "/upscale",
+              "description": "Увеличьте изображения без потери качества",
+              "icon": "RiExpandDiagonalLine"
             }
           ]
         },

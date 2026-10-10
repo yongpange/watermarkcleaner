@@ -36,7 +36,11 @@
     "google_sign_in": "Se connecter avec Google",
     "github_sign_in": "Se connecter avec GitHub",
     "close_title": "Fermer",
-    "cancel_title": "Annuler"
+    "cancel_title": "Annuler",
+    "welcome": "Bienvenue sur WatermarkCleaner",
+    "login_to_use": "Connectez-vous pour utiliser notre service de suppression de filigrane par IA",
+    "credit_upgrade_info": "Les visiteurs obtiennent 3 crédits → Connectez-vous pour obtenir plus de crédits",
+    "upgrade_privileges": "Passez à l'offre supérieure pour profiter de plus d'avantages →"
   },
   "my_orders": {
     "title": "Mes Commandes",
@@ -111,7 +115,8 @@
       "study_science": "Science de l'Étude",
       "comparison": "Comparaison",
       "tips": "Conseils et Astuces",
-      "updates": "Mises à Jour Produit"
+      "updates": "Mises à Jour Produit",
+      "tutorials": "Tutoriels"
     }
   },
   "feedback": {
@@ -235,7 +240,8 @@
       "processing_time_info": "Le temps de traitement dépend de la taille de l'image, généralement entre 30s et 2min",
       "processing_failed": "Traitement Échoué",
       "ratio_square": "1:1 Carré",
-      "ratio_default": "Par défaut"
+      "ratio_default": "Par défaut",
+      "please_wait": "Veuillez patienter, cela peut prendre de 30 secondes à 2 minutes"
     },
     "watermark_removal": {
       "image_ratio": "Ratio d'Aspect",
@@ -259,14 +265,18 @@
       "upgrade_to_pro": "Passer à Pro pour des crédits illimités",
       "wait_for_reset": "Revenez plus tard pour plus de crédits",
       "upgrade_to_pro_button": "💎 Passer à Pro",
-      "try_again_later": "Réessayez plus tard"
+      "try_again_later": "Réessayez plus tard",
+      "generating": "Génération en cours..."
     }
   },
   "unblur": {
     "metadata": {
       "title": "Déflouter Image en Ligne - Outil IA pour Clarifier les Photos",
       "description": "Corrigez les photos floues instantanément ! Notre outil IA rend nettes les visages, textes et images entières.",
-      "keywords": "déflouter image, rendre photo nette, outil défloutage IA"
+      "keywords": "déflouter image, rendre photo nette, outil défloutage IA",
+      "og_title": "Déflouter une image en ligne gratuitement | Rendre les photos floues nettes avec l'IA - WatermarkCleaner",
+      "og_description": "Corrigez instantanément les photos floues avec l'IA ! Défloutez les visages, le texte et les images entières en ligne, gratuitement. Sans inscription, sans filigrane. Essayez dès maintenant notre outil pour rendre les photos nettes !",
+      "og_image_alt": "Outil de défloutage IA - Rendre les photos floues nettes"
     },
     "title": "Déflouter Image en Ligne – Outil IA pour Clarifier les Photos",
     "description": "Défloutez instantanément les photos et améliorez les détails pour rendre vos images nettes et claires",
@@ -302,7 +312,154 @@
       "q7": "Mon image est-elle en sécurité ?",
       "a7": "Oui, les images sont supprimées automatiquement.",
       "q8": "Puis-je l'utiliser sur mobile ?",
-      "a8": "Oui, cela fonctionne sur n'importe quel appareil."
+      "a8": "Oui, cela fonctionne sur n'importe quel appareil.",
+      "q9": "Comment déflouter une image sur iPhone ou Android ?",
+      "a9": "Ouvrez simplement notre site dans le navigateur de votre téléphone, sans télécharger d'application ! Appuyez sur « Télécharger une image », sélectionnez votre photo dans la galerie, et notre IA la défloutera en quelques secondes. Fonctionne parfaitement sur iPhone, Samsung et tous les appareils Android.",
+      "q10": "Quelle est la différence entre déflouter et accentuer ?",
+      "a10": "Déflouter vise précisément à corriger le flou causé par le mouvement, un problème de mise au point ou le bougé de l'appareil, en reconstruisant les détails perdus. Accentuer renforce le contraste des contours pour que l'image paraisse plus nette. Notre outil de défloutage IA fait les deux : il supprime le flou et renforce la netteté, pour le meilleur résultat."
+    },
+    "trust_badges": {
+      "title": "Pourquoi choisir notre outil de défloutage",
+      "free": {
+        "title": "Commencez gratuitement",
+        "desc": "Crédits mensuels gratuits, passez à l'offre supérieure pour en avoir plus"
+      },
+      "watermark": {
+        "title": "Sans filigrane",
+        "desc": "Un résultat net, sans aucune marque"
+      },
+      "instant": {
+        "title": "Résultats instantanés",
+        "desc": "Obtenez des photos nettes en quelques secondes"
+      },
+      "privacy": {
+        "title": "Confidentialité protégée",
+        "desc": "Images supprimées après le traitement"
+      },
+      "signup": {
+        "title": "Sans inscription",
+        "desc": "Utilisez-le immédiatement, sans compte"
+      }
+    },
+    "problem_types": {
+      "title": "Quels types de flou pouvons-nous corriger ?",
+      "subtitle": "Notre IA gère différents types de flou, causés par des problèmes variés",
+      "types": {
+        "motion": {
+          "title": "Flou de mouvement",
+          "desc": "Causé par le bougé de l'appareil ou un sujet en mouvement. Fréquent sur les photos en basse lumière ou les prises d'action.",
+          "examples": "Photos prises à main levée | Véhicules en mouvement | Photographie sportive"
+        },
+        "lens": {
+          "title": "Hors focus",
+          "desc": "Lorsque l'appareil fait la mise au point au mauvais endroit, ou que la profondeur de champ est trop faible.",
+          "examples": "Mauvais point de mise au point | Portraits à faible profondeur de champ | Gros plans"
+        },
+        "soft": {
+          "title": "Manque de netteté et perte de détails",
+          "desc": "Manque général de piqué, dû à un appareil de faible qualité ou à une compression trop agressive.",
+          "examples": "Images basse résolution | Forte compression JPEG | Anciennes photos numériques"
+        },
+        "text": {
+          "title": "Texte flou",
+          "desc": "Documents, reçus et captures d'écran illisibles, qu'il faut rendre de nouveau lisibles.",
+          "examples": "Documents numérisés | Reçus et factures | Captures d'écran"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Parfait pour tous les usages",
+      "subtitle": "Découvrez comment différents utilisateurs tirent parti de notre outil de défloutage IA",
+      "pain_point": "Problème",
+      "solution": "Solution",
+      "cases": {
+        "portrait": {
+          "title": "Photographie de portrait",
+          "pain_point": "Les visages flous gâchent des souvenirs précieux",
+          "solution": "L'IA détecte et améliore les traits du visage, pour des yeux nets et une peau naturelle",
+          "examples": "Photos de famille | Selfies | Portraits professionnels"
+        },
+        "ecommerce": {
+          "title": "Produits e-commerce",
+          "pain_point": "Les photos de produits floues font baisser les ventes",
+          "solution": "Des images de produits nettes, qui mettent les détails en valeur et augmentent les conversions",
+          "examples": "Fiches Amazon | Boutiques Shopify | Publicités sur les réseaux sociaux"
+        },
+        "documents": {
+          "title": "Numérisation de documents",
+          "pain_point": "Un texte flou est impossible à lire",
+          "solution": "Rendez net le texte des reçus, des contrats et des PDF numérisés",
+          "examples": "Reçus et factures | Contrats | Pièces d'identité"
+        },
+        "social": {
+          "title": "Réseaux sociaux",
+          "pain_point": "Les images compressées perdent en qualité",
+          "solution": "Restaurez la netteté des photos pour Instagram, Facebook et bien d'autres",
+          "examples": "Publications Instagram | Photos de profil | Stories à la une"
+        }
+      }
+    },
+    "how_to": {
+      "title": "Comment déflouter une image en 3 étapes simples",
+      "subtitle": "Aucune compétence technique requise - corrigez les photos floues instantanément",
+      "schema_name": "Comment déflouter une image en ligne",
+      "schema_description": "Corrigez instantanément les photos floues avec l'IA en suivant ces 3 étapes simples",
+      "step1_title": "Téléchargez votre image",
+      "step1_desc": "Glissez-déposez votre photo floue ou cliquez pour la sélectionner. Nous prenons en charge les formats JPG, PNG et WebP jusqu'à 10 Mo.",
+      "step2_title": "L'IA accentue automatiquement",
+      "step2_desc": "Notre IA analyse le type de flou et améliore intelligemment les détails. Le traitement ne prend que quelques secondes.",
+      "step3_title": "Téléchargez la photo nette",
+      "step3_desc": "Obtenez votre image défloutée instantanément. Téléchargement gratuit, sans filigrane ni perte de qualité.",
+      "cta": "Défloutez votre image maintenant"
+    },
+    "social_proof": {
+      "title": "Plus d'un million d'utilisateurs nous font confiance dans le monde",
+      "subtitle": "Rejoignez des millions de personnes qui font confiance à notre outil de défloutage IA pour leurs photos",
+      "stats": {
+        "users": "Utilisateurs satisfaits",
+        "images": "Images traitées",
+        "rating": "Note moyenne",
+        "satisfaction": "Taux de satisfaction"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "Cet outil a sauvé mes photos de vacances ! J'avais des clichés flous pris depuis un bateau en mouvement, et il les a parfaitement corrigés. La qualité est incroyable !",
+          "name": "Sarah Johnson",
+          "role": "Photographe de voyage"
+        },
+        "2": {
+          "quote": "Je l'utilise pour toutes mes photos de produits e-commerce. Il rend nets les clichés flous et leur donne un rendu professionnel. Parfait pour les fiches Amazon !",
+          "name": "Michael Chen",
+          "role": "Vendeur en ligne"
+        },
+        "3": {
+          "quote": "J'ai corrigé toutes mes vieilles photos de famille floues. La fonction de défloutage des visages est incroyable : elle a redonné un coup de neuf à des photos vieilles de 20 ans !",
+          "name": "Emma Williams",
+          "role": "Historienne familiale"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Découvrez d'autres outils d'image IA",
+      "subtitle": "Améliorez encore vos images avec nos autres outils IA gratuits",
+      "tools": {
+        "upscale": {
+          "name": "Agrandir l'image",
+          "desc": "Augmentez la résolution jusqu'à 4x sans perdre en qualité"
+        },
+        "denoise": {
+          "name": "Débruiter la photo",
+          "desc": "Supprimez le bruit et le grain de vos photos"
+        },
+        "restore": {
+          "name": "Restaurer les vieilles photos",
+          "desc": "Réparez les rayures et les dommages des photos anciennes"
+        },
+        "remove_bg": {
+          "name": "Supprimer l'arrière-plan",
+          "desc": "Créez des arrière-plans PNG transparents instantanément"
+        }
+      }
     }
   },
   "workspace": {
@@ -337,6 +494,1244 @@
       "pdf": "PDF",
       "docx": "Document Word",
       "download": "Télécharger"
+    }
+  },
+  "restore": {
+    "metadata": {
+      "title": "Restaurer de vieilles photos en ligne gratuitement - Outil de restauration photo par IA",
+      "description": "Restaurez instantanément de vieilles photos abîmées grâce à l'IA. Supprimez les rayures, les déchirures et la décoloration. Colorisez gratuitement les photos noir et blanc.",
+      "keywords": "restaurer de vieilles photos, restauration photo, réparer d'anciennes photos, réparation photo par IA, coloriser de vieilles photos",
+      "og_title": "Restaurer de vieilles photos en ligne gratuitement | Restauration photo par IA - WatermarkCleaner",
+      "og_description": "Restaurez instantanément de vieilles photos abîmées grâce à l'IA ! Supprimez les rayures, réparez les déchirures, colorisez les photos N&B. Sans inscription, sans filigrane. Essayez dès maintenant notre outil gratuit de restauration photo !",
+      "og_image_alt": "Outil de restauration photo par IA - Restaurer de vieilles photos"
+    },
+    "title": "Restaurer de vieilles photos en ligne gratuitement – Restauration photo par IA",
+    "description": "Redonnez vie à vos vieilles photos abîmées grâce à la technologie de restauration par IA",
+    "process_success": "Succès ! Photo restaurée",
+    "process_failed": "La restauration a échoué, veuillez réessayer",
+    "processing": "L'IA restaure votre photo...",
+    "start_restore": "Restaurer la photo",
+    "trust_badges": {
+      "title": "Pourquoi choisir notre outil de restauration photo",
+      "free": {
+        "title": "Commencez gratuitement",
+        "desc": "Crédits mensuels gratuits, passez à l'offre supérieure pour en avoir plus"
+      },
+      "watermark": {
+        "title": "Sans filigrane",
+        "desc": "Un résultat net, sans aucune marque"
+      },
+      "instant": {
+        "title": "Résultats instantanés",
+        "desc": "Obtenez des photos restaurées en quelques secondes"
+      },
+      "privacy": {
+        "title": "Confidentialité protégée",
+        "desc": "Images supprimées après le traitement"
+      },
+      "signup": {
+        "title": "Sans inscription",
+        "desc": "Utilisez-le immédiatement, sans compte"
+      }
+    },
+    "problem_types": {
+      "title": "Quels types de dommages pouvons-nous réparer ?",
+      "subtitle": "Notre IA traite différents types de dommages et de dégradations des photos",
+      "types": {
+        "scratches": {
+          "title": "Rayures et déchirures",
+          "desc": "Dommages physiques dus à la manipulation, au stockage ou à l'âge, qui laissent des traits et des déchirures visibles à la surface de la photo.",
+          "examples": "Rayures de surface | Déchirures sur les bords | Marques de pli"
+        },
+        "fading": {
+          "title": "Décoloration et altération des couleurs",
+          "desc": "Perte d'éclat des couleurs et de contraste, due à l'exposition à la lumière, à l'oxydation ou à une dégradation chimique au fil du temps.",
+          "examples": "Tirages décolorés par le soleil | Photos jaunies | Contraste perdu"
+        },
+        "bw": {
+          "title": "Photos noir et blanc",
+          "desc": "Photos monochromes que l'on peut transformer grâce à une colorisation réaliste et fidèle à l'époque.",
+          "examples": "Portraits anciens | Images historiques | Archives familiales"
+        },
+        "noise": {
+          "title": "Bruit et taches",
+          "desc": "Grain numérique ou argentique, taches de poussière et artefacts qui réduisent la clarté et les détails de la photo.",
+          "examples": "Grain argentique | Taches de poussière | Artefacts de compression"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Parfait pour tous les usages",
+      "subtitle": "Découvrez comment différents utilisateurs tirent parti de notre outil de restauration photo par IA",
+      "pain_point_label": "Problème",
+      "solution_label": "Solution",
+      "cases": {
+        "family": {
+          "title": "Photos de famille",
+          "pain_point": "De précieux souvenirs familiaux qui se dégradent avec le temps",
+          "solution": "Restaurez la netteté, les couleurs et les détails pour préserver ces souvenirs pour les générations futures",
+          "examples": "Photos d'enfance | Albums de mariage | Souvenirs de vacances"
+        },
+        "historical": {
+          "title": "Préservation historique",
+          "pain_point": "Des documents et des photos historiques qui s'effacent",
+          "solution": "Préservez numériquement les images historiques grâce à une restauration de qualité professionnelle",
+          "examples": "Photos de guerre | Scènes d'époque | Personnages historiques"
+        },
+        "vintage": {
+          "title": "Récupération de photos anciennes",
+          "pain_point": "De vieilles photos qui perdent leur charme et leurs détails d'origine",
+          "solution": "Retrouvez l'éclat d'origine tout en conservant le caractère vintage",
+          "examples": "Portraits des années 1920 | Voitures classiques | Mode rétro"
+        },
+        "genealogy": {
+          "title": "Recherche généalogique",
+          "pain_point": "Des photos d'ancêtres trop abîmées pour en distinguer les détails",
+          "solution": "Améliorez les traits du visage et les détails pour mieux identifier vos proches",
+          "examples": "Portraits d'ancêtres | Arbres généalogiques | Recherche patrimoniale"
+        }
+      }
+    },
+    "how_to": {
+      "title": "Comment restaurer une vieille photo en 3 étapes simples",
+      "subtitle": "Aucune compétence technique requise - restaurez vos photos instantanément",
+      "schema_name": "Comment restaurer une vieille photo en ligne",
+      "schema_description": "Restaurez instantanément de vieilles photos abîmées grâce à l'IA en suivant ces 3 étapes simples",
+      "step1_title": "Téléchargez votre photo",
+      "step1_desc": "Glissez-déposez votre vieille photo abîmée ou cliquez pour la sélectionner. Nous prenons en charge les formats JPG, PNG et WebP jusqu'à 10 Mo.",
+      "step2_title": "L'IA restaure automatiquement",
+      "step2_desc": "Notre IA analyse le type de dommage et répare intelligemment les rayures, les déchirures, la décoloration et l'altération des couleurs.",
+      "step3_title": "Téléchargez la photo restaurée",
+      "step3_desc": "Obtenez instantanément votre photo magnifiquement restaurée. Téléchargement gratuit, sans filigrane ni perte de qualité.",
+      "cta": "Restaurez votre photo maintenant"
+    },
+    "social_proof": {
+      "title": "Plus d'un million d'utilisateurs nous font confiance dans le monde",
+      "subtitle": "Rejoignez des millions de personnes qui font confiance à notre outil de restauration photo par IA",
+      "stats": {
+        "users": "Utilisateurs satisfaits",
+        "images": "Photos restaurées",
+        "rating": "Note moyenne",
+        "satisfaction": "Taux de satisfaction"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "Cet outil a redonné vie aux photos de mariage de ma grand-mère ! Les rayures ont complètement disparu et les couleurs paraissent si naturelles. Absolument bluffant !",
+          "name": "Margaret Chen",
+          "role": "Historienne familiale"
+        },
+        "2": {
+          "quote": "J'avais des photos des années 1960 presque entièrement décolorées. Cette IA les a magnifiquement restaurées : je peux enfin revoir clairement le visage de mes parents.",
+          "name": "Robert Williams",
+          "role": "Passionné de photographie"
+        },
+        "3": {
+          "quote": "En tant que chercheuse en généalogie, j'ai essayé de nombreux outils de restauration. C'est de loin le meilleur : il a même réparé des photos déchirées que je croyais irrécupérables !",
+          "name": "Sarah Johnson",
+          "role": "Chercheuse en généalogie"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Découvrez d'autres outils d'image IA",
+      "subtitle": "Améliorez encore vos photos restaurées avec nos autres outils IA gratuits",
+      "tools": {
+        "upscale": {
+          "name": "Agrandir l'image",
+          "desc": "Augmentez la résolution jusqu'à 4x sans perdre en qualité"
+        },
+        "denoise": {
+          "name": "Débruiter la photo",
+          "desc": "Supprimez le bruit et le grain de vos photos"
+        },
+        "remove_bg": {
+          "name": "Supprimer l'arrière-plan",
+          "desc": "Créez des arrière-plans PNG transparents instantanément"
+        },
+        "colorize": {
+          "name": "Coloriser la photo",
+          "desc": "Ajoutez des couleurs naturelles aux photos noir et blanc"
+        }
+      }
+    },
+    "features": {
+      "f1_title": "Supprimer les rayures et les déchirures : réparez les photos abîmées",
+      "f1_desc": "L'IA supprime intelligemment les rayures, les déchirures et les dommages physiques des vieilles photos",
+      "f1_alt_before": "Avant : vieille photo avec rayures et dommages",
+      "f1_alt_after": "Après : photo réparée par la restauration IA",
+      "f2_title": "Coloriser les photos noir et blanc : ajoutez des couleurs naturelles",
+      "f2_desc": "Transformez les photos N&B en images couleur éclatantes grâce à une colorisation IA réaliste",
+      "f2_alt_before": "Avant : photo ancienne en noir et blanc",
+      "f2_alt_after": "Après : photo colorisée aux couleurs naturelles",
+      "f3_title": "Améliorer les photos décolorées : restaurez la netteté et le contraste",
+      "f3_desc": "Corrigez les couleurs passées, améliorez le contraste et renforcez la qualité globale de la photo",
+      "f3_alt_before": "Avant : vieille photo de famille décolorée",
+      "f3_alt_after": "Après : photo améliorée, à la netteté restaurée"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "L'IA peut-elle vraiment restaurer de vieilles photos ?",
+      "a1": "Oui ! Notre IA peut réparer les rayures, les déchirures et la décoloration, et même coloriser les photos noir et blanc avec une précision remarquable.",
+      "q2": "L'outil de restauration photo est-il gratuit ?",
+      "a2": "Oui, vous pouvez restaurer de vieilles photos en ligne gratuitement. Aucune inscription n'est requise pour une restauration de base.",
+      "q3": "Quels types de dommages peuvent être réparés ?",
+      "a3": "Les rayures, les déchirures, les taches, les points, la décoloration, l'altération des couleurs et les plis peuvent tous être réparés par notre IA.",
+      "q4": "Peut-elle coloriser les photos noir et blanc ?",
+      "a4": "Absolument ! Notre IA ajoute des couleurs naturelles et réalistes aux photos N&B, selon l'époque et le contexte.",
+      "q5": "Comment restaurer une vieille photo en ligne ?",
+      "a5": "Téléchargez simplement votre photo abîmée ci-dessus. Notre IA détecte et répare automatiquement les dommages en quelques secondes.",
+      "q6": "La photo d'origine sera-t-elle conservée ?",
+      "a6": "Oui ! Nous ne modifions jamais votre fichier d'origine. Vous obtenez une nouvelle version restaurée à télécharger.",
+      "q7": "Ma photo est-elle en sécurité et confidentielle ?",
+      "a7": "Oui. Toutes les photos sont traitées de manière sécurisée et supprimées de nos serveurs en quelques minutes.",
+      "q8": "Les photos très abîmées peuvent-elles être restaurées ?",
+      "a8": "Même si notre IA est puissante, les photos extrêmement abîmées dont des parties manquent peuvent avoir des limites. Essayez pour voir le résultat !",
+      "q9": "Quelle est la meilleure façon de numériser de vieilles photos pour la restauration ?",
+      "a9": "Pour de meilleurs résultats, numérisez entre 300 et 600 DPI en mode couleur (même pour les photos N&B). Enregistrez en TIFF ou en JPG de haute qualité. Veillez à ce que la photo soit bien à plat et uniformément éclairée pendant la numérisation.",
+      "q10": "Combien de temps dure la restauration d'une photo ?",
+      "a10": "La plupart des photos sont restaurées en 30 à 60 secondes. Les dommages complexes peuvent prendre un peu plus de temps. Vous verrez un aperçu et pourrez télécharger immédiatement le résultat en pleine résolution."
+    }
+  },
+  "denoise": {
+    "metadata": {
+      "title": "Débruiter une image en ligne gratuitement - Supprimer le bruit des photos",
+      "description": "Supprimez instantanément le bruit et le grain des photos grâce à l'IA. Nettoyez les images bruitées, corrigez les photos granuleuses et préservez les détails, gratuitement.",
+      "keywords": "débruiter une image, supprimer le bruit d'une photo, débruitage photo en ligne, nettoyer une photo granuleuse, corriger une image bruitée",
+      "og_title": "Débruiter une image en ligne gratuitement | Suppression du bruit par IA - WatermarkCleaner",
+      "og_description": "Supprimez instantanément le bruit et le grain des photos grâce à l'IA ! Nettoyez les prises de nuit à ISO élevé, lissez la peau, corrigez les images granuleuses. Sans inscription, sans filigrane. Essayez maintenant !",
+      "og_image_alt": "Outil de débruitage photo par IA - Supprimer le bruit des photos"
+    },
+    "title": "Débruiter une image en ligne gratuitement – Suppression du bruit photo par IA",
+    "description": "Nettoyez les photos bruitées et supprimez le grain tout en préservant les détails de l'image grâce à la technologie IA",
+    "process_success": "Succès ! Image débruitée",
+    "process_failed": "Le débruitage a échoué, veuillez réessayer",
+    "processing": "L'IA supprime le bruit...",
+    "start_denoise": "Supprimer le bruit",
+    "trust_badges": {
+      "title": "Pourquoi choisir notre outil de débruitage photo",
+      "free": {
+        "title": "Commencez gratuitement",
+        "desc": "Crédits mensuels gratuits, passez à l'offre supérieure pour en avoir plus"
+      },
+      "watermark": {
+        "title": "Sans filigrane",
+        "desc": "Un résultat net, sans aucune marque"
+      },
+      "instant": {
+        "title": "Résultats instantanés",
+        "desc": "Obtenez des photos propres en quelques secondes"
+      },
+      "privacy": {
+        "title": "Confidentialité protégée",
+        "desc": "Images supprimées après le traitement"
+      },
+      "signup": {
+        "title": "Sans inscription",
+        "desc": "Utilisez-le immédiatement, sans compte"
+      }
+    },
+    "problem_types": {
+      "title": "Quels types de bruit pouvons-nous supprimer ?",
+      "subtitle": "Notre IA traite différents types de bruit, issus de sources variées",
+      "types": {
+        "high_iso": {
+          "title": "Bruit ISO élevé",
+          "desc": "Grain et moutonnement dus à la photographie en basse lumière et à une sensibilité élevée de l'appareil.",
+          "examples": "Prises de nuit | Photos d'intérieur | Prises d'action rapide"
+        },
+        "color_noise": {
+          "title": "Bruit de chrominance",
+          "desc": "Pixels colorés aléatoires et mouchetures chromatiques qui apparaissent dans les zones d'ombre.",
+          "examples": "Bruit dans les ombres | Mouchetures colorées | Franges violettes"
+        },
+        "luminance": {
+          "title": "Grain de luminance",
+          "desc": "Motifs de grain monochrome qui réduisent la douceur des dégradés et des aplats de couleur.",
+          "examples": "Bandes dans le ciel | Perte de texture de la peau | Problèmes de dégradé"
+        },
+        "compression": {
+          "title": "Artefacts de compression",
+          "desc": "Motifs en blocs et bruit de moustique dus à une compression JPEG agressive.",
+          "examples": "Blocs JPEG | Postérisation | Bruit de moustique"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Parfait pour tous les usages",
+      "subtitle": "Découvrez comment différents utilisateurs tirent parti de notre outil de débruitage IA",
+      "pain_point_label": "Problème",
+      "solution_label": "Solution",
+      "cases": {
+        "night": {
+          "title": "Photographie de nuit",
+          "pain_point": "Les prises à ISO élevé sont trop granuleuses",
+          "solution": "Supprimez le bruit tout en préservant les étoiles et les lumières de la ville, pour des photos de nuit propres",
+          "examples": "Astrophotographie | Paysages urbains | Photographie de rue"
+        },
+        "portrait": {
+          "title": "Photos de portrait",
+          "pain_point": "La peau paraît rugueuse et bruitée",
+          "solution": "Lissez la peau naturellement tout en conservant les pores et les détails de texture",
+          "examples": "Portraits professionnels | Photos de famille | Selfies"
+        },
+        "mobile": {
+          "title": "Photos mobiles",
+          "pain_point": "Les appareils photo des téléphones produisent des images bruitées",
+          "solution": "Nettoyez le bruit des petits capteurs tout en améliorant la qualité globale de l'image",
+          "examples": "Clichés de smartphone | Mobile en basse lumière | Réseaux sociaux"
+        },
+        "landscape": {
+          "title": "Photos de paysage",
+          "pain_point": "Le grain gâche la beauté des paysages",
+          "solution": "Préservez les détails fins tout en supprimant le bruit du ciel et de la végétation",
+          "examples": "Photos de nature | Couchers de soleil | Vues de montagne"
+        }
+      }
+    },
+    "how_to": {
+      "title": "Comment débruiter une photo en 3 étapes simples",
+      "subtitle": "Aucune compétence technique requise - nettoyez vos photos instantanément",
+      "schema_name": "Comment débruiter une photo en ligne",
+      "schema_description": "Supprimez le bruit des photos instantanément grâce à l'IA en suivant ces 3 étapes simples",
+      "step1_title": "Téléchargez votre image",
+      "step1_desc": "Glissez-déposez votre photo bruitée ou cliquez pour la sélectionner. Nous prenons en charge les formats JPG, PNG et WebP jusqu'à 10 Mo.",
+      "step2_title": "L'IA débruite automatiquement",
+      "step2_desc": "Notre IA analyse le type de bruit et supprime intelligemment le grain tout en préservant les détails importants.",
+      "step3_title": "Téléchargez la photo propre",
+      "step3_desc": "Obtenez votre image débruitée instantanément. Téléchargement gratuit, sans filigrane ni perte de qualité.",
+      "cta": "Débruitez votre photo maintenant"
+    },
+    "social_proof": {
+      "title": "Plus d'un million d'utilisateurs nous font confiance dans le monde",
+      "subtitle": "Rejoignez des millions de personnes qui font confiance à notre outil de débruitage IA pour leurs photos",
+      "stats": {
+        "users": "Utilisateurs satisfaits",
+        "images": "Photos nettoyées",
+        "rating": "Note moyenne",
+        "satisfaction": "Taux de satisfaction"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "Ma photo de nuit s'est considérablement améliorée ! Cet outil supprime le bruit sans donner aux photos un aspect artificiel. Une révolution pour l'astrophotographie !",
+          "name": "David Park",
+          "role": "Passionné de photographie"
+        },
+        "2": {
+          "quote": "Je l'utilise pour tous les portraits de mes clients. Il lisse magnifiquement la peau tout en conservant une texture naturelle. Mes clients adorent le résultat !",
+          "name": "Lisa Chen",
+          "role": "Photographe portraitiste"
+        },
+        "3": {
+          "quote": "J'ai enfin corrigé toutes ces photos de téléphone granuleuses prises en concert et en événement. L'IA est incroyable pour préserver les détails tout en supprimant le bruit.",
+          "name": "James Miller",
+          "role": "Photographe événementiel"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Découvrez d'autres outils d'image IA",
+      "subtitle": "Améliorez encore vos images avec nos autres outils IA gratuits",
+      "tools": {
+        "upscale": {
+          "name": "Agrandir l'image",
+          "desc": "Augmentez la résolution jusqu'à 4x sans perdre en qualité"
+        },
+        "restore": {
+          "name": "Restaurer les vieilles photos",
+          "desc": "Réparez les rayures et les dommages des photos anciennes"
+        },
+        "remove_bg": {
+          "name": "Supprimer l'arrière-plan",
+          "desc": "Créez des arrière-plans PNG transparents instantanément"
+        },
+        "colorize": {
+          "name": "Coloriser la photo",
+          "desc": "Ajoutez des couleurs naturelles aux photos noir et blanc"
+        }
+      }
+    },
+    "features": {
+      "f1_title": "Débruitage des photos de nuit : nettoyez les images sombres et granuleuses",
+      "f1_desc": "L'IA supprime le bruit des prises de nuit à ISO élevé tout en préservant les étoiles et les lumières de la ville",
+      "f1_alt_before": "Avant : photo de nuit bruitée, avec du grain",
+      "f1_alt_after": "Après : photo de nuit propre, sans bruit",
+      "f2_title": "Lissage de portrait : supprimez naturellement le bruit de la peau",
+      "f2_desc": "Lissez la texture de la peau et supprimez le bruit numérique tout en conservant les détails naturels de la peau",
+      "f2_alt_before": "Avant : portrait avec bruit et grain sur la peau",
+      "f2_alt_after": "Après : portrait lisse, avec une texture de peau naturelle",
+      "f3_title": "Nettoyage de paysage : corrigez les photos d'extérieur granuleuses",
+      "f3_desc": "Supprimez le bruit des photos de paysage et de nature prises en basse lumière",
+      "f3_alt_before": "Avant : photo de paysage granuleuse et bruitée",
+      "f3_alt_after": "Après : photo de paysage propre, aux détails préservés"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "L'IA peut-elle vraiment supprimer le bruit des photos ?",
+      "a1": "Oui ! Notre IA distingue intelligemment le bruit des véritables détails de l'image : elle supprime le grain tout en préservant les textures, les contours et les éléments importants.",
+      "q2": "L'outil de débruitage est-il gratuit ?",
+      "a2": "Oui, vous pouvez débruiter des images en ligne gratuitement. Aucune inscription n'est requise pour une suppression de bruit de base.",
+      "q3": "Quels types de bruit peuvent être supprimés ?",
+      "a3": "Le bruit numérique, les mouchetures colorées, le grain de luminance, le bruit ISO élevé et les artefacts de compression peuvent tous être nettoyés par notre IA.",
+      "q4": "Le débruitage va-t-il rendre ma photo floue ?",
+      "a4": "Non ! Notre IA préserve soigneusement les contours et les détails importants, et ne supprime que les motifs de bruit aléatoires.",
+      "q5": "Comment débruiter une image en ligne ?",
+      "a5": "Téléchargez simplement votre image bruitée ci-dessus. Notre IA détecte et supprime automatiquement le bruit en quelques secondes.",
+      "q6": "Ma photo est-elle en sécurité et confidentielle ?",
+      "a6": "Oui. Toutes les photos sont traitées de manière sécurisée et supprimées de nos serveurs en quelques minutes.",
+      "q7": "Puis-je l'utiliser sur des photos de téléphone ?",
+      "a7": "Absolument ! Les photos mobiles sont souvent plus bruitées, et notre IA est optimisée pour les nettoyer efficacement.",
+      "q8": "Fonctionne-t-il sur un bruit extrême ?",
+      "a8": "Même si notre IA est puissante, les images extrêmement bruitées dont les détails sont perdus peuvent avoir des limites. Essayez pour voir le résultat !",
+      "q9": "Quelle est la différence entre le bruit de luminance et le bruit de chrominance ?",
+      "a9": "Le bruit de luminance apparaît comme des variations granuleuses de luminosité (comme le grain argentique), tandis que le bruit de chrominance se manifeste par des mouchetures colorées aléatoires. Notre IA supprime les deux tout en préservant les détails de l'image.",
+      "q10": "Le débruitage peut-il aider pour de vieilles photos numérisées ?",
+      "a10": "Oui ! Les vieilles photos numérisées présentent souvent du grain argentique et des traces de poussière. Notre outil de débruitage fonctionne très bien sur celles-ci, surtout combiné à notre outil de restauration photo pour les rayures et les déchirures."
+    }
+  },
+  "remove-background": {
+    "metadata": {
+      "title": "Supprimer l'arrière-plan d'une image gratuitement - Créateur de PNG transparent",
+      "description": "Supprimez instantanément l'arrière-plan des images grâce à l'IA. Créez des PNG transparents, détourez les sujets et réalisez des photos de produits professionnelles, gratuitement.",
+      "keywords": "supprimer l'arrière-plan, arrière-plan transparent, détourer une image, suppression d'arrière-plan, créateur de png",
+      "og_title": "Supprimer l'arrière-plan gratuitement | Créateur de PNG transparent par IA - WatermarkCleaner",
+      "og_description": "Supprimez instantanément l'arrière-plan des images grâce à l'IA ! Créez des PNG transparents, détourez les sujets, réalisez des photos de produits professionnelles. Sans inscription, sans filigrane. Essayez maintenant !",
+      "og_image_alt": "Suppression d'arrière-plan par IA - Créateur de PNG transparent"
+    },
+    "title": "Supprimer l'arrière-plan d'une image gratuitement – Suppression d'arrière-plan par IA",
+    "description": "Supprimez instantanément les arrière-plans et créez des images PNG transparentes grâce à la technologie IA",
+    "process_success": "Succès ! Arrière-plan supprimé",
+    "process_failed": "La suppression de l'arrière-plan a échoué, veuillez réessayer",
+    "processing": "L'IA supprime l'arrière-plan...",
+    "start_remove_background": "Supprimer l'arrière-plan",
+    "trust_badges": {
+      "title": "Pourquoi choisir notre outil de suppression d'arrière-plan",
+      "free": {
+        "title": "Commencez gratuitement",
+        "desc": "Crédits mensuels gratuits, passez à l'offre supérieure pour en avoir plus"
+      },
+      "watermark": {
+        "title": "Sans filigrane",
+        "desc": "Un PNG transparent propre"
+      },
+      "instant": {
+        "title": "Résultats instantanés",
+        "desc": "Obtenez des PNG transparents en quelques secondes"
+      },
+      "privacy": {
+        "title": "Confidentialité protégée",
+        "desc": "Images supprimées après le traitement"
+      },
+      "signup": {
+        "title": "Sans inscription",
+        "desc": "Utilisez-le immédiatement, sans compte"
+      }
+    },
+    "problem_types": {
+      "title": "Quels types d'images pouvons-nous traiter ?",
+      "subtitle": "Notre IA gère des sujets variés et des arrière-plans plus ou moins complexes",
+      "types": {
+        "portrait": {
+          "title": "Photos de portrait",
+          "desc": "Détection précise des contours pour les personnes, en conservant les détails des cheveux et des silhouettes naturelles.",
+          "examples": "Photos de profil | Portraits de famille | Selfies"
+        },
+        "product": {
+          "title": "Images de produits",
+          "desc": "Détourages nets pour l'e-commerce, avec des contours lisses sur tous les types de produits.",
+          "examples": "Articles e-commerce | Photos marketing | Images de catalogue"
+        },
+        "complex": {
+          "title": "Arrière-plans complexes",
+          "desc": "Gère les scènes chargées, avec plusieurs éléments et des compositions difficiles.",
+          "examples": "Scènes de rue | Photos de nature | Photos de groupe"
+        },
+        "hair": {
+          "title": "Détails des cheveux et du pelage",
+          "desc": "Préserve les mèches fines et la texture du pelage, que d'autres outils manquent souvent.",
+          "examples": "Détails des cheveux | Pelage d'animaux | Contours flous"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Parfait pour tous les usages",
+      "subtitle": "Découvrez comment différents utilisateurs tirent parti de notre outil de suppression d'arrière-plan par IA",
+      "pain_point_label": "Problème",
+      "solution_label": "Solution",
+      "cases": {
+        "ecommerce": {
+          "title": "Vendeurs e-commerce",
+          "pain_point": "Besoin de photos de produits nettes pour les fiches",
+          "solution": "Créez des arrière-plans blancs ou transparents professionnels, qui stimulent les ventes et restent cohérents",
+          "examples": "Fiches Amazon | Boutiques Shopify | Boutiques Etsy"
+        },
+        "portrait": {
+          "title": "Photos de portrait",
+          "pain_point": "Les arrière-plans distrayants gâchent les photos",
+          "solution": "Supprimez les arrière-plans pour des portraits professionnels, des photos de profil et des portraits",
+          "examples": "Photos LinkedIn | Photos d'identité | Photos de profil"
+        },
+        "design": {
+          "title": "Projets de design",
+          "pain_point": "Besoin de sujets isolés pour un travail créatif",
+          "solution": "Obtenez des détourages nets, parfaits pour le graphisme, le photomontage et les projets créatifs",
+          "examples": "Design graphique | Photomontages | Supports marketing"
+        },
+        "social": {
+          "title": "Réseaux sociaux",
+          "pain_point": "Envie d'images qui se démarquent dans les fils d'actualité",
+          "solution": "Créez des images accrocheuses, avec un arrière-plan transparent ou personnalisé, pour n'importe quelle plateforme",
+          "examples": "Publications Instagram | Miniatures YouTube | Couvertures TikTok"
+        }
+      }
+    },
+    "how_to": {
+      "title": "Comment supprimer l'arrière-plan en 3 étapes simples",
+      "subtitle": "Aucune compétence en design requise - obtenez des PNG transparents instantanément",
+      "schema_name": "Comment supprimer l'arrière-plan d'une image en ligne",
+      "schema_description": "Supprimez l'arrière-plan des images et créez des PNG transparents instantanément grâce à l'IA en suivant ces 3 étapes simples",
+      "step1_title": "Téléchargez votre image",
+      "step1_desc": "Glissez-déposez votre image ou cliquez pour la sélectionner. Nous prenons en charge le JPG et le PNG, quel que soit le type d'arrière-plan.",
+      "step2_title": "L'IA supprime l'arrière-plan",
+      "step2_desc": "Notre IA détecte automatiquement le sujet et supprime l'arrière-plan grâce à une détection précise des contours.",
+      "step3_title": "Téléchargez le PNG transparent",
+      "step3_desc": "Obtenez votre image avec un arrière-plan transparent au format PNG. Téléchargement gratuit, sans filigrane.",
+      "cta": "Supprimez l'arrière-plan maintenant"
+    },
+    "social_proof": {
+      "title": "Plus d'un million d'utilisateurs nous font confiance dans le monde",
+      "subtitle": "Rejoignez des millions de personnes qui font confiance à notre outil de suppression d'arrière-plan par IA",
+      "stats": {
+        "users": "Utilisateurs satisfaits",
+        "images": "Arrière-plans supprimés",
+        "rating": "Note moyenne",
+        "satisfaction": "Taux de satisfaction"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "Cet outil est incroyable ! Je l'utilise tous les jours pour mes fiches Amazon. La conservation des détails des cheveux est bluffante, meilleure que les logiciels coûteux que j'ai essayés.",
+          "name": "Jennifer Adams",
+          "role": "Vendeuse e-commerce"
+        },
+        "2": {
+          "quote": "En tant que graphiste, j'ai besoin de détourages nets, et rapidement. Cet outil de suppression d'arrière-plan par IA me fait gagner des heures de travail manuel chaque semaine. Absolument indispensable !",
+          "name": "Michael Torres",
+          "role": "Graphiste"
+        },
+        "3": {
+          "quote": "Je crée des miniatures YouTube et cet outil change la donne. Des arrière-plans transparents nets en quelques secondes. Mon taux de clics a nettement augmenté !",
+          "name": "Emma Wilson",
+          "role": "Créatrice de contenu"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Découvrez d'autres outils d'image IA",
+      "subtitle": "Améliorez encore vos images avec nos autres outils IA gratuits",
+      "tools": {
+        "upscale": {
+          "name": "Agrandir l'image",
+          "desc": "Augmentez la résolution jusqu'à 4x sans perdre en qualité"
+        },
+        "denoise": {
+          "name": "Débruiter la photo",
+          "desc": "Supprimez le bruit et le grain de vos photos"
+        },
+        "restore": {
+          "name": "Restaurer les vieilles photos",
+          "desc": "Réparez les rayures et les dommages des photos anciennes"
+        },
+        "colorize": {
+          "name": "Coloriser la photo",
+          "desc": "Ajoutez des couleurs naturelles aux photos noir et blanc"
+        }
+      }
+    },
+    "features": {
+      "f1_title": "Suppression d'arrière-plan de portrait : idéal pour les photos de profil",
+      "f1_desc": "L'IA détecte précisément les personnes et supprime les arrière-plans, tout en conservant les détails des cheveux et les contours naturels",
+      "f1_alt_before": "Avant : portrait avec un arrière-plan encombré",
+      "f1_alt_after": "Après : portrait net avec un arrière-plan transparent",
+      "f1_image_before": "/images/demo/remove-bg-portrait-before.png",
+      "f1_image_after": "/images/demo/remove-bg-portrait-after.png",
+      "f2_title": "Suppression d'arrière-plan de produit : créez des photos professionnelles",
+      "f2_desc": "Supprimez les arrière-plans des images de produits pour l'e-commerce, les fiches et les supports marketing",
+      "f2_alt_before": "Avant : produit sur un arrière-plan désordonné",
+      "f2_alt_after": "Après : produit avec un arrière-plan transparent net",
+      "f2_image_before": "/images/demo/remove-bg-product-before.png",
+      "f2_image_after": "/images/demo/remove-bg-product-after.png",
+      "f3_title": "Suppression d'arrière-plan complexe : traitez n'importe quelle scène",
+      "f3_desc": "L'IA gère les arrière-plans complexes, les sujets multiples et les contours difficiles avec précision",
+      "f3_alt_before": "Avant : arrière-plan complexe avec plusieurs éléments",
+      "f3_alt_after": "Après : sujet nettement séparé de l'arrière-plan",
+      "f3_image_before": "/images/demo/remove-bg-complex-before.png",
+      "f3_image_after": "/images/demo/remove-bg-complex-after.png"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "L'IA peut-elle vraiment supprimer les arrière-plans avec précision ?",
+      "a1": "Oui ! Notre IA utilise une technologie de segmentation avancée pour détecter précisément les sujets et supprimer les arrière-plans, tout en préservant les détails fins comme les cheveux et le pelage.",
+      "q2": "L'outil de suppression d'arrière-plan est-il gratuit ?",
+      "a2": "Oui, vous pouvez supprimer l'arrière-plan des images gratuitement. Aucune inscription n'est requise pour un détourage de base.",
+      "q3": "Quel format de fichier vais-je obtenir ?",
+      "a3": "Vous recevrez un fichier PNG avec un arrière-plan transparent, parfait à superposer sur n'importe quel fond ou création.",
+      "q4": "Peut-il gérer les arrière-plans complexes ?",
+      "a4": "Absolument ! Notre IA gère les scènes complexes, les arrière-plans chargés et les contours difficiles, comme les cheveux et les objets transparents.",
+      "q5": "Comment supprimer l'arrière-plan en ligne ?",
+      "a5": "Téléchargez simplement votre image ci-dessus. Notre IA détecte automatiquement le sujet et supprime l'arrière-plan en quelques secondes.",
+      "q6": "Ma photo est-elle en sécurité et confidentielle ?",
+      "a6": "Oui. Toutes les photos sont traitées de manière sécurisée et supprimées de nos serveurs en quelques minutes. Nous ne stockons ni ne partageons jamais vos images.",
+      "q7": "Puis-je l'utiliser pour des photos de produits ?",
+      "a7": "Oui ! De nombreux vendeurs e-commerce utilisent notre outil pour créer des photos de produits nettes, avec un arrière-plan transparent, pour leurs fiches.",
+      "q8": "Fonctionne-t-il sur les photos de groupe ?",
+      "a8": "Oui ! Notre IA peut détecter et conserver plusieurs personnes ou sujets dans l'image, tout en supprimant l'arrière-plan.",
+      "q9": "Quelle est la taille d'image maximale prise en charge ?",
+      "a9": "Nous prenons en charge les images jusqu'à 10 Mo. Pour de meilleurs résultats, nous recommandons des images d'au moins 1 000 px sur le côté le plus court, afin d'obtenir une détection des contours bien nette.",
+      "q10": "Puis-je utiliser les images transparentes à des fins commerciales ?",
+      "a10": "Oui ! Toutes les images traitées avec notre outil gratuit vous appartiennent et peuvent être utilisées à des fins commerciales. Aucune mention n'est requise. Créez librement des fiches produits, des supports marketing ou des éléments graphiques."
+    }
+  },
+  "blur-background": {
+    "metadata": {
+      "title": "Flouter l'arrière-plan en ligne gratuitement - Effet mode portrait",
+      "description": "Floutez instantanément l'arrière-plan des photos grâce à l'IA. Créez un effet bokeh professionnel, des photos en mode portrait et une belle profondeur de champ, gratuitement.",
+      "keywords": "flouter l'arrière-plan, effet mode portrait, arrière-plan bokeh, flou d'arrière-plan en ligne, flou de fond photo",
+      "og_title": "Flouter l'arrière-plan gratuitement | Effet mode portrait par IA - WatermarkCleaner",
+      "og_description": "Floutez instantanément l'arrière-plan des photos grâce à l'IA ! Créez un effet bokeh professionnel, des photos en mode portrait et une belle profondeur de champ. Sans inscription, sans filigrane. Essayez maintenant !",
+      "og_image_alt": "Outil de flou d'arrière-plan par IA - Effet mode portrait"
+    },
+    "title": "Flouter l'arrière-plan en ligne gratuitement – Effet mode portrait par IA",
+    "description": "Créez des photos professionnelles en mode portrait, avec un beau flou d'arrière-plan et des effets bokeh",
+    "process_success": "Succès ! Arrière-plan flouté",
+    "process_failed": "Le flou d'arrière-plan a échoué, veuillez réessayer",
+    "processing": "L'IA floute l'arrière-plan...",
+    "start_blur_background": "Flouter l'arrière-plan",
+    "trust_badges": {
+      "title": "Pourquoi choisir notre outil de flou d'arrière-plan",
+      "free": {
+        "title": "Commencez gratuitement",
+        "desc": "Crédits mensuels gratuits, passez à l'offre supérieure pour en avoir plus"
+      },
+      "watermark": {
+        "title": "Sans filigrane",
+        "desc": "Un résultat net, sans aucune marque"
+      },
+      "instant": {
+        "title": "Résultats instantanés",
+        "desc": "Obtenez des arrière-plans flous en quelques secondes"
+      },
+      "privacy": {
+        "title": "Confidentialité protégée",
+        "desc": "Images supprimées après le traitement"
+      },
+      "signup": {
+        "title": "Sans inscription",
+        "desc": "Utilisez-le immédiatement, sans compte"
+      }
+    },
+    "problem_types": {
+      "title": "Quels types de photos fonctionnent le mieux ?",
+      "subtitle": "Notre IA traite différents types de photos pour un beau flou d'arrière-plan",
+      "types": {
+        "portrait": {
+          "title": "Photos de portrait",
+          "desc": "Photos de personnes au sujet bien défini, qui gagnent à être séparées de l'arrière-plan de façon professionnelle.",
+          "examples": "Selfies | Portraits professionnels | Photos de famille"
+        },
+        "bokeh": {
+          "title": "Effet bokeh",
+          "desc": "Crée un beau flou circulaire des lumières et des effets d'arrière-plan artistiques, comme avec un appareil professionnel.",
+          "examples": "Lumières de la ville | Scènes de nature | Photos artistiques"
+        },
+        "professional": {
+          "title": "Portraits professionnels",
+          "desc": "Transformez des photos ordinaires en portraits professionnels dignes de LinkedIn, avec un flou de qualité studio.",
+          "examples": "Photos LinkedIn | CV | Profils professionnels"
+        },
+        "product": {
+          "title": "Mise en valeur du produit",
+          "desc": "Faites ressortir vos produits en floutant les arrière-plans distrayants, tout en gardant les objets nets.",
+          "examples": "Photos de produits | Photographie culinaire | Images de catalogue"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Parfait pour tous les usages",
+      "subtitle": "Découvrez comment différents utilisateurs tirent parti de notre outil de flou d'arrière-plan par IA",
+      "pain_point_label": "Problème",
+      "solution_label": "Solution",
+      "cases": {
+        "linkedin": {
+          "title": "Profils professionnels",
+          "pain_point": "Besoin de photos soignées pour le travail",
+          "solution": "Transformez n'importe quelle photo en portrait professionnel, avec un beau flou d'arrière-plan parfait pour LinkedIn",
+          "examples": "Profils LinkedIn | Sites d'entreprise | Signatures d'e-mail"
+        },
+        "social": {
+          "title": "Réseaux sociaux",
+          "pain_point": "Les photos ont l'air amateurs avec un arrière-plan chargé",
+          "solution": "Créez de superbes photos en mode portrait qui se démarquent dans n'importe quel fil, grâce à un flou cinématographique",
+          "examples": "Publications Instagram | Photos de profil | Stories à la une"
+        },
+        "portrait": {
+          "title": "Photographie de portrait",
+          "pain_point": "Vous n'avez pas d'appareil photo coûteux",
+          "solution": "Obtenez un bokeh et une profondeur de champ dignes d'un reflex, à partir de n'importe quelle photo de smartphone ou d'appareil",
+          "examples": "Séances portrait | Photos de fiançailles | Portraits d'animaux"
+        },
+        "product": {
+          "title": "Photographie de produit",
+          "pain_point": "L'arrière-plan détourne l'attention des produits",
+          "solution": "Attirez le regard sur vos produits en floutant artistiquement l'arrière-plan, tout en gardant les objets nets",
+          "examples": "Fiches e-commerce | Supports marketing | Publicités sur les réseaux sociaux"
+        }
+      }
+    },
+    "how_to": {
+      "title": "Comment flouter l'arrière-plan d'une photo en 3 étapes simples",
+      "subtitle": "Aucune compétence en photographie requise - obtenez un flou professionnel instantanément",
+      "schema_name": "Comment flouter l'arrière-plan d'une photo en ligne",
+      "schema_description": "Floutez l'arrière-plan des photos et créez des effets mode portrait instantanément grâce à l'IA en suivant ces 3 étapes simples",
+      "step1_title": "Téléchargez votre photo",
+      "step1_desc": "Glissez-déposez votre photo ou cliquez pour la sélectionner. Nous prenons en charge les formats JPG, PNG et WebP, quel que soit l'arrière-plan.",
+      "step2_title": "L'IA applique le flou d'arrière-plan",
+      "step2_desc": "Notre IA détecte le sujet et applique un flou d'arrière-plan d'aspect naturel, tout en gardant les contours nets.",
+      "step3_title": "Téléchargez la photo floutée",
+      "step3_desc": "Obtenez instantanément votre photo avec un beau flou d'arrière-plan. Téléchargement gratuit, sans filigrane.",
+      "cta": "Floutez votre photo maintenant"
+    },
+    "social_proof": {
+      "title": "Plus d'un million d'utilisateurs nous font confiance dans le monde",
+      "subtitle": "Rejoignez des millions de personnes qui font confiance à notre outil de flou d'arrière-plan par IA",
+      "stats": {
+        "users": "Utilisateurs satisfaits",
+        "images": "Photos améliorées",
+        "rating": "Note moyenne",
+        "satisfaction": "Taux de satisfaction"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "Cet outil a transformé mon profil LinkedIn ! Le flou d'arrière-plan a l'air tout à fait naturel, comme si la photo avait été prise avec un appareil coûteux. J'ai reçu tellement de compliments !",
+          "name": "Alex Thompson",
+          "role": "Professionnel du marketing"
+        },
+        "2": {
+          "quote": "Je crée du contenu pour Instagram et c'est mon arme secrète. L'effet bokeh est superbe et donne à mes photos un rendu très professionnel. Je le recommande vivement !",
+          "name": "Sophie Chen",
+          "role": "Créatrice de contenu"
+        },
+        "3": {
+          "quote": "En tant qu'agent immobilier, je l'utilise pour mes portraits et mes photos de biens. L'effet de flou est parfait : une qualité professionnelle à chaque fois.",
+          "name": "Marcus Johnson",
+          "role": "Agent immobilier"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Découvrez d'autres outils d'image IA",
+      "subtitle": "Améliorez encore vos photos avec nos autres outils IA gratuits",
+      "tools": {
+        "upscale": {
+          "name": "Agrandir l'image",
+          "desc": "Augmentez la résolution jusqu'à 4x sans perdre en qualité"
+        },
+        "denoise": {
+          "name": "Débruiter la photo",
+          "desc": "Supprimez le bruit et le grain de vos photos"
+        },
+        "restore": {
+          "name": "Restaurer les vieilles photos",
+          "desc": "Réparez les rayures et les dommages des photos anciennes"
+        },
+        "remove_bg": {
+          "name": "Supprimer l'arrière-plan",
+          "desc": "Créez des arrière-plans PNG transparents instantanément"
+        }
+      }
+    },
+    "features": {
+      "f1_title": "Effet mode portrait : des photos à l'aspect professionnel",
+      "f1_desc": "L'IA détecte le sujet et applique un beau flou d'arrière-plan, tout en gardant la personne nette et claire",
+      "f1_alt_before": "Avant : portrait avec un arrière-plan distrayant",
+      "f1_alt_after": "Après : portrait avec un arrière-plan flou professionnel",
+      "f2_title": "Beau effet bokeh : des arrière-plans oniriques",
+      "f2_desc": "Créez de superbes cercles de bokeh et des arrière-plans en dégradé doux, qui font ressortir votre sujet",
+      "f2_alt_before": "Avant : photo avec un arrière-plan ordinaire",
+      "f2_alt_after": "Après : photo avec un bel effet bokeh",
+      "f3_title": "Portraits professionnels : parfaits pour LinkedIn",
+      "f3_desc": "Transformez des photos ordinaires en portraits professionnels, avec un flou d'arrière-plan de qualité studio",
+      "f3_alt_before": "Avant : photo ordinaire avec un arrière-plan chargé",
+      "f3_alt_after": "Après : portrait professionnel avec un arrière-plan flou"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "L'IA peut-elle vraiment flouter les arrière-plans de façon naturelle ?",
+      "a1": "Oui ! Notre IA détecte intelligemment le sujet et applique à l'arrière-plan un flou d'aspect naturel, qui simule l'effet d'un appareil professionnel équipé d'un objectif à grande ouverture.",
+      "q2": "L'outil de flou d'arrière-plan est-il gratuit ?",
+      "a2": "Oui, vous pouvez flouter l'arrière-plan des images gratuitement. Aucune inscription n'est requise pour un flou d'arrière-plan de base.",
+      "q3": "Le sujet restera-t-il net ?",
+      "a3": "Absolument ! Notre IA identifie précisément les contours du sujet et les garde parfaitement nets, en ne floutant que l'arrière-plan.",
+      "q4": "Puis-je régler l'intensité du flou ?",
+      "a4": "Notre IA applique automatiquement la quantité de flou optimale. Vous pouvez relancer le traitement si vous souhaitez un autre résultat, ou nous contacter pour des ajustements personnalisés.",
+      "q5": "Comment flouter l'arrière-plan en ligne ?",
+      "a5": "Téléchargez simplement votre photo ci-dessus. Notre IA détecte automatiquement le sujet et applique un beau flou d'arrière-plan en quelques secondes.",
+      "q6": "Ma photo est-elle en sécurité et confidentielle ?",
+      "a6": "Oui. Toutes les photos sont traitées de manière sécurisée et supprimées de nos serveurs en quelques minutes. Nous ne stockons ni ne partageons jamais vos images.",
+      "q7": "Puis-je l'utiliser pour des photos professionnelles ?",
+      "a7": "Oui ! De nombreux professionnels utilisent notre outil pour créer des portraits LinkedIn, des photos de profil et des photos marketing avec un beau flou d'arrière-plan.",
+      "q8": "Fonctionne-t-il sur les animaux et les objets ?",
+      "a8": "Oui ! Notre IA fonctionne sur les personnes, les animaux, les produits et tout sujet que vous souhaitez mettre en valeur avec un bel arrière-plan flou.",
+      "q9": "Quelle est la différence entre le bokeh et un flou classique ?",
+      "a9": "Un flou classique adoucit uniformément l'arrière-plan, tandis que le bokeh crée de beaux motifs lumineux circulaires à partir des points lumineux. Notre IA peut produire les deux effets, selon le contenu de votre photo.",
+      "q10": "Puis-je régler la quantité de flou appliquée ?",
+      "a10": "Notre IA applique automatiquement la quantité de flou optimale pour un résultat professionnel. L'intensité est calibrée pour paraître naturelle, tout en séparant efficacement le sujet de l'arrière-plan."
+    }
+  },
+  "colorize": {
+    "metadata": {
+      "title": "Coloriser des photos noir et blanc gratuitement - Colorisation photo par IA",
+      "description": "Ajoutez instantanément de la couleur aux photos noir et blanc grâce à l'IA. Colorisez gratuitement de vieilles photos de famille, des images historiques et des photos anciennes.",
+      "keywords": "coloriser une photo, coloriser une photo noir et blanc, ajouter de la couleur aux vieilles photos, colorisation photo par IA, coloriseur de photos anciennes",
+      "og_title": "Coloriser des photos N&B gratuitement | Colorisation photo par IA - WatermarkCleaner",
+      "og_description": "Ajoutez instantanément de la couleur aux photos noir et blanc grâce à l'IA ! Colorisez de vieilles photos de famille, des images historiques et des photos anciennes avec des couleurs naturelles. Sans inscription, sans filigrane !",
+      "og_image_alt": "Outil de colorisation photo par IA - Coloriser des photos noir et blanc"
+    },
+    "title": "Coloriser des photos noir et blanc gratuitement – Colorisation photo par IA",
+    "trust_badges": {
+      "title": "Pourquoi choisir notre outil de colorisation photo",
+      "free": {
+        "title": "Commencez gratuitement",
+        "desc": "Crédits mensuels gratuits, passez à l'offre supérieure pour en avoir plus"
+      },
+      "watermark": {
+        "title": "Sans filigrane",
+        "desc": "Un résultat net, sans aucune marque"
+      },
+      "instant": {
+        "title": "Résultats instantanés",
+        "desc": "Obtenez des photos colorisées en quelques secondes"
+      },
+      "privacy": {
+        "title": "Confidentialité protégée",
+        "desc": "Images supprimées après le traitement"
+      },
+      "signup": {
+        "title": "Sans inscription",
+        "desc": "Utilisez-le immédiatement, sans compte"
+      }
+    },
+    "problem_types": {
+      "title": "Quels types de photos pouvons-nous coloriser ?",
+      "subtitle": "Notre IA traite différents types de photos monochromes",
+      "types": {
+        "bw_family": {
+          "title": "Photos de famille en noir et blanc",
+          "desc": "Portraits et souvenirs familiaux anciens qui méritent d'être vus en couleurs, avec des teintes de peau réalistes.",
+          "examples": "Photos de mariage | Photos de bébé | Réunions de famille"
+        },
+        "historical": {
+          "title": "Images historiques",
+          "desc": "Photographies historiques aux couleurs fidèles à l'époque, fondées sur la recherche et le contexte.",
+          "examples": "Photos de guerre | Personnages historiques | Scènes de rue d'époque"
+        },
+        "vintage": {
+          "title": "Photographie ancienne",
+          "desc": "Vieilles photos de toutes les époques, avec une restauration des couleurs naturelle qui respecte la période d'origine.",
+          "examples": "Portraits des années 1920 | Voitures classiques | Mode rétro"
+        },
+        "artistic": {
+          "title": "Colorisation artistique",
+          "desc": "Colorisation créative pour des projets artistiques, avec des palettes vives et imaginatives.",
+          "examples": "Beaux-arts | Projets créatifs | Restauration photo"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Parfait pour tous les usages",
+      "subtitle": "Découvrez comment différents utilisateurs tirent parti de notre outil de colorisation IA",
+      "pain_point_label": "Problème",
+      "solution_label": "Solution",
+      "cases": {
+        "family": {
+          "title": "Souvenirs de famille",
+          "pain_point": "Les vieilles photos N&B semblent lointaines",
+          "solution": "Donnez vie à vos ancêtres et à vos vieilles photos de famille, avec des couleurs naturelles et réalistes qui relient les générations",
+          "examples": "Photos des grands-parents | Souvenirs d'enfance | Albums de mariage"
+        },
+        "historical": {
+          "title": "Préservation historique",
+          "pain_point": "L'histoire paraît lointaine en noir et blanc",
+          "solution": "Colorisez les photos historiques avec des couleurs fidèles à l'époque, pour l'enseignement, les musées et la documentation",
+          "examples": "Archives | Musées | Contenus pédagogiques"
+        },
+        "genealogy": {
+          "title": "Recherche généalogique",
+          "pain_point": "Difficile de se sentir proche de ses ancêtres",
+          "solution": "Voyez vos ancêtres en couleurs pour mieux visualiser l'histoire familiale et la partager avec vos proches",
+          "examples": "Portraits d'ancêtres | Arbres généalogiques | Livres patrimoniaux"
+        },
+        "artistic": {
+          "title": "Projets artistiques",
+          "pain_point": "Envie d'interprétations colorées créatives",
+          "solution": "Utilisez la colorisation IA comme point de départ pour des projets artistiques et de la retouche photo créative",
+          "examples": "Projets artistiques | Livres photo | Cadeaux"
+        }
+      }
+    },
+    "how_to": {
+      "title": "Comment coloriser une photo N&B en 3 étapes simples",
+      "subtitle": "Aucune compétence en retouche requise - ajoutez de la couleur à vos photos instantanément",
+      "schema_name": "Comment coloriser une photo noir et blanc en ligne",
+      "schema_description": "Ajoutez instantanément de la couleur aux photos noir et blanc grâce à l'IA en suivant ces 3 étapes simples",
+      "step1_title": "Téléchargez votre photo N&B",
+      "step1_desc": "Glissez-déposez votre photo noir et blanc ou cliquez pour la sélectionner. Nous prenons en charge le JPG, le PNG et les images numérisées.",
+      "step2_title": "L'IA ajoute des couleurs naturelles",
+      "step2_desc": "Notre IA analyse la photo et ajoute des couleurs naturelles, historiquement fidèles, selon le contenu et l'époque.",
+      "step3_title": "Téléchargez la photo colorisée",
+      "step3_desc": "Obtenez votre photo colorisée instantanément. Téléchargement gratuit, sans filigrane, en pleine résolution.",
+      "cta": "Colorisez votre photo maintenant"
+    },
+    "social_proof": {
+      "title": "Plus d'un million d'utilisateurs nous font confiance dans le monde",
+      "subtitle": "Rejoignez des millions de personnes qui font confiance à notre outil de colorisation photo par IA",
+      "stats": {
+        "users": "Utilisateurs satisfaits",
+        "images": "Photos colorisées",
+        "rating": "Note moyenne",
+        "satisfaction": "Taux de satisfaction"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "J'ai colorisé les photos de mariage de ma grand-mère, des années 1940, et le résultat a fait monter les larmes aux yeux de ma mère. Les couleurs sont si naturelles et authentiques !",
+          "name": "Rachel Kim",
+          "role": "Historienne familiale"
+        },
+        "2": {
+          "quote": "En tant que professeur d'histoire, j'utilise cet outil pour rendre les photos historiques plus captivantes pour les élèves. Les couleurs fidèles à l'époque les aident vraiment à se sentir proches du passé.",
+          "name": "Thomas Anderson",
+          "role": "Professeur d'histoire"
+        },
+        "3": {
+          "quote": "J'ai essayé de nombreux outils de colorisation, et c'est de loin le meilleur. Les teintes de peau sont incroyablement réalistes et l'ensemble des couleurs correspond parfaitement à l'époque.",
+          "name": "Nina Patel",
+          "role": "Photographe professionnelle"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Découvrez d'autres outils d'image IA",
+      "subtitle": "Améliorez encore vos photos colorisées avec nos autres outils IA gratuits",
+      "tools": {
+        "upscale": {
+          "name": "Agrandir l'image",
+          "desc": "Augmentez la résolution jusqu'à 4x sans perdre en qualité"
+        },
+        "denoise": {
+          "name": "Débruiter la photo",
+          "desc": "Supprimez le bruit et le grain de vos photos"
+        },
+        "restore": {
+          "name": "Restaurer les vieilles photos",
+          "desc": "Réparez les rayures et les dommages des photos anciennes"
+        },
+        "remove_bg": {
+          "name": "Supprimer l'arrière-plan",
+          "desc": "Créez des arrière-plans PNG transparents instantanément"
+        }
+      }
+    },
+    "description": "Donnez vie à vos photos noir et blanc grâce à une colorisation IA réaliste",
+    "process_success": "Succès ! Photo colorisée",
+    "process_failed": "La colorisation a échoué, veuillez réessayer",
+    "processing": "L'IA ajoute de la couleur...",
+    "start_colorize": "Coloriser la photo",
+    "features": {
+      "f1_title": "Colorisation de photos N&B : des couleurs naturelles et réalistes",
+      "f1_desc": "L'IA analyse votre photo noir et blanc et ajoute des couleurs naturelles, historiquement fidèles",
+      "f1_alt_before": "Avant : photo en noir et blanc",
+      "f1_alt_after": "Après : photo colorisée aux couleurs naturelles",
+      "f2_title": "Vieilles photos de famille : donnez vie aux souvenirs",
+      "f2_desc": "Transformez de précieuses vieilles photos de famille en images couleur éclatantes, comme si elles avaient été prises hier",
+      "f2_alt_before": "Avant : vieille photo de famille en noir et blanc",
+      "f2_alt_after": "Après : photo de famille aux belles couleurs naturelles",
+      "f3_title": "Photos historiques : voyez le passé en couleurs",
+      "f3_desc": "Colorisez des photos historiques et des images anciennes pour voir l'histoire prendre vie, avec des couleurs réalistes",
+      "f3_alt_before": "Avant : photo historique en noir et blanc",
+      "f3_alt_after": "Après : photo historique aux couleurs fidèles à l'époque"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "L'IA peut-elle vraiment coloriser les photos noir et blanc avec précision ?",
+      "a1": "Oui ! Notre IA utilise des algorithmes avancés pour analyser le contenu, le contexte et les données historiques de la photo, afin d'ajouter des couleurs naturelles et réalistes qui correspondent à l'époque et à la scène.",
+      "q2": "L'outil de colorisation photo est-il gratuit ?",
+      "a2": "Oui, vous pouvez coloriser des photos noir et blanc en ligne gratuitement. Aucune inscription n'est requise pour une colorisation de base.",
+      "q3": "Les couleurs auront-elles l'air naturelles ?",
+      "a3": "Absolument ! Notre IA est entraînée sur des millions de photos afin de générer des couleurs naturelles et réalistes, adaptées au contenu et au contexte historique de votre image.",
+      "q4": "Puis-je coloriser n'importe quelle photo noir et blanc ?",
+      "a4": "Oui ! Notre IA fonctionne sur tous les types de photos N&B, y compris les portraits, les paysages, les photos de famille et les images historiques.",
+      "q5": "Comment coloriser une photo en ligne ?",
+      "a5": "Téléchargez simplement votre photo noir et blanc ci-dessus. Notre IA l'analyse automatiquement et ajoute de la couleur en quelques secondes.",
+      "q6": "Ma photo est-elle en sécurité et confidentielle ?",
+      "a6": "Oui. Toutes les photos sont traitées de manière sécurisée et supprimées de nos serveurs en quelques minutes. Nous ne stockons ni ne partageons jamais vos images.",
+      "q7": "Puis-je coloriser de vieilles photos abîmées ?",
+      "a7": "Oui ! Pour de meilleurs résultats, vous pouvez d'abord restaurer les photos abîmées avec notre outil de restauration photo, puis les coloriser.",
+      "q8": "La colorisation affecte-t-elle la qualité de la photo d'origine ?",
+      "a8": "Non ! Nous préservons tous les détails et toutes les textures d'origine tout en ajoutant la couleur. Vous obtiendrez une version colorisée de haute qualité de votre photo.",
+      "q9": "Quelle est la précision des couleurs ajoutées par l'IA ?",
+      "a9": "Notre IA utilise des algorithmes avancés, entraînés sur des millions de photos, pour prédire des couleurs historiquement fidèles. Même si les couleurs d'origine exactes ne peuvent jamais être connues avec certitude, nos résultats sont remarquablement naturels et adaptés à l'époque.",
+      "q10": "Puis-je coloriser n'importe quelle photo noir et blanc ?",
+      "a10": "Oui ! Notre IA fonctionne sur toute image monochrome, y compris les photos numérisées, les images N&B numériques et même les photos anciennes en tons sépia. La qualité du résultat dépend de la netteté de l'image d'origine."
+    }
+  },
+  "upscale": {
+    "metadata": {
+      "title": "Agrandir une image en ligne gratuitement - Agrandisseur et améliorateur d'image par IA",
+      "description": "Agrandissez des images en ligne gratuitement grâce à l'IA. Agrandissez vos photos sans perdre en qualité, améliorez les détails et créez instantanément des images haute résolution.",
+      "keywords": "agrandir une image, agrandir une photo sans perdre en qualité, agrandisseur d'image IA, augmenter la résolution d'une image, agrandisseur de photo en ligne, améliorateur de qualité d'image",
+      "og_title": "Agrandir une image gratuitement | Agrandisseur d'image IA 4x - WatermarkCleaner",
+      "og_description": "Agrandissez des images en ligne gratuitement grâce à l'IA ! Agrandissez les photos jusqu'à 4x sans perdre en qualité, améliorez les détails, supprimez la pixellisation. Sans inscription, sans filigrane. Essayez maintenant !",
+      "og_image_alt": "Agrandisseur d'image par IA - Agrandir les photos sans perdre en qualité"
+    },
+    "title": "Agrandir une image en ligne gratuitement – Agrandisseur et améliorateur d'image par IA",
+    "description": "Agrandissez et améliorez vos images grâce à la technologie IA, tout en préservant la qualité et les détails",
+    "process_success": "Succès ! Image agrandie",
+    "process_failed": "L'agrandissement a échoué, veuillez réessayer",
+    "processing": "L'IA agrandit l'image...",
+    "start_upscale": "Agrandir l'image",
+    "trust_badges": {
+      "title": "Pourquoi choisir notre agrandisseur d'image",
+      "free": {
+        "title": "Commencez gratuitement",
+        "desc": "Crédits mensuels gratuits, passez à l'offre supérieure pour en avoir plus"
+      },
+      "watermark": {
+        "title": "Sans filigrane",
+        "desc": "Un résultat haute résolution propre"
+      },
+      "instant": {
+        "title": "Résultats instantanés",
+        "desc": "Obtenez des images agrandies en quelques secondes"
+      },
+      "privacy": {
+        "title": "Confidentialité protégée",
+        "desc": "Images supprimées après le traitement"
+      },
+      "signup": {
+        "title": "Sans inscription",
+        "desc": "Utilisez-le immédiatement, sans compte"
+      }
+    },
+    "problem_types": {
+      "title": "Quels types d'images pouvons-nous agrandir ?",
+      "subtitle": "Notre IA traite différents problèmes d'images en basse résolution",
+      "types": {
+        "low_res": {
+          "title": "Photos basse résolution",
+          "desc": "Petites images à agrandir pour un meilleur affichage ou une impression, sans perdre en netteté.",
+          "examples": "Anciennes photos numériques | Petits téléchargements | Miniatures"
+        },
+        "pixelated": {
+          "title": "Images pixellisées",
+          "desc": "Photos qui montrent des blocs de pixels visibles lorsqu'on zoome, fréquentes avec les images trop compressées.",
+          "examples": "JPG compressés | Captures d'écran | Images redimensionnées"
+        },
+        "compressed": {
+          "title": "Artefacts de compression",
+          "desc": "Images avec des artefacts en blocs, des contours en halo et des détails perdus à cause d'une compression agressive.",
+          "examples": "Photos de réseaux sociaux | Images web | Anciens scans"
+        },
+        "print": {
+          "title": "Agrandissement prêt à imprimer",
+          "desc": "Photos dont la résolution doit être améliorée pour une impression physique en plus grand format.",
+          "examples": "Décoration murale | Livres photo | Impressions sur toile"
+        }
+      }
+    },
+    "use_cases": {
+      "title": "Parfait pour tous les usages",
+      "subtitle": "Découvrez comment différents utilisateurs tirent parti de notre agrandisseur d'image par IA",
+      "pain_point_label": "Problème",
+      "solution_label": "Solution",
+      "cases": {
+        "print": {
+          "title": "Impression grand format",
+          "pain_point": "Des photos trop petites pour des tirages de qualité",
+          "solution": "Agrandissez les images 4x tout en améliorant les détails, pour de superbes tirages grand format jusqu'au poster",
+          "examples": "Décoration murale | Albums photo | Impressions sur toile"
+        },
+        "ecommerce": {
+          "title": "Produits e-commerce",
+          "pain_point": "Les petites photos de produits manquent de professionnalisme",
+          "solution": "Agrandissez les images de produits tout en préservant les détails, pour des fiches nettes et professionnelles",
+          "examples": "Fiches Amazon | Boutiques Shopify | Images de catalogue"
+        },
+        "wallpaper": {
+          "title": "Fonds d'écran pour ordinateur et téléphone",
+          "pain_point": "Vos photos préférées sont trop petites pour les écrans",
+          "solution": "Agrandissez n'importe quelle image en résolution 4K ou supérieure, pour de superbes fonds d'écran haute densité",
+          "examples": "Fonds d'écran de bureau | Arrière-plans de téléphone | Écrans 4K"
+        },
+        "old_photos": {
+          "title": "Restauration de vieilles photos",
+          "pain_point": "Les photos anciennes sont en basse résolution",
+          "solution": "Combinez l'agrandissement et la restauration pour faire entrer les vieilles photos dans l'ère de la haute résolution",
+          "examples": "Photos numérisées | Archives numériques | Histoire familiale"
+        }
+      }
+    },
+    "how_to": {
+      "title": "Comment agrandir une image en 3 étapes simples",
+      "subtitle": "Aucune compétence technique requise - améliorez vos images instantanément",
+      "schema_name": "Comment agrandir une image en ligne",
+      "schema_description": "Agrandissez les images instantanément grâce à l'IA en suivant ces 3 étapes simples",
+      "step1_title": "Téléchargez votre image",
+      "step1_desc": "Glissez-déposez votre image en basse résolution ou cliquez pour la sélectionner. Nous prenons en charge les formats JPG, PNG et WebP jusqu'à 10 Mo.",
+      "step2_title": "L'IA agrandit et améliore",
+      "step2_desc": "Notre IA agrandit intelligemment votre image jusqu'à 4x, tout en améliorant les détails et en supprimant les artefacts.",
+      "step3_title": "Téléchargez l'image haute résolution",
+      "step3_desc": "Obtenez instantanément votre image agrandie en haute résolution. Téléchargement gratuit, sans filigrane, en pleine qualité.",
+      "cta": "Agrandissez votre image maintenant"
+    },
+    "social_proof": {
+      "title": "Plus d'un million d'utilisateurs nous font confiance dans le monde",
+      "subtitle": "Rejoignez des millions de personnes qui font confiance à notre agrandisseur d'image par IA",
+      "stats": {
+        "users": "Utilisateurs satisfaits",
+        "images": "Images agrandies",
+        "rating": "Note moyenne",
+        "satisfaction": "Taux de satisfaction"
+      },
+      "testimonials": {
+        "1": {
+          "quote": "Je devais imprimer de vieilles photos de famille en grands tirages sur toile. Cet outil les a magnifiquement agrandies : l'amélioration des détails est incroyable ! Difficile de croire que c'est gratuit.",
+          "name": "Daniel Roberts",
+          "role": "Passionné de photographie"
+        },
+        "2": {
+          "quote": "En tant que vendeuse e-commerce, je l'utilise tous les jours pour les photos de produits. L'IA préserve tous les détails du produit tout en agrandissant l'image. Mes fiches ont l'air tellement plus professionnelles maintenant !",
+          "name": "Amy Zhang",
+          "role": "Entrepreneuse e-commerce"
+        },
+        "3": {
+          "quote": "Je crée des fonds d'écran 4K à partir de photographies anciennes. Cet agrandisseur est formidable pour retrouver des détails perdus dans les scans basse résolution. Mon outil préféré, de loin !",
+          "name": "Chris Martinez",
+          "role": "Artiste numérique"
+        }
+      }
+    },
+    "related_tools": {
+      "title": "Découvrez d'autres outils d'image IA",
+      "subtitle": "Améliorez encore vos images agrandies avec nos autres outils IA gratuits",
+      "tools": {
+        "denoise": {
+          "name": "Débruiter la photo",
+          "desc": "Supprimez le bruit et le grain de vos photos"
+        },
+        "restore": {
+          "name": "Restaurer les vieilles photos",
+          "desc": "Réparez les rayures et les dommages des photos anciennes"
+        },
+        "remove_bg": {
+          "name": "Supprimer l'arrière-plan",
+          "desc": "Créez des arrière-plans PNG transparents instantanément"
+        },
+        "colorize": {
+          "name": "Coloriser la photo",
+          "desc": "Ajoutez des couleurs naturelles aux photos noir et blanc"
+        }
+      }
+    },
+    "features": {
+      "f1_title": "Amélioration de portrait : agrandissez les photos en conservant les détails",
+      "f1_desc": "L'IA agrandit les photos de portrait tout en préservant les traits du visage, la texture de la peau et l'apparence naturelle",
+      "f1_alt_before": "Avant : petit portrait en basse résolution",
+      "f1_alt_after": "Après : portrait haute résolution aux détails améliorés",
+      "f2_title": "Agrandissement de paysage : créez des décors haute résolution saisissants",
+      "f2_desc": "Transformez des photos de paysage basse résolution en images haute résolution nettes et détaillées, parfaites pour l'impression",
+      "f2_alt_before": "Avant : photo de paysage en basse résolution",
+      "f2_alt_after": "Après : paysage haute résolution aux détails améliorés",
+      "f3_title": "Amélioration des détails : accentuez et clarifiez n'importe quelle image",
+      "f3_desc": "Améliorez les détails fins, les textures et les contours de vos photos, tout en éliminant les artefacts de compression et le flou",
+      "f3_alt_before": "Avant : image compressée aux détails perdus",
+      "f3_alt_after": "Après : image nette aux détails fins retrouvés"
+    },
+    "faq": {
+      "title": "Foire aux questions",
+      "q1": "L'IA peut-elle vraiment agrandir les images sans perdre en qualité ?",
+      "a1": "Oui ! Notre IA utilise une technologie avancée de super-résolution pour reconstruire intelligemment les détails et augmenter la résolution, tout en conservant la qualité de l'image.",
+      "q2": "L'outil d'agrandissement d'image est-il gratuit ?",
+      "a2": "Oui, vous pouvez agrandir des images en ligne gratuitement. Aucune inscription n'est requise pour un agrandissement de base.",
+      "q3": "Jusqu'où puis-je agrandir mes images ?",
+      "a3": "Notre IA peut agrandir les images de 2x, 4x ou plus, tout en conservant la qualité. Le facteur exact dépend de la qualité de l'image d'origine.",
+      "q4": "L'agrandissement va-t-il donner un aspect artificiel à mes photos ?",
+      "a4": "Non ! Notre IA préserve l'aspect naturel de vos photos tout en améliorant les détails. Le résultat reste authentique et réaliste.",
+      "q5": "Comment agrandir une image en ligne ?",
+      "a5": "Téléchargez simplement votre image ci-dessus. Notre IA l'améliore et l'agrandit automatiquement en quelques secondes.",
+      "q6": "Mon image est-elle en sécurité et confidentielle ?",
+      "a6": "Oui. Toutes les images sont traitées de manière sécurisée et supprimées de nos serveurs en quelques minutes. Nous ne stockons ni ne partageons jamais vos images.",
+      "q7": "Puis-je agrandir des images compressées ou de faible qualité ?",
+      "a7": "Oui ! Notre IA peut améliorer les images compressées en retrouvant les détails perdus et en réduisant les artefacts de compression.",
+      "q8": "Quels formats de fichiers sont pris en charge pour l'agrandissement ?",
+      "a8": "Nous prenons en charge tous les principaux formats, dont JPG, PNG, WebP et BMP. Le fichier de sortie conserve le format d'origine, avec une résolution améliorée.",
+      "q9": "Y a-t-il une limite à la petitesse de l'image d'origine ?",
+      "a9": "Nous recommandons des images d'au moins 100x100 pixels pour de meilleurs résultats. Les images extrêmement petites (en dessous de 50x50) peuvent avoir un potentiel d'amélioration limité, faute de détails dans la source.",
+      "q10": "Puis-je utiliser les images agrandies à des fins commerciales ?",
+      "a10": "Oui ! Toutes les images traitées avec notre outil gratuit vous appartiennent et peuvent être utilisées à des fins commerciales. Aucune mention n'est requise. De nombreux professionnels utilisent notre agrandisseur pour le travail client, la photographie de produits et les projets créatifs."
+    }
+  },
+  "landing": {
+    "comparison": {
+      "before_label": "Avec filigrane",
+      "after_label": "Nettoyée"
+    },
+    "happy_users": "de plus de 99 utilisateurs satisfaits",
+    "hero": {
+      "cta_primary": "Supprimer le filigrane maintenant",
+      "cta_secondary": "Voir les tarifs",
+      "ai_powered": "Propulsé par l'IA",
+      "precise_removal": "Suppression précise du filigrane",
+      "image_load_failed": "Échec du chargement de l'image. Veuillez réessayer.",
+      "og_alt": "Démonstration de suppression de filigrane par IA WatermarkCleaner"
+    },
+    "sample_images": {
+      "title": "Ou essayez avec ces images d'exemple",
+      "alt": "Image d'exemple avec filigrane"
+    }
+  },
+  "auth": {
+    "email_input": {
+      "email_label": "Adresse e-mail",
+      "email_placeholder": "Saisissez votre adresse e-mail",
+      "checking": "Vérification...",
+      "send_login_code": "Envoyer le code de connexion",
+      "send_register_code": "Envoyer le code d'inscription",
+      "send_code": "Envoyer le code de vérification",
+      "existing_user": "✓ Compte existant détecté, le code de connexion va être envoyé",
+      "new_user": "Bienvenue, nouvel utilisateur, le code d'inscription va être envoyé"
+    },
+    "code_input": {
+      "code_sent_to": "Code de vérification envoyé à",
+      "resend_in": "Renvoyer dans ({countdown}s)",
+      "resend_code": "Renvoyer le code de vérification",
+      "verify_and_login": "Vérifier et se connecter"
+    },
+    "errors": {
+      "enter_email": "Veuillez saisir une adresse e-mail",
+      "send_failed": "Échec de l'envoi, veuillez réessayer",
+      "send_failed_retry": "L'envoi a échoué, veuillez réessayer",
+      "verification_failed": "Échec de la vérification, veuillez réessayer",
+      "code_expired": "Code de vérification expiré, veuillez le renvoyer",
+      "invalid_code": "Code invalide, veuillez vérifier la saisie",
+      "max_attempts": "Trop de tentatives, veuillez renvoyer le code",
+      "code_used": "Code invalidé, veuillez le renvoyer",
+      "code_invalid_or_expired": "Code invalide ou expiré",
+      "login_failed": "Échec de la connexion"
+    },
+    "google_login": {
+      "button_text": "Connexion avec Google"
+    },
+    "success": {
+      "register_success": "🎉 Inscription réussie ! Bienvenue sur WatermarkCleaner !",
+      "login_success": "👋 Connexion réussie ! Bon retour parmi nous !"
     }
   }
 }
