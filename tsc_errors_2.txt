@@ -1,4 +1,0 @@
-﻿src/lib/models/credit.ts(412,5): error TS2322: Type '"migration"' is not assignable to type 'CreditTransactionScene | undefined'.
-src/lib/models/credit.ts(421,7): error TS2322: Type '"migration"' is not assignable to type 'CreditTransactionScene | undefined'.
-src/lib/models/credit.ts(454,48): error TS2345: Argument of type '"exec_sql"' is not assignable to parameter of type '"cleanup_expired_verification_codes" | "expire_credits" | "get_credit_balance" | "process_with_credit"'.
-src/lib/models/credit.ts(481,48): error TS2345: Argument of type '"exec_sql"' is not assignable to parameter of type '"cleanup_expired_verification_codes" | "expire_credits" | "get_credit_balance" | "process_with_credit"'.

@@ -1,154 +1,142 @@
 # WatermarkCleaner
 
-🌐 **Visit Our Website**: [https://watermarkcleaner.com](https://watermarkcleaner.com)
-
-> Professional AI-powered watermark removal service - Remove watermarks from any image in seconds
-
-## 🎯 What is WatermarkCleaner?
-
-**WatermarkCleaner** is the leading AI-powered online tool for removing watermarks, logos, and unwanted text from images. Our advanced artificial intelligence automatically detects and removes watermarks while preserving the original image quality, making it perfect for businesses, content creators, and individuals who need clean, professional images.
-
-## ✨ Why Choose WatermarkCleaner?
-
-- 🤖 **Smart AI Detection**: Our AI automatically identifies watermarks, logos, and text overlays without manual selection
-- ⚡ **Lightning Fast**: Process images in seconds, not minutes
-- 🎨 **Perfect Quality**: Maintains original image resolution and quality
-- 🌍 **Global Access**: Available in 7 languages worldwide
-- � **Works Everywhere**: Use on desktop, tablet, or mobile - no app download required
-- 🔒 **100% Secure**: Your images are processed securely and automatically deleted
-- � **Free to Try**: Start with free credits, no registration required
-
-## � How It Works
-
-1. **Upload Your Image** - Drag and drop or click to upload JPG, PNG, WEBP, or GIF files (up to 10MB)
-2. **AI Does the Magic** - Our advanced AI automatically detects and analyzes watermarks in your image
-3. **Get Clean Results** - Download your watermark-free image in seconds with original quality preserved
-4. **Use Anywhere** - Perfect for social media, e-commerce, presentations, or personal use
-
-## 🎨 Perfect For
-
-### 📸 Content Creators
-- Remove watermarks from stock photos
-- Clean up social media images
-- Prepare content for multiple platforms
-
-### 🛒 E-commerce Businesses
-- Clean product images from suppliers
-- Remove competitor watermarks
-- Create professional product catalogs
-
-### 🎯 Marketing Teams
-- Prepare images for campaigns
-- Clean up downloaded resources
-- Create consistent brand imagery
-
-### 👤 Personal Use
-- Remove unwanted text from photos
-- Clean up downloaded images
-- Prepare photos for printing
-
-## � Pricing Plans
-
-### 🆓 Free Plan
-- **3 images** - Perfect for trying our service
-- Full AI processing power
-- All image formats supported
-- No registration required
-
-### ✅ Verified Plan
-- **10 images per month** - Great for regular users
-- Email verification required
-- Priority processing
-- Monthly credit reset
-
-### 🚀 Pro Plan
-- **Unlimited images** - Perfect for businesses
-- Highest priority processing
-- Advanced AI models
-- Premium support
-- Commercial usage rights
-
-## 🌍 Global Accessibility
-
-**WatermarkCleaner** is available worldwide in multiple languages:
-- 🇺🇸 English
-- 🇨🇳 Chinese (Simplified & Traditional)
-- 🇪🇸 Spanish
-- 🇸🇦 Arabic
-- 🇷🇺 Russian
-- 🇫🇷 French
-- 🇰🇷 Korean
-
-Our intelligent interface automatically adapts to your preferred language and region.
-
-## 🔒 Privacy & Security
-
-### Your Data is Safe
-- **Automatic Deletion**: All uploaded images are automatically deleted after processing
-- **No Storage**: We don't store your images on our servers
-- **GDPR Compliant**: Full compliance with European data protection regulations
-- **Secure Processing**: All image processing happens in secure, encrypted environments
-- **No Registration Required**: Use our service without creating an account
-
-### Enterprise Security
-- SSL encryption for all data transfers
-- Regular security audits and updates
-- No third-party data sharing
-- Transparent privacy policy
-
-## 🎯 Supported Image Formats
-
-- **JPEG/JPG** - Most common photo format
-- **PNG** - Perfect for images with transparency
-- **WEBP** - Modern web-optimized format
-- **GIF** - Animated and static graphics
-- **Maximum file size**: 10MB per image
-
-## ⚡ Performance & Quality
-
-- **Lightning Fast**: Average processing time under 10 seconds
-- **High Quality**: Maintains original image resolution and quality
-- **Smart Processing**: AI adapts to different image types and watermark styles
-- **Batch Processing**: Pro users can process multiple images efficiently
-- **Mobile Optimized**: Works perfectly on smartphones and tablets
-
-## 🌟 What Makes Us Different
-
-### Advanced AI Technology
-Unlike basic editing tools, our AI understands image context and intelligently reconstructs the background where watermarks were removed, ensuring natural-looking results.
-
-### No Software Installation
-Everything works directly in your web browser - no downloads, no installations, no complicated software to learn.
-
-### Professional Results
-Our AI is trained on millions of images to deliver professional-quality results that rival expensive desktop software.
-
-### Global Reach
-Serving customers worldwide with localized interfaces and optimized performance across all regions.
-
-## 📈 Trusted by Thousands
-
-- **50,000+** images processed monthly
-- **99.9%** uptime reliability
-- **4.8/5** average user rating
-- **Global presence** in 50+ countries
-
-## 🚀 Get Started Today
-
-Ready to remove watermarks from your images? Visit [WatermarkCleaner.com](https://watermarkcleaner.com) and try our service for free!
-
-1. **No registration required** for your first 3 images
-2. **Instant results** - see the magic happen in real-time
-3. **Professional quality** - perfect for business and personal use
-
-## 📞 Contact & Support
-
-- 🌐 **Website**: [https://watermarkcleaner.com](https://watermarkcleaner.com)
-- � **Email**: support@watermarkcleaner.com
-- 💬 **Live Chat**: Available on our website
-- 📱 **Social Media**: Follow us for tips and updates
+> 从带水印的图片到可下载的成片：给需要在线去水印和修图的人一个网站
 
 ---
 
-**WatermarkCleaner** - Professional AI-powered watermark removal made simple.
-*Transform your images in seconds, not hours.*
+## 🎯 项目说明
+
+WatermarkCleaner 是 [watermarkcleaner.com](https://watermarkcleaner.com) 的网站。用户上传 JPG、PNG、WEBP 图片后，可以去水印，也可以做变清晰、老照片修复、降噪、去背景、背景虚化、上色和放大。界面有英文、中文、西班牙文、阿拉伯文、俄文、法文、韩文。
+
+| 版本 | 功能 | 状态 | 文档 |
+|-----|------|------|------|
+| **V1 在线修图** | 去水印和 7 个修图功能、登录、额度与支付 | ✅ 已完成 | [架构说明](claude.md) |
+| **V1.0.2** | 清掉调试笔记和一次性脚本，补上仓库入口说明 | ✅ 已完成 | [本文件](README.md) |
+
+---
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js 20+
+- 项目根目录的 `.env.local`：`NEXT_PUBLIC_WEB_URL` 给站点地址，本地是 `http://localhost:3000`
+- `NEXT_PUBLIC_SUPABASE_URL` 给 Supabase 项目地址
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` 给 Supabase 匿名密钥
+- `SUPABASE_SERVICE_ROLE_KEY` 给 Supabase 服务端密钥
+- `AUTH_SECRET` 给登录会话签名
+- `ARK_API_KEY` 给图像处理接口，去水印和修图时需要
+- `IP_HASH_SALT` 给访客 IP 哈希
+- 支付再看 `.env.local.example`：`CREEM_ENABLED`、`CREEM_API_KEY`、`CREEM_SIGNING_SECRET`、`CREEM_ENVIRONMENT`
+
+### 安装
+
+在项目根目录执行：
+
+```powershell
+npm install
+Copy-Item .env.example .env.local
+```
+
+复制之后，把上面列出的变量填进 `.env.local`。`.env.example` 里没有 `SUPABASE_SERVICE_ROLE_KEY` 和 `ARK_API_KEY`，这两项需要自己补上。
+
+### 启动开发服务器
+
+在项目根目录执行：
+
+```powershell
+npm run dev
+```
+
+终端出现 `Local: http://localhost:3000` 后，浏览器打开这个地址。
+
+访问：**http://localhost:3000**
+
+没写 `.env.local` 时首页仍能打开。点击去水印或登录时，接口会因为缺少 Supabase 或 `ARK_API_KEY` 失败。
+
+`npm run start` 在 PowerShell 里不能用。这条脚本写成了 `NODE_NO_WARNINGS=1 next start`，PowerShell 会把它当成命令名。本地开发用 `npm run dev`。
+
+---
+
+## 📁 项目结构
+
+```
+watermarkcleaner/
+├── README.md                  # 本文件（项目入口）
+├── claude.md                  # 架构说明
+├── package.json               # 依赖和命令
+├── next.config.mjs            # Next.js 配置：多语言、MDX、安全响应头
+├── wrangler.toml              # Cloudflare Pages 部署配置
+├── Dockerfile                 # 容器构建
+├── .env.example               # 环境变量模板
+├── content/blog/              # 多语言 MDX 博客
+├── public/                    # 图片和静态资源
+├── scripts/prebuild-blog.js   # 构建前把博客编译成 JSON
+├── supabase/migrations/       # 数据库迁移
+└── src/
+    ├── app/                   # 页面和 API
+    ├── components/            # 界面和各功能编辑器
+    ├── lib/                   # 认证、额度、支付、提示词
+    ├── i18n/                  # 多语言文案
+    └── models/                # 数据读写
+```
+
+---
+
+## 📖 文档导航
+
+### 开发者文档
+
+| 文档 | 说明 |
+|-----|------|
+| [架构说明](claude.md) | 技术栈、认证、额度、支付和图像处理流程 |
+
+---
+
+## ⚙️ 常用命令
+
+```powershell
+# 安装依赖
+npm install
+
+# 启动开发服务器（会先编译博客）
+npm run dev
+
+# 类型检查
+npm run type-check
+
+# 代码检查
+npm run lint
+
+# 生产构建
+npm run build
+
+# 构建并部署到 Cloudflare Pages
+npm run cf:deploy
+```
+
+---
+
+## 🔮 项目演进
+
+```
+V1 在线修图 ✅（已完成）
+    ↓ 清掉调试残留并补上入口说明
+V1.0.2 仓库入口 ✅（已完成）
+```
+
+---
+
+## 📝 许可证
+
+MIT
+
+---
+
+## 📧 联系方式
+
+如有问题或建议，请联系 binggua666@gmail.com，或提交 Issue 或 Pull Request。
+
+---
+
+**最后更新**：2026-10-10
