@@ -38,17 +38,29 @@
         }
       },
       {
-        "id": "ai_learning",
-        "name": {
-          "en": "AI Learning",
-          "zh": "AI学习",
-          "es": "Aprendizaje de IA",
-          "ru": "Изучение ИИ",
-          "fr": "Apprentissage de l'IA",
-          "ar": "تعلم الذكاء الاصطناعي",
-          "ko": "AI 학습"
-        }
+      "id": "ai_learning",
+      "name": {
+        "en": "AI Learning",
+        "zh": "AI学习",
+        "es": "Aprendizaje de IA",
+        "ru": "Изучение ИИ",
+        "fr": "Apprentissage de l'IA",
+        "ar": "تعلم الذكاء الاصطناعي",
+        "ko": "AI 학습"
       }
+    },
+    {
+      "id": "comparison",
+      "name": {
+        "en": "Comparison",
+        "zh": "对比",
+        "es": "Comparación",
+        "ru": "Сравнение",
+        "fr": "Comparaison",
+        "ar": "مقارنة",
+        "ko": "비교"
+      }
+    }
     ],
     "authors": [
       {
@@ -361,5 +373,5 @@
     "ultimate-guide-to-ai-image-watermark-removal-2025",
     "watermark-removal-legal-aspects-guide"
   ],
-  "generatedAt": "2026-10-09T23:27:40.335Z"
+  "generatedAt": "2026-10-10T13:34:35.051Z"
 }

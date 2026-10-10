@@ -44,26 +44,29 @@ export function TableCell({ children }: TableRendererProps) {
 }
 
 // 解析原始Markdown表格的函数
+function splitRow(line: string): string[] {
+  return line
+    .trim()
+    .replace(/^\|/, '')
+    .replace(/\|$/, '')
+    .split('|')
+    .map((cell) => cell.trim().replace(/\*\*/g, ''));
+}
+
 export function parseMarkdownTable(markdown: string): TableData | null {
-  // 查找表格的正则表达式
-  const tableRegex = /\n?\n?\|(.+?)\|\n\|[-:\s]+\|\n((?:\|.+?\|\n?)+)/;
-  const match = markdown.match(tableRegex);
+  const lines = markdown
+    .trim()
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith('|'));
 
-  if (!match) return null;
+  if (lines.length < 2) return null;
 
-  // 解析表头
-  const headerLine = match[1].trim();
-  const headers = headerLine.split('|').map(h => h.trim()).filter(h => h);
+  const headers = splitRow(lines[0]);
+  const body = /^[\s|:-]+$/.test(lines[1]) ? lines.slice(2) : lines.slice(1);
+  const rows = body.map(splitRow).filter((row) => row.some(Boolean));
 
-  // 解析行
-  const rowLines = match[2].trim().split('\n');
-  const rows = rowLines
-    .filter(line => line.includes('|'))
-    .map(line => {
-      const cells = line.split('|').map(c => c.trim()).filter(c => c);
-      return cells;
-    });
-
+  if (!headers.length || !rows.length) return null;
   return { headers, rows };
 }
 

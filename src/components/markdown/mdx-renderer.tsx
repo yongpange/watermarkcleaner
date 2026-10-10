@@ -24,7 +24,7 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
     let match;
 
     // 创建一个匹配所有组件的正则（包括表格）
-    const combinedRegex = /<ImageComparison\s*beforeImage=\{\{[^}]+\}\}\s*afterImage=\{\{[^}]+\}\}\s*autoPlay=\{false\}\s*\/>|<CTAButton[^>]*>.*?<\/CTAButton>|\n?\n?\|(.+?)\|\n\|[-:\s]+\|\n((?:\|.+?\|\n?)+)/g;
+    const combinedRegex = /<ImageComparison\s*beforeImage=\{\{[^}]+\}\}\s*afterImage=\{\{[^}]+\}\}\s*autoPlay=\{false\}\s*\/>|<CTAButton[^>]*>.*?<\/CTAButton>|(?:^|\n)(\|[^\n]+\|\r?\n\|[\s|:-]+\|\r?\n(?:\|[^\n]+\|\r?\n?)+)/g;
 
     while ((match = combinedRegex.exec(content)) !== null) {
       // 添加匹配前的HTML内容
@@ -36,7 +36,7 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
       }
 
       // 处理匹配的组件
-      if (match[0].startsWith('|')) {
+      if (match[0].trimStart().startsWith('|')) {
         // 处理Markdown表格
         const tableData = parseMarkdownTable(match[0]);
         if (tableData) {
@@ -123,8 +123,14 @@ export default function MDXRenderer({ content }: MDXRendererProps) {
                   // 增强的引用块样式
                   .replace(/^>\s+(.+)$/gm, '<blockquote class="blockquote-enhanced my-8"><p class="!mb-0">$1</p></blockquote>')
                   // 增强的列表样式
-                  .replace(/^\*\s+(.+)$/gm, '<li class="mb-2 ml-4 relative before:content-["•"] before:absolute before:-left-4 before:text-primary">$1</li>')
-                  .replace(/^\d+\.\s+(.+)$/gm, '<li class="mb-2 ml-4">$1</li>')
+                  .replace(/^\*\s+(.+)$/gm, '<li>$1</li>')
+                  .replace(/^-\s+(.+)$/gm, '<li>$1</li>')
+                  .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+                  .replace(/<p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl">\s*[-*]\s+([\s\S]*?)<\/p>/g, '<li>$1</li>')
+                  .replace(/<p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl">\s*\d+\.\s+([\s\S]*?)<\/p>/g, '<li>$1</li>')
+                  .replace(/(?:<li>[\s\S]*?<\/li>\s*)+/g, (block) => `<ul>${block}</ul>`)
+                  .replace(/^---+$/gm, '<hr />')
+                  .replace(/<p class="mb-6 leading-relaxed text-foreground text-lg md:text-xl">---<\/p>/g, '<hr />')
                   // 添加链接样式
                   .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-primary hover:text-primary/80 underline underline-offset-4 decoration-2 hover:decoration-primary/50 transition-all duration-200">$1</a>')
               }}

@@ -87,6 +87,61 @@ const SafeLink = ({
   );
 };
 
+function JournalMenu({
+  items,
+  href,
+  label,
+  className,
+}: {
+  items: { title?: string; description?: string; url?: string; target?: string }[];
+  href?: string;
+  label?: string;
+  className?: string;
+}) {
+  return (
+    <div className={cn("w-[24rem] max-w-[calc(100vw-2rem)] py-2", className)}>
+      <ul>
+        {items.map((entry, index) => (
+          <li key={entry.url || index}>
+            <NavigationMenuLink asChild>
+              <SafeLink
+                href={entry.url || "/blog"}
+                target={entry.target}
+                className="grid grid-cols-[1.75rem_1fr] gap-3 rounded-md px-4 py-3 no-underline outline-hidden transition-colors hover:bg-accent/70"
+              >
+                <span className="pt-0.5 font-mono text-[11px] tracking-[0.08em] text-muted-foreground">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[15px] font-medium leading-snug tracking-tight text-foreground">
+                    {entry.title}
+                  </span>
+                  {entry.description ? (
+                    <span className="mt-1 block text-[13px] leading-relaxed text-muted-foreground">
+                      {entry.description}
+                    </span>
+                  ) : null}
+                </span>
+              </SafeLink>
+            </NavigationMenuLink>
+          </li>
+        ))}
+      </ul>
+      <div className="mx-4 mt-1 border-t border-border/80 px-1 pt-2 pb-1">
+        <NavigationMenuLink asChild>
+          <SafeLink
+            href={href || "/blog"}
+            className="flex items-center justify-between py-2 text-[13px] text-muted-foreground no-underline transition-colors hover:text-foreground"
+          >
+            <span>{label}</span>
+            <span aria-hidden="true">→</span>
+          </SafeLink>
+        </NavigationMenuLink>
+      </div>
+    </div>
+  );
+}
+
 interface CreditsInfo {
   tier: "unverified" | "verified" | "pro";
   used: number;
@@ -212,34 +267,42 @@ export default function Header({ header }: { header: HeaderType }) {
                           <span>{item.title}</span>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="w-80 p-2">
-                            {item.children.map((iitem, ii) => (
-                              <li key={ii}>
-                                <NavigationMenuLink asChild>
-                                  <SafeLink
-                                    className="flex select-none gap-4 rounded-xl p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent/50 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                    href={iitem.url || "/"}
-                                    target={iitem.target}
-                                  >
-                                    {iitem.icon && (
-                                      <Icon
-                                        name={iitem.icon}
-                                        className="size-5 shrink-0 text-muted-foreground"
-                                      />
-                                    )}
-                                    <div>
-                                      <div className="text-sm font-medium">
-                                        {iitem.title}
+                          {item.url === "/blog" ? (
+                            <JournalMenu
+                              items={item.children}
+                              href={item.url}
+                              label={item.title}
+                            />
+                          ) : (
+                            <ul className="w-80 p-2">
+                              {item.children.map((iitem, ii) => (
+                                <li key={ii}>
+                                  <NavigationMenuLink asChild>
+                                    <SafeLink
+                                      className="flex select-none gap-4 rounded-xl p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent/50 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                      href={iitem.url || "/"}
+                                      target={iitem.target}
+                                    >
+                                      {iitem.icon && (
+                                        <Icon
+                                          name={iitem.icon}
+                                          className="size-5 shrink-0 text-muted-foreground"
+                                        />
+                                      )}
+                                      <div>
+                                        <div className="text-sm font-medium">
+                                          {iitem.title}
+                                        </div>
+                                        <p className="text-sm leading-snug text-muted-foreground">
+                                          {iitem.description}
+                                        </p>
                                       </div>
-                                      <p className="text-sm leading-snug text-muted-foreground">
-                                        {iitem.description}
-                                      </p>
-                                    </div>
-                                  </SafeLink>
-                                </NavigationMenuLink>
-                              </li>
-                            ))}
-                          </ul>
+                                    </SafeLink>
+                                  </NavigationMenuLink>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </NavigationMenuContent>
                       </NavigationMenuItem>
                     );
@@ -405,25 +468,34 @@ export default function Header({ header }: { header: HeaderType }) {
                             <AccordionTrigger className="py-3 text-base font-medium hover:no-underline hover:bg-accent/50 rounded-lg px-3">
                               {item.title}
                             </AccordionTrigger>
-                            <AccordionContent className="pl-3">
-                              <div className="flex flex-col gap-1">
-                                {item.children.map((iitem, ii) => (
-                                  <SafeLink
-                                    key={ii}
-                                    className="flex select-none gap-3 rounded-lg p-3 transition-colors hover:bg-accent/50"
-                                    href={iitem.url || "/"}
-                                    target={iitem.target}
-                                  >
-                                    {iitem.icon && (
-                                      <Icon name={iitem.icon} className="size-5 shrink-0 text-muted-foreground" />
-                                    )}
-                                    <div>
-                                      <div className="text-sm font-medium">{iitem.title}</div>
-                                      <p className="text-xs text-muted-foreground">{iitem.description}</p>
-                                    </div>
-                                  </SafeLink>
-                                ))}
-                              </div>
+                            <AccordionContent className="pl-1">
+                              {item.url === "/blog" ? (
+                                <JournalMenu
+                                  items={item.children}
+                                  href={item.url}
+                                  label={item.title}
+                                  className="w-full max-w-none"
+                                />
+                              ) : (
+                                <div className="flex flex-col gap-1">
+                                  {item.children.map((iitem, ii) => (
+                                    <SafeLink
+                                      key={ii}
+                                      className="flex select-none gap-3 rounded-lg p-3 transition-colors hover:bg-accent/50"
+                                      href={iitem.url || "/"}
+                                      target={iitem.target}
+                                    >
+                                      {iitem.icon && (
+                                        <Icon name={iitem.icon} className="size-5 shrink-0 text-muted-foreground" />
+                                      )}
+                                      <div>
+                                        <div className="text-sm font-medium">{iitem.title}</div>
+                                        <p className="text-xs text-muted-foreground">{iitem.description}</p>
+                                      </div>
+                                    </SafeLink>
+                                  ))}
+                                </div>
+                              )}
                             </AccordionContent>
                           </AccordionItem>
                         );

@@ -47,6 +47,18 @@
         "ar": "تعلم الذكاء الاصطناعي",
         "ko": "AI 학습"
       }
+    },
+    {
+      "id": "comparison",
+      "name": {
+        "en": "Comparison",
+        "zh": "对比",
+        "es": "Comparación",
+        "ru": "Сравнение",
+        "fr": "Comparaison",
+        "ar": "مقارنة",
+        "ko": "비교"
+      }
     }
   ],
   "authors": [

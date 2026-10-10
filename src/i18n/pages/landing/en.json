@@ -67,19 +67,19 @@
           "icon": "RiArticleLine",
           "children": [
             {
-              "title": "2025 Ultimate Guide: How to Use AI Technology to Perfectly Remove Image Watermarks",
+              "title": "How AI takes a watermark off",
               "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
-              "description": "Step-by-step guide for AI watermark removal"
+              "description": "From upload to download, without the sales pitch"
             },
             {
-              "title": "Top 7 AI Tools for Watermark Removal",
+              "title": "Seven tools, side by side",
               "url": "/blog/best-ai-tools-for-watermark-removal",
-              "description": "Compare the best AI watermark removal tools"
+              "description": "What each one is actually good at"
             },
             {
-              "title": "Legal Aspects of Watermark Removal",
+              "title": "Before you remove one",
               "url": "/blog/watermark-removal-legal-aspects-guide",
-              "description": "Understand the legal considerations"
+              "description": "Copyright, fair use, and the line not to cross"
             }
           ]
         }

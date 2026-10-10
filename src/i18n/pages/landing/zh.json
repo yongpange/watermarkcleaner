@@ -67,19 +67,19 @@
           "icon": "RiArticleLine",
           "children": [
             {
-              "title": "水印清理革命：AI一键去除图片水印，让创作自由无拘束",
+              "title": "AI 怎样去掉一张图上的水印",
               "url": "/blog/ultimate-guide-to-ai-image-watermark-removal-2025",
-              "description": "AI去水印分步指南"
+              "description": "从上传到下载，按步骤说清楚"
             },
             {
-              "title": "7大最佳AI水印去除工具",
+              "title": "七款工具放在一起看",
               "url": "/blog/best-ai-tools-for-watermark-removal",
-              "description": "比较最佳AI去水印工具"
+              "description": "各自擅长什么，差在哪里"
             },
             {
-              "title": "水印去除的法律问题",
+              "title": "动手之前，先看法律",
               "url": "/blog/watermark-removal-legal-aspects-guide",
-              "description": "了解法律注意事项"
+              "description": "版权、合理使用，以及不该碰的线"
             }
           ]
         }
