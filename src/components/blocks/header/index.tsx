@@ -50,7 +50,6 @@ import type { User as NextAuthUser } from "@/types/next-auth";
 import { Link as NextIntlLink } from "@/i18n/routing";
 import type { AppPathname } from "@/i18n/locale";
 import { motion, AnimatePresence } from "framer-motion";
-import { usePathname } from "next/navigation";
 
 const SafeLink = ({
   href,
@@ -99,9 +98,6 @@ export default function Header({ header }: { header: HeaderType }) {
   const [scrolled, setScrolled] = useState(false);
   const { data: session, status } = useSession();
   const t = useTranslations("header");
-  const pathname = usePathname();
-  const isHomePage = pathname === "/" || pathname === "/en" || pathname === "/zh";
-
   const userName = session?.user?.name || session?.user?.email?.split("@")[0] || "";
   const userEmail = session?.user?.email || "";
 
@@ -172,13 +168,9 @@ export default function Header({ header }: { header: HeaderType }) {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isHomePage
-          ? scrolled
-            ? "bg-[#0B0C15]/85 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/10"
-            : "bg-transparent"
-          : scrolled
-            ? "bg-background/75 backdrop-blur-xl border-b border-border/50 shadow-sm"
-            : "bg-transparent"
+        scrolled
+          ? "bg-background/75 backdrop-blur-xl border-b border-border/50 shadow-sm"
+          : "bg-transparent"
       )}
     >
       <div className="container">
@@ -198,10 +190,7 @@ export default function Header({ header }: { header: HeaderType }) {
                 />
               </div>
               {header.brand?.title && (
-                <span className={cn(
-                  "text-lg font-display font-semibold tracking-tight",
-                  isHomePage ? "text-white" : "text-foreground"
-                )}>
+                <span className="text-lg font-display font-semibold tracking-tight text-foreground">
                   {header.brand?.title || ""}
                 </span>
               )}
@@ -212,8 +201,8 @@ export default function Header({ header }: { header: HeaderType }) {
                 {header.nav?.items?.map((item, i) => {
                   if (item.children && item.children.length > 0) {
                     return (
-                      <NavigationMenuItem key={i} className={isHomePage ? "text-white/70" : "text-muted-foreground"}>
-                        <NavigationMenuTrigger className={cn("text-sm font-medium", isHomePage && "text-white/70 hover:text-white data-[state=open]:text-white")}>
+                      <NavigationMenuItem key={i} className="text-muted-foreground">
+                        <NavigationMenuTrigger className="text-sm font-medium text-muted-foreground hover:text-foreground data-[state=open]:text-foreground">
                           {item.icon && (
                             <Icon
                               name={item.icon}
@@ -260,14 +249,10 @@ export default function Header({ header }: { header: HeaderType }) {
                     <NavigationMenuItem key={i}>
                       <SafeLink
                         className={cn(
-                          "relative text-sm font-medium transition-colors",
-                          isHomePage
-                            ? "text-white/70 hover:text-white after:bg-white"
-                            : "text-muted-foreground hover:text-foreground after:bg-primary",
+                          "relative text-sm font-medium transition-colors text-muted-foreground hover:text-foreground after:bg-primary",
                           navigationMenuTriggerStyle,
                           buttonVariants({ variant: "ghost" }),
-                          "after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all after:duration-200 hover:after:w-4/5",
-                          isHomePage && "hover:bg-white/10"
+                          "after:absolute after:bottom-1 after:left-1/2 after:h-px after:w-0 after:-translate-x-1/2 after:transition-all after:duration-200 hover:after:w-4/5"
                         )}
                         href={item.url || "/"}
                         target={item.target}
@@ -286,8 +271,8 @@ export default function Header({ header }: { header: HeaderType }) {
 
           {/* Right: Actions */}
           <div className="shrink-0 flex items-center gap-1">
-            {header.show_locale && <LocaleToggle className={cn(isHomePage && "text-white/70 hover:text-white")} />}
-            {header.show_theme && <ThemeToggle className={cn(isHomePage && "text-white/70 hover:text-white")} />}
+            {header.show_locale && <LocaleToggle />}
+            {header.show_theme && <ThemeToggle />}
 
             {header.buttons?.map((item, i) => (
               <Button key={i} variant={item.variant} className="ml-2">
@@ -307,12 +292,7 @@ export default function Header({ header }: { header: HeaderType }) {
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className={cn(
-                      "gap-2 pl-2 pr-3 ml-2 h-9 rounded-full border hover:bg-white/10",
-                      isHomePage
-                        ? "border-white/20 text-white hover:text-white"
-                        : "border-border/50 hover:bg-accent/50"
-                    )}
+                    className="gap-2 pl-2 pr-3 ml-2 h-9 rounded-full border border-border/50 hover:bg-accent/50 text-foreground"
                   >
                     <Avatar className="w-6 h-6 ring-1 ring-border/50">
                       <AvatarImage src={session.user.image ?? undefined} />
@@ -366,11 +346,8 @@ export default function Header({ header }: { header: HeaderType }) {
             ) : (
               <Button
                 onClick={() => setShowAuthModal(true)}
-                className={cn(
-                  "cursor-pointer ml-2",
-                  isHomePage && "border-white/20 text-white bg-white/5 hover:bg-white/10 hover:text-white"
-                )}
-                variant={isHomePage ? "outline" : "glow"}
+                className="cursor-pointer ml-2"
+                variant="glow"
               >
                 {t("sign_in")}
               </Button>
@@ -385,10 +362,7 @@ export default function Header({ header }: { header: HeaderType }) {
               <Image src="/logo.png" alt="Logo" fill className="object-cover" />
             </div>
             {header.brand?.title && (
-              <span className={cn(
-                "text-base font-display font-semibold tracking-tight",
-                isHomePage ? "text-white" : "text-foreground"
-              )}>
+              <span className="text-base font-display font-semibold tracking-tight text-foreground">
                 {header.brand?.title}
               </span>
             )}
@@ -398,7 +372,7 @@ export default function Header({ header }: { header: HeaderType }) {
             {header.show_theme && <ThemeToggle />}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className={cn("rounded-full", isHomePage && "text-white hover:bg-white/10")}>
+                <Button variant="ghost" size="icon" className="rounded-full text-foreground hover:bg-accent/50">
                   <Menu className="size-5" />
                 </Button>
               </SheetTrigger>

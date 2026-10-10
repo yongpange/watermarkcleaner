@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useInView, animate } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useInView } from "framer-motion";
 
 import Icon from "@/components/icon";
 import { Section as SectionType } from "@/types/blocks/section";
@@ -26,30 +26,41 @@ function CountUp({
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
-  const [display, setDisplay] = useState(value);
   const parsed = parseNumericValue(value);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!isInView || !parsed) return;
+    if (!isInView || !parsed || !ref.current || hasAnimated.current) return;
+    hasAnimated.current = true;
 
-    const controls = animate(0, parsed.number, {
-      duration: 1.5,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (latest) => {
-        const formatted =
-          parsed.decimals > 0
-            ? latest.toFixed(parsed.decimals)
-            : Math.round(latest).toString();
-        setDisplay(`${parsed.prefix}${formatted}${parsed.suffix}`);
-      },
-    });
+    const el = ref.current;
+    const startTime = performance.now();
+    const duration = 1500;
 
-    return () => controls.stop();
+    let rafId: number;
+    const tick = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = eased * parsed.number;
+      const formatted =
+        parsed.decimals > 0
+          ? current.toFixed(parsed.decimals)
+          : Math.round(current).toString();
+      el.textContent = `${parsed.prefix}${formatted}${parsed.suffix}`;
+
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, [isInView, parsed]);
 
   return (
     <span ref={ref} className={className}>
-      {display}
+      {value}
     </span>
   );
 }
