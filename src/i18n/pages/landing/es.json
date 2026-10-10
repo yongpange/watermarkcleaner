@@ -292,7 +292,7 @@
         "label": "Fotógrafa",
         "description": "¡Finalmente un eliminador de marcas de agua que realmente funciona! Lo uso a diario para mi negocio de fotografía. La IA es increíblemente inteligente para preservar la calidad de la imagen.",
         "image": {
-          "src": "/imgs/users/1.png"
+          "src": "/imgs/users/1.svg"
         }
       },
       {
@@ -300,7 +300,7 @@
         "label": "Diseñador Gráfico",
         "description": "He probado muchas herramientas, pero WatermarkCleaner es la mejor. Maneja fondos complejos a la perfección y el procesamiento por lotes me ahorra horas.",
         "image": {
-          "src": "/imgs/users/2.png"
+          "src": "/imgs/users/2.svg"
         }
       },
       {
@@ -308,7 +308,7 @@
         "label": "Gestora de Redes Sociales",
         "description": "Perfecto para limpiar imágenes para redes sociales. No más marcas de agua feas arruinando mis publicaciones. ¡Y es completamente gratis!",
         "image": {
-          "src": "/imgs/users/3.png"
+          "src": "/imgs/users/3.svg"
         }
       },
       {
@@ -316,7 +316,7 @@
         "label": "Propietario de E-commerce",
         "description": "Mis fotos de productos se ven mucho más profesionales ahora. Eliminó todas las marcas de agua de fotos de archivo al instante. ¡Altamente recomendado!",
         "image": {
-          "src": "/imgs/users/4.png"
+          "src": "/imgs/users/4.svg"
         }
       },
       {
@@ -324,7 +324,7 @@
         "label": "Creadora de Contenido",
         "description": "La función sin registro es increíble. Solo puedo subir y obtener mis imágenes limpias de inmediato. Esta herramienta es un cambio de juego.",
         "image": {
-          "src": "/imgs/users/5.png"
+          "src": "/imgs/users/5.svg"
         }
       },
       {
@@ -332,7 +332,7 @@
         "label": "Director de Marketing",
         "description": "Usamos WatermarkCleaner para todos nuestros materiales de marketing. La calidad es de grado profesional y la velocidad es inigualable.",
         "image": {
-          "src": "/imgs/users/6.png"
+          "src": "/imgs/users/6.svg"
         }
       }
     ]

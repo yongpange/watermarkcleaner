@@ -254,7 +254,7 @@
         "label": "Photographer",
         "description": "Finally a watermark remover that actually works! I use it daily for my photography business. The AI is incredibly smart at preserving image quality.",
         "image": {
-          "src": "/imgs/users/1.png"
+          "src": "/imgs/users/1.svg"
         }
       },
       {
@@ -262,7 +262,7 @@
         "label": "Graphic Designer",
         "description": "I've tried many tools but WatermarkCleaner is the best. It handles complex backgrounds perfectly and the batch processing saves me hours.",
         "image": {
-          "src": "/imgs/users/2.png"
+          "src": "/imgs/users/2.svg"
         }
       },
       {
@@ -270,7 +270,7 @@
         "label": "Social Media Manager",
         "description": "Perfect for cleaning up images for social media. No more ugly watermarks ruining my posts. And it's completely free!",
         "image": {
-          "src": "/imgs/users/3.png"
+          "src": "/imgs/users/3.svg"
         }
       },
       {
@@ -278,7 +278,7 @@
         "label": "E-commerce Owner",
         "description": "My product photos look so much more professional now. Removed all the stock photo watermarks instantly. Highly recommend!",
         "image": {
-          "src": "/imgs/users/4.png"
+          "src": "/imgs/users/4.svg"
         }
       },
       {
@@ -286,7 +286,7 @@
         "label": "Content Creator",
         "description": "The no sign-up feature is amazing. I can just upload and get my clean images immediately. This tool is a game-changer.",
         "image": {
-          "src": "/imgs/users/5.png"
+          "src": "/imgs/users/5.svg"
         }
       },
       {
@@ -294,7 +294,7 @@
         "label": "Marketing Director",
         "description": "We use WatermarkCleaner for all our marketing materials. The quality is professional-grade and the speed is unmatched.",
         "image": {
-          "src": "/imgs/users/6.png"
+          "src": "/imgs/users/6.svg"
         }
       }
     ]

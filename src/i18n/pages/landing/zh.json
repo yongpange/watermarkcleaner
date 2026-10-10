@@ -294,7 +294,7 @@
         "label": "摄影师",
         "description": "终于找到一个真正好用的去水印工具！每天都在用，AI对图片质量的保持令人印象深刻。",
         "image": {
-          "src": "/imgs/users/1.png"
+          "src": "/imgs/users/1.svg"
         }
       },
       {
@@ -302,7 +302,7 @@
         "label": "平面设计师",
         "description": "试过很多工具，WatermarkCleaner是最好的。处理复杂背景非常完美，批量处理功能节省了我好几个小时。",
         "image": {
-          "src": "/imgs/users/2.png"
+          "src": "/imgs/users/2.svg"
         }
       },
       {
@@ -310,7 +310,7 @@
         "label": "社交媒体运营",
         "description": "用来清理社交媒体图片太方便了。不再有丑陋的水印破坏我的帖子。而且完全免费！",
         "image": {
-          "src": "/imgs/users/3.png"
+          "src": "/imgs/users/3.svg"
         }
       },
       {
@@ -318,7 +318,7 @@
         "label": "电商卖家",
         "description": "我的产品图片现在看起来专业多了。去掉了所有图库水印，生意也变好了。强烈推荐！",
         "image": {
-          "src": "/imgs/users/4.png"
+          "src": "/imgs/users/4.svg"
         }
       },
       {
@@ -326,7 +326,7 @@
         "label": "内容创作者",
         "description": "无需注册的功能太棒了。我可以直接上传图片立即得到干净的结果。这个工具太改变游戏规则了。",
         "image": {
-          "src": "/imgs/users/5.png"
+          "src": "/imgs/users/5.svg"
         }
       },
       {
@@ -334,7 +334,7 @@
         "label": "市场总监",
         "description": "我们团队所有营销材料都用WatermarkCleaner处理。质量是专业级的，速度无与伦比。",
         "image": {
-          "src": "/imgs/users/6.png"
+          "src": "/imgs/users/6.svg"
         }
       }
     ]
