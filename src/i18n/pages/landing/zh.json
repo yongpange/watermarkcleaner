@@ -57,7 +57,7 @@
               "title": "图片放大",
               "url": "/upscale",
               "description": "无损放大图片，保持清晰度",
-              "icon": "RiExpandLine"
+              "icon": "RiExpandDiagonalLine"
             }
           ]
         },

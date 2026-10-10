@@ -57,7 +57,7 @@
               "title": "Aumentar escala de imagen",
               "url": "/upscale",
               "description": "Agranda imágenes sin perder calidad",
-              "icon": "RiExpandLine"
+              "icon": "RiExpandDiagonalLine"
             }
           ]
         },
